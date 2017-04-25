@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<UI xmlns="reactant"
+    xmlns:layout="reactant:layout"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="reactant http://schema.brightify.org/reactant/ReactantUI.xsd
+                        reactant:layout http://schema.brightify.org/reactant/Layout.xsd"
+    type="ExampleCell"
+    anonymous="true">
+
+    <Label
+        text="Test"
+        backgroundColor="cyan"
+        layout:fillHorizontally="super inset(20)"
+        layout:fillVertically="super inset(0)" />
+
+</UI>
