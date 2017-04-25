@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<UI xmlns="http://www.brightify.org"
-    xmlns:layout="http://www.brightify.org/layout"
+<UI xmlns="http://schema.reactant.tech/ui"
+    xmlns:layout="http://schema.reactant.tech/layout"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.brightify.org http://schema.brightify.org/reactant/ReactantUI.xsd
-                        http://www.brightify.org/layout http://schema.brightify.org/reactant/Layout.xsd"
+    xsi:schemaLocation="http://schema.reactant.tech/ui http://schema.reactant.tech/ui.xsd
+                        http://schema.reactant.tech/layout http://schema.reactant.tech/layout.xsd"
     type="ExampleRootView"
     extend="all"
     rootView="true">
