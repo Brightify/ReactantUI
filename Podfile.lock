@@ -19,12 +19,12 @@ PODS:
     - Reactant/Core
     - RxCocoa (~> 3.0)
     - RxDataSources (~> 1.0)
-  - ReactantUI (0.0.1)
-  - ReactantUI-Live (0.0.1):
+  - ReactantLiveUI (0.0.1):
     - KZFileWatchers
     - Reactant
     - Reactant/TableView
     - SWXMLHash
+  - ReactantUI (0.0.1)
   - Result (3.2.1)
   - RxCocoa (3.4.0):
     - RxSwift (~> 3.4)
@@ -43,8 +43,8 @@ DEPENDENCIES:
   - KZFileWatchers
   - Reactant (from `https://github.com/Brightify/Reactant.git`, branch `plus`)
   - Reactant/TableView (from `https://github.com/Brightify/Reactant.git`, branch `plus`)
+  - ReactantLiveUI (from `./`)
   - ReactantUI (from `./`)
-  - ReactantUI-Live (from `./`)
   - Result (~> 3.0)
   - RxCocoa (~> 3.0)
   - RxDataSources (~> 1.0)
@@ -57,9 +57,9 @@ EXTERNAL SOURCES:
   Reactant:
     :branch: plus
     :git: https://github.com/Brightify/Reactant.git
-  ReactantUI:
+  ReactantLiveUI:
     :path: "./"
-  ReactantUI-Live:
+  ReactantUI:
     :path: "./"
 
 CHECKOUT OPTIONS:
@@ -71,8 +71,8 @@ SPEC CHECKSUMS:
   Kingfisher: 2c94e72c6830622c71d06adf4ea024c37d316830
   KZFileWatchers: a2c799ad7f14ce41e06fbd282f4b1cd12486121e
   Reactant: ee338338e7a8dd7502192d15e8c713fe460b43de
+  ReactantLiveUI: 4e1f4d475d84cdbf5b286600ca73365a001f93aa
   ReactantUI: d2ce8cd71d859960649b16cf76f0f0d2d460bc7c
-  ReactantUI-Live: 557c75800fcc953d49722196dd690346e02d04fa
   Result: 2453a22e5c5b11c0c3a478736e82cd02f763b781
   RxCocoa: d14ef6b6029e1ddc6e966508c09289090de68ff9
   RxDataSources: a021a0e944ba5f7991259829d973afdbfa719c0b
@@ -81,6 +81,6 @@ SPEC CHECKSUMS:
   SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
   SWXMLHash: 29d20b84692fc319ea8ed933058fe7d8d005139b
 
-PODFILE CHECKSUM: b140d3d584d37cc33f475af82b438e50e9416426
+PODFILE CHECKSUM: 78e557e1ac1938f87b711535f2821bad11f34ba6
 
 COCOAPODS: 1.2.1

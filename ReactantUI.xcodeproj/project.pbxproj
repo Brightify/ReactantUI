@@ -234,7 +234,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "pushd $PROJECT_DIR/ReactantUI\nenv -i HOME=$HOME PATH=$PATH swift build\npopd\n\npushd $PROJECT_DIR/Example\n$PROJECT_DIR/ReactantUI/.build/debug/reactant-ui > $PROJECT_DIR/Example/Generated/GeneratedUI.swift\npopd";
+			shellScript = "pushd $PROJECT_DIR\nenv -i HOME=$HOME PATH=$PATH swift build\npopd\n\npushd $PROJECT_DIR/Example\n$PROJECT_DIR/.build/debug/reactant-ui > $PROJECT_DIR/Example/Generated/GeneratedUI.swift\npopd";
 		};
 		80D15FFAC2FA355FB1F2A212 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;

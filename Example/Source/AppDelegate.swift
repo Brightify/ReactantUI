@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import ReactantUI_Live
+import ReactantLiveUI
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
