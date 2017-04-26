@@ -22,7 +22,7 @@ Pod::Spec.new do |spec|
     spec.ios.deployment_target = '9.0'
 
     spec.source_files = []
-    spec.preserve_paths = ['ReactantUI/**/*']
+    spec.preserve_paths = ['Source/**/*']
     spec.prepare_command = <<-CMD
         cd ReactantUI
         swift build
