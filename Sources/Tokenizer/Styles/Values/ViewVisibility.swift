@@ -21,7 +21,9 @@ public enum ViewCollapseAxis: String {
 }
 
 #if ReactantRuntime
-    extension ViewVisibility: Appliable {
+    import Reactant
+
+    extension ViewVisibility: Applicable {
 
         public var value: Any? {
             switch self {
@@ -37,7 +39,8 @@ public enum ViewCollapseAxis: String {
 #endif
 
 #if ReactantRuntime
-    extension ViewCollapseAxis: Appliable {
+
+    extension ViewCollapseAxis: Applicable {
 
         public var value: Any? {
             switch self {

@@ -11,7 +11,7 @@ public enum MapType: String {
 #if ReactantRuntime
     import MapKit
 
-    extension MapType: Appliable {
+    extension MapType: Applicable {
 
         public var value: Any? {
             switch self {

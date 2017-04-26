@@ -16,7 +16,7 @@ public struct Size {
 #if ReactantRuntime
     import UIKit
 
-    extension Size: Appliable {
+    extension Size: Applicable {
 
         public var value: Any? {
             return CGSize(width: width.cgFloat, height: height.cgFloat)

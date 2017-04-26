@@ -16,7 +16,7 @@ public enum BlurEffect: String {
 #if ReactantRuntime
     import UIKit
 
-    extension BlurEffect: Appliable {
+    extension BlurEffect: Applicable {
 
         public var value: Any? {
             switch self {

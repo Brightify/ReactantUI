@@ -111,8 +111,7 @@ public enum SupportedPropertyValue {
     public var value: Any? {
         switch self {
         case .color(let color, let type):
-            let result = color.value as? UIColor
-            return type == .uiColor ? result : result?.cgColor
+            return type == .uiColor ? color.value : color.value.cgColor
         case .namedColor(let colorName, let type):
             let result = UIColor.value(forKeyPath: "\(colorName)Color") as? UIColor
             return type == .uiColor ? result : result?.cgColor

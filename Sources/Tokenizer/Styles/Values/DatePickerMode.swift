@@ -18,7 +18,7 @@ public enum DatePickerMode: String {
 #if ReactantRuntime
 import UIKit
 
-extension DatePickerMode: Appliable {
+extension DatePickerMode: Applicable {
 
     public var value: Any? {
         switch self {

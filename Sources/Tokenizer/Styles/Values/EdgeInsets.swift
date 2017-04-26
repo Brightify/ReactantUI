@@ -18,7 +18,7 @@ public struct EdgeInsets {
 #if ReactantRuntime
 import UIKit
 
-extension EdgeInsets: Appliable {
+extension EdgeInsets: Applicable {
 
     public var value: Any? {
         return UIEdgeInsetsMake(top.cgFloat, left.cgFloat, bottom.cgFloat, right.cgFloat)

@@ -9,7 +9,7 @@ public enum TextAlignment: String {
 #if ReactantRuntime
     import UIKit
 
-    extension TextAlignment: Appliable {
+    extension TextAlignment: Applicable {
 
         public var value: Any? {
             switch self {

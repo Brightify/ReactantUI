@@ -20,7 +20,7 @@ public enum LayoutAlignment: String {
 #if ReactantRuntime
     import UIKit
 
-    extension LayoutAlignment: Appliable {
+    extension LayoutAlignment: Applicable {
 
         public var value: Any? {
             switch self {

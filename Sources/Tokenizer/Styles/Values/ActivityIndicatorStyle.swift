@@ -17,7 +17,7 @@ public enum ActivityIndicatorStyle: String {
 #if ReactantRuntime
     import UIKit
 
-    extension ActivityIndicatorStyle: Appliable {
+    extension ActivityIndicatorStyle: Applicable {
 
         public var value: Any? {
             switch self {

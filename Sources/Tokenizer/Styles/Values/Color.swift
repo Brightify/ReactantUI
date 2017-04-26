@@ -48,9 +48,9 @@ public struct Color {
 #if ReactantRuntime
 import UIKit
 
-extension Color: Appliable {
+extension Color: Applicable {
 
-    public var value: Any? {
+    public var value: UIColor {
         return UIColor(red: red, green: green, blue: blue, alpha: alpha)
     }
 }

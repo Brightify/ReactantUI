@@ -24,7 +24,7 @@ public struct Rect {
 
 #if ReactantRuntime
 
-    extension Rect: Appliable {
+    extension Rect: Applicable {
 
         public var value: Any? {
             let origin = CGPoint(x: self.origin.x.cgFloat, y: self.origin.y.cgFloat)

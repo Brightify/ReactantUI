@@ -23,7 +23,7 @@ public enum Font {
 #if ReactantRuntime
     import UIKit
 
-    extension Font: Appliable {
+    extension Font: Applicable {
 
         public var value: Any? {
             switch self {

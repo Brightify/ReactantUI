@@ -28,7 +28,7 @@
         contentMode="scaleAspectFill" />
 
         <VisualEffectView
-            effect="blur:regular"
+            effect="blur:light"
             layout:edges="super" />
 
         <DatePicker

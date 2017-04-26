@@ -9,7 +9,7 @@ public enum SearchBarStyle: String {
 #if ReactantRuntime
     import UIKit
 
-    extension SearchBarStyle: Appliable {
+    extension SearchBarStyle: Applicable {
 
         public var value: Any? {
             switch self {

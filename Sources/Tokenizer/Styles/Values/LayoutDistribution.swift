@@ -19,7 +19,7 @@ public enum LayoutDistribution: String {
 #if ReactantRuntime
     import UIKit
 
-    extension LayoutDistribution: Appliable {
+    extension LayoutDistribution: Applicable {
 
         public var value: Any? {
             switch self {
@@ -32,7 +32,7 @@ public enum LayoutDistribution: String {
             case .fillEqually:
                 return UIStackViewDistribution.fillEqually.rawValue
             case .fillProportionaly:
-                return UIStackViewDistribution.fillProportionally
+                return UIStackViewDistribution.fillProportionally.rawValue
             }
         }
     }

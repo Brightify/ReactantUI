@@ -6,7 +6,7 @@ public enum ContentMode: String {
 #if ReactantRuntime
 import UIKit
 
-extension ContentMode: Appliable {
+extension ContentMode: Applicable {
 
     public var value: Any? {
         switch self {

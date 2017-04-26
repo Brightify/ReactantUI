@@ -15,7 +15,7 @@ public struct Point {
 
 #if ReactantRuntime
 
-    extension Point: Appliable {
+    extension Point: Applicable {
 
         public var value: Any? {
             return CGPoint(x: x.cgFloat, y: y.cgFloat)

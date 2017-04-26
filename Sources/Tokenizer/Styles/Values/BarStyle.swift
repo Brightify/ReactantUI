@@ -8,11 +8,6 @@
 
 import Foundation
 
-public protocol Appliable {
-
-    var value: Any? { get }
-}
-
 public enum BarStyle: String {
     case `default`
     case black
@@ -22,7 +17,7 @@ public enum BarStyle: String {
 #if ReactantRuntime
 import UIKit
     
-extension BarStyle: Appliable {
+extension BarStyle: Applicable {
 
     public var value: Any? {
         switch self {
