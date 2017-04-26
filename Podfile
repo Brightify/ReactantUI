@@ -16,8 +16,8 @@ end
 target 'Example' do
     shared
 
-    pod 'Reactant', :git => 'https://github.com/Brightify/Reactant.git', :branch => 'plus'
-    pod 'Reactant/TableView', :git => 'https://github.com/Brightify/Reactant.git', :branch => 'plus'
+    pod 'Reactant', :git => 'https://github.com/Brightify/Reactant.git', :branch => 'master'
+    pod 'Reactant/TableView', :git => 'https://github.com/Brightify/Reactant.git', :branch => 'master'
     pod 'ReactantUI', :path => './'
     pod 'ReactantLiveUI', :path => './', :configuration => 'Debug'
     pod 'KZFileWatchers', :configuration => 'Debug'

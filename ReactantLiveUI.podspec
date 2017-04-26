@@ -1,11 +1,11 @@
 Pod::Spec.new do |spec|
     spec.name             = 'ReactantLiveUI'
-    spec.version          = '0.0.1'
+    spec.version          = '0.1.0'
     spec.summary          = 'Live reloading of ReactantUI XML files.'
     spec.description      = <<-DESC
                             ReactantLiveUI adds live reloading capabilities to ReactantUI.
                             DESC
-    spec.homepage         = 'https://github.com/Brightify/Reactant'
+    spec.homepage         = 'http://reactant.tech'
     spec.license          = 'MIT'
     spec.author           = {
         'Tadeas Kriz' => 'tadeas@brightify.org',
@@ -13,7 +13,7 @@ Pod::Spec.new do |spec|
         'Filip Dolnik' => 'filip@brightify.org'
     }
     spec.source           = {
-        :git => 'https://github.com/Brightify/Reactant.git',
+        :git => 'https://github.com/Brightify/ReactantUI.git',
         :tag => spec.version.to_s
     }
     spec.social_media_url = 'https://twitter.com/BrightifyOrg'
