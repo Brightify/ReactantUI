@@ -4,10 +4,8 @@ import Reactant
 import KZFileWatchers
 import SWXMLHash
 
-extension Array where Element == (String, UIView) {
-    func named(_ name: String) -> UIView? {
-        return first(where: { $0.0 == name })?.1
-    }
+private func findView(named name: String, in array: [(String, UIView)]) -> UIView? {
+    return array.first(where: { $0.0 == name })?.1
 }
 
 public class ReactantLiveUIApplier {
@@ -85,7 +83,7 @@ public class ReactantLiveUIApplier {
             tempCounter += 1
         }
 
-        guard let view = views.named(name) else {
+        guard let view = findView(named: name, in: views) else {
             throw LiveUIError(message: "Couldn't find view with name \(name) in view hierarchy")
         }
 
@@ -158,7 +156,7 @@ public class ReactantLiveUIApplier {
                     } else {
                         targetName = constraint.target
                     }
-                    guard let targetView = targetName != "super" ? views.named(targetName) : superview else {
+                    guard let targetView = targetName != "super" ? findView(named: targetName, in: views) : superview else {
                         error = LiveUIError(message: "Couldn't find view with name \(targetName) in view hierarchy")
                         return
                     }

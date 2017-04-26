@@ -13,7 +13,7 @@ import RxSwift
 
 class ViewController: ControllerBase<Void, ExampleRootView> {
 
-    init() {
+    override init() {
         super.init()
 
         rootView.componentState = (test: "test", 1, test2: (a: 10, b: "hello worl"))

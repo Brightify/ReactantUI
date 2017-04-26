@@ -4,6 +4,7 @@ import Reactant
 import KZFileWatchers
 import SWXMLHash
 import RxSwift
+import RxCocoa
 
 private struct WeakUIBox {
     weak var ui: ReactantUI?
@@ -203,9 +204,8 @@ public class ReactantLiveUIManager {
         } else {
             watchers[xmlPath]?.viewCount += 1
         }
-
         observeDefinition(for: view.__rui.typeName)
-            .takeUntil(view.rx.deallocated)
+            .takeUntil((view as UIView).rx.deallocated)
             .subscribe(onNext: { [weak view] definition in
                 guard let view = view else { return }
                 do {

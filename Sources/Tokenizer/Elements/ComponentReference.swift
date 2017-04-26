@@ -26,7 +26,11 @@ public class ComponentReference: View, ComponentDefinitionContainer {
 
     public required init(node: SWXMLHash.XMLElement) throws {
         type = try node.value(ofAttribute: "type")
-        definition = !node.xmlChildren.isEmpty ? try node.value() : nil
+        if !node.xmlChildren.isEmpty {
+            definition = try node.value() as ComponentDefinition
+        } else {
+            definition = nil
+        }
         
         try super.init(node: node)
     }

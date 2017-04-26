@@ -15,11 +15,19 @@ func nested(field: String, namespace: String? = nil, optional: Bool = false, pro
     return NestedPropertyDescription(field: field, namespace: namespace, optional: optional, nestedDescription: property)
 }
 
+#if swift(>=3.1)
 func nested(field: String, namespace: String? = nil, optional: Bool = false, properties: [PropertyDescription]) -> [NestedPropertyDescription] {
     return properties.map {
         nested(field: field, namespace: namespace, optional: optional, property: $0)
     }
 }
+#else
+func nested(field: String, namespace: String? = nil, optional: Bool = false, properties: [PropertyDescription]) -> [PropertyDescription] {
+    return properties.map {
+        nested(field: field, namespace: namespace, optional: optional, property: $0)
+    }
+}
+#endif
 
 
 struct NestedPropertyDescription: PropertyDescription {

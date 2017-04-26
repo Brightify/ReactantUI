@@ -25,6 +25,5 @@ Pod::Spec.new do |spec|
     spec.preserve_paths = ['Source/**/*', 'Package.swift', 'Package.pins']
     spec.prepare_command = <<-CMD
         swift build
-        ln -s .build/debug/reactant-ui ./reactant-ui
     CMD
 end

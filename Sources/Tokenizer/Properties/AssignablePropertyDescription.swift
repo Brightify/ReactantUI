@@ -35,7 +35,7 @@ struct AssignablePropertyDescription: PropertyDescription {
         }
         var mutableObject: AnyObject? = resolvedValue as AnyObject
         do {
-            try object.validateValue(&mutableObject, forKey: key)
+//            try object.validateValue(&mutableObject, forKey: key)
             object.setValue(mutableObject, forKey: key)
         } catch {
             throw LiveUIError(message: "!! Value `\(property.value)` isn't valid for key `\(key)` on object `\(object)")
