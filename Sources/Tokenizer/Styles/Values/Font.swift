@@ -19,3 +19,17 @@ public enum Font {
         }
     }
 }
+
+#if ReactantRuntime
+    import UIKit
+
+    extension Font: Appliable {
+
+        public var value: Any? {
+            switch self {
+            case .system(let weight, let size):
+                return UIFont.systemFont(ofSize: size, weight: weight.value)
+            }
+        }
+    }
+#endif

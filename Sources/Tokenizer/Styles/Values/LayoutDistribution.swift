@@ -15,3 +15,25 @@ public enum LayoutDistribution: String {
     case equalCentering
     case equalSpacing
 }
+
+#if ReactantRuntime
+    import UIKit
+
+    extension LayoutDistribution: Appliable {
+
+        public var value: Any? {
+            switch self {
+            case .equalCentering:
+                return UIStackViewDistribution.equalCentering.rawValue
+            case .equalSpacing:
+                return UIStackViewDistribution.equalSpacing.rawValue
+            case .fill:
+                return UIStackViewDistribution.fill.rawValue
+            case .fillEqually:
+                return UIStackViewDistribution.fillEqually.rawValue
+            case .fillProportionaly:
+                return UIStackViewDistribution.fillProportionally
+            }
+        }
+    }
+#endif

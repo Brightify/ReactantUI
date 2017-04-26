@@ -14,3 +14,14 @@ public struct EdgeInsets {
     let bottom: Float
     let right: Float
 }
+
+#if ReactantRuntime
+import UIKit
+
+extension EdgeInsets: Appliable {
+
+    public var value: Any? {
+        return UIEdgeInsetsMake(top.cgFloat, left.cgFloat, bottom.cgFloat, right.cgFloat)
+    }
+}
+#endif

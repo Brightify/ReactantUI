@@ -44,3 +44,14 @@ public struct Color {
         alpha = CGFloat(rgba & 0xFF) / 255.0
     }
 }
+
+#if ReactantRuntime
+import UIKit
+
+extension Color: Appliable {
+
+    public var value: Any? {
+        return UIColor(red: red, green: green, blue: blue, alpha: alpha)
+    }
+}
+#endif

@@ -27,9 +27,3 @@ public class ActivityIndicatorElement: View {
     }
     #endif
 }
-
-public enum ActivityIndicatorStyle: String {
-    case whiteLarge
-    case white
-    case gray
-}

@@ -21,3 +21,15 @@ public struct Rect {
         self.init(origin: Point(x: x, y: y), size: Size(width: width, height: height))
     }
 }
+
+#if ReactantRuntime
+
+    extension Rect: Appliable {
+
+        public var value: Any? {
+            let origin = CGPoint(x: self.origin.x.cgFloat, y: self.origin.y.cgFloat)
+            let size = CGSize(width: self.size.width.cgFloat, height: self.size.height.cgFloat)
+            return CGRect(origin: origin, size: size)
+        }
+    }
+#endif

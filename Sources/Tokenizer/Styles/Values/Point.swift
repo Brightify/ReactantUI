@@ -12,3 +12,13 @@ public struct Point {
     let x: Float
     let y: Float
 }
+
+#if ReactantRuntime
+
+    extension Point: Appliable {
+
+        public var value: Any? {
+            return CGPoint(x: x.cgFloat, y: y.cgFloat)
+        }
+    }
+#endif

@@ -12,3 +12,14 @@ public struct Size {
     let width: Float
     let height: Float
 }
+
+#if ReactantRuntime
+    import UIKit
+
+    extension Size: Appliable {
+
+        public var value: Any? {
+            return CGSize(width: width.cgFloat, height: height.cgFloat)
+        }
+    }
+#endif

@@ -155,16 +155,3 @@ public class View: XMLElementDeserializable, UIElement {
         return result
     }
 }
-
-public enum ViewVisibility: String {
-    case visible
-    case hidden
-    case collapsed
-}
-
-public enum ViewCollapseAxis: String {
-    case horizontal
-    case vertical
-    case both
-}
-
