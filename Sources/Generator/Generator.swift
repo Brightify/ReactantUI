@@ -105,10 +105,10 @@ public class UIGenerator: Generator {
                     l("#endif")
                 }
                 l()
-                l("func destroyReactantUI()") {
+                l("static func destroyReactantUI(target: UIView)") {
                     l("#if (arch(i386) || arch(x86_64)) && os(iOS)")
-                    l("guard let target = self.target else { /* FIXME Should we fatalError here? */ return }")
-                    l("ReactantLiveUIManager.shared.unregister(target)")
+                    l("guard let knownTarget = target as? \(root.type) else { /* FIXME Should we fatalError here? */ return }")
+                    l("ReactantLiveUIManager.shared.unregister(knownTarget)")
                     l("#endif")
                 }
             }
