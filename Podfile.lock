@@ -1,21 +1,21 @@
 PODS:
   - Kingfisher (3.6.2)
   - KZFileWatchers (1.0.2)
-  - Reactant (0.6.0):
-    - Reactant/Core (= 0.6.0)
-    - Reactant/Result (= 0.6.0)
-  - Reactant/Configuration (0.6.0):
+  - Reactant (1.0.0):
+    - Reactant/Core (= 1.0.0)
+    - Reactant/Result (= 1.0.0)
+  - Reactant/Configuration (1.0.0):
     - RxSwift (~> 3.0)
     - SnapKit (~> 3.0)
-  - Reactant/Core (0.6.0):
+  - Reactant/Core (1.0.0):
     - Reactant/Configuration
     - RxSwift (~> 3.0)
     - SnapKit (~> 3.0)
-  - Reactant/Result (0.6.0):
+  - Reactant/Result (1.0.0):
     - Result (~> 3.0)
     - RxOptional (~> 3.0)
     - RxSwift (~> 3.0)
-  - Reactant/TableView (0.6.0):
+  - Reactant/TableView (1.0.0):
     - Reactant/Core
     - RxCocoa (~> 3.0)
     - RxDataSources (~> 1.0)
@@ -65,15 +65,15 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Reactant:
-    :commit: 8066dd50a2fff4ddcaced0359d46a14b3cc1459d
+    :commit: 7901278c9d73580f26d87d23529568893e9a1efa
     :git: https://github.com/Brightify/Reactant.git
 
 SPEC CHECKSUMS:
   Kingfisher: 2c94e72c6830622c71d06adf4ea024c37d316830
   KZFileWatchers: a2c799ad7f14ce41e06fbd282f4b1cd12486121e
-  Reactant: ee338338e7a8dd7502192d15e8c713fe460b43de
+  Reactant: ed2c0fe5391df1c19c3f62542785d8fd6edfa7ec
   ReactantLiveUI: 1085c0bc2e63c844e3f82f1b27341628d596efeb
-  ReactantUI: 9e8c2257db2169f38324f3e359bc61367fe96270
+  ReactantUI: 5da42a33978943e5821c9eabc54a45ddafa8c40b
   Result: 2453a22e5c5b11c0c3a478736e82cd02f763b781
   RxCocoa: d14ef6b6029e1ddc6e966508c09289090de68ff9
   RxDataSources: a021a0e944ba5f7991259829d973afdbfa719c0b
