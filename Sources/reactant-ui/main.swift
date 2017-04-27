@@ -33,7 +33,7 @@ for (index, path) in uiFiles.enumerated() {
     let data = try! file.read()
 
     let xml = SWXMLHash.parse(data)
-    let definition: ComponentDefinition = try! xml["UI"].value()
+    let definition: ComponentDefinition = try! xml["Component"].value()
     for (index2, def) in definition.componentDefinitions.enumerated() {
         UIGenerator(definition: def, localXmlPath: path.absolute.rawValue).generate(imports: (index + index2) == 0)
     }

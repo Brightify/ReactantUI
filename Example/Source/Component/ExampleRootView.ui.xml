@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<UI xmlns="http://schema.reactant.tech/ui"
+<Component
+    xmlns="http://schema.reactant.tech/ui"
     xmlns:layout="http://schema.reactant.tech/layout"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://schema.reactant.tech/ui http://schema.reactant.tech/ui.xsd
@@ -168,4 +169,4 @@
             </StackView>
         </Container>
     </ScrollView> -->
-</UI>
+</Component>

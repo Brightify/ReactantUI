@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<UI type="ExampleView2">
+<Component type="ExampleView2">
 <!--    <styles>-->
 <!--        <style type="UILabel">-->
 <!--            <textColor>#AABBCC</textColor>-->
@@ -29,4 +29,4 @@
             layout:below="id:prdel offset(20)"
             layout:bottom="super inset(10)"/>
     </Container>
-</UI>
+</Component>

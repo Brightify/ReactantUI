@@ -134,7 +134,7 @@ public class ReactantLiveUIManager {
             throw TokenizationError(message: "ERROR: file not found")
         }
         let xml = SWXMLHash.parse(data)
-        let rootDefinition = try xml["UI"].value() as ComponentDefinition
+        let rootDefinition = try xml["Component"].value() as ComponentDefinition
 
         if rootDefinition.isRootView {
             extendedEdges[file] = rootDefinition.edgesForExtendedLayout.resolveUnion()
@@ -300,7 +300,7 @@ public class ReactantLiveUIManager {
         let xml = SWXMLHash.parse(data)
         var windows = [] as [UIWindow]
         do {
-            let definition: ComponentDefinition = try xml["UI"].value()
+            let definition: ComponentDefinition = try xml["Component"].value()
             if definition.isRootView {
                 extendedEdges[xmlPath] = definition.edgesForExtendedLayout.resolveUnion()
             } else {
