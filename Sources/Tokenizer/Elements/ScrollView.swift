@@ -22,7 +22,7 @@ public class ScrollView: Container {
             assignable(name: "showsHorizontalScrollIndicator", type: .bool),
             assignable(name: "showsVerticalScrollIndicator", type: .bool),
             assignable(name: "zoomScale", type: .float),
-            assignable(name: "maximumimZoomScale", type: .float),
+            assignable(name: "maximumZoomScale", type: .float),
             assignable(name: "minimumZoomScale", type: .float),
             assignable(name: "bouncesZoom", type: .bool),
             assignable(name: "indicatorStyle", type: .scrollViewIndicatorStyle)

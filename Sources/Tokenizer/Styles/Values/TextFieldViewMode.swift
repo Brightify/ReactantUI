@@ -16,6 +16,7 @@ public enum TextFieldViewMode: String {
 }
 
 #if ReactantRuntime
+    import UIKit
 
     extension TextFieldViewMode: Applicable {
 
