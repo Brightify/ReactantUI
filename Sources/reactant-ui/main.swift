@@ -2,6 +2,7 @@ import SWXMLHash
 import FileKit
 import Generator
 import Tokenizer
+import Foundation
 
 let uiFiles = Path.current.find(searchDepth: -1) { path in
     path.fileName.hasSuffix(".ui.xml")
@@ -33,7 +34,14 @@ for (index, path) in uiFiles.enumerated() {
     let data = try! file.read()
 
     let xml = SWXMLHash.parse(data)
-    let definition: ComponentDefinition = try! xml["Component"].value()
+
+    let node = xml["Component"].element!
+    var definition: ComponentDefinition
+    if let type: String = xml["Component"].value(ofAttribute: "type") {
+        definition = try! ComponentDefinition(node: node, type: type)
+    } else {
+        definition = try! ComponentDefinition(node: node, type: componentType(from: path.fileName))
+    }
     for (index2, def) in definition.componentDefinitions.enumerated() {
         UIGenerator(definition: def, localXmlPath: path.absolute.rawValue).generate(imports: (index + index2) == 0)
     }

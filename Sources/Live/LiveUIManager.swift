@@ -138,10 +138,18 @@ public class ReactantLiveUIManager {
     private func definitions(in file: String) throws -> [ComponentDefinition] {
         let url = URL(fileURLWithPath: file)
         guard let data = try? Data(contentsOf: url, options: .uncached) else {
-            throw TokenizationError(message: "ERROR: file not found")
+            throw LiveUIError(message: "ERROR: file not found")
         }
         let xml = SWXMLHash.parse(data)
-        let rootDefinition = try xml["Component"].value() as ComponentDefinition
+
+        guard let node = xml["Component"].element else { throw LiveUIError(message: "ERROR: Noder is not Component") }
+        var rootDefinition: ComponentDefinition
+
+        if let type: String = xml["Component"].value(ofAttribute: "type") {
+            rootDefinition = try ComponentDefinition(node: node, type: type)
+        } else {
+            rootDefinition = try ComponentDefinition(node: node, type: componentType(from: file))
+        }
 
         if rootDefinition.isRootView {
             extendedEdges[file] = rootDefinition.edgesForExtendedLayout.resolveUnion()

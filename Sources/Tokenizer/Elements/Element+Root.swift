@@ -24,7 +24,7 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, StyleC
         return [self] + ComponentDefinition.componentDefinitions(in: children)
     }
 
-    init(node: XMLElement, type: String) throws {
+    public init(node: XMLElement, type: String) throws {
         self.type = type
         isRootView = node.value(ofAttribute: "rootView") ?? false
         styles = try node.singleOrNoElement(named: "styles")?.xmlChildren.flatMap { try $0.value() as Style } ?? []
