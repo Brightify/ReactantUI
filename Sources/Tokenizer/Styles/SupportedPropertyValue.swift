@@ -34,6 +34,10 @@ public enum SupportedPropertyValue {
     case blurEffect(BlurEffect)
     case vibrancyEffect(BlurEffect)
     case mapType(MapType)
+    case lineBreakMode(LineBreakMode)
+    case textBorderStyle(TextBorderStyle)
+    case textFieldViewMode(TextFieldViewMode)
+    case scrollViewIndicatorStyle(ScrollViewIndicatorStyle)
 
     public var generated: String {
         switch self {
@@ -104,6 +108,14 @@ public enum SupportedPropertyValue {
             return "UIVibrancyEffect(blurEffect: .\(effect.rawValue))"
         case .mapType(let type):
             return "MKMapType.\(type.rawValue)"
+        case .lineBreakMode(let mode):
+            return "NSLineBreakMode.\(mode.rawValue)"
+        case .textBorderStyle(let style):
+            return "UITextBorderStyle.\(style.rawValue)"
+        case .textFieldViewMode(let mode):
+            return "UITextFieldViewMode/\(mode.rawValue)"
+        case .scrollViewIndicatorStyle(let style):
+            return "UIScrollViewIndicatorStyle.\(style.rawValue)"
         }
     }
 
@@ -174,6 +186,14 @@ public enum SupportedPropertyValue {
             return UIVibrancyEffect(blurEffect: blurEffect)
         case .mapType(let type):
             return type.value
+        case .lineBreakMode(let mode):
+            return mode.value
+        case .textBorderStyle(let style):
+            return style.value
+        case .textFieldViewMode(let mode):
+            return mode.value
+        case .scrollViewIndicatorStyle(let style):
+            return style.value
         }
     }
     #endif

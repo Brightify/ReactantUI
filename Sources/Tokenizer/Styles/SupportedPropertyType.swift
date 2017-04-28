@@ -25,6 +25,10 @@ public enum SupportedPropertyType {
     case searchBarStyle
     case visualEffect
     case mapType
+    case lineBreakMode
+    case textBorderStyle
+    case textFieldViewMode
+    case scrollViewIndicatorStyle
 
     public func value(of text: String) -> SupportedPropertyValue? {
         switch self {
@@ -98,6 +102,14 @@ public enum SupportedPropertyType {
             return parts.first == "blur" ? .blurEffect(effect) : .vibrancyEffect(effect)
         case .mapType:
             return MapType(rawValue: text).map(SupportedPropertyValue.mapType)
+        case .lineBreakMode:
+            return LineBreakMode(rawValue: text).map(SupportedPropertyValue.lineBreakMode)
+        case .textBorderStyle:
+            return TextBorderStyle(rawValue: text).map(SupportedPropertyValue.textBorderStyle)
+        case .textFieldViewMode:
+            return TextFieldViewMode(rawValue: text).map(SupportedPropertyValue.textFieldViewMode)
+        case .scrollViewIndicatorStyle:
+            return ScrollViewIndicatorStyle(rawValue: text).map(SupportedPropertyValue.scrollViewIndicatorStyle)
         }
     }
 }

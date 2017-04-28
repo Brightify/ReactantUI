@@ -12,6 +12,7 @@ public class TextView: View {
             assignable(name: "textColor", type: .color(.uiColor)),
             assignable(name: "textAlignment", type: .textAlignment),
             assignable(name: "textContainerInset", type: .edgeInsets),
+            assignable(name: "allowsEditingTextAttributes", type: .bool),
             ] + super.availableProperties
     }
 
