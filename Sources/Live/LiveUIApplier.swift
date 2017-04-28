@@ -1,7 +1,6 @@
 import UIKit
 import SnapKit
 import Reactant
-import KZFileWatchers
 import SWXMLHash
 
 private func findView(named name: String, in array: [(String, UIView)]) -> UIView? {

@@ -1,7 +1,6 @@
 import UIKit
 import SnapKit
 import Reactant
-import KZFileWatchers
 import SWXMLHash
 import RxSwift
 import RxCocoa
@@ -29,6 +28,7 @@ public class ReactantLiveUIManager {
 
     private var configuration: ReactantLiveUIConfiguration?
     private var watchers: [String: (watcher: Watcher, viewCount: Int)] = [:]
+    private var styleWatchers: [String: Watcher] = [:]
     private var extendedEdges: [String: UIRectEdge] = [:]
     private var runtimeDefinitions: [String: String] = [:]
     private var definitions: [String: (definition: ComponentDefinition, loaded: Date, xmlPath: String)] = [:] {
@@ -231,16 +231,27 @@ public class ReactantLiveUIManager {
     }
 
     private func loadStyles(_ stylePaths: [String]) {
-        guard self.styles.isEmpty else {
-            return
-        }
         for path in stylePaths {
-            let watcher = FileWatcher.Local(path: path)
-            try! watcher.start { result in
-                switch result {
-                case .noChanges:
-                    break
-                case .updated(let data):
+            if styleWatchers.keys.contains(path) == false {
+
+            let watcher: Watcher
+            do {
+                watcher = try Watcher(path: path)
+            } catch let error {
+                logError(error, in: path)
+                return
+            }
+
+            watcher
+                .watch()
+                .startWith(path)
+                .subscribe(onNext: { path in
+                    self.resetError(for: path)
+                    let url = URL(fileURLWithPath: path)
+                    guard let data = try? Data(contentsOf: url, options: .uncached) else {
+                        self.logError("ERROR: file not found", in: path)
+                        return
+                    }
                     let xml = SWXMLHash.parse(data)
                     do {
                         var oldStyles = self.styles
@@ -250,7 +261,9 @@ public class ReactantLiveUIManager {
                     } catch let error {
                         self.logError(error, in: path)
                     }
-                }
+                }).addDisposableTo(disposeBag)
+
+                styleWatchers[path] = watcher
             }
         }
     }

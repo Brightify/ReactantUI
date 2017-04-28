@@ -51,7 +51,7 @@
 
         <MapView
             layout:id="map"
-            mapType="hybrid"
+            style=":common:map"
             layout:fillHorizontally="super inset(20)"
             layout:below="id:picker"
             layout:height="200"/>

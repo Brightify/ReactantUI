@@ -20,6 +20,5 @@ target 'Example' do
     pod 'Reactant/TableView', :git => 'https://github.com/Brightify/Reactant.git', :branch => 'master'
     pod 'ReactantUI', :path => './'
     pod 'ReactantLiveUI', :path => './', :configuration => 'Debug'
-    pod 'KZFileWatchers', :configuration => 'Debug'
     pod 'SWXMLHash', :configuration => 'Debug'
 end

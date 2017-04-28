@@ -26,7 +26,6 @@ Pod::Spec.new do |spec|
     spec.dependency 'SWXMLHash'
     spec.dependency 'Reactant'
     spec.dependency 'Reactant/TableView'
-    spec.dependency 'KZFileWatchers'
     spec.dependency 'RxCocoa'
     spec.source_files = [
         'Sources/Live/**/*.swift',
