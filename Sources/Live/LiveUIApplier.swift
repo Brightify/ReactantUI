@@ -33,7 +33,10 @@ public class ReactantLiveUIApplier {
         if let field = element.field {
             name = "\(field)"
             if instance.responds(to: Selector("\(field)")) {
-                view = instance.value(forKey: field) as! UIView
+                guard let targetView = instance.value(forKey: field) as? UIView else {
+                    throw LiveUIError(message: "Undefined field \(field)")
+                }
+                view = targetView
             } else if let mirrorView = Mirror(reflecting: instance).children.first(where: { $0.label == name })?.value as? UIView {
                 view = mirrorView
             } else {

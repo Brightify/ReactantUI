@@ -1,8 +1,21 @@
 import Reactant
+import RxSwift
 
-final class LiveUIErrorMessage: ViewBase<[String: String], Void> {
+enum LiveUIErrorMessageItemAction {
+    case dismiss
+}
+
+final class LiveUIErrorMessage: ViewBase<[String: String], LiveUIErrorMessageItemAction> {
+
+    override var actions: [Observable<LiveUIErrorMessageItemAction>] {
+        return [
+            button.rx.tap.rewrite(with: .dismiss)
+        ]
+    }
+
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
+    private let button = UIButton()
 
     override func update() {
         let state = componentState
@@ -29,7 +42,8 @@ final class LiveUIErrorMessage: ViewBase<[String: String], Void> {
         children(
             scrollView.children(
                 stackView
-            )
+            ),
+            button
         )
 
         Styles.base(view: self)
@@ -38,16 +52,31 @@ final class LiveUIErrorMessage: ViewBase<[String: String], Void> {
         stackView.distribution = .equalSpacing
         stackView.alignment = .fill
         stackView.spacing = 10
+
+        button.setTitle("Dismiss (ESC)", for: .normal)
+        button.setTitleColor(.white, for: .normal)
     }
 
     override func setupConstraints() {
         scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.top.equalToSuperview()
         }
 
         stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview().inset(UIEdgeInsets(top: 40, left: 20, bottom: 20, right: 20))
             make.width.equalToSuperview().inset(20)
+        }
+
+        button.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+
+            make.top.equalTo(scrollView.snp.bottom)
+            make.bottom.equalToSuperview()
+
+            make.height.equalTo(50)
         }
     }
 }

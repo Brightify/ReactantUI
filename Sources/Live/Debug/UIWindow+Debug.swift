@@ -15,12 +15,17 @@ extension UIWindow {
 
     override open var keyCommands: [UIKeyCommand]? {
         return [
-            UIKeyCommand(input: "d", modifierFlags: .command, action: #selector(openLiveUIDebugMenu), discoverabilityTitle: "Open Debug Menu")
+            UIKeyCommand(input: "d", modifierFlags: .command, action: #selector(openLiveUIDebugMenu), discoverabilityTitle: "Open Debug Menu"),
+            UIKeyCommand(input: UIKeyInputEscape, modifierFlags: [], action: #selector(dissmissErrorView), discoverabilityTitle: "Dismiss error"),
         ]
     }
 
     func openLiveUIDebugMenu() {
         let controller = DebugAlertController.create(manager: ReactantLiveUIManager.shared, window: self)
         self.rootViewController?.present(controller: controller)
-    }    
+    }
+
+    func dissmissErrorView() {
+        ReactantLiveUIManager.shared.resetErrors()
+    }
 }

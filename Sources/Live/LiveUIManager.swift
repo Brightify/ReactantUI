@@ -55,7 +55,14 @@ public class ReactantLiveUIManager {
 
     private weak var activeWindow: UIWindow?
 
-    private init() { }
+    private init() {
+        errorView.action
+            .filter { $0 == .dismiss }
+            .subscribe(onNext: { [weak self] _ in
+                self?.resetErrors()
+            })
+            .addDisposableTo(disposeBag)
+    }
 
     public var commonStyles: [Style] {
         return styles.values.flatMap { $0.styles }
