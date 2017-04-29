@@ -301,6 +301,13 @@ public class ReactantLiveUIManager {
             logError(deserializationError.description, in: path)
         case let watcherError as Watcher.Error:
             logError(watcherError.message, in: path)
+        case let constraintParserError as ConstraintParser.ParseError:
+            switch constraintParserError {
+            case .message(let message):
+                logError(message, in: path)
+            case .unexpectedToken(let unexpectedToken):
+                logError("Unexpected token `\(unexpectedToken)` encountered while parsing constraints", in: path)
+            }
         default:
             logError(error.localizedDescription, in: path)
         }

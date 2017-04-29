@@ -24,11 +24,6 @@ public enum ConstraintPriority {
     }
 
     init(_ value: String) throws {
-        if let floatValue = Float(value) {
-            self = .custom(floatValue)
-            return
-        }
-
         switch value {
         case "required":
             self = .required

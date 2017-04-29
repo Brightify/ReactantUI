@@ -199,30 +199,38 @@ public class UIGenerator: Generator {
 
                 var constraintLine = "make.\(constraint.anchor).\(constraint.relation)("
 
-                if let targetConstant = Float(constraint.target), constraint.anchor == .width || constraint.anchor == .height || constraint.anchor == .size {
-                    constraintLine += "\(targetConstant)"
-                } else {
+                switch constraint.type {
+                case .targeted(let targetDefinition):
                     let target: String
-                    if constraint.target == "super" {
+                    switch targetDefinition.target {
+                    case .field(let targetName):
+                        target = "target.\(targetName)"
+                    case .layoutId(let layoutId):
+                        target = "named_\(layoutId)"
+                    case .parent:
                         target = superName
-                    } else if let colonIndex = constraint.target.characters.index(of: ":"), constraint.target.substring(to: colonIndex) == "id" {
-                        target = "named_\(constraint.target.substring(from: constraint.target.characters.index(after: colonIndex)))"
-                    } else {
-                        target = "target.\(constraint.target)"
+                    case .this:
+                        target = name
                     }
                     constraintLine += target
-                    if constraint.targetAnchor != constraint.anchor {
-                        constraintLine += ".snp.\(constraint.targetAnchor)"
+                    if targetDefinition.targetAnchor != constraint.anchor {
+                        constraintLine += ".snp.\(targetDefinition.targetAnchor)"
                     }
+
+                case .constant(let constant):
+                    constraintLine += "\(constant)"
                 }
                 constraintLine += ")"
 
-                if constraint.constant != 0 {
-                    constraintLine += ".offset(\(constraint.constant))"
+                if case .targeted(let targetDefinition) = constraint.type {
+                    if targetDefinition.constant != 0 {
+                        constraintLine += ".offset(\(targetDefinition.constant))"
+                    }
+                    if targetDefinition.multiplier != 1 {
+                        constraintLine += ".multipliedBy(\(targetDefinition.multiplier))"
+                    }
                 }
-                if constraint.multiplier != 1 {
-                    constraintLine += ".multipliedBy(\(constraint.multiplier))"
-                }
+
                 if constraint.priority.numeric != 1000 {
                     constraintLine += ".priority(\(constraint.priority.numeric))"
                 }

@@ -149,21 +149,31 @@ public class ReactantLiveUIApplier {
 
                 let target: ConstraintRelatableTarget
 
-                if let targetConstant = Float(constraint.target), constraint.anchor == .width || constraint.anchor == .height || constraint.anchor == .size {
-                    target = targetConstant
-                } else {
-                    let targetName: String
-                    if let colonIndex = constraint.target.characters.index(of: ":"), constraint.target.substring(to: colonIndex) == "id" {
-                        targetName = "named_\(constraint.target.substring(from: constraint.target.characters.index(after: colonIndex)))"
-                    } else {
-                        targetName = constraint.target
+                switch constraint.type {
+                case .targeted(let targetDefinition):
+                    let targetView: UIView
+                    switch targetDefinition.target {
+                    case .field(let targetName):
+                        guard let fieldView = findView(named: targetName, in: views) else {
+                            error = LiveUIError(message: "Couldn't find view with field name `\(targetName)` in view hierarchy")
+                            return
+                        }
+                        targetView = fieldView
+                    case .layoutId(let layoutId):
+                        let targetName = "named_\(layoutId)"
+                        guard let fieldView = findView(named: targetName, in: views) else {
+                            error = LiveUIError(message: "Couldn't find view with layout id `\(targetName)` in view hierarchy")
+                            return
+                        }
+                        targetView = fieldView
+                    case .parent:
+                        targetView = superview
+                    case .this:
+                        targetView = view
                     }
-                    guard let targetView = targetName != "super" ? findView(named: targetName, in: views) : superview else {
-                        error = LiveUIError(message: "Couldn't find view with name \(targetName) in view hierarchy")
-                        return
-                    }
-                    if constraint.targetAnchor != constraint.anchor {
-                        switch constraint.targetAnchor {
+
+                    if targetDefinition.targetAnchor != constraint.anchor {
+                        switch targetDefinition.targetAnchor {
                         case .top:
                             target = targetView.snp.top
                         case .bottom:
@@ -194,6 +204,9 @@ public class ReactantLiveUIApplier {
                     } else {
                         target = targetView
                     }
+
+                case .constant(let constant):
+                    target = constant
                 }
 
                 var editable: ConstraintMakerEditable
@@ -206,12 +219,15 @@ public class ReactantLiveUIApplier {
                     editable = maker.lessThanOrEqualTo(target)
                 }
 
-                if constraint.constant != 0 {
-                    editable = editable.offset(constraint.constant)
+                if case .targeted(let targetDefinition) = constraint.type {
+                    if targetDefinition.constant != 0 {
+                        editable = editable.offset(targetDefinition.constant)
+                    }
+                    if targetDefinition.multiplier != 1 {
+                        editable = editable.multipliedBy(targetDefinition.multiplier)
+                    }
                 }
-                if constraint.multiplier != 1 {
-                    editable = editable.multipliedBy(constraint.multiplier)
-                }
+
                 if constraint.priority.numeric != 1000 {
                     editable.priority(constraint.priority.numeric)
                 }
