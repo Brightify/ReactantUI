@@ -53,6 +53,7 @@ public class UIGenerator: Generator {
         if root.isAnonymous {
             l("final class \(root.type): ViewBase<Void, Void>") { }
         }
+        let constraintFields = root.children.flatMap(self.constraintFields)
         l("extension \(root.type): ReactantUI" + (root.isRootView ? ", RootView" : "")) {
             if root.isRootView {
                 l("var edgesForExtendedLayout: UIRectEdge") {
@@ -97,7 +98,18 @@ public class UIGenerator: Generator {
                     l("guard let target = self.target else { /* FIXME Should we fatalError here? */ return }")
                     l("#if (arch(i386) || arch(x86_64)) && os(iOS)")
                     // This will register `self` to remove `deinit` from ViewBase
-                    l("ReactantLiveUIManager.shared.register(target)")
+                    l("ReactantLiveUIManager.shared.register(target)") {
+                        l("[constraints] field, constraint -> Bool in")
+                        l("switch field") {
+                            for constraintField in constraintFields {
+                                l("case \"\(constraintField)\":")
+                                l("    constraints.\(constraintField) = constraint")
+                                l("    return true")
+                            }
+                            l("default:")
+                            l("    return false")
+                        }
+                    }
                     l("#else")
                     root.children.forEach { generate(element: $0, superName: "target") }
                     tempCounter = 1
@@ -114,7 +126,9 @@ public class UIGenerator: Generator {
             }
             l()
             l("final class LayoutContainer") {
-                root.children.forEach(generateLayoutField)
+                for constraintField in constraintFields {
+                    l("fileprivate(set) var \(constraintField): SnapKit.Constraint?")
+                }
             }
             generateStyles()
         }
@@ -248,15 +262,18 @@ public class UIGenerator: Generator {
         }
     }
 
-    private func generateLayoutField(element: UIElement) {
+    private func constraintFields(element: UIElement) -> [String] {
+        var fields = [] as [String]
         for constraint in element.layout.constraints {
             guard let field = constraint.field else { continue }
 
-            l("fileprivate(set) var \(field): SnapKit.Constraint?")
+            fields.append(field)
         }
 
         if let container = element as? UIContainer {
-            container.children.forEach(generateLayoutField)
+            return fields + container.children.flatMap(constraintFields)
+        } else {
+            return fields
         }
     }
 

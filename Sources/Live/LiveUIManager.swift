@@ -188,7 +188,7 @@ public class ReactantLiveUIManager {
 
     }
 
-    public func register<UI: UIView>(_ view: UI) where UI: ReactantUI {
+    public func register<UI: UIView>(_ view: UI, setConstraint: @escaping (String, SnapKit.Constraint) -> Bool = { _ in false }) where UI: ReactantUI {
         let xmlPath = view.__rui.xmlPath
         if !watchers.keys.contains(xmlPath) {
             let watcher: Watcher
@@ -224,7 +224,7 @@ public class ReactantLiveUIManager {
             .subscribe(onNext: { [weak view] definition in
                 guard let view = view else { return }
                 do {
-                    try self.apply(definition: definition, view: view)
+                    try self.apply(definition: definition, view: view, setConstraint: setConstraint)
                 } catch let error {
                     self.logError(error, in: xmlPath)
                 }
@@ -331,7 +331,7 @@ public class ReactantLiveUIManager {
         self.definitions = currentDefinitions
     }
 
-    private func apply(data: Data, views: [UIView], xmlPath: String) {
+    private func apply(data: Data, views: [UIView], xmlPath: String, setConstraint: @escaping (String, SnapKit.Constraint) -> Bool) {
         let xml = SWXMLHash.parse(data)
         var windows = [] as [UIWindow]
         do {
@@ -343,7 +343,7 @@ public class ReactantLiveUIManager {
             }
             register(definitions: definition.componentDefinitions, in: xmlPath)
             try views.forEach {
-                try apply(definition: definition, view: $0)
+                try apply(definition: definition, view: $0, setConstraint: setConstraint)
                 if let window = $0.window, !windows.contains(window) {
                     windows.append(window)
                 }
@@ -356,26 +356,10 @@ public class ReactantLiveUIManager {
         }
     }
 
-    private func apply(definition: ComponentDefinition, view: UIView) throws {
-        try ReactantLiveUIApplier(definition: definition, commonStyles: commonStyles, instance: view).apply()
+    private func apply(definition: ComponentDefinition, view: UIView, setConstraint: @escaping (String, SnapKit.Constraint) -> Bool) throws {
+        try ReactantLiveUIApplier(definition: definition, commonStyles: commonStyles, instance: view, setConstraint: setConstraint).apply()
         if let invalidable = view as? Invalidable {
             invalidable.invalidate()
         }
     }
-
-    private func readAndApply<UI: UIView>(view: UI) where UI: ReactantUI {
-        readAndApply(view: view, ui: view)
-    }
-
-    private func readAndApply(view: UIView, ui: ReactantUI) {
-        let xmlPath = ui.__rui.xmlPath
-        let url = URL(fileURLWithPath: xmlPath)
-        guard let data = try? Data(contentsOf: url, options: .uncached) else {
-            logError("ERROR: file not found", in: xmlPath)
-            return
-        }
-
-        apply(data: data, views: [view], xmlPath: xmlPath)
-    }
-
 }

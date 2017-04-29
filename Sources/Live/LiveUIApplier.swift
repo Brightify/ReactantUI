@@ -11,13 +11,18 @@ public class ReactantLiveUIApplier {
     let definition: ComponentDefinition
     let instance: UIView
     let commonStyles: [Style]
+    let setConstraint: (String, SnapKit.Constraint) -> Bool
 
     private var tempCounter: Int = 1
 
-    public init(definition: ComponentDefinition, commonStyles: [Style], instance: UIView) {
+    public init(definition: ComponentDefinition,
+                commonStyles: [Style],
+                instance: UIView,
+                setConstraint: @escaping (String, SnapKit.Constraint) -> Bool) {
         self.definition = definition
         self.commonStyles = commonStyles
         self.instance = instance
+        self.setConstraint = setConstraint
     }
 
     public func apply() throws {
@@ -228,8 +233,18 @@ public class ReactantLiveUIApplier {
                     }
                 }
 
+                let finalizable: ConstraintMakerFinalizable
                 if constraint.priority.numeric != 1000 {
-                    editable.priority(constraint.priority.numeric)
+                    finalizable = editable.priority(constraint.priority.numeric)
+                } else {
+                    finalizable = editable
+                }
+
+                if let field = constraint.field {
+                    guard setConstraint(field, finalizable.constraint) else {
+                        error = LiveUIError(message: "Constraint cannot be set to field `\(field)`!")
+                        return
+                    }
                 }
             }
         }

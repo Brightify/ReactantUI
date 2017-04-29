@@ -7,16 +7,24 @@
 //
 
 import Reactant
+import ReactantLiveUI
 import RxSwift
 import UIKit
-
-
 
 final class ExampleRootView: ViewBase<(test: String, Int, test2: (a: Int, b: String)), Void> {
     let email = UITextField()
     let send = UIButton()
 
     override func update() {
+
+        // Test that constraints work
+        if let testConstraint = rui.constraints.testConstraint {
+            testConstraint.update(offset: 100)
+        } else {
+            ReactantLiveUIManager.shared.logError("Either `testConstraint` is missing in the XML or LiveApplier doesn't set it properly!", in: rui.xmlPath)
+        }
+
+
         /*
         let state: Any = componentState
 
