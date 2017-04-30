@@ -8,7 +8,7 @@ import Reactant
 public enum SupportedPropertyValue {
     case color(Color, Color.RuntimeType)
     case namedColor(String, Color.RuntimeType)
-    case string(String)
+    case string(TransformedText)
     case font(Font)
     case integer(Int)
     case textAlignment(TextAlignment)
@@ -47,14 +47,22 @@ public enum SupportedPropertyValue {
         case .namedColor(let colorName, let type):
             let result = "UIColor.\(colorName)"
             return type == .uiColor ? result : result + ".cgColor"
-        case .string(let string):
-            if string.hasPrefix("localizable(") {
-                let key = string.replacingOccurrences(of: "localizable(", with: "")
-                    .replacingOccurrences(of: ")", with: "").trimmingCharacters(in: CharacterSet.whitespaces)
-                return "NSLocalizedString(\"\(key)\", comment: \"\")"
-            } else {
-                return "\"\(string)\""
+        case .string(let text):
+            func resolveTransformations(text: TransformedText) -> String {
+                switch text {
+                case .transform(.uppercased, let inner):
+                    return resolveTransformations(text: inner) + ".uppercased()"
+                case .transform(.lowercased, let inner):
+                    return resolveTransformations(text: inner) + ".lowercased()"
+                case .transform(.localized, let inner):
+                    return "NSLocalizedString(\(resolveTransformations(text: inner)), comment: \"\")"
+                case .transform(.capitalized, let inner):
+                    return resolveTransformations(text: inner) + ".capitalized"
+                case .text(let value):
+                    return "\"\(value)\""
+                }
             }
+            return resolveTransformations(text: text)
         case .font(let font):
             switch font {
             case .system(let weight, let size):
@@ -127,14 +135,22 @@ public enum SupportedPropertyValue {
         case .namedColor(let colorName, let type):
             let result = UIColor.value(forKeyPath: "\(colorName)Color") as? UIColor
             return type == .uiColor ? result : result?.cgColor
-        case .string(let string):
-            if string.hasPrefix("localizable(") {
-                let key = string.replacingOccurrences(of: "localizable(", with: "")
-                    .replacingOccurrences(of: ")", with: "").trimmingCharacters(in: CharacterSet.whitespaces)
-                return NSLocalizedString(key, comment: "")
-            } else {
-                return string
+        case .string(let text):
+            func resolveTransformations(text: TransformedText) -> String {
+                switch text {
+                case .transform(.uppercased, let inner):
+                    return resolveTransformations(text: inner).uppercased()
+                case .transform(.lowercased, let inner):
+                    return resolveTransformations(text: inner).lowercased()
+                case .transform(.localized, let inner):
+                    return NSLocalizedString(resolveTransformations(text: inner), comment: "")
+                case .transform(.capitalized, let inner):
+                    return resolveTransformations(text: inner).capitalized
+                case .text(let value):
+                    return value
+                }
             }
+            return resolveTransformations(text: text)
         case .font(let font):
             return font.value
         case .integer(let value):

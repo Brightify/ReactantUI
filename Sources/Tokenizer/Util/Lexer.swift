@@ -21,11 +21,12 @@ struct Lexer {
         case period
         case at
         case other(String)
+        case whitespace(String)
     }
 
     typealias TokenGenerator = (String) -> Token?
     static let tokenList: [(String, TokenGenerator)] = [
-        ("[ \t\n]", { _ in nil }),
+        ("[ \t\n]", { .whitespace($0) }),
         ("[a-zA-Z][a-zA-Z0-9]*", { .identifier($0) }),
         ("[0-9]+(\\.[0-9]+)?", { Float($0).map(Token.number) }),
         ("\\(", { _ in .parensOpen }),
@@ -38,7 +39,7 @@ struct Lexer {
         ("=", { _ in .assignment }),
         ]
 
-    static func tokenize(input: String) -> [Token] {
+    static func tokenize(input: String, keepWhitespace: Bool = false) -> [Token] {
         var tokens = [] as [Token]
         var content = input
 
@@ -47,7 +48,11 @@ struct Lexer {
             for (pattern, generator) in tokenList {
                 if let match = content.match(regex: pattern) {
                     if let token = generator(match) {
-                        tokens.append(token)
+                        if case .whitespace = token, !keepWhitespace {
+                            // Ignoring
+                        } else {
+                            tokens.append(token)
+                        }
                     }
                     content = content.substring(from:
                         content.index(content.startIndex, offsetBy: match.characters.count))

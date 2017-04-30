@@ -11,7 +11,7 @@ public struct Constraint {
     public static func constraints(name: String, attribute: XMLAttribute) throws -> [Constraint] {
         let layoutAttributes = try LayoutAttribute.deserialize(name)
         let tokens = Lexer.tokenize(input: attribute.text)
-        return try ConstraintParser(tokens: tokens, layoutAttributes: layoutAttributes).parse()
+        return try layoutAttributes.flatMap { try ConstraintParser(tokens: tokens, layoutAttribute: $0).parse() }
     }
 }
 

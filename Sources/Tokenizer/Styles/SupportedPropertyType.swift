@@ -39,7 +39,8 @@ public enum SupportedPropertyType {
                 return Color(hex: text).map { SupportedPropertyValue.color($0, type) }
             }
         case .string:
-            return .string(text)
+            let tokens = Lexer.tokenize(input: text, keepWhitespace: true)
+            return (try? TextParser(tokens: tokens).parseSingle()).map(SupportedPropertyValue.string)
         case .font:
             return Font(parse: text).map(SupportedPropertyValue.font)
         case .integer:

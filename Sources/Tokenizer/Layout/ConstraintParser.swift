@@ -6,44 +6,88 @@
 //
 //
 
-class ConstraintParser {
+class BaseParser<ITEM> {
     enum ParseError: Error {
         case unexpectedToken(Lexer.Token)
         case message(String)
     }
 
-    private let tokens: [Lexer.Token]
-    private let layoutAttributes: [LayoutAttribute]
+    private var tokens: [Lexer.Token]
     private var position: Int = 0
 
-    init(tokens: [Lexer.Token], layoutAttributes: [LayoutAttribute]) {
+    init(tokens: [Lexer.Token]) {
         self.tokens = tokens
-        self.layoutAttributes = layoutAttributes
     }
 
-    func parse() throws -> [Constraint] {
-        return try layoutAttributes.flatMap(parse)
-    }
-
-    private func parse(for attribute: LayoutAttribute) throws -> [Constraint] {
+    func parse() throws -> [ITEM] {
         // Reset
-        defer { position = 0 }
+        let tokensBackup = tokens
+        defer {
+            tokens = tokensBackup
+            position = 0
+        }
 
-        var constraints: [Constraint] = []
+        var items = [] as [ITEM]
         while !hasEnded() {
             let currentPosition = position
 
-            let constraint = try parseConstraint(for: attribute)
-            constraints.append(constraint)
+            let item = try parseSingle()
+            items.append(item)
 
             if let token = peekToken(), currentPosition == position {
                 throw ParseError.unexpectedToken(token)
             }
         }
-        return constraints
+        return items
     }
 
-    private func parseConstraint(for attribute: LayoutAttribute) throws -> Constraint {
+    func hasEnded() -> Bool {
+        return peekToken() == nil
+    }
+
+    func parseSingle() throws -> ITEM {
+        fatalError("Abstract!")
+    }
+
+    func peekToken() -> Lexer.Token? {
+        guard position < tokens.count else { return nil }
+        return tokens[position]
+    }
+
+    func peekNextToken() -> Lexer.Token? {
+        guard position < tokens.count - 1 else { return nil }
+        return tokens[position + 1]
+    }
+
+    func peekNext<T>(_ f: (Lexer.Token) throws -> T?) rethrows -> T? {
+        guard let nextToken = peekNextToken() else { return nil }
+        position += 1
+        defer { position -= 1 }
+        return try f(nextToken)
+    }
+
+    func popTokens(_ count: Int) {
+        position += count
+    }
+
+    func popToken() {
+        position += 1
+    }
+
+    func popLastToken() -> Lexer.Token {
+        return tokens.removeLast()
+    }
+}
+
+class ConstraintParser: BaseParser<Constraint> {
+    private let layoutAttribute: LayoutAttribute
+
+    init(tokens: [Lexer.Token], layoutAttribute: LayoutAttribute) {
+        self.layoutAttribute = layoutAttribute
+        super.init(tokens: tokens)
+    }
+
+    override func parseSingle() throws -> Constraint {
         let field = parseField()
 
         let relation = try parseRelation() ?? .equal
@@ -67,23 +111,19 @@ class ConstraintParser {
                 case .offset(let by):
                     constant += by
                 case .inset(let by):
-                    constant += by * attribute.insetDirection
+                    constant += by * layoutAttribute.insetDirection
                 }
             }
 
             type = .targeted(target: target ?? (targetAnchor != nil ? .this : .parent),
-                             targetAnchor: targetAnchor ?? attribute.targetAnchor,
+                             targetAnchor: targetAnchor ?? layoutAttribute.targetAnchor,
                              multiplier: multiplier,
                              constant: constant)
         }
 
         let priority = try parsePriority() ?? .required
 
-        return Constraint(field: field, anchor: attribute.anchor, type: type, relation: relation, priority: priority)
-    }
-
-    private func hasEnded() -> Bool {
-        return peekToken() == nil
+        return Constraint(field: field, anchor: layoutAttribute.anchor, type: type, relation: relation, priority: priority)
     }
 
     private func constraintEnd() -> Bool {
@@ -142,7 +182,7 @@ class ConstraintParser {
         }
 
         guard case .number(let number)? = peekToken(), .parensClose == peekNextToken() else {
-            throw ParseError.message("Modifier `\(identifier)` couldn't be parsed!")
+            throw ConstraintParser.ParseError.message("Modifier `\(identifier)` couldn't be parsed!")
         }
         popTokens(2)
 
@@ -156,7 +196,7 @@ class ConstraintParser {
         case "inset":
             return .inset(by: number)
         default:
-            throw ParseError.message("Unknown modifier `\(identifier)`")
+            throw ConstraintParser.ParseError.message("Unknown modifier `\(identifier)`")
         }
     }
 
@@ -169,32 +209,76 @@ class ConstraintParser {
             popTokens(2)
             return try ConstraintPriority(identifier)
         } else {
-            throw ParseError.message("Missing priority value! `@` token followed by \(peekNextToken().map(String.init(describing:)) ?? "none")")
+            throw ConstraintParser.ParseError.message("Missing priority value! `@` token followed by \(peekNextToken().map(String.init(describing:)) ?? "none")")
         }
     }
+}
 
-    private func peekToken() -> Lexer.Token? {
-        guard position < tokens.count else { return nil }
-        return tokens[position]
-    }
+public enum TransformedText {
+    case text(String)
+    indirect case transform(Transform, TransformedText)
 
-    private func peekNextToken() -> Lexer.Token? {
-        guard position < tokens.count - 1 else { return nil }
-        return tokens[position + 1]
+    public enum Transform: String {
+        case uppercased
+        case lowercased
+        case localized
+        case capitalized
     }
+}
 
-    private func peek<T>(_ count: Int = 1, _ f: () throws -> T?) rethrows -> T? {
-        guard position + count < tokens.count else { return nil }
-        position += count
-        defer { position -= count }
-        return try f()
-    }
-    
-    private func popTokens(_ count: Int) {
-        position += count
-    }
-    
-    private func popToken() {
-        position += 1
+
+
+class TextParser: BaseParser<TransformedText> {
+    override func parseSingle() throws -> TransformedText {
+        if peekToken() == .colon {
+            let transformIdentifier: String? = peekNext {
+                guard case .identifier(let identifier) = $0, peekNextToken() == .parensOpen else { return nil }
+                return identifier
+            }
+            if let identifier = transformIdentifier {
+                popTokens(3)
+                let lastToken = popLastToken()
+                guard lastToken == .parensClose else {
+                    throw TextParser.ParseError.message("Unexpected token `\(lastToken)`, expected `)` to be the last token")
+                }
+                let inner = try parseSingle()
+                guard let transform = TransformedText.Transform(rawValue: identifier) else {
+                    throw TextParser.ParseError.message("Unknown text transform :\(identifier)")
+                }
+                return .transform(transform, inner)
+            }
+        }
+
+        var components = [] as [String]
+        while let token = peekToken() {
+            popToken()
+            switch token {
+            case .identifier(let identifier):
+                components.append(identifier)
+            case .number(let number):
+                components.append("\(number)")
+            case .parensOpen:
+                components.append("(")
+            case .parensClose:
+                components.append(")")
+            case .assignment:
+                components.append("=")
+            case .operatorToken(let op):
+                components.append(op)
+            case .colon:
+                components.append(":")
+            case .semicolon:
+                components.append(";")
+            case .period:
+                components.append(".")
+            case .at:
+                components.append("@")
+            case .other(let other):
+                components.append(other)
+            case .whitespace(let whitespace):
+                components.append(whitespace)
+            }
+        }
+        return .text(components.joined())
     }
 }
