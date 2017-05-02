@@ -16,6 +16,19 @@ public class StackView: Container {
         ] + super.availableProperties
     }
 
+    public override var addSubviewMethod: String {
+        return "addArrangedSubview"
+    }
+
+    #if ReactantRuntime
+    public override func add(subview: UIView, toInstanceOfSelf: UIView) {
+        guard let stackView = toInstanceOfSelf as? UIStackView else {
+            return super.add(subview: subview, toInstanceOfSelf: toInstanceOfSelf)
+        }
+        stackView.addArrangedSubview(subview)
+    }
+    #endif
+
     public class override var runtimeType: String {
         return "UIStackView"
     }

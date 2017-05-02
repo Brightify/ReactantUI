@@ -8,6 +8,16 @@ import Reactant
 public class Container: View, UIContainer {
     public let children: [UIElement]
 
+    public var addSubviewMethod: String {
+        return "addSubview"
+    }
+
+    #if ReactantRuntime
+    public func add(subview: UIView, toInstanceOfSelf: UIView) {
+        toInstanceOfSelf.addSubview(subview)
+    }
+    #endif
+
     public required init(node: SWXMLHash.XMLElement) throws {
         children = try View.deserialize(nodes: node.xmlChildren)
 

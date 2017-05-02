@@ -109,7 +109,7 @@ public class UIGenerator: Generator {
                         }
                         l("#else")
                     }
-                    root.children.forEach { generate(element: $0, superName: "target") }
+                    root.children.forEach { generate(element: $0, superName: "target", containedIn: root) }
                     tempCounter = 1
                     root.children.forEach { generateConstraints(element: $0, superName: "target") }
                     if isLiveEnabled {
@@ -136,7 +136,7 @@ public class UIGenerator: Generator {
         }
     }
 
-    private func generate(element: UIElement, superName: String) {
+    private func generate(element: UIElement, superName: String, containedIn: UIContainer) {
         let name: String
         if let field = element.field {
             name = "target.\(field)"
@@ -167,17 +167,10 @@ public class UIGenerator: Generator {
         for property in element.properties {
             l(property.application(property, name))
         }
-
-        // FIXME This is a workaround, it should be done elsethere (possibly UIContainer)
-        l("if let super_stackView = \(superName) as? UIStackView") {
-            l("super_stackView.addArrangedSubview(\(name))")
-        }
-        l("else") {
-            l("\(superName).addSubview(\(name))")
-        }
+        l("\(superName).\(containedIn.addSubviewMethod)(\(name))")
         l()
         if let container = element as? UIContainer {
-            container.children.forEach { generate(element: $0, superName: name) }
+            container.children.forEach { generate(element: $0, superName: name, containedIn: container) }
         }
     }
 

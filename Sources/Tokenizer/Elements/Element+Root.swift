@@ -28,6 +28,16 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, StyleC
         return [self] + ComponentDefinition.componentDefinitions(in: children)
     }
 
+    public var addSubviewMethod: String {
+        return "addSubview"
+    }
+
+    #if ReactantRuntime
+    public func add(subview: UIView, toInstanceOfSelf: UIView) {
+        toInstanceOfSelf.addSubview(subview)
+    }
+    #endif
+
     public init(node: XMLElement, type: String) throws {
         self.type = type
         isRootView = node.value(ofAttribute: "rootView") ?? false

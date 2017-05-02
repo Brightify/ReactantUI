@@ -26,12 +26,14 @@ public class ReactantLiveUIApplier {
 
     public func apply() throws {
         instance.subviews.forEach { $0.removeFromSuperview() }
-        let views = try definition.children.flatMap { try apply(element: $0, superview: instance) }
+        let views = try definition.children.flatMap {
+            try apply(element: $0, superview: instance, containedIn: definition)
+        }
         tempCounter = 1
         try definition.children.forEach { try applyConstraints(views: views, element: $0, superview: instance) }
     }
 
-    private func apply(element: UIElement, superview: UIView) throws -> [(String, UIView)] {
+    private func apply(element: UIElement, superview: UIView, containedIn: UIContainer) throws -> [(String, UIView)] {
         let name: String
         let view: UIView
         if let field = element.field {
@@ -61,15 +63,12 @@ public class ReactantLiveUIApplier {
             try property.apply(property, view)
         }
 
-        // FIXME This is a workaround, should not be doing it here (could move to the UIContainer)
-        if let stackView = superview as? UIStackView {
-            stackView.addArrangedSubview(view)
-        } else {
-            superview.addSubview(view)
-        }
+        containedIn.add(subview: view, toInstanceOfSelf: superview)
 
         if let container = element as? UIContainer {
-            let children = try container.children.flatMap { try apply(element: $0, superview: view) }
+            let children = try container.children.flatMap {
+                try apply(element: $0, superview: view, containedIn: container)
+            }
 
             return [(name, view)] + children
         } else {

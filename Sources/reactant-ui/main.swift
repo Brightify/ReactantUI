@@ -28,7 +28,6 @@ for (index, path) in styleFiles.enumerated() {
 }
 
 // FIXME create generator
-
 var componentTypes: [String] = []
 var componentDefinitions: [Path: ComponentDefinition] = [:]
 var imports: Set<String> = []

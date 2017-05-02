@@ -219,6 +219,7 @@ public class ReactantLiveUIManager {
             watchers[xmlPath]?.viewCount += 1
         }
         observeDefinition(for: view.__rui.typeName)
+            .observeOn(MainScheduler.asyncInstance)
             .takeUntil((view as UIView).rx.deallocated)
             .subscribe(onNext: { [weak view] definition in
                 guard let view = view else { return }

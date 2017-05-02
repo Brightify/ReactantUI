@@ -54,7 +54,6 @@
             layout:fillHorizontally="super inset(20)"
             layout:below="id:picker"
             layout:height="testConstraint = 200"/>
-
         <Switch
             layout:id="switch"
             layout:below="id:map"/>
@@ -64,11 +63,20 @@
             layout:fillHorizontally="super inset(20)"/>
         <Stepper
             layout:below="id:slider"
+            layout:id="stepper"
             value="10"
             minimumValue="0"
             maximumValue="100"
             stepValue="5"
             layout:fillHorizontally="super inset(20)"/>
+        <StackView
+            axis="vertical"
+            backgroundColor="black"
+            layout:below="id:stepper offset(0)"
+            layout:fillHorizontally="super inset(20)">
+            <Component type="ExampleView2" />
+            <Component type="ExampleView2" />
+        </StackView>
 
     <!-- <ScrollView layout:edges="super">
         <Container
