@@ -1,5 +1,5 @@
 import Foundation
-import SWXMLHash
+
 #if ReactantRuntime
 import UIKit
 #endif
@@ -29,8 +29,8 @@ public class ScrollView: Container {
             ] + super.availableProperties
     }
 
-    public override var initialization: String {
-        return "UIScrollView()"
+    public class override var runtimeType: String {
+        return "UIScrollView"
     }
 
     #if ReactantRuntime

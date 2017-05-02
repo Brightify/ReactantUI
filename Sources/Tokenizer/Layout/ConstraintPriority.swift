@@ -1,5 +1,5 @@
 import Foundation
-import SWXMLHash
+
 
 public enum ConstraintPriority {
     case required

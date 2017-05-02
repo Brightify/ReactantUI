@@ -1,5 +1,5 @@
 import Foundation
-import SWXMLHash
+
 #if ReactantRuntime
 import UIKit
 import Reactant
@@ -14,8 +14,12 @@ public class Container: View, UIContainer {
         try super.init(node: node)
     }
 
-    public override var initialization: String {
-        return "ContainerView()"
+    public override var requiredImports: Set<String> {
+        return Set(arrayLiteral: "UIKit").union(children.flatMap { $0.requiredImports })
+    }
+
+    public class override var runtimeType: String {
+        return "ContainerView"
     }
 
     #if ReactantRuntime

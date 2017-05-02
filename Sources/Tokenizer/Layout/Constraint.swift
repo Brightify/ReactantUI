@@ -1,5 +1,5 @@
 import Foundation
-import SWXMLHash
+
 
 public struct Constraint {
     public let field: String?

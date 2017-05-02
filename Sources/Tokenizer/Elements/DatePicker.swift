@@ -1,5 +1,5 @@
 import Foundation
-import SWXMLHash
+
 #if ReactantRuntime
     import UIKit
 #endif
@@ -8,12 +8,12 @@ public class DatePicker: View {
     override class var availableProperties: [PropertyDescription] {
         return [
             assignable(name: "minuteInterval", type: .integer),
-            assignable(name: "mode", key: "datePickerMode", type: .datePickerMode),
+            assignable(name: "mode", swiftName: "datePickerMode", key: "datePickerMode", type: .datePickerMode),
             ] + super.availableProperties
     }
 
-    public override var initialization: String {
-        return "UIDatePicker()"
+    public class override var runtimeType: String {
+        return "UIDatePicker"
     }
 
     #if ReactantRuntime

@@ -7,7 +7,7 @@
 //
 
 import Reactant
-import ReactantLiveUI
+//import ReactantLiveUI
 import RxSwift
 import UIKit
 
@@ -21,7 +21,7 @@ final class ExampleRootView: ViewBase<(test: String, Int, test2: (a: Int, b: Str
         if let testConstraint = rui.constraints.testConstraint {
             testConstraint.update(offset: 100)
         } else {
-            ReactantLiveUIManager.shared.logError("Either `testConstraint` is missing in the XML or LiveApplier doesn't set it properly!", in: rui.xmlPath)
+//            ReactantLiveUIManager.shared.logError("Either `testConstraint` is missing in the XML or LiveApplier doesn't set it properly!", in: rui.xmlPath)
         }
 
 

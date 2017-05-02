@@ -1,7 +1,6 @@
 import UIKit
 import SnapKit
 import Reactant
-import SWXMLHash
 
 private func findView(named name: String, in array: [(String, UIView)]) -> UIView? {
     return array.first(where: { $0.0 == name })?.1

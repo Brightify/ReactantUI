@@ -1,5 +1,5 @@
 import Foundation
-import SWXMLHash
+
 #if ReactantRuntime
     import UIKit
 #endif
@@ -16,8 +16,8 @@ public class TextView: View {
             ] + super.availableProperties
     }
 
-    public override var initialization: String {
-        return "UITextView()"
+    public class override var runtimeType: String {
+        return "UITextView"
     }
 
     #if ReactantRuntime

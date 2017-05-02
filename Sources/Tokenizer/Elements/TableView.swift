@@ -1,5 +1,5 @@
 import Foundation
-import SWXMLHash
+
 #if ReactantRuntime
     import UIKit
 #endif

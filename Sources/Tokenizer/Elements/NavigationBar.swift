@@ -1,5 +1,5 @@
 import Foundation
-import SWXMLHash
+
 #if ReactantRuntime
     import UIKit
 #endif
@@ -17,8 +17,8 @@ public class NavigationBar: View {
             ] + super.availableProperties
     }
 
-    public override var initialization: String {
-        return "UINavigationBar()"
+    public class override var runtimeType: String {
+        return "UINavigationBar"
     }
 
     #if ReactantRuntime

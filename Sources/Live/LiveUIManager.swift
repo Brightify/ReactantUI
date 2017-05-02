@@ -1,7 +1,6 @@
 import UIKit
 import SnapKit
 import Reactant
-import SWXMLHash
 import RxSwift
 import RxCocoa
 

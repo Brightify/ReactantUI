@@ -1,5 +1,5 @@
 import Foundation
-import SWXMLHash
+
 #if ReactantRuntime
     import UIKit
     import MapKit
@@ -24,8 +24,12 @@ public class MapView: View {
             ] + super.availableProperties
     }
 
-    public override var initialization: String {
-        return "MKMapView()"
+    public override var requiredImports: Set<String> {
+        return ["MapKit"]
+    }
+
+    public class override var runtimeType: String {
+        return "MKMapView"
     }
 
     #if ReactantRuntime

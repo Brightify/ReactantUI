@@ -1,5 +1,5 @@
 import Foundation
-import SWXMLHash
+
 #if ReactantRuntime
     import UIKit
 #endif
@@ -18,8 +18,8 @@ public class TabBar: View {
             ] + super.availableProperties
     }
 
-    public override var initialization: String {
-        return "UITabBar()"
+    public class override var runtimeType: String {
+        return "UITabBar"
     }
 
     #if ReactantRuntime

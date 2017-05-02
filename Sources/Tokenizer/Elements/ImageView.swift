@@ -1,5 +1,5 @@
 import Foundation
-import SWXMLHash
+
 #if ReactantRuntime
 import UIKit
 #endif
@@ -16,8 +16,8 @@ public class ImageView: View {
         ] + super.availableProperties
     }
 
-    public override var initialization: String {
-        return "UIImageView()"
+    public class override var runtimeType: String {
+        return "UIImageView"
     }
 
     #if ReactantRuntime

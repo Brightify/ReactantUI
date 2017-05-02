@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import SWXMLHash
+
 #if ReactantRuntime
 import UIKit
 import Reactant
@@ -32,6 +32,10 @@ public class PlainTableView: View, ComponentDefinitionContainer {
 
     public var componentDefinitions: [ComponentDefinition] {
         return cellDefinition?.componentDefinitions ?? []
+    }
+
+    public class override var runtimeType: String {
+        return "UITableView"
     }
 
     public override var initialization: String {

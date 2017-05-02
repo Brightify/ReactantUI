@@ -1,5 +1,5 @@
 import Foundation
-import SWXMLHash
+
 #if ReactantRuntime
     import UIKit
 #endif
@@ -11,8 +11,8 @@ public class VisualEffectView: View {
             ] + super.availableProperties
     }
 
-    public override var initialization: String {
-        return "UIVisualEffectView()"
+    public class override var runtimeType: String {
+        return "UIVisualEffectView"
     }
 
     #if ReactantRuntime

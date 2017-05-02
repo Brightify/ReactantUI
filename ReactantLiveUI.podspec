@@ -21,9 +21,8 @@ Pod::Spec.new do |spec|
 
     spec.ios.deployment_target = '9.0'
     spec.pod_target_xcconfig = {
-        'OTHER_SWIFT_FLAGS[config=Debug]' => '-D ReactantRuntime'
+        'OTHER_SWIFT_FLAGS' => '-D ReactantRuntime'
     }
-    spec.dependency 'SWXMLHash'
     spec.dependency 'Reactant'
     spec.dependency 'Reactant/TableView'
     spec.dependency 'RxCocoa'

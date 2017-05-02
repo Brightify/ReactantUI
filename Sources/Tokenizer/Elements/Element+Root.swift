@@ -1,5 +1,5 @@
 import Foundation
-import SWXMLHash
+
 
 public protocol ComponentDefinitionContainer {
     var componentTypes: [String] { get }
@@ -15,6 +15,10 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, StyleC
     public let children: [UIElement]
     public let edgesForExtendedLayout: [RectEdge]
     public let isAnonymous: Bool
+
+    public var requiredImports: Set<String> {
+        return Set(arrayLiteral: "Reactant").union(children.flatMap { $0.requiredImports })
+    }
 
     public var componentTypes: [String] {
         return [type] + ComponentDefinition.componentTypes(in: children)

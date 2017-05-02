@@ -1,5 +1,5 @@
 import Foundation
-import SWXMLHash
+
 #if ReactantRuntime
     import UIKit
 #endif
@@ -22,8 +22,8 @@ public class Slider: View {
             ] + super.availableProperties
     }
 
-    public override var initialization: String {
-        return "UISlider()"
+    public class override var runtimeType: String {
+        return "UISlider"
     }
 
     #if ReactantRuntime

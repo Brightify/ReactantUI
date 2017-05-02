@@ -1,5 +1,5 @@
 import Foundation
-import SWXMLHash
+
 #if ReactantRuntime
 import UIKit
 #endif
@@ -26,8 +26,8 @@ public class Button: Container {
 
     }
 
-    public override var initialization: String {
-        return "UIButton()"
+    public class override var runtimeType: String {
+        return "UIButton"
     }
 
     #if ReactantRuntime

@@ -1,8 +1,9 @@
-import SWXMLHash
 import FileKit
 import Generator
 import Tokenizer
 import Foundation
+
+let enableLive = CommandLine.arguments.contains("--enable-live")
 
 let uiFiles = Path.current.find(searchDepth: -1) { path in
     path.fileName.hasSuffix(".ui.xml")
@@ -22,14 +23,16 @@ for (index, path) in styleFiles.enumerated() {
     let xml = SWXMLHash.parse(data)
     let group: StyleGroup = try! xml["styleGroup"].value()
     stylePaths.append(path.absolute.rawValue)
-    StyleGenerator(group: group, localXmlPath: path.absolute.rawValue).generate(imports: index == 0)
+    StyleGenerator(group: group, localXmlPath: path.absolute.rawValue, isLiveEnabled: enableLive)
+        .generate(imports: index == 0)
 }
 
 // FIXME create generator
 
 var componentTypes: [String] = []
+var componentDefinitions: [Path: ComponentDefinition] = [:]
+var imports: Set<String> = []
 for (index, path) in uiFiles.enumerated() {
-    print("// Generated from \(path)")
     let file = DataFile(path: path)
     let data = try! file.read()
 
@@ -42,23 +45,56 @@ for (index, path) in uiFiles.enumerated() {
     } else {
         definition = try! ComponentDefinition(node: node, type: componentType(from: path.fileName))
     }
-    for (index2, def) in definition.componentDefinitions.enumerated() {
-        UIGenerator(definition: def, localXmlPath: path.absolute.rawValue).generate(imports: (index + index2) == 0)
-    }
     componentTypes.append(contentsOf: definition.componentTypes)
+    componentDefinitions[path] = definition
+    imports.formUnion(definition.requiredImports)
 }
-print("struct GeneratedReactantLiveUIConfiguration: ReactantLiveUIConfiguration {")
-print("    let rootDir = \"\(Path.current)\"")
 
-print("    let commonStylePaths: [String] = [")
-for path in stylePaths {
-print("        \"\(path)\",")
+print("import UIKit")
+print("import Reactant")
+print("import SnapKit")
+if enableLive {
+    print("#if (arch(i386) || arch(x86_64)) && os(iOS)")
+    print("import ReactantLiveUI")
+    print("#endif")
 }
-print("    ]")
+for imp in imports {
+    print("import \(imp)")
+}
 
-print("    let componentTypes: [String: UIView.Type] = [")
-for type in Set(componentTypes) {
-print("        \"\(type)\": \(type).self,")
+for (path, rootDefinition) in componentDefinitions {
+    print("// Generated from \(path)")
+    for definition in rootDefinition.componentDefinitions {
+        UIGenerator(definition: definition, localXmlPath: path.absolute.rawValue, isLiveEnabled: enableLive)
+            .generate(imports: false)
+    }
 }
-print("    ]")
+
+
+if enableLive {
+    print("#if (arch(i386) || arch(x86_64)) && os(iOS)")
+    print("struct GeneratedReactantLiveUIConfiguration: ReactantLiveUIConfiguration {")
+    print("    let rootDir = \"\(Path.current)\"")
+
+    print("    let commonStylePaths: [String] = [")
+    for path in stylePaths {
+        print("        \"\(path)\",")
+    }
+    print("    ]")
+
+    print("    let componentTypes: [String: UIView.Type] = [")
+    for type in Set(componentTypes) {
+        print("        \"\(type)\": \(type).self,")
+    }
+    print("    ]")
+    print("}")
+    print("#endif")
+}
+
+print("func activateLiveReload(in window: UIWindow) {")
+if enableLive {
+    print("#if (arch(i386) || arch(x86_64)) && os(iOS)")
+    print("ReactantLiveUIManager.shared.activate(in: window, configuration: GeneratedReactantLiveUIConfiguration())")
+    print("#endif")
+}
 print("}")

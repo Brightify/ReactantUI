@@ -3,11 +3,13 @@ import Tokenizer
 public class Generator {
 
     let localXmlPath: String
+    let isLiveEnabled: Bool
 
     var nestLevel: Int = 0
 
-    init(localXmlPath: String) {
+    init(localXmlPath: String, isLiveEnabled: Bool) {
         self.localXmlPath = localXmlPath
+        self.isLiveEnabled = isLiveEnabled
     }
 
     func generate(imports: Bool) {
@@ -34,22 +36,12 @@ public class UIGenerator: Generator {
 
     private var tempCounter: Int = 1
 
-    public init(definition: ComponentDefinition, localXmlPath: String) {
+    public init(definition: ComponentDefinition, localXmlPath: String, isLiveEnabled: Bool) {
         self.root = definition
-        super.init(localXmlPath: localXmlPath)
+        super.init(localXmlPath: localXmlPath, isLiveEnabled: isLiveEnabled)
     }
 
     public override func generate(imports: Bool) {
-        if imports {
-            l("import UIKit")
-            l("import Reactant")
-            l("import SnapKit")
-            l("import ReactantLiveUI")
-            // FIXME solve this
-            l("import WebKit")
-            l("import MapKit")
-        }
-        l()
         if root.isAnonymous {
             l("final class \(root.type): ViewBase<Void, Void>") { }
         }
@@ -57,11 +49,15 @@ public class UIGenerator: Generator {
         l("extension \(root.type): ReactantUI" + (root.isRootView ? ", RootView" : "")) {
             if root.isRootView {
                 l("var edgesForExtendedLayout: UIRectEdge") {
-                    l("#if (arch(i386) || arch(x86_64)) && os(iOS)")
-                    l("return ReactantLiveUIManager.shared.extendedEdges(of: self)")
-                    l("#else")
+                    if isLiveEnabled {
+                        l("#if (arch(i386) || arch(x86_64)) && os(iOS)")
+                        l("return ReactantLiveUIManager.shared.extendedEdges(of: self)")
+                        l("#else")
+                    }
                     l("return \(SupportedPropertyValue.rectEdge(root.edgesForExtendedLayout).generated)")
-                    l("#endif")
+                    if isLiveEnabled {
+                        l("#endif")
+                    }
                 }
             }
             l()
@@ -96,32 +92,38 @@ public class UIGenerator: Generator {
                 l()
                 l("func setupReactantUI()") {
                     l("guard let target = self.target else { /* FIXME Should we fatalError here? */ return }")
-                    l("#if (arch(i386) || arch(x86_64)) && os(iOS)")
-                    // This will register `self` to remove `deinit` from ViewBase
-                    l("ReactantLiveUIManager.shared.register(target)") {
-                        l("[constraints] field, constraint -> Bool in")
-                        l("switch field") {
-                            for constraintField in constraintFields {
-                                l("case \"\(constraintField)\":")
-                                l("    constraints.\(constraintField) = constraint")
-                                l("    return true")
+                    if isLiveEnabled {
+                        l("#if (arch(i386) || arch(x86_64)) && os(iOS)")
+                        // This will register `self` to remove `deinit` from ViewBase
+                        l("ReactantLiveUIManager.shared.register(target)") {
+                            l("[constraints] field, constraint -> Bool in")
+                            l("switch field") {
+                                for constraintField in constraintFields {
+                                    l("case \"\(constraintField)\":")
+                                    l("    constraints.\(constraintField) = constraint")
+                                    l("    return true")
+                                }
+                                l("default:")
+                                l("    return false")
                             }
-                            l("default:")
-                            l("    return false")
                         }
+                        l("#else")
                     }
-                    l("#else")
                     root.children.forEach { generate(element: $0, superName: "target") }
                     tempCounter = 1
                     root.children.forEach { generateConstraints(element: $0, superName: "target") }
-                    l("#endif")
+                    if isLiveEnabled {
+                        l("#endif")
+                    }
                 }
                 l()
                 l("static func destroyReactantUI(target: UIView)") {
-                    l("#if (arch(i386) || arch(x86_64)) && os(iOS)")
-                    l("guard let knownTarget = target as? \(root.type) else { /* FIXME Should we fatalError here? */ return }")
-                    l("ReactantLiveUIManager.shared.unregister(knownTarget)")
-                    l("#endif")
+                    if isLiveEnabled {
+                        l("#if (arch(i386) || arch(x86_64)) && os(iOS)")
+                        l("guard let knownTarget = target as? \(root.type) else { /* FIXME Should we fatalError here? */ return }")
+                        l("ReactantLiveUIManager.shared.unregister(knownTarget)")
+                        l("#endif")
+                    }
                 }
             }
             l()
@@ -156,9 +158,9 @@ public class UIGenerator: Generator {
                 let stylesName = components[0].capitalizingFirstLetter() + "Styles"
                 let style = components[1]
 
-                l("\(name).apply(\(stylesName).\(style))")
+                l("\(name).apply(style: \(stylesName).\(style))")
             } else {
-                l("\(name).apply(\(root.stylesName).\(style))")
+                l("\(name).apply(style: \(root.stylesName).\(style))")
             }
         }
 
@@ -191,19 +193,19 @@ public class UIGenerator: Generator {
         }
 
         if let horizontalCompressionPriority = element.layout.contentCompressionPriorityHorizontal {
-            l("\(name).setContentCompressionResistancePriority(\(horizontalCompressionPriority.numeric), forAxis: .horizontal)")
+            l("\(name).setContentCompressionResistancePriority(\(horizontalCompressionPriority.numeric), for: .horizontal)")
         }
 
         if let verticalCompressionPriority = element.layout.contentCompressionPriorityVertical {
-            l("\(name).setContentCompressionResistancePriority(\(verticalCompressionPriority.numeric), forAxis: .vertical)")
+            l("\(name).setContentCompressionResistancePriority(\(verticalCompressionPriority.numeric), for: .vertical)")
         }
 
         if let horizontalHuggingPriority = element.layout.contentHuggingPriorityHorizontal {
-            l("\(name).setContentHuggingResistancePriority(\(horizontalHuggingPriority.numeric), forAxis: .horizontal)")
+            l("\(name).setContentHuggingPriority(\(horizontalHuggingPriority.numeric), for: .horizontal)")
         }
 
         if let verticalHuggingPriority = element.layout.contentHuggingPriorityVertical {
-            l("\(name).setContentHuggingResistancePriority(\(verticalHuggingPriority.numeric), forAxis: .vertical)")
+            l("\(name).setContentHuggingPriority(\(verticalHuggingPriority.numeric), for: .vertical)")
         }
 
         l("\(name).snp.makeConstraints") {
@@ -280,7 +282,7 @@ public class UIGenerator: Generator {
     private func generateStyles() {
         l("struct \(root.stylesName)") {
             for style in root.styles {
-                l("static func \(style.name)(_ view: \(Element.elementToUIKitNameMapping[style.type] ?? "UIView"))") {
+                l("static func \(style.name)(_ view: \(Element.elementMapping[style.type]?.runtimeType ?? "UIView"))") {
                     for extendedStyle in style.extend {
                         l("\(root.stylesName).\(extendedStyle)(view)")
                     }

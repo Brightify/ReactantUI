@@ -1,4 +1,4 @@
-import SWXMLHash
+
 import Foundation
 
 public enum RectEdge: String {

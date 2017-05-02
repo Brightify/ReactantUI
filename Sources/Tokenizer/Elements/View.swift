@@ -1,10 +1,7 @@
 import Foundation
-import SWXMLHash
 #if ReactantRuntime
 import UIKit
 #endif
-
-public typealias XMLElement = SWXMLHash.XMLElement
 
 extension XMLElement {
     func value<T: XMLElementDeserializable>() throws -> T {
@@ -13,10 +10,6 @@ extension XMLElement {
 
     var indexer: XMLIndexer {
         return XMLIndexer(self)
-    }
-
-    var xmlChildren: [XMLElement] {
-        return children.map { $0 as? XMLElement }.flatMap { $0 }
     }
 
     func elements(named: String) -> [XMLElement] {
@@ -96,13 +89,21 @@ public class View: XMLElementDeserializable, UIElement {
         assignable(name: "anchorPoint", type: .point),
     ]
 
+    public class var runtimeType: String {
+        return "UIView"
+    }
+
+    public var requiredImports: Set<String> {
+        return ["UIKit"]
+    }
+
     public let field: String?
     public let styles: [String]
     public let layout: Layout
     public let properties: [Property]
 
     public var initialization: String {
-        return "UIView()"
+        return "\(type(of: self).runtimeType)()"
     }
 
     #if ReactantRuntime

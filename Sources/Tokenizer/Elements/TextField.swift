@@ -1,7 +1,8 @@
 import Foundation
-import SWXMLHash
+
 #if ReactantRuntime
 import UIKit
+import Reactant
 #endif
 
 public class TextField: View {
@@ -23,16 +24,19 @@ public class TextField: View {
             assignable(name: "clearButtonMode", type: .textFieldViewMode),
             assignable(name: "leftViewMode", type: .textFieldViewMode),
             assignable(name: "rightViewMode", type: .textFieldViewMode),
+            assignable(name: "contentEdgeInsets", type: .edgeInsets),
+            assignable(name: "placeholderColor", type: .color(.uiColor)),
+            assignable(name: "placeholderFont", type: .font),
             ] + super.availableProperties
     }
 
-    public override var initialization: String {
-        return "UITextField()"
+    public class override var runtimeType: String {
+        return "Reactant.TextField"
     }
 
     #if ReactantRuntime
     public override func initialize() -> UIView {
-        return UITextField()
+        return Reactant.TextField()
     }
     #endif
 }

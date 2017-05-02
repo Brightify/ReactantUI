@@ -1,5 +1,5 @@
 import Foundation
-import SWXMLHash
+
 #if ReactantRuntime
     import UIKit
 #endif
@@ -10,8 +10,8 @@ public class PickerView: View {
         return super.availableProperties
     }
 
-    public override var initialization: String {
-        return "UIPickerView()"
+    public class override var runtimeType: String {
+        return "UIPickerView"
     }
 
     #if ReactantRuntime

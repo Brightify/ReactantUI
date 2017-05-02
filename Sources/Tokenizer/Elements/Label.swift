@@ -1,5 +1,5 @@
 import Foundation
-import SWXMLHash
+
 #if ReactantRuntime
 import UIKit
 #endif
@@ -24,9 +24,9 @@ public class Label: View {
             assignable(name: "lineBreakMode", type: .lineBreakMode),
         ] + super.availableProperties
     }
-    
-    public override var initialization: String {
-        return "UILabel()"
+
+    public class override var runtimeType: String {
+        return "UILabel"
     }
 
     #if ReactantRuntime

@@ -1,5 +1,5 @@
 import Foundation
-import SWXMLHash
+
 #if ReactantRuntime
     import UIKit
     import WebKit
@@ -15,8 +15,12 @@ public class WebView: View {
             ] + super.availableProperties
     }
 
-    public override var initialization: String {
-        return "WKWebView()"
+    public override var requiredImports: Set<String> {
+        return ["WebKit"]
+    }
+
+    public class override var runtimeType: String {
+        return "WKWebView"
     }
 
     #if ReactantRuntime

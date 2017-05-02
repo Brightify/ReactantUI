@@ -1,5 +1,5 @@
 import Foundation
-import SWXMLHash
+
 #if ReactantRuntime
 import UIKit
 #endif
@@ -18,6 +18,10 @@ public class ComponentReference: View, ComponentDefinitionContainer {
 
     public var componentDefinitions: [ComponentDefinition] {
         return definition?.componentDefinitions ?? []
+    }
+
+    public class override var runtimeType: String {
+        return "UIView"
     }
 
     public override var initialization: String {

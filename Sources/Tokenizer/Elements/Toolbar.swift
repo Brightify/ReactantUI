@@ -1,5 +1,5 @@
 import Foundation
-import SWXMLHash
+
 #if ReactantRuntime
     import UIKit
 #endif
@@ -13,8 +13,8 @@ public class Toolbar: View {
             ] + super.availableProperties
     }
 
-    public override var initialization: String {
-        return "UIToolbar()"
+    public class override var runtimeType: String {
+        return "UIToolbar"
     }
 
     #if ReactantRuntime

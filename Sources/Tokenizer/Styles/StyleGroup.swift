@@ -1,4 +1,4 @@
-import SWXMLHash
+
 
 public struct StyleGroup: XMLElementDeserializable {
     public var swiftName: String {

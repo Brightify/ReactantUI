@@ -1,5 +1,5 @@
 import Foundation
-import SWXMLHash
+
 #if ReactantRuntime
     import UIKit
 #endif
@@ -16,8 +16,8 @@ public class PageControl: View {
             ] + super.availableProperties
     }
 
-    public override var initialization: String {
-        return "UIPageControl()"
+    public class override var runtimeType: String {
+        return "UIPageControl"
     }
 
     #if ReactantRuntime

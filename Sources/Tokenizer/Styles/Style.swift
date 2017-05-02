@@ -1,5 +1,5 @@
 import Foundation
-import SWXMLHash
+
 
 public struct Style: XMLElementDeserializable {
     public let type: String

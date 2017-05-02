@@ -1,5 +1,5 @@
 import Foundation
-import SWXMLHash
+
 #if ReactantRuntime
     import UIKit
 #endif
@@ -17,8 +17,8 @@ public class ActivityIndicatorElement: View {
         return (.high, .high)
     }
 
-    public override var initialization: String {
-        return "UIActivityIndicatorView()"
+    public class override var runtimeType: String {
+        return "UIActivityIndicatorView"
     }
 
     #if ReactantRuntime
