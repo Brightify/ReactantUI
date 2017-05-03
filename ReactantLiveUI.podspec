@@ -23,8 +23,8 @@ Pod::Spec.new do |spec|
     spec.pod_target_xcconfig = {
         'OTHER_SWIFT_FLAGS' => '-D ReactantRuntime'
     }
-    spec.dependency 'Reactant'
-    spec.dependency 'Reactant/TableView'
+    spec.dependency 'Reactant', '> 1.0'
+    spec.dependency 'Reactant/TableView', '> 1.0'
     spec.dependency 'RxCocoa'
     spec.source_files = [
         'Sources/Live/**/*.swift',

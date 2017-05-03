@@ -19,8 +19,8 @@ PODS:
     - RxCocoa (~> 3.0)
     - RxDataSources (~> 1.0)
   - ReactantLiveUI (0.1.0):
-    - Reactant
-    - Reactant/TableView
+    - Reactant (> 1.0)
+    - Reactant/TableView (> 1.0)
     - RxCocoa
   - ReactantUI (0.1.0)
   - Result (3.2.1)
@@ -65,7 +65,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Kingfisher: 2c94e72c6830622c71d06adf4ea024c37d316830
   Reactant: ed2c0fe5391df1c19c3f62542785d8fd6edfa7ec
-  ReactantLiveUI: bd854774101e2ddb5a98579f5b1e3a144adeeb7e
+  ReactantLiveUI: 8244c8ab33b79f9863acde9a3afdbd86655fc26a
   ReactantUI: 5da42a33978943e5821c9eabc54a45ddafa8c40b
   Result: 2453a22e5c5b11c0c3a478736e82cd02f763b781
   RxCocoa: a8a5f1d061d0043e28f56976829f31ce63e8eb09
