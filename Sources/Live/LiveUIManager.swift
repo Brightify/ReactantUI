@@ -301,7 +301,7 @@ public class ReactantLiveUIManager {
             logError(deserializationError.description, in: path)
         case let watcherError as Watcher.Error:
             logError(watcherError.message, in: path)
-        case let constraintParserError as ConstraintParser.ParseError:
+        case let constraintParserError as ParseError:
             switch constraintParserError {
             case .message(let message):
                 logError(message, in: path)

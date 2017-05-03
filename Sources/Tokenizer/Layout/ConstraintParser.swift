@@ -6,12 +6,12 @@
 //
 //
 
-class BaseParser<ITEM> {
-    enum ParseError: Error {
-        case unexpectedToken(Lexer.Token)
-        case message(String)
-    }
+enum ParseError: Error {
+    case unexpectedToken(Lexer.Token)
+    case message(String)
+}
 
+class BaseParser<ITEM> {
     private var tokens: [Lexer.Token]
     private var position: Int = 0
 
@@ -182,7 +182,7 @@ class ConstraintParser: BaseParser<Constraint> {
         }
 
         guard case .number(let number)? = peekToken(), .parensClose == peekNextToken() else {
-            throw ConstraintParser.ParseError.message("Modifier `\(identifier)` couldn't be parsed!")
+            throw ParseError.message("Modifier `\(identifier)` couldn't be parsed!")
         }
         popTokens(2)
 
@@ -196,7 +196,7 @@ class ConstraintParser: BaseParser<Constraint> {
         case "inset":
             return .inset(by: number)
         default:
-            throw ConstraintParser.ParseError.message("Unknown modifier `\(identifier)`")
+            throw ParseError.message("Unknown modifier `\(identifier)`")
         }
     }
 
@@ -209,7 +209,7 @@ class ConstraintParser: BaseParser<Constraint> {
             popTokens(2)
             return try ConstraintPriority(identifier)
         } else {
-            throw ConstraintParser.ParseError.message("Missing priority value! `@` token followed by \(peekNextToken().map(String.init(describing:)) ?? "none")")
+            throw ParseError.message("Missing priority value! `@` token followed by \(peekNextToken().map(String.init(describing:)) ?? "none")")
         }
     }
 }
@@ -239,11 +239,11 @@ class TextParser: BaseParser<TransformedText> {
                 popTokens(3)
                 let lastToken = popLastToken()
                 guard lastToken == .parensClose else {
-                    throw TextParser.ParseError.message("Unexpected token `\(lastToken)`, expected `)` to be the last token")
+                    throw ParseError.message("Unexpected token `\(lastToken)`, expected `)` to be the last token")
                 }
                 let inner = try parseSingle()
                 guard let transform = TransformedText.Transform(rawValue: identifier) else {
-                    throw TextParser.ParseError.message("Unknown text transform :\(identifier)")
+                    throw ParseError.message("Unknown text transform :\(identifier)")
                 }
                 return .transform(transform, inner)
             }
