@@ -72,7 +72,7 @@
         <StackView
             axis="vertical"
             backgroundColor="black"
-            layout:below="id:stepper offset(0)"
+            layout:below="id:stepper offset(-10)"
             layout:fillHorizontally="super inset(20)">
             <Component type="ExampleView2" />
             <Component type="ExampleView2" />

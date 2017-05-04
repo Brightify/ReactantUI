@@ -28,7 +28,7 @@ struct Lexer {
     static let tokenList: [(String, TokenGenerator)] = [
         ("[ \t\n]", { .whitespace($0) }),
         ("[a-zA-Z][a-zA-Z0-9]*", { .identifier($0) }),
-        ("[0-9]+(\\.[0-9]+)?", { Float($0).map(Token.number) }),
+        ("-?[0-9]+(\\.[0-9]+)?", { Float($0).map(Token.number) }),
         ("\\(", { _ in .parensOpen }),
         ("\\)", { _ in .parensClose }),
         (":", { _ in .colon }),
