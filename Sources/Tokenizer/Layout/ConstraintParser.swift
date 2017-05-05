@@ -145,10 +145,10 @@ class ConstraintParser: BaseParser<Constraint> {
     }
 
     private func parseRelation() throws -> ConstraintRelation? {
-        guard case .operatorToken(let op)? = peekToken() else { return nil }
-        popToken()
-
-        return try ConstraintRelation(op)
+        guard case .colon? = peekToken(), case .identifier(let identifier)? = peekNextToken() else { return nil }
+        popTokens(2)
+        
+        return try ConstraintRelation(identifier)
     }
 
     private func parseTarget() -> ConstraintTarget? {

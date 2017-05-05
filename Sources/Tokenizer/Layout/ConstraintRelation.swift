@@ -18,11 +18,11 @@ public enum ConstraintRelation: CustomStringConvertible {
 
     init(_ string: String) throws {
         switch string {
-        case "==":
+        case "equal", "eq":
             self = .equal
-        case "<=":
+        case "lessOrEqual", "lt":
             self = .lessThanOrEqual
-        case ">=":
+        case "greaterOrEqual", "gt":
             self = .greaterThanOrEqual
         default:
             throw TokenizationError(message: "Unknown relation \(string)")
