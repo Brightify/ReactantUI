@@ -42,7 +42,8 @@ public enum SupportedPropertyType {
             let tokens = Lexer.tokenize(input: text, keepWhitespace: true)
             return (try? TextParser(tokens: tokens).parseSingle()).map(SupportedPropertyValue.string)
         case .font:
-            return Font(parse: text).map(SupportedPropertyValue.font)
+            let tokens = Lexer.tokenize(input: text, keepWhitespace: true)
+            return (try? FontParser(tokens: tokens).parseSingle()).map(SupportedPropertyValue.font)
         case .integer:
             return Int(text).map(SupportedPropertyValue.integer)
         case .textAlignment:

@@ -27,6 +27,7 @@ public class TextField: View {
             assignable(name: "contentEdgeInsets", type: .edgeInsets),
             assignable(name: "placeholderColor", type: .color(.uiColor)),
             assignable(name: "placeholderFont", type: .font),
+            assignable(name: "secure", swiftName: "isSecureTextEntry", key: "secureTextEntry", type: .bool),
             ] + super.availableProperties
     }
 

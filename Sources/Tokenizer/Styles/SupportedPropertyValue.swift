@@ -67,6 +67,8 @@ public enum SupportedPropertyValue {
             switch font {
             case .system(let weight, let size):
                 return "UIFont.systemFont(ofSize: \(size), weight: \(weight.name))"
+            case .named(let name, let size):
+                return "UIFont(\"\(name)\", \(size))"
             }
         case .integer(let value):
             return "\(value)"

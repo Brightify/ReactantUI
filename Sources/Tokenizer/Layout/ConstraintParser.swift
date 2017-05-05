@@ -66,15 +66,31 @@ class BaseParser<ITEM> {
         return try f(nextToken)
     }
 
-    func popTokens(_ count: Int) {
+    @discardableResult
+    func popTokens(_ count: Int) throws -> [Lexer.Token] {
+        guard position < tokens.count - count + 1 else {
+            throw ParseError.message("Cannot advance token. Current: \(String(describing: peekToken())).")
+        }
+        let poppedTokens = tokens[position..<position+count]
         position += count
+        return Array(poppedTokens)
     }
 
-    func popToken() {
+    @discardableResult
+    func popToken() throws -> Lexer.Token {
+        guard position < tokens.count else {
+            throw ParseError.message("Cannot advance token. Current: \(String(describing: peekToken())).")
+        }
+        let token = tokens[position]
         position += 1
+        return token
     }
 
-    func popLastToken() -> Lexer.Token {
+    @discardableResult
+    func popLastToken() throws -> Lexer.Token {
+        guard !tokens.isEmpty else {
+            throw ParseError.message("Cannot pop last token")
+        }
         return tokens.removeLast()
     }
 }
@@ -88,21 +104,21 @@ class ConstraintParser: BaseParser<Constraint> {
     }
 
     override func parseSingle() throws -> Constraint {
-        let field = parseField()
+        let field = try parseField()
 
         let relation = try parseRelation() ?? .equal
 
         let type: ConstraintType
         if case .number(let constant)? = peekToken() {
             type = .constant(constant)
-            popToken()
+            try popToken()
         } else {
-            let target = parseTarget()
+            let target = try parseTarget()
             let targetAnchor = try parseTargetAnchor()
 
             var multiplier = 1 as Float
             var constant = 0 as Float
-            while !constraintEnd(), let modifier = try parseModifier() {
+            while try !constraintEnd(), let modifier = try parseModifier() {
                 switch modifier {
                 case .multiplied(let by):
                     multiplier *= by
@@ -126,36 +142,36 @@ class ConstraintParser: BaseParser<Constraint> {
         return Constraint(field: field, anchor: layoutAttribute.anchor, type: type, relation: relation, priority: priority)
     }
 
-    private func constraintEnd() -> Bool {
+    private func constraintEnd() throws -> Bool {
         if hasEnded() {
             return true
         } else if peekToken() == .semicolon {
-            popToken()
+            try popToken()
             return true
         } else {
             return false
         }
     }
 
-    private func parseField() -> String? {
+    private func parseField() throws -> String? {
         guard case .identifier(let identifier)? = peekToken(), peekNextToken() == .assignment else { return nil }
 
-        popTokens(2)
+        try popTokens(2)
         return identifier
     }
 
     private func parseRelation() throws -> ConstraintRelation? {
         guard case .colon? = peekToken(), case .identifier(let identifier)? = peekNextToken() else { return nil }
-        popTokens(2)
+        try popTokens(2)
         
         return try ConstraintRelation(identifier)
     }
 
-    private func parseTarget() -> ConstraintTarget? {
+    private func parseTarget() throws -> ConstraintTarget? {
         guard case .identifier(let identifier)? = peekToken(), peekNextToken() != .parensOpen else { return nil }
-        popToken()
+        try popToken()
         if peekToken() == .colon, case .identifier(let layoutId)? = peekNextToken() {
-            popTokens(2)
+            try popTokens(2)
             // FIXME Add `enum Target { field(String); layoutId(String) }` and return .layoutId here
             return .layoutId(layoutId)
         } else if identifier == "super" {
@@ -169,22 +185,22 @@ class ConstraintParser: BaseParser<Constraint> {
 
     private func parseTargetAnchor() throws -> LayoutAnchor? {
         guard peekToken() == .period, case .identifier(let identifier)? = peekNextToken() else { return nil }
-        popTokens(2)
+        try popTokens(2)
         return try LayoutAnchor(identifier)
     }
 
     private func parseModifier() throws -> ConstraintModifier? {
         guard case .identifier(let identifier)? = peekToken(), peekNextToken() == .parensOpen else { return nil }
-        popTokens(2)
+        try popTokens(2)
 
         if case .identifier("by")? = peekToken(), peekNextToken() == .colon {
-            popTokens(2)
+            try popTokens(2)
         }
 
         guard case .number(let number)? = peekToken(), .parensClose == peekNextToken() else {
             throw ParseError.message("Modifier `\(identifier)` couldn't be parsed!")
         }
-        popTokens(2)
+        try popTokens(2)
 
         switch identifier {
         case "multiplied":
@@ -203,10 +219,10 @@ class ConstraintParser: BaseParser<Constraint> {
     private func parsePriority() throws -> ConstraintPriority? {
         guard case .at? = peekToken() else { return nil }
         if case .number(let number)? = peekNextToken() {
-            popTokens(2)
+            try popTokens(2)
             return ConstraintPriority.custom(number)
         } else if case .identifier(let identifier)? = peekNextToken() {
-            popTokens(2)
+            try popTokens(2)
             return try ConstraintPriority(identifier)
         } else {
             throw ParseError.message("Missing priority value! `@` token followed by \(peekNextToken().map(String.init(describing:)) ?? "none")")
@@ -236,8 +252,8 @@ class TextParser: BaseParser<TransformedText> {
                 return identifier
             }
             if let identifier = transformIdentifier {
-                popTokens(3)
-                let lastToken = popLastToken()
+                try popTokens(3)
+                let lastToken = try popLastToken()
                 guard lastToken == .parensClose else {
                     throw ParseError.message("Unexpected token `\(lastToken)`, expected `)` to be the last token")
                 }
@@ -251,7 +267,7 @@ class TextParser: BaseParser<TransformedText> {
 
         var components = [] as [String]
         while let token = peekToken() {
-            popToken()
+            try popToken()
             switch token {
             case .identifier(let identifier):
                 components.append(identifier)
@@ -282,3 +298,80 @@ class TextParser: BaseParser<TransformedText> {
         return .text(components.joined())
     }
 }
+
+class FontParser: BaseParser<Font> {
+    override func parseSingle() throws -> Font {
+        if case .colon? = peekToken() {
+            try popToken()
+            let possibleWeightToken = try popToken()
+            guard case .identifier(let possibleWeight) = possibleWeightToken else {
+                throw ParseError.message("Unexpected token `\(possibleWeightToken)`, expected weight identifier")
+            }
+            guard let weight = SystemFontWeight(rawValue: possibleWeight) else {
+                throw ParseError.message("Unknown weight name `\(possibleWeight)`!")
+            }
+            let size: Float
+            if case .at? = try? popToken() {
+                let possibleSize = try popToken()
+                guard case .number(let fontSize) = possibleSize else {
+                    throw ParseError.message("Unexpected token `\(possibleSize)`, expected font size float")
+                }
+                size = fontSize
+            } else {
+                // Default
+                size = 15
+            }
+            return .system(weight: weight, size: size)
+        } else if case .number(let size)? = peekToken() {
+            try popToken()
+            return .system(weight: .regular, size: size)
+        } else {
+            var components = [] as [String]
+            while let token = peekToken() {
+                guard token != .at else { break }
+
+                try popToken()
+                switch token {
+                case .identifier(let identifier):
+                    components.append(identifier)
+                case .number(let number):
+                    components.append("\(number)")
+                case .parensOpen:
+                    components.append("(")
+                case .parensClose:
+                    components.append(")")
+                case .assignment:
+                    components.append("=")
+                case .operatorToken(let op):
+                    components.append(op)
+                case .colon:
+                    components.append(":")
+                case .semicolon:
+                    components.append(";")
+                case .period:
+                    components.append(".")
+                case .at:
+                    break
+                case .other(let other):
+                    components.append(other)
+                case .whitespace(let whitespace):
+                    components.append(whitespace)
+                }
+            }
+            let size: Float
+            if case .at? = try? popToken() {
+                let possibleSize = try popToken()
+                guard case .number(let fontSize) = possibleSize else {
+                    throw ParseError.message("Unexpected token `\(possibleSize)`, expected font size float")
+                }
+                size = fontSize
+            } else {
+                // Default
+                size = 15
+            }
+            return .named(components.joined(), size: size)
+        }
+    }
+}
+
+

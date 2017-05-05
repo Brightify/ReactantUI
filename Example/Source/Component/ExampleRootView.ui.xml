@@ -78,6 +78,7 @@
             layout:fillHorizontally="super inset(20)">
             <Component type="ExampleView2" />
             <Component type="ExampleView2" />
+            <TextField text="Test" secure="true" layout:height="50" />
         </StackView>
 
     <!-- <ScrollView layout:edges="super">
