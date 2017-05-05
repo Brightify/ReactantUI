@@ -34,7 +34,10 @@ public class StyleGenerator: Generator {
             for style in group.styles {
                 l("static func \(style.styleName)(_ view: \(Element.elementMapping[style.type]?.runtimeType ?? "UIView"))") {
                     for extendedStyle in style.extend {
-                        l("\(group.name).\(extendedStyle)(view)")
+                        guard let styleName = extendedStyle.components(separatedBy: ":").last else {
+                            continue
+                        }
+                        l("\(group.swiftName).\(styleName)(view)")
                     }
                     for property in style.properties {
                         l(property.application(property, "view"))
