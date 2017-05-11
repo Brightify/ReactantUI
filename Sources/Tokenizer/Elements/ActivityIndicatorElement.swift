@@ -9,7 +9,7 @@ public class ActivityIndicatorElement: View {
         return [
                 assignable(name: "color", type: .color(.uiColor)),
                 assignable(name: "hidesWhenStopped", type: .bool),
-                assignable(name: "indicatorStyle", key: "activityIndicatorViewStyle", type: .activityIndicatorStyle)
+                assignable(name: "indicatorStyle", swiftName: "activityIndicatorViewStyle", key: "activityIndicatorViewStyle", type: .activityIndicatorStyle)
             ] + super.availableProperties
     }
 

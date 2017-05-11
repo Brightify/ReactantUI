@@ -18,11 +18,11 @@ PODS:
     - Reactant/Core
     - RxCocoa (~> 3.0)
     - RxDataSources (~> 1.0)
-  - ReactantLiveUI (0.1.0):
+  - ReactantLiveUI (0.1.1):
     - Reactant (> 1.0)
     - Reactant/TableView (> 1.0)
     - RxCocoa
-  - ReactantUI (0.1.0)
+  - ReactantUI (0.1.1)
   - Result (3.2.1)
   - RxCocoa (3.4.1):
     - RxSwift (~> 3.4)
@@ -59,14 +59,14 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Reactant:
-    :commit: 04913076bd77a35f2c3e768789c0c5fa90d5eaef
+    :commit: '04913076bd77a35f2c3e768789c0c5fa90d5eaef'
     :git: https://github.com/Brightify/Reactant.git
 
 SPEC CHECKSUMS:
   Kingfisher: 2c94e72c6830622c71d06adf4ea024c37d316830
   Reactant: ed2c0fe5391df1c19c3f62542785d8fd6edfa7ec
-  ReactantLiveUI: 8244c8ab33b79f9863acde9a3afdbd86655fc26a
-  ReactantUI: 5da42a33978943e5821c9eabc54a45ddafa8c40b
+  ReactantLiveUI: a9980993b7eca35bf392779a175cecf535d8a595
+  ReactantUI: 6f9a041787d2d89f1b95e5adb19bb5ff6c0446e6
   Result: 2453a22e5c5b11c0c3a478736e82cd02f763b781
   RxCocoa: a8a5f1d061d0043e28f56976829f31ce63e8eb09
   RxDataSources: a021a0e944ba5f7991259829d973afdbfa719c0b
