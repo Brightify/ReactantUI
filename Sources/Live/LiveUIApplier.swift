@@ -38,7 +38,10 @@ public class ReactantLiveUIApplier {
         let view: UIView
         if let field = element.field {
             name = "\(field)"
-            if instance.responds(to: Selector("\(field)")) {
+            if instance is AnonymousLiveComponent {
+                view = try element.initialize()
+                instance.setValue(view, forUndefinedKey: field)
+            } else if instance.responds(to: Selector("\(field)")) {
                 guard let targetView = instance.value(forKey: field) as? UIView else {
                     throw LiveUIError(message: "Undefined field \(field)")
                 }
@@ -56,8 +59,6 @@ public class ReactantLiveUIApplier {
             tempCounter += 1
             view = try element.initialize()
         }
-
-
 
         for property in try (commonStyles + definition.styles).resolveStyle(for: element) {
             try property.apply(property, view)

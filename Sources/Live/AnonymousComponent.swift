@@ -9,32 +9,34 @@
 import UIKit
 import Reactant
 
-class AnonymousComponent: ViewBase<Void, Void> {
+internal typealias AnonymousComponent = AnonymousLiveComponent
+
+public class AnonymousLiveComponent: ViewBase<Void, Void> {
     fileprivate let _typeName: String
     fileprivate let _xmlPath: String
     fileprivate var _properties: [String: Any] = [:]
     fileprivate var _selectionStyle: UITableViewCellSelectionStyle = .default
     fileprivate var _focusStyle: UITableViewCellFocusStyle = .default
 
-    init(typeName: String, xmlPath: String) {
+    public init(typeName: String, xmlPath: String) {
         _xmlPath = xmlPath
         _typeName = typeName
         super.init()
     }
 
-    override func conforms(to aProtocol: Protocol) -> Bool {
+    public override func conforms(to aProtocol: Protocol) -> Bool {
         return super.conforms(to: aProtocol)
     }
 
-    override func value(forUndefinedKey key: String) -> Any? {
+    public override func value(forUndefinedKey key: String) -> Any? {
         return _properties[key]
     }
-
-    override func setValue(_ value: Any?, forUndefinedKey key: String) {
+    
+    public override func setValue(_ value: Any?, forUndefinedKey key: String) {
         _properties[key] = value
     }
 
-    override var description: String {
+    public override var description: String {
         return "AnonymousComponent: \(_typeName)"
     }
 }
@@ -46,7 +48,7 @@ extension AnonymousComponent: ReactantUI {
         }
     }
 
-    var __rui: Reactant.ReactantUIContainer {
+    public var __rui: Reactant.ReactantUIContainer {
         return rui
     }
 
@@ -80,7 +82,7 @@ extension AnonymousComponent: ReactantUI {
 }
 
 extension AnonymousComponent: RootView {
-    var edgesForExtendedLayout: UIRectEdge {
+    public var edgesForExtendedLayout: UIRectEdge {
         return ReactantLiveUIManager.shared.extendedEdges(of: self)
     }
 }
