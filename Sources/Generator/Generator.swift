@@ -1,3 +1,4 @@
+import Foundation
 import Tokenizer
 
 public class Generator {
@@ -96,15 +97,21 @@ public class UIGenerator: Generator {
                         l("#if (arch(i386) || arch(x86_64)) && os(iOS)")
                         // This will register `self` to remove `deinit` from ViewBase
                         l("ReactantLiveUIManager.shared.register(target)") {
-                            l("[constraints] field, constraint -> Bool in")
-                            l("switch field") {
-                                for constraintField in constraintFields {
-                                    l("case \"\(constraintField)\":")
-                                    l("    constraints.\(constraintField) = constraint")
-                                    l("    return true")
+
+                            if constraintFields.isEmpty {
+                                l("_ in")
+                                l("return false")
+                            } else {
+                                l("[constraints] field, constraint -> Bool in")
+                                l("switch field") {
+                                    for constraintField in constraintFields {
+                                        l("case \"\(constraintField)\":")
+                                        l("    constraints.\(constraintField) = constraint")
+                                        l("    return true")
+                                    }
+                                    l("default:")
+                                    l("    return false")
                                 }
-                                l("default:")
-                                l("    return false")
                             }
                         }
                         l("#else")

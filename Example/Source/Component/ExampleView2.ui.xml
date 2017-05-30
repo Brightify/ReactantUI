@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Component type="ExampleView2">
+<Component xmlns="http://schema.reactant.tech/ui"
+    xmlns:layout="http://schema.reactant.tech/layout"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://schema.reactant.tech/ui http://schema.reactant.tech/ui.xsd
+                        http://schema.reactant.tech/layout http://schema.reactant.tech/layout.xsd"
+                        type="ExampleView2">
 <!--    <styles>-->
 <!--        <style type="UILabel">-->
 <!--            <textColor>#AABBCC</textColor>-->
@@ -28,5 +33,8 @@
             layout:height="50"
             layout:below="id:prdel offset(20)"
             layout:bottom="super inset(10)"/>
+
+        <ActivityIndicator
+            indicatorStyle="gray"/>
     </Container>
 </Component>

@@ -118,6 +118,10 @@ public class View: XMLElementDeserializable, UIElement {
         styles = (node.value(ofAttribute: "style") as String?)?
             .components(separatedBy: CharacterSet.whitespacesAndNewlines) ?? []
 
+        if node.name == "View" && node.count != 0 {
+            throw TokenizationError(message: "View must not have any children, use Container instead.")
+        }
+
         properties = try View.deserializeSupportedProperties(properties: type(of: self).availableProperties, in: node)
     }
 

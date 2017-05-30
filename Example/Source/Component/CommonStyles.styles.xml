@@ -1,4 +1,4 @@
 <styleGroup name="common">
     <LabelStyle name="whiteLabel" textColor="white" numberOfLines="0" />
-    <MapViewStyle name="map" mapType="satellite"/>
+    <!-- <MapViewStyle name="map" mapType="satellite"/> -->
 </styleGroup>

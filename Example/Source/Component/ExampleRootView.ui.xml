@@ -16,8 +16,9 @@
             backgroundColor.highlighted="white"
             isUserInteractionEnabled="true" />
     </styles>
-
-    <ImageView
+    <!-- <View> <Label/> </View> -->
+    <View/>
+    <!-- <ImageView
         layout:edges="super"
         layoutMargins="10,10,10,10"
         image="falcon"
@@ -79,7 +80,7 @@
             <Component type="ExampleView2" />
             <Component type="ExampleView2" />
             <TextField text="Test" secure="true" layout:height="50" />
-        </StackView>
+        </StackView> -->
 
     <!-- <ScrollView layout:edges="super">
         <Container

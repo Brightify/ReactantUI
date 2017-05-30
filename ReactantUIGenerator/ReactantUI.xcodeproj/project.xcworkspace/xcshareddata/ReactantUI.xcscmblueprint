@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "BD87B9250AC79C120A7E7D9FEE1CAC0D76309D1A",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "BD87B9250AC79C120A7E7D9FEE1CAC0D76309D1A" : 9223372036854775807,
+    "64ACE19A884E8C30BC53E2E0CE86010ECED70B5A" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "42A59CF7-599F-4BE0-A6CA-63D0D1F5A06A",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "BD87B9250AC79C120A7E7D9FEE1CAC0D76309D1A" : "ReactantUI\/",
+    "64ACE19A884E8C30BC53E2E0CE86010ECED70B5A" : "ReactantUI\/.build\/checkouts\/FileKit.git-2495357206000708207\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "ReactantUI",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "ReactantUIGenerator\/ReactantUI.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "\/Users\/matous\/ReactantUI\/.build\/repositories\/FileKit.git-2495357206000708207",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "64ACE19A884E8C30BC53E2E0CE86010ECED70B5A"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:Brightify\/ReactantUI.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "BD87B9250AC79C120A7E7D9FEE1CAC0D76309D1A"
+    }
+  ]
+}
