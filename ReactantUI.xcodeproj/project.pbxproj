@@ -26,6 +26,7 @@
 
 /* Begin PBXFileReference section */
 		098D5E646099DC6FADFAC15E /* Pods-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Example/Pods-Example.release.xcconfig"; sourceTree = "<group>"; };
+		18103B481EDEF5D200F9E134 /* ReactantUIGenerator.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = ReactantUIGenerator.xcodeproj; sourceTree = "<group>"; };
 		182B68671EAF7589007CC668 /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		182B687B1EAF7641007CC668 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		182B687D1EAF7641007CC668 /* ATest.ui.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ATest.ui.xml; sourceTree = "<group>"; };
@@ -64,6 +65,7 @@
 				182B68681EAF7589007CC668 /* Products */,
 				7152B12B2D8D6874507C49C6 /* Pods */,
 				719FEA2A5C7B0DD40285E72B /* Frameworks */,
+				18103B481EDEF5D200F9E134 /* ReactantUIGenerator.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};

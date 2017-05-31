@@ -35,3 +35,4 @@ _docpress
 GeneratedUI.swift
 .build
 ReactantUI.xcworkspace
+ReactantUIGenerator.xcodeproj
