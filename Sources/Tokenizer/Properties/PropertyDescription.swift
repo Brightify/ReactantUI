@@ -6,7 +6,7 @@ protocol PropertyDescription {
     var name: String { get }
     var type: SupportedPropertyType { get }
 
-    func materialize(attributeName: String, value: String) throws -> Property?
+    func materialize(attributeName: String, value: String) throws -> Property
 
     func matches(attributeName: String) -> Bool
 
@@ -22,7 +22,7 @@ extension PropertyDescription {
         return attributeName == name
     }
 
-    func materialize(attributeName: String, value: String) throws -> Property? {
+    func materialize(attributeName: String, value: String) throws -> Property {
         guard let propertyValue = type.value(of: value) else {
             #if ReactantRuntime
             throw LiveUIError(message: "// Could not parse `\(value)` as `\(type)` for property `\(name)`")

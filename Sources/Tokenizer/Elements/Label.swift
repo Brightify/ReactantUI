@@ -33,5 +33,9 @@ public class Label: View {
     public override func initialize() -> UIView {
         return UILabel()
     }
+
+    override class func placeholderProperties() -> [(description: PropertyDescription, value: String)] {
+        return [(assignable(name: "text", type: .string), "<< Label >>")]
+    }
     #endif
 }

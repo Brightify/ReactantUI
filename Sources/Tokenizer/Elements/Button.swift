@@ -34,5 +34,9 @@ public class Button: Container {
     public override func initialize() -> UIView {
         return UIButton()
     }
+
+    override class func placeholderProperties() -> [(description: PropertyDescription, value: String)] {
+        return [(assignable(name: "title", type: .string), "<< Button >>")]
+    }
     #endif
 }

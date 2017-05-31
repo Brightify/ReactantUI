@@ -39,5 +39,9 @@ public class TextField: View {
     public override func initialize() -> UIView {
         return Reactant.TextField()
     }
+
+    override class func placeholderProperties() -> [(description: PropertyDescription, value: String)] {
+        return [(assignable(name: "placeholder", type: .string), "<< TextField >>")]
+    }
     #endif
 }

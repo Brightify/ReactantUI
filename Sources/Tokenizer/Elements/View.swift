@@ -118,8 +118,25 @@ public class View: XMLElementDeserializable, UIElement {
         styles = (node.value(ofAttribute: "style") as String?)?
             .components(separatedBy: CharacterSet.whitespacesAndNewlines) ?? []
 
-        properties = try View.deserializeSupportedProperties(properties: type(of: self).availableProperties, in: node)
+        #if ReactantRuntime
+            let placeholders = type(of: self).placeholderProperties()
+            var properties = try View.deserializeSupportedProperties(properties: type(of: self).availableProperties, in: node)
+            for placeholder in placeholders {
+                guard !node.allAttributes.keys.contains(where: { placeholder.description.matches(attributeName: $0) }) else { continue }
+                guard let property = try? placeholder.description.materialize(attributeName: placeholder.description.name, value: placeholder.value) else { continue }
+                properties.append(property)
+            }
+            self.properties = properties
+        #else
+            properties = try View.deserializeSupportedProperties(properties: type(of: self).availableProperties, in: node)
+        #endif
     }
+
+    #if ReactantRuntime
+    class func placeholderProperties() -> [(description: PropertyDescription, value: String)] {
+        return []
+    }
+    #endif
 
     public static func deserialize(_ node: XMLElement) throws -> Self {
         return try self.init(node: node)
@@ -144,13 +161,7 @@ public class View: XMLElementDeserializable, UIElement {
             guard let propertyDescription = properties.first(where: { $0.matches(attributeName: attributeName) }) else {
                 continue
             }
-            guard let property = try propertyDescription.materialize(attributeName: attributeName, value: attribute.text) else {
-                #if ReactantRuntime
-                throw LiveUIError(message: "// Could not materialize property `\(propertyDescription)` from `\(attribute)`")
-                #else
-                throw TokenizationError(message: "// Could not materialize property `\(propertyDescription)` from `\(attribute)`")
-                #endif
-            }
+            let property = try propertyDescription.materialize(attributeName: attributeName, value: attribute.text)
             result.append(property)
         }
         return result

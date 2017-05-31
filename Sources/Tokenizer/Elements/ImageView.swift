@@ -24,5 +24,9 @@ public class ImageView: View {
     public override func initialize() -> UIView {
         return UIImageView()
     }
+
+    override class func placeholderProperties() -> [(description: PropertyDescription, value: String)] {
+        return [(assignable(name: "image", type: .image), "__renderer_placeholder")]
+    }
     #endif
 }
