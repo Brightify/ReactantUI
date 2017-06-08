@@ -98,7 +98,7 @@ public extension XMLIndexer {
      */
     func value<T: XMLAttributeDeserializable>(ofAttribute attr: String) throws -> T {
         switch self {
-        case .Element(let element):
+        case .element(let element):
             return try element.value(ofAttribute: attr)
         case .Stream(let opStream):
             return try opStream.findElements().value(ofAttribute: attr)
@@ -116,7 +116,7 @@ public extension XMLIndexer {
      */
     func value<T: XMLAttributeDeserializable>(ofAttribute attr: String) -> T? {
         switch self {
-        case .Element(let element):
+        case .element(let element):
             return element.value(ofAttribute: attr)
         case .Stream(let opStream):
             return opStream.findElements().value(ofAttribute: attr)
@@ -137,7 +137,7 @@ public extension XMLIndexer {
         switch self {
         case .List(let elements):
             return try elements.map { try $0.value(ofAttribute: attr) }
-        case .Element(let element):
+        case .element(let element):
             return try [element].map { try $0.value(ofAttribute: attr) }
         case .Stream(let opStream):
             return try opStream.findElements().value(ofAttribute: attr)
@@ -158,7 +158,7 @@ public extension XMLIndexer {
         switch self {
         case .List(let elements):
             return try elements.map { try $0.value(ofAttribute: attr) }
-        case .Element(let element):
+        case .element(let element):
             return try [element].map { try $0.value(ofAttribute: attr) }
         case .Stream(let opStream):
             return try opStream.findElements().value(ofAttribute: attr)
@@ -179,7 +179,7 @@ public extension XMLIndexer {
         switch self {
         case .List(let elements):
             return elements.map { $0.value(ofAttribute: attr) }
-        case .Element(let element):
+        case .element(let element):
             return [element].map { $0.value(ofAttribute: attr) }
         case .Stream(let opStream):
             return try opStream.findElements().value(ofAttribute: attr)
@@ -198,7 +198,7 @@ public extension XMLIndexer {
     */
     func value<T: XMLElementDeserializable>() throws -> T {
         switch self {
-        case .Element(let element):
+        case .element(let element):
             return try T.deserialize(element)
         case .Stream(let opStream):
             return try opStream.findElements().value()
@@ -215,7 +215,7 @@ public extension XMLIndexer {
     */
     func value<T: XMLElementDeserializable>() throws -> T? {
         switch self {
-        case .Element(let element):
+        case .element(let element):
             return try T.deserialize(element)
         case .Stream(let opStream):
             return try opStream.findElements().value()
@@ -234,7 +234,7 @@ public extension XMLIndexer {
         switch self {
         case .List(let elements):
             return try elements.map { try T.deserialize($0) }
-        case .Element(let element):
+        case .element(let element):
             return try [element].map { try T.deserialize($0) }
         case .Stream(let opStream):
             return try opStream.findElements().value()
@@ -253,7 +253,7 @@ public extension XMLIndexer {
         switch self {
         case .List(let elements):
             return try elements.map { try T.deserialize($0) }
-        case .Element(let element):
+        case .element(let element):
             return try [element].map { try T.deserialize($0) }
         case .Stream(let opStream):
             return try opStream.findElements().value()
@@ -272,7 +272,7 @@ public extension XMLIndexer {
         switch self {
         case .List(let elements):
             return try elements.map { try T.deserialize($0) }
-        case .Element(let element):
+        case .element(let element):
             return try [element].map { try T.deserialize($0) }
         case .Stream(let opStream):
             return try opStream.findElements().value()
@@ -291,7 +291,7 @@ public extension XMLIndexer {
     */
     func value<T: XMLIndexerDeserializable>() throws -> T {
         switch self {
-        case .Element:
+        case .element:
             return try T.deserialize(self)
         case .Stream(let opStream):
             return try opStream.findElements().value()
@@ -308,7 +308,7 @@ public extension XMLIndexer {
     */
     func value<T: XMLIndexerDeserializable>() throws -> T? {
         switch self {
-        case .Element:
+        case .element:
             return try T.deserialize(self)
         case .Stream(let opStream):
             return try opStream.findElements().value()
@@ -327,7 +327,7 @@ public extension XMLIndexer {
         switch self {
         case .List(let elements):
             return try elements.map { try T.deserialize( XMLIndexer($0) ) }
-        case .Element(let element):
+        case .element(let element):
             return try [element].map { try T.deserialize( XMLIndexer($0) ) }
         case .Stream(let opStream):
             return try opStream.findElements().value()
@@ -346,7 +346,7 @@ public extension XMLIndexer {
         switch self {
         case .List(let elements):
             return try elements.map { try T.deserialize( XMLIndexer($0) ) }
-        case .Element(let element):
+        case .element(let element):
             return try [element].map { try T.deserialize( XMLIndexer($0) ) }
         case .Stream(let opStream):
             return try opStream.findElements().value()
@@ -365,7 +365,7 @@ public extension XMLIndexer {
         switch self {
         case .List(let elements):
             return try elements.map { try T.deserialize( XMLIndexer($0) ) }
-        case .Element(let element):
+        case .element(let element):
             return try [element].map { try T.deserialize( XMLIndexer($0) ) }
         case .Stream(let opStream):
             return try opStream.findElements().value()

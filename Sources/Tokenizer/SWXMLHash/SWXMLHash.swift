@@ -454,7 +454,7 @@ public enum IndexingError: Error {
 
 /// Returned from SWXMLHash, allows easy element lookup into XML data.
 public enum XMLIndexer: Sequence {
-    case Element(XMLElement)
+    case element(XMLElement)
     case List([XMLElement])
     case Stream(IndexOps)
     case XMLError(IndexingError)
@@ -462,7 +462,7 @@ public enum XMLIndexer: Sequence {
     /// The underlying XMLElement at the currently indexed level of XML.
     public var element: XMLElement? {
         switch self {
-        case .Element(let elem):
+        case .element(let elem):
             return elem
         case .Stream(let ops):
             let list = ops.findElements()
@@ -481,7 +481,7 @@ public enum XMLIndexer: Sequence {
                 xmlList.append(XMLIndexer(elem))
             }
             return xmlList
-        case .Element(let elem):
+        case .element(let elem):
             return [XMLIndexer(elem)]
         case .Stream(let ops):
             let list = ops.findElements()
@@ -518,12 +518,12 @@ public enum XMLIndexer: Sequence {
             return try match.withAttr(attr, value)
         case .List(let list):
             if let elem = list.filter({$0.attribute(by: attr)?.text == value}).first {
-                return .Element(elem)
+                return .element(elem)
             }
             throw IndexingError.AttributeValue(attr: attr, value: value)
-        case .Element(let elem):
+        case .element(let elem):
             if elem.attribute(by: attr)?.text == value {
-                return .Element(elem)
+                return .element(elem)
             }
             throw IndexingError.AttributeValue(attr: attr, value: value)
         default:
@@ -540,7 +540,7 @@ public enum XMLIndexer: Sequence {
     public init(_ rawObject: AnyObject) throws {
         switch rawObject {
         case let value as XMLElement:
-            self = .Element(value)
+            self = .element(value)
         case let value as LazyXMLParser:
             self = .Stream(IndexOps(parser: value))
         default:
@@ -554,7 +554,7 @@ public enum XMLIndexer: Sequence {
     - parameter _: an instance of XMLElement
     */
     public init(_ elem: XMLElement) {
-        self = .Element(elem)
+        self = .element(elem)
     }
 
     init(_ stream: LazyXMLParser) {
@@ -574,11 +574,11 @@ public enum XMLIndexer: Sequence {
             let op = IndexOp(key)
             opStream.ops.append(op)
             return .Stream(opStream)
-        case .Element(let elem):
+        case .element(let elem):
             let match = elem.xmlChildren.filter({ $0.name == key })
             if !match.isEmpty {
                 if match.count == 1 {
-                    return .Element(match[0])
+                    return .element(match[0])
                 } else {
                     return .List(match)
                 }
@@ -619,12 +619,12 @@ public enum XMLIndexer: Sequence {
             return .Stream(opStream)
         case .List(let list):
             if index <= list.count {
-                return .Element(list[index])
+                return .element(list[index])
             }
             return .XMLError(IndexingError.Index(idx: index))
-        case .Element(let elem):
+        case .element(let elem):
             if index == 0 {
-                return .Element(elem)
+                return .element(elem)
             }
             fallthrough
         default:
@@ -681,7 +681,7 @@ extension XMLIndexer: CustomStringConvertible {
         switch self {
         case .List(let list):
             return list.map { $0.description }.joined(separator: "")
-        case .Element(let elem):
+        case .element(let elem):
             if elem.name == rootElementName {
                 return elem.children.map { $0.description }.joined(separator: "")
             }

@@ -24,6 +24,37 @@
 		5B1333D6A201F8A50D8697D9 /* Pods_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1AAC4CA06239D481C4E7F9D /* Pods_Example.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		1809E6D81EE9899B00EF98AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 18103B481EDEF5D200F9E134 /* ReactantUIGenerator.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = OBJ_146;
+			remoteInfo = FileKit;
+		};
+		1809E6DA1EE9899B00EF98AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 18103B481EDEF5D200F9E134 /* ReactantUIGenerator.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = OBJ_147;
+			remoteInfo = Generator;
+		};
+		1809E6DC1EE9899B00EF98AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 18103B481EDEF5D200F9E134 /* ReactantUIGenerator.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = OBJ_148;
+			remoteInfo = "reactant-ui";
+		};
+		1809E6DE1EE9899B00EF98AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 18103B481EDEF5D200F9E134 /* ReactantUIGenerator.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = OBJ_149;
+			remoteInfo = Tokenizer;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		098D5E646099DC6FADFAC15E /* Pods-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Example/Pods-Example.release.xcconfig"; sourceTree = "<group>"; };
 		18103B481EDEF5D200F9E134 /* ReactantUIGenerator.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = ReactantUIGenerator.xcodeproj; sourceTree = "<group>"; };
@@ -58,6 +89,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1809E6D21EE9899B00EF98AA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1809E6D91EE9899B00EF98AA /* FileKit.framework */,
+				1809E6DB1EE9899B00EF98AA /* Generator.framework */,
+				1809E6DD1EE9899B00EF98AA /* reactant-ui */,
+				1809E6DF1EE9899B00EF98AA /* Tokenizer.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		182B685C1EAF7530007CC668 = {
 			isa = PBXGroup;
 			children = (
@@ -197,12 +239,49 @@
 			mainGroup = 182B685C1EAF7530007CC668;
 			productRefGroup = 182B68681EAF7589007CC668 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 1809E6D21EE9899B00EF98AA /* Products */;
+					ProjectRef = 18103B481EDEF5D200F9E134 /* ReactantUIGenerator.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				182B68661EAF7589007CC668 /* Example */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		1809E6D91EE9899B00EF98AA /* FileKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = FileKit.framework;
+			remoteRef = 1809E6D81EE9899B00EF98AA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1809E6DB1EE9899B00EF98AA /* Generator.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Generator.framework;
+			remoteRef = 1809E6DA1EE9899B00EF98AA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1809E6DD1EE9899B00EF98AA /* reactant-ui */ = {
+			isa = PBXReferenceProxy;
+			fileType = text;
+			path = "reactant-ui";
+			remoteRef = 1809E6DC1EE9899B00EF98AA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1809E6DF1EE9899B00EF98AA /* Tokenizer.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Tokenizer.framework;
+			remoteRef = 1809E6DE1EE9899B00EF98AA /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		182B68651EAF7589007CC668 /* Resources */ = {

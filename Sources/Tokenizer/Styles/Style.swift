@@ -105,7 +105,7 @@ public struct Style: XMLElementDeserializable {
 extension Sequence where Iterator.Element == Style {
     public func resolveStyle(for element: UIElement) throws -> [Property] {
         guard !element.styles.isEmpty else { return element.properties }
-        guard let type = Element.elementMapping.first(where: { $0.value == type(of: element) })?.key else {
+        guard let type = ElementaryDearWatson.elementMapping.first(where: { $0.value == type(of: element) })?.key else {
             print("// No type found for \(element)")
             return element.properties
         }

@@ -1,3 +1,5 @@
+typealias ElementaryDearWatson = Element
+
 public struct Element {
     public static let elementMapping: [String: View.Type] = [
         "View": View.self,

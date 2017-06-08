@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "FileKit",
+        "repositoryURL": "https://github.com/TadeasKriz/FileKit.git",
+        "state": {
+          "branch": null,
+          "revision": "cb51c584bb17b1a5f8fe81ca1eab182b7152a0f4",
+          "version": "4.0.2"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
