@@ -29,6 +29,10 @@ public enum SupportedPropertyType {
     case textBorderStyle
     case textFieldViewMode
     case scrollViewIndicatorStyle
+    case keyboardAppearance
+    case keyboardType
+    case textContentType
+    case returnKeyType
 
     public func value(of text: String) -> SupportedPropertyValue? {
         switch self {
@@ -112,6 +116,14 @@ public enum SupportedPropertyType {
             return TextFieldViewMode(rawValue: text).map(SupportedPropertyValue.textFieldViewMode)
         case .scrollViewIndicatorStyle:
             return ScrollViewIndicatorStyle(rawValue: text).map(SupportedPropertyValue.scrollViewIndicatorStyle)
+        case .keyboardAppearance:
+            return KeyboardAppearance(rawValue: text).map(SupportedPropertyValue.keyboardAppearance)
+        case .keyboardType:
+            return KeyboardType(rawValue: text).map(SupportedPropertyValue.keyboardType)
+        case .textContentType:
+            return TextContentType(rawValue: text).map(SupportedPropertyValue.textContentType)
+        case .returnKeyType:
+            return ReturnKeyType(rawValue: text).map(SupportedPropertyValue.returnKeyType)
         }
     }
 }
