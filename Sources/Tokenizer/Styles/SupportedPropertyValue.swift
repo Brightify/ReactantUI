@@ -38,6 +38,10 @@ public enum SupportedPropertyValue {
     case textBorderStyle(TextBorderStyle)
     case textFieldViewMode(TextFieldViewMode)
     case scrollViewIndicatorStyle(ScrollViewIndicatorStyle)
+    case keyboardAppearance(KeyboardAppearance)
+    case keyboardType(KeyboardType)
+    case returnKeyType(ReturnKeyType)
+    case textContentType(TextContentType)
 
     public var generated: String {
         switch self {
@@ -126,6 +130,14 @@ public enum SupportedPropertyValue {
             return "UITextFieldViewMode/\(mode.rawValue)"
         case .scrollViewIndicatorStyle(let style):
             return "UIScrollViewIndicatorStyle.\(style.rawValue)"
+        case .keyboardAppearance(let appearance):
+            return "UIKeyboardAppearance.\(appearance.rawValue)"
+        case .keyboardType(let type):
+            return "UIKeyboardType.\(type.rawValue)"
+        case .textContentType(let type):
+            return "UITextContentType.\(type.rawValue)"
+        case .returnKeyType(let type):
+            return "UIReturnKeyType.\(type.rawValue)"
         }
     }
 
@@ -212,6 +224,14 @@ public enum SupportedPropertyValue {
             return mode.value
         case .scrollViewIndicatorStyle(let style):
             return style.value
+        case .keyboardAppearance(let appearance):
+            return appearance.value
+        case .keyboardType(let type):
+            return type.value
+        case .textContentType(let type):
+            return type.value
+        case .returnKeyType(let type):
+            return type.value
         }
     }
     #endif

@@ -28,6 +28,10 @@ public class TextField: View {
             assignable(name: "placeholderColor", type: .color(.uiColor)),
             assignable(name: "placeholderFont", type: .font),
             assignable(name: "secure", swiftName: "isSecureTextEntry", key: "secureTextEntry", type: .bool),
+            assignable(name: "keyboardType", type: .keyboardType),
+            assignable(name: "keyboardAppearance", type: .keyboardAppearance),
+            assignable(name: "contentType", type: .textContentType),
+            assignable(name: "returnKey", type: .returnKeyType),
             ] + super.availableProperties
     }
 
