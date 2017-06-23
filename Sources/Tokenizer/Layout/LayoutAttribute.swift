@@ -27,7 +27,7 @@ public enum LayoutAttribute {
     case lastBaseline
     case size
 
-    public var insetDirection: Double {
+    public var insetDirection: Float {
         switch self {
         case .leading, .left, .top, .before, .above:
             return 1

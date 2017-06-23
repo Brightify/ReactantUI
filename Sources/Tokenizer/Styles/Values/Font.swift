@@ -36,6 +36,7 @@ public enum Font: SupportedPropertyType {
         let tokens = Lexer.tokenize(input: value, keepWhitespace: true)
         return try FontParser(tokens: tokens).parseSingle()
     }
+
 }
 
 #if ReactantRuntime

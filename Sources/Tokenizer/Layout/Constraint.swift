@@ -100,8 +100,8 @@ public struct Constraint {
 }
 
 public enum ConstraintType {
-    case constant(Double)
-    case targeted(target: ConstraintTarget, targetAnchor: LayoutAnchor, multiplier: Double, constant: Double)
+    case constant(Float)
+    case targeted(target: ConstraintTarget, targetAnchor: LayoutAnchor, multiplier: Float, constant: Float)
 }
 
 extension ConstraintType: Equatable {

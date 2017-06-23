@@ -110,7 +110,7 @@ class ConstraintParser: BaseParser<Constraint> {
         
         let type: ConstraintType
         if case .number(let constant)? = peekToken() {
-            type = .constant(constant)
+            type = .constant(Float(constant))
             try popToken()
         } else {
             let target = try parseTarget()
@@ -118,7 +118,6 @@ class ConstraintParser: BaseParser<Constraint> {
             
             var multiplier = 1 as Float
             var constant = 0 as Float
-
             while try !constraintEnd(), let modifier = try parseModifier() {
                 switch modifier {
                 case .multiplied(let by):
@@ -211,13 +210,13 @@ class ConstraintParser: BaseParser<Constraint> {
         
         switch identifier {
         case "multiplied":
-            return .multiplied(by: number)
+            return .multiplied(by: Float(number))
         case "divided":
-            return .divided(by: number)
+            return .divided(by: Float(number))
         case "offset":
-            return .offset(by: number)
+            return .offset(by: Float(number))
         case "inset":
-            return .inset(by: number)
+            return .inset(by: Float(number))
         default:
             throw ParseError.message("Unknown modifier `\(identifier)`")
         }
@@ -227,7 +226,7 @@ class ConstraintParser: BaseParser<Constraint> {
         guard case .at? = peekToken() else { return nil }
         if case .number(let number)? = peekNextToken() {
             try popTokens(2)
-            return ConstraintPriority.custom(number)
+            return ConstraintPriority.custom(Float(number))
         } else if case .identifier(let identifier)? = peekNextToken() {
             try popTokens(2)
             return try ConstraintPriority(identifier)
@@ -319,13 +318,13 @@ class FontParser: BaseParser<Font> {
             guard let weight = SystemFontWeight(rawValue: possibleWeight) else {
                 throw ParseError.message("Unknown weight name `\(possibleWeight)`!")
             }
-            let size: Double
+            let size: Float
             if case .at? = try? popToken() {
                 let possibleSize = try popToken()
                 guard case .number(let fontSize) = possibleSize else {
                     throw ParseError.message("Unexpected token `\(possibleSize)`, expected font size float")
                 }
-                size = fontSize
+                size = Float(fontSize)
             } else {
                 // Default
                 size = 15
@@ -333,7 +332,7 @@ class FontParser: BaseParser<Font> {
             return .system(weight: weight, size: size)
         } else if case .number(let size)? = peekToken() {
             try popToken()
-            return .system(weight: .regular, size: size)
+            return .system(weight: .regular, size: Float(size))
         } else {
             var components = [] as [String]
             while let token = peekToken() {
@@ -369,13 +368,13 @@ class FontParser: BaseParser<Font> {
                     components.append(whitespace)
                 }
             }
-            let size: Double
+            let size: Float
             if case .at? = try? popToken() {
                 let possibleSize = try popToken()
                 guard case .number(let fontSize) = possibleSize else {
                     throw ParseError.message("Unexpected token `\(possibleSize)`, expected font size float")
                 }
-                size = fontSize
+                size = Float(fontSize)
             } else {
                 // Default
                 size = 15
