@@ -11,7 +11,7 @@ import Foundation
 struct Lexer {
     enum Token {
         case identifier(String)
-        case number(Float)
+        case number(Double)
         case parensOpen
         case parensClose
         case assignment
@@ -22,6 +22,7 @@ struct Lexer {
         case at
         case other(String)
         case whitespace(String)
+        case comma
     }
 }
 
@@ -52,7 +53,7 @@ extension Lexer {
     static let tokenList: [(String, TokenGenerator)] = [
         ("[ \t\n]", { .whitespace($0) }),
         ("[a-zA-Z][a-zA-Z0-9]*", { .identifier($0) }),
-        ("-?[0-9]+(\\.[0-9]+)?", { Float($0).map(Token.number) }),
+        ("-?[0-9]+(\\.[0-9]+)?", { Double($0).map(Token.number) }),
         ("\\(", { _ in .parensOpen }),
         ("\\)", { _ in .parensClose }),
         (":", { _ in .colon }),
@@ -61,6 +62,7 @@ extension Lexer {
         ("@", { _ in .at }),
         ("[<=>][=]", { .operatorToken($0) }),
         ("=", { _ in .assignment }),
+        (",", { _ in .comma })
         ]
 
     static func tokenize(input: String, keepWhitespace: Bool = false) -> [Token] {

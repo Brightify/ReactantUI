@@ -1,5 +1,5 @@
 //
-//  Float+CGFloat.swift
+//  Double+CGFloat.swift
 //  Reactant
 //
 //  Created by Matouš Hýbl on 23/04/2017.

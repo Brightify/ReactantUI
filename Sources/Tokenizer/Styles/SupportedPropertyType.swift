@@ -82,6 +82,7 @@ public struct UIColorPropertyType: SupportedPropertyType {
                 let rgb: Int = Int(red * 255) << 16 | Int(green * 255) << 8 | Int(blue * 255)
                 return String(format:"#%06x", rgb)
             }
+<<<<<<< HEAD
 
         case .named(let name):
             return name

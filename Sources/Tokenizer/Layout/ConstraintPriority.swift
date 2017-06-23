@@ -13,9 +13,9 @@ public enum ConstraintPriority {
     case high
     case medium
     case low
-    case custom(Float)
+    case custom(Double)
 
-    public var numeric: Float {
+    public var numeric: Double {
         switch self {
         case .required:
             return 1000.0
