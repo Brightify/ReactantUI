@@ -56,6 +56,7 @@ class TransformationParser: BaseParser<Transformation> {
                     guard .parensClose == peekToken() else {
                         throw ParseError.message("Modifier `\(identifier)` couldn't be parsed!")
                     }
+                    try popToken()
                 }
             } else {
                 if case .identifier("x")? = peekToken(), peekNextToken() == .colon {
@@ -83,6 +84,7 @@ class TransformationParser: BaseParser<Transformation> {
                     guard .parensClose == peekToken() else {
                         throw ParseError.message("Modifier `\(identifier)` couldn't be parsed!")
                     }
+                    try popToken()
                 }
             }
 
