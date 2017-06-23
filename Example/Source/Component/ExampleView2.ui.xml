@@ -17,13 +17,14 @@
         backgroundColor="#ffffff">
 
         <Label
-            layout:id="prdel"
+            layout:id="label"
             text="And your droneship too!"
             font=":regular@20"
             numberOfLines="0"
             textAlignment="center"
             layout:top="super inset(10)"
-            layout:fillHorizontally="super inset(20)"/>
+            layout:fillHorizontally="super inset(20)"
+            transform="rotate(-30)"/>
 
 
         <Button
@@ -31,7 +32,7 @@
             backgroundColor="#FFddaa"
             layout:fillHorizontally="super inset(60)"
             layout:height="50"
-            layout:below="id:prdel offset(20)"
+            layout:below="id:label offset(20)"
             layout:bottom="super inset(10)"/>
 
         <ActivityIndicator

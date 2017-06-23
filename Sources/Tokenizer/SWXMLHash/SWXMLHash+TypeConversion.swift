@@ -76,7 +76,7 @@ public extension XMLAttributeDeserializable {
      - throws: an XMLDeserializationError.ImplementationIsMissing if no implementation is found
      - returns: this won't ever return because of the error being thrown
      */
-    static func deserialize(attribute: XMLAttribute) throws -> Self {
+    static func deserialize(_ attribute: XMLAttribute) throws -> Self {
         throw XMLDeserializationError.ImplementationIsMissing(
             method: "XMLAttributeDeserializable(element: XMLAttribute)")
     }

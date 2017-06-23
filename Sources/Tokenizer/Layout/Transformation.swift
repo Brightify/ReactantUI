@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Transformation {
+public struct Transformation: XMLAttributeDeserializable {
     public let modifier: TransformationModifier
 
     public static func transformations(attribute: XMLAttribute) throws -> [Transformation] {

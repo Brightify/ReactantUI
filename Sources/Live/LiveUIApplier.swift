@@ -42,7 +42,10 @@ public class ReactantLiveUIApplier {
             try apply(element: $0, superview: instance, containedIn: definition)
         }
         tempCounter = 1
-        try definition.children.forEach { try applyConstraints(views: views, element: $0, superview: instance) }
+        try definition.children.forEach { element in
+            try applyConstraints(views: views, element: element, superview: instance)
+            try applyTransformations(views: views, element: element)
+        }
     }
 
     private func apply(element: UIElement, superview: UIView, containedIn: UIContainer) throws -> [(String, UIView)] {
@@ -275,6 +278,47 @@ public class ReactantLiveUIApplier {
 
         if let container = element as? UIContainer {
             try container.children.forEach { try applyConstraints(views: views, element: $0, superview: view) }
+        }
+    }
+
+    private func applyTransformations(views: [(String, UIView)], element: UIElement) throws {
+        guard let transformations = element.transformation?.transformations else {
+            if let container = element as? UIContainer {
+                try container.children.forEach { try applyTransformations(views: views, element: $0) }
+            }
+            return
+        }
+
+        let elementType = type(of: element)
+        let name: String
+        if let field = element.field {
+            name = "\(field)"
+        } else if let layoutId = element.layout.id {
+            name = "named_\(layoutId)"
+        } else {
+            name = "temp_\(elementType)_\(tempCounter)"
+            tempCounter += 1
+        }
+
+        guard var view = findView(named: name, in: views) else {
+            throw LiveUIError(message: "Couldn't find view with name \(name) in view hierarchy")
+        }
+
+        for transformation in transformations {
+            switch transformation.modifier {
+            case .identity:
+                view.transform = CGAffineTransform.identity
+            case .rotate(by: let degrees):
+                view.transform = CGAffineTransform(rotationAngle: CGFloat((.pi/180) * degrees))
+            case .scale(byX: let x, byY: let y):
+                view.transform = CGAffineTransform(scaleX: CGFloat(x), y: CGFloat(y))
+            case .translate(byX: let x, byY: let y):
+                view.transform = CGAffineTransform(translationX: CGFloat(x), y: CGFloat(y))
+            }
+        }
+
+        if let container = element as? UIContainer {
+            try container.children.forEach { try applyConstraints(views: views, element: $0) }
         }
     }
 }

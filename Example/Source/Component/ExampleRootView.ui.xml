@@ -33,7 +33,7 @@
     
     <!-- <View> <Label/> </View> -->
     <View/>
-    <!-- <ImageView
+    <ImageView
         layout:edges="super"
         layoutMargins="10,10,10,10"
         image="falcon"
@@ -41,9 +41,9 @@
         clipsToBounds="true"
         layout:compressionPriority="high"
         layout:huggingPriority="low"
-        contentMode="scaleAspectFill" />
+        contentMode="scaleAspectFill"/>
 
-        <VisualEffectView
+      <!--  <VisualEffectView
             effect="blur:light"
             layout:edges="super" />
 
@@ -86,16 +86,16 @@
             minimumValue="0"
             maximumValue="100"
             stepValue="5"
-            layout:fillHorizontally="super inset(20)"/>
+            layout:fillHorizontally="super inset(20)"/> -->
         <StackView
             axis="vertical"
             backgroundColor="black"
-            layout:below="id:stepper offset(-10)"
+            layout:top="super inset(50)"
             layout:fillHorizontally="super inset(20)">
             <Component type="ExampleView2" />
             <Component type="ExampleView2" />
             <TextField text="Test" secure="true" layout:height="50" />
-        </StackView> -->
+        </StackView>
 
     <!-- <ScrollView layout:edges="super">
         <Container
