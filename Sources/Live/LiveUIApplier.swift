@@ -304,21 +304,23 @@ public class ReactantLiveUIApplier {
             throw LiveUIError(message: "Couldn't find view with name \(name) in view hierarchy")
         }
 
+        var cgTransform = CGAffineTransform.identity
         for transformation in transformations {
             switch transformation.modifier {
             case .identity:
-                view.transform = CGAffineTransform.identity
+                continue
             case .rotate(by: let degrees):
-                view.transform = CGAffineTransform(rotationAngle: CGFloat((.pi/180) * degrees))
+                cgTransform = cgTransform.rotated(by: CGFloat((.pi/180) * degrees))
             case .scale(byX: let x, byY: let y):
-                view.transform = CGAffineTransform(scaleX: CGFloat(x), y: CGFloat(y))
+                cgTransform = cgTransform.scaledBy(x: CGFloat(x), y: CGFloat(y))
             case .translate(byX: let x, byY: let y):
-                view.transform = CGAffineTransform(translationX: CGFloat(x), y: CGFloat(y))
+                cgTransform = cgTransform.translatedBy(x: CGFloat(x), y: CGFloat(y))
             }
         }
+        view.transform = cgTransform
 
         if let container = element as? UIContainer {
-            try container.children.forEach { try applyConstraints(views: views, element: $0) }
+            try container.children.forEach { try applyTransformations(views: views, element: $0) }
         }
     }
 }
