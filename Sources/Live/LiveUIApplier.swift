@@ -11,20 +11,24 @@ public class ReactantLiveUIApplier {
     let instance: UIView
     let commonStyles: [Style]
     let setConstraint: (String, SnapKit.Constraint) -> Bool
+    private let onApplied: ((String) -> Void)?
 
     private var tempCounter: Int = 1
 
     public init(definition: ComponentDefinition,
                 commonStyles: [Style],
                 instance: UIView,
-                setConstraint: @escaping (String, SnapKit.Constraint) -> Bool) {
+                setConstraint: @escaping (String, SnapKit.Constraint) -> Bool,
+                onApplied: ((String) -> Void)?) {
         self.definition = definition
         self.commonStyles = commonStyles
         self.instance = instance
         self.setConstraint = setConstraint
+        self.onApplied = onApplied
     }
 
     public func apply() throws {
+        defer { onApplied?(definition.type) }
         instance.subviews.forEach { $0.removeFromSuperview() }
         let views = try definition.children.flatMap {
             try apply(element: $0, superview: instance, containedIn: definition)

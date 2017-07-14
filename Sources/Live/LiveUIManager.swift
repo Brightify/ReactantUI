@@ -36,6 +36,8 @@ public class ReactantLiveUIManager {
         }
     }
     private let definitionsSubject = ReplaySubject<[String: (definition: ComponentDefinition, loaded: Date, xmlPath: String)]>.create(bufferSize: 1)
+    
+    public var onApplied: ((String) -> Void)?
 
     private var styles: [String: StyleGroup] = [:] {
         didSet {
@@ -331,33 +333,8 @@ public class ReactantLiveUIManager {
         self.definitions = currentDefinitions
     }
 
-    private func apply(data: Data, views: [UIView], xmlPath: String, setConstraint: @escaping (String, SnapKit.Constraint) -> Bool) {
-        let xml = SWXMLHash.parse(data)
-        var windows = [] as [UIWindow]
-        do {
-            let definition: ComponentDefinition = try xml["Component"].value()
-            if definition.isRootView {
-                extendedEdges[xmlPath] = definition.edgesForExtendedLayout.resolveUnion()
-            } else {
-                extendedEdges.removeValue(forKey: xmlPath)
-            }
-            register(definitions: definition.componentDefinitions, in: xmlPath)
-            try views.forEach {
-                try apply(definition: definition, view: $0, setConstraint: setConstraint)
-                if let window = $0.window, !windows.contains(window) {
-                    windows.append(window)
-                }
-            }
-            windows.forEach {
-                $0.topViewController()?.updateViewConstraints()
-            }
-        } catch let error {
-            logError(error, in: xmlPath)
-        }
-    }
-
     private func apply(definition: ComponentDefinition, view: UIView, setConstraint: @escaping (String, SnapKit.Constraint) -> Bool) throws {
-        try ReactantLiveUIApplier(definition: definition, commonStyles: commonStyles, instance: view, setConstraint: setConstraint).apply()
+        try ReactantLiveUIApplier(definition: definition, commonStyles: commonStyles, instance: view, setConstraint: setConstraint, onApplied: onApplied).apply()
         if let invalidable = view as? Invalidable {
             invalidable.invalidate()
         }
