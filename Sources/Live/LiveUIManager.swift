@@ -37,7 +37,7 @@ public class ReactantLiveUIManager {
     }
     private let definitionsSubject = ReplaySubject<[String: (definition: ComponentDefinition, loaded: Date, xmlPath: String)]>.create(bufferSize: 1)
     
-    public var onApplied: ((String) -> Void)?
+    public var onApplied: ((ComponentDefinition, UIView) -> Void)?
 
     private var styles: [String: StyleGroup] = [:] {
         didSet {

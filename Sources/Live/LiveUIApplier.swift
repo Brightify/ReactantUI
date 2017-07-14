@@ -11,7 +11,7 @@ public class ReactantLiveUIApplier {
     let instance: UIView
     let commonStyles: [Style]
     let setConstraint: (String, SnapKit.Constraint) -> Bool
-    private let onApplied: ((String) -> Void)?
+    private let onApplied: ((ComponentDefinition, UIView) -> Void)?
 
     private var tempCounter: Int = 1
 
@@ -19,7 +19,7 @@ public class ReactantLiveUIApplier {
                 commonStyles: [Style],
                 instance: UIView,
                 setConstraint: @escaping (String, SnapKit.Constraint) -> Bool,
-                onApplied: ((String) -> Void)?) {
+                onApplied: ((ComponentDefinition, UIView) -> Void)?) {
         self.definition = definition
         self.commonStyles = commonStyles
         self.instance = instance
@@ -28,7 +28,7 @@ public class ReactantLiveUIApplier {
     }
 
     public func apply() throws {
-        defer { onApplied?(definition.type) }
+        defer { onApplied?(definition, instance) }
         instance.subviews.forEach { $0.removeFromSuperview() }
         let views = try definition.children.flatMap {
             try apply(element: $0, superview: instance, containedIn: definition)
@@ -43,7 +43,7 @@ public class ReactantLiveUIApplier {
         if let field = element.field {
             name = "\(field)"
             if instance is AnonymousLiveComponent {
-                view = try element.initialize()
+                view = (try? element.initialize()) ?? UIView()
                 instance.setValue(view, forUndefinedKey: field)
             } else if instance.responds(to: Selector("\(field)")) {
                 guard let targetView = instance.value(forKey: field) as? UIView else {
