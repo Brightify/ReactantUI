@@ -55,23 +55,21 @@ extension AnonymousComponent: ReactantUI {
     final class RUIContainer: Reactant.ReactantUIContainer {
         fileprivate static var associatedObjectKey = 0 as UInt8
 
-        var xmlPath: String {
-            return target?._xmlPath ?? "n/a"
-        }
-
-        var typeName: String {
-            return target?._typeName ?? "n/a"
-        }
-
+        let xmlPath: String
+        
+        let typeName: String
+        
         private weak var target: AnonymousComponent?
-
+        
         fileprivate init(target: AnonymousComponent) {
             self.target = target
+            self.xmlPath = target._xmlPath
+            self.typeName = target._typeName
         }
 
         func setupReactantUI() {
             guard let target = self.target else { /* FIXME Should we fatalError here? */ return }
-            ReactantLiveUIManager.shared.register(target)
+            ReactantLiveUIManager.shared.register(target, setConstraint: { _ in true })
         }
 
         static func destroyReactantUI(target: UIView) {
