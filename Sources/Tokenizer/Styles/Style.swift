@@ -2,13 +2,13 @@ import Foundation
 
 
 public struct Style: XMLElementDeserializable {
-    public let type: String
+    public var type: String
     // this is name with group
-    public let name: String
+    public var name: String
     // this is name of the style without group name
-    public let styleName: String
-    public let extend: [String]
-    public let properties: [Property]
+    public var styleName: String
+    public var extend: [String]
+    public var properties: [Property]
 
     init(node: XMLElement, groupName: String? = nil) throws {
         let properties: [Property]

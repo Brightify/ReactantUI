@@ -2,11 +2,11 @@ import Foundation
 
 
 public struct Constraint {
-    public let field: String?
-    public let anchor: LayoutAnchor
-    public let type: ConstraintType
-    public let relation: ConstraintRelation
-    public let priority: ConstraintPriority
+    public var field: String?
+    public var anchor: LayoutAnchor
+    public var type: ConstraintType
+    public var relation: ConstraintRelation
+    public var priority: ConstraintPriority
 
     public static func constraints(name: String, attribute: XMLAttribute) throws -> [Constraint] {
         let layoutAttributes = try LayoutAttribute.deserialize(name)

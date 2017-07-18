@@ -5,8 +5,8 @@ import UIKit
 #endif
 
 public class ComponentReference: View, ComponentDefinitionContainer {
-    public let type: String
-    public let definition: ComponentDefinition?
+    public var type: String
+    public var definition: ComponentDefinition?
 
     public var isAnonymous: Bool {
         return definition?.isAnonymous ?? false

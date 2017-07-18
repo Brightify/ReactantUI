@@ -11,12 +11,12 @@ public struct Layout: XMLElementDeserializable {
                                      "layout:huggingPriority.horizontal",
                                      "layout:huggingPriority"]
 
-    public let id: String?
-    public let contentCompressionPriorityHorizontal: ConstraintPriority?
-    public let contentCompressionPriorityVertical: ConstraintPriority?
-    public let contentHuggingPriorityHorizontal: ConstraintPriority?
-    public let contentHuggingPriorityVertical: ConstraintPriority?
-    public let constraints: [Constraint]
+    public var id: String?
+    public var contentCompressionPriorityHorizontal: ConstraintPriority?
+    public var contentCompressionPriorityVertical: ConstraintPriority?
+    public var contentHuggingPriorityHorizontal: ConstraintPriority?
+    public var contentHuggingPriorityVertical: ConstraintPriority?
+    public var constraints: [Constraint]
 
     public static func deserialize(_ node: XMLElement) throws -> Layout {
         let layoutAttributes = node.allAttributes

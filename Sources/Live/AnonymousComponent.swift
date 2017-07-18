@@ -11,7 +11,9 @@ import Reactant
 
 internal typealias AnonymousComponent = AnonymousLiveComponent
 
-public class AnonymousLiveComponent: ViewBase<Void, Void> {
+public protocol Anonymous {}
+
+public class AnonymousLiveComponent: ViewBase<Void, Void>, Anonymous {
     fileprivate let _typeName: String
     fileprivate let _xmlPath: String
     fileprivate var _properties: [String: Any] = [:]

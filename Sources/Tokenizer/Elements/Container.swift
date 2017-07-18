@@ -6,7 +6,7 @@ import Reactant
 #endif
 
 public class Container: View, UIContainer {
-    public let children: [UIElement]
+    public var children: [UIElement]
 
     public var addSubviewMethod: String {
         return "addSubview"
