@@ -42,7 +42,7 @@ public class ReactantLiveUIApplier {
         let view: UIView
         if let field = element.field {
             name = "\(field)"
-            if instance is AnonymousLiveComponent {
+            if instance is Anonymous {
                 view = (try? element.initialize()) ?? UIView()
                 instance.setValue(view, forUndefinedKey: field)
             } else if instance.responds(to: Selector("\(field)")) {

@@ -18,9 +18,9 @@ public class PlainTableView: View, ComponentDefinitionContainer {
         return super.availableProperties
     }
 
-    public let cellType: String
-    public let cellDefinition: ComponentDefinition?
-    public let exampleCount: Int
+    public var cellType: String
+    public var cellDefinition: ComponentDefinition?
+    public var exampleCount: Int
 
     public var componentTypes: [String] {
         return cellDefinition?.componentTypes ?? [cellType]

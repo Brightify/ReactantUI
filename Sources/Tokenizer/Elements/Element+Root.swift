@@ -8,13 +8,13 @@ public protocol ComponentDefinitionContainer {
 }
 
 public struct ComponentDefinition: XMLElementDeserializable, UIContainer, StyleContainer, ComponentDefinitionContainer {
-    public let type: String
-    public let isRootView: Bool
-    public let styles: [Style]
-    public let stylesName: String
-    public let children: [UIElement]
-    public let edgesForExtendedLayout: [RectEdge]
-    public let isAnonymous: Bool
+    public var type: String
+    public var isRootView: Bool
+    public var styles: [Style]
+    public var stylesName: String
+    public var children: [UIElement]
+    public var edgesForExtendedLayout: [RectEdge]
+    public var isAnonymous: Bool
 
     public var requiredImports: Set<String> {
         return Set(arrayLiteral: "Reactant").union(children.flatMap { $0.requiredImports })

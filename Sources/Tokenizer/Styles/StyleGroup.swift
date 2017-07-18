@@ -4,8 +4,8 @@ public struct StyleGroup: XMLElementDeserializable {
     public var swiftName: String {
         return name.capitalizingFirstLetter() + "Styles"
     }
-    public let name: String
-    public let styles: [Style]
+    public var name: String
+    public var styles: [Style]
 
     public static func deserialize(_ node: XMLElement) throws -> StyleGroup {
         let groupName = try node.value(ofAttribute: "name") as String

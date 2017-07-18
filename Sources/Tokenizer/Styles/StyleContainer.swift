@@ -1,3 +1,3 @@
 public protocol StyleContainer {
-    var styles: [Style] { get }
+    var styles: [Style] { get set }
 }

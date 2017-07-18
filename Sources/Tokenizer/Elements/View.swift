@@ -97,10 +97,10 @@ public class View: XMLElementDeserializable, UIElement {
         return ["UIKit"]
     }
 
-    public let field: String?
-    public let styles: [String]
-    public let layout: Layout
-    public let properties: [Property]
+    public var field: String?
+    public var styles: [String]
+    public var layout: Layout
+    public var properties: [Property]
 
     public var initialization: String {
         return "\(type(of: self).runtimeType)()"
