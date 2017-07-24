@@ -8,7 +8,9 @@
 
 import Foundation
 
-public enum LayoutDistribution: String {
+public enum LayoutDistribution: String, EnumPropertyType {
+    public static let enumName = "UIStackViewDistribution"
+
     case fill
     case fillEqually
     case fillProportionaly
@@ -19,9 +21,9 @@ public enum LayoutDistribution: String {
 #if ReactantRuntime
     import UIKit
 
-    extension LayoutDistribution: Applicable {
+    extension LayoutDistribution {
 
-        public var value: Any? {
+        public var runtimeValue: Any? {
             switch self {
             case .equalCentering:
                 return UIStackViewDistribution.equalCentering.rawValue

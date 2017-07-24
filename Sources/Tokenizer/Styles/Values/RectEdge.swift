@@ -11,7 +11,12 @@ public enum RectEdge: String {
     static func parse(text: String) -> [RectEdge] {
         return text.components(separatedBy: CharacterSet.whitespacesAndNewlines).flatMap(RectEdge.init)
     }
+
+    public static func toGeneratedString(_ array: [RectEdge]) -> String {
+        return "[\(array.map { "UIRectEdge.\($0.rawValue)" }.joined(separator: ", "))]"
+    }
 }
+
 
 #if ReactantRuntime
 import UIKit

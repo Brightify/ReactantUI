@@ -8,7 +8,9 @@
 
 import Foundation
 
-public enum TextBorderStyle: String {
+public enum TextBorderStyle: String, EnumPropertyType {
+    public static let enumName = "UITextBorderStyle"
+
     case none
     case line
     case bezel
@@ -18,9 +20,9 @@ public enum TextBorderStyle: String {
 #if ReactantRuntime
     import UIKit
 
-    extension TextBorderStyle: Applicable {
+    extension TextBorderStyle {
 
-        public var value: Any? {
+        public var runtimeValue: Any? {
             switch self {
             case .none:
                 return UITextBorderStyle.none.rawValue

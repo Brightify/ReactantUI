@@ -34,59 +34,61 @@ extension XMLElement {
 }
 
 public class View: XMLElementDeserializable, UIElement {
+    static let backgroundColor = assignable(name: "backgroundColor", type: UIColorPropertyType.self)
+
     class var availableProperties: [PropertyDescription] {
         return [
-            assignable(name: "backgroundColor", type: .color(.uiColor)),
-            assignable(name: "clipsToBounds", type: .bool),
-            assignable(name: "isUserInteractionEnabled", key: "userInteractionEnabled", type: .bool),
-            assignable(name: "tintColor", type: .color(.uiColor)),
-            assignable(name: "isHidden", type: .bool),
-            assignable(name: "alpha", type: .float),
-            assignable(name: "isOpaque", type: .bool),
-            assignable(name: "isMultipleTouchEnabled", key: "multipleTouchEnabled", type: .bool),
-            assignable(name: "isExclusiveTouch", key: "exclusiveTouch", type: .bool),
-            assignable(name: "autoresizesSubviews", type: .bool),
-            assignable(name: "contentMode", type: .contentMode),
-            assignable(name: "translatesAutoresizingMaskIntoConstraints", type: .bool),
-            assignable(name: "preservesSuperviewLayoutMargins", type: .bool),
-            assignable(name: "tag", type: .integer),
-            assignable(name: "canBecomeFocused", type: .bool),
-            assignable(name: "visibility", type: .visibility),
-            assignable(name: "frame", type: .rect),
-            assignable(name: "bounds", type: .rect),
-            assignable(name: "layoutMargins", type: .edgeInsets)
+            backgroundColor,
+            assignable(name: "clipsToBounds", type: Bool.self),
+            assignable(name: "isUserInteractionEnabled", key: "userInteractionEnabled", type: Bool.self),
+            assignable(name: "tintColor", type: UIColorPropertyType.self),
+            assignable(name: "isHidden", type: Bool.self),
+            assignable(name: "alpha", type: Float.self),
+            assignable(name: "isOpaque", type: Bool.self),
+            assignable(name: "isMultipleTouchEnabled", key: "multipleTouchEnabled", type: Bool.self),
+            assignable(name: "isExclusiveTouch", key: "exclusiveTouch", type: Bool.self),
+            assignable(name: "autoresizesSubviews", type: Bool.self),
+            assignable(name: "contentMode", type: ContentMode.self),
+            assignable(name: "translatesAutoresizingMaskIntoConstraints", type: Bool.self),
+            assignable(name: "preservesSuperviewLayoutMargins", type: Bool.self),
+            assignable(name: "tag", type: Int.self),
+            assignable(name: "canBecomeFocused", type: Bool.self),
+            assignable(name: "visibility", type: ViewVisibility.self),
+            assignable(name: "frame", type: Rect.self),
+            assignable(name: "bounds", type: Rect.self),
+            assignable(name: "layoutMargins", type: EdgeInsets.self)
             ] + nested(field: "layer", namespace: "layer", properties: View.layerAvailableProperties)
     }
 
     static let layerAvailableProperties: [PropertyDescription] = [
-        assignable(name: "cornerRadius", type: .float),
-        assignable(name: "borderWidth", type: .float),
-        assignable(name: "borderColor", type: .color(.cgColor)),
-        assignable(name: "opacity", type: .float),
-        assignable(name: "isHidden", type: .bool),
-        assignable(name: "masksToBounds", type: .bool),
-        assignable(name: "isDoubleSided", key: "doubleSided", type: .bool),
-        assignable(name: "backgroundColor", type: .color(.cgColor)),
-        assignable(name: "shadowOpacity", type: .float),
-        assignable(name: "shadowRadius", type: .float),
-        assignable(name: "shadowColor", type: .color(.cgColor)),
-        assignable(name: "allowsEdgeAntialiasing", type: .bool),
-        assignable(name: "allowsGroupOpacity", type: .bool),
-        assignable(name: "isOpaque", key: "opaque", type: .bool),
-        assignable(name: "isGeometryFlipped", key: "geometryFlipped", type: .bool),
-        assignable(name: "shouldRasterize", type: .bool),
-        assignable(name: "rasterizationScale", type: .float),
-        assignable(name: "contentsFormat", type: .string),
-        assignable(name: "contentsScale", type: .float),
-        assignable(name: "zPosition", type: .float),
-        assignable(name: "name", type: .string),
-        assignable(name: "contentsRect", type: .rect),
-        assignable(name: "contentsCenter", type: .rect),
-        assignable(name: "shadowOffset", type: .size),
-        assignable(name: "frame", type: .rect),
-        assignable(name: "bounds", type: .rect),
-        assignable(name: "position", type: .point),
-        assignable(name: "anchorPoint", type: .point),
+        assignable(name: "cornerRadius", type: Float.self),
+        assignable(name: "borderWidth", type: Float.self),
+        assignable(name: "borderColor", type: CGColorPropertyType.self),
+        assignable(name: "opacity", type: Float.self),
+        assignable(name: "isHidden", type: Bool.self),
+        assignable(name: "masksToBounds", type: Bool.self),
+        assignable(name: "isDoubleSided", key: "doubleSided", type: Bool.self),
+        assignable(name: "backgroundColor", type: CGColorPropertyType.self),
+        assignable(name: "shadowOpacity", type: Float.self),
+        assignable(name: "shadowRadius", type: Float.self),
+        assignable(name: "shadowColor", type: CGColorPropertyType.self),
+        assignable(name: "allowsEdgeAntialiasing", type: Bool.self),
+        assignable(name: "allowsGroupOpacity", type: Bool.self),
+        assignable(name: "isOpaque", key: "opaque", type: Bool.self),
+        assignable(name: "isGeometryFlipped", key: "geometryFlipped", type: Bool.self),
+        assignable(name: "shouldRasterize", type: Bool.self),
+        assignable(name: "rasterizationScale", type: Float.self),
+        assignable(name: "contentsFormat", type: TransformedText.self),
+        assignable(name: "contentsScale", type: Float.self),
+        assignable(name: "zPosition", type: Float.self),
+        assignable(name: "name", type: TransformedText.self),
+        assignable(name: "contentsRect", type: Rect.self),
+        assignable(name: "contentsCenter", type: Rect.self),
+        assignable(name: "shadowOffset", type: Size.self),
+        assignable(name: "frame", type: Rect.self),
+        assignable(name: "bounds", type: Rect.self),
+        assignable(name: "position", type: Point.self),
+        assignable(name: "anchorPoint", type: Point.self),
     ]
 
     public class var runtimeType: String {
@@ -148,13 +150,15 @@ public class View: XMLElementDeserializable, UIElement {
             guard let propertyDescription = properties.first(where: { $0.matches(attributeName: attributeName) }) else {
                 continue
             }
-            guard let property = try propertyDescription.materialize(attributeName: attributeName, value: attribute.text) else {
-                #if ReactantRuntime
-                throw LiveUIError(message: "// Could not materialize property `\(propertyDescription)` from `\(attribute)`")
-                #else
-                throw TokenizationError(message: "// Could not materialize property `\(propertyDescription)` from `\(attribute)`")
-                #endif
-            }
+//            guard
+            let property = try propertyDescription.materialize(attributeName: attributeName, value: attribute.text)
+//            else {
+//                #if ReactantRuntime
+//                throw LiveUIError(message: "// Could not materialize property `\(propertyDescription)` from `\(attribute)`")
+//                #else
+//                throw TokenizationError(message: "// Could not materialize property `\(propertyDescription)` from `\(attribute)`")
+//                #endif
+//            }
             result.append(property)
         }
         return result

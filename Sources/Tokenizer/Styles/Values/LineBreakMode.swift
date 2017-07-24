@@ -8,7 +8,9 @@
 
 import Foundation
 
-public enum LineBreakMode: String {
+public enum LineBreakMode: String, EnumPropertyType {
+    public static let enumName = "NSLineBreakMode"
+
     case byWordWrapping
     case byCharWrapping
     case byClipping
@@ -20,9 +22,9 @@ public enum LineBreakMode: String {
 #if ReactantRuntime
 import UIKit
 
-extension LineBreakMode: Applicable {
+extension LineBreakMode {
 
-    public var value: Any? {
+    public var runtimeValue: Any? {
         switch self {
         case .byWordWrapping:
             return NSLineBreakMode.byWordWrapping.rawValue

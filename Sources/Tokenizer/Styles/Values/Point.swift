@@ -8,16 +8,27 @@
 
 import Foundation
 
-public struct Point {
-    let x: Float
-    let y: Float
+public struct Point: SupportedPropertyType {
+    public let x: Float
+    public let y: Float
+
+    public var generated: String {
+        return "CGPoint(x: \(x.cgFloat), y: \(y.cgFloat))"
+    }
+
+    public static func materialize(from value: String) throws -> Point {
+        let parts = value.components(separatedBy: ",").flatMap(Float.init)
+        guard parts.count == 2 else {
+            throw PropertyMaterializationError.unknownValue(value)
+        }
+        return Point(x: parts[0], y: parts[1])
+    }
 }
 
 #if ReactantRuntime
+    extension Point {
 
-    extension Point: Applicable {
-
-        public var value: Any? {
+        public var runtimeValue: Any? {
             return CGPoint(x: x.cgFloat, y: y.cgFloat)
         }
     }

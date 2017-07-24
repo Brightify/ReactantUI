@@ -8,9 +8,9 @@ import Foundation
 public class SegmentedControl: View {
     override class var availableProperties: [PropertyDescription] {
         return [
-            assignable(name: "selectedSegmentIndex", type: .integer),
-            assignable(name: "isMomentary", type: .bool),
-            assignable(name: "apportionsSegmentWidthsByContent", type: .bool),
+            assignable(name: "selectedSegmentIndex", type: Int.self),
+            assignable(name: "isMomentary", type: Bool.self),
+            assignable(name: "apportionsSegmentWidthsByContent", type: Bool.self),
             ] + super.availableProperties
     }
 

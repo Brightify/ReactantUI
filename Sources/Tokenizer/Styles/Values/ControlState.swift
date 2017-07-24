@@ -23,6 +23,12 @@ public enum ControlState: String {
     }
 }
 
+extension Array where Element == ControlState {
+    var name: String {
+        return flatMap { $0.rawValue }.joined(separator: ".")
+    }
+}
+
 #if ReactantRuntime
 import UIKit
 

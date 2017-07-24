@@ -6,32 +6,57 @@ import Reactant
 #endif
 
 public class TextField: View {
+    public static let text = assignable(name: "text", type: TransformedText.self)
+    public static let placeholder = assignable(name: "placeholder", type: TransformedText.self)
+    public static let font = assignable(name: "font", type: Font.self)
+    public static let textColor = assignable(name: "textColor", type: UIColorPropertyType.self)
+    public static let textAlignment = assignable(name: "textAlignment", type: TextAlignment.self)
+    public static let adjustsFontSizeToWidth = assignable(name: "adjustsFontSizeToWidth", type: Bool.self)
+    public static let minimumFontSize = assignable(name: "minimumFontSize", type: Float.self)
+    public static let clearsOnBeginEditing = assignable(name: "clearsOnBeginEditing", type: Bool.self)
+    public static let clearsOnInsertion = assignable(name: "clearsOnInsertion", type: Bool.self)
+    public static let allowsEditingTextAttributes = assignable(name: "allowsEditingTextAttributes", type: Bool.self)
+    public static let background = assignable(name: "background", type: Image.self)
+    public static let disabledBackground = assignable(name: "disabledBackground", type: Image.self)
+    public static let borderStyle = assignable(name: "borderStyle", type: TextBorderStyle.self)
+    public static let clearButtonMode = assignable(name: "clearButtonMode", type: TextFieldViewMode.self)
+    public static let leftViewMode = assignable(name: "leftViewMode", type: TextFieldViewMode.self)
+    public static let rightViewMode = assignable(name: "rightViewMode", type: TextFieldViewMode.self)
+    public static let contentEdgeInsets = assignable(name: "contentEdgeInsets", type: EdgeInsets.self)
+    public static let placeholderColor = assignable(name: "placeholderColor", type: UIColorPropertyType.self)
+    public static let placeholderFont = assignable(name: "placeholderFont", type: Font.self)
+    public static let isSecureTextEntry = assignable(name: "secure", swiftName: "isSecureTextEntry", key: "secureTextEntry", type: Bool.self)
+    public static let keyboardType = assignable(name: "keyboardType", type: KeyboardType.self)
+    public static let keyboardAppearance = assignable(name: "keyboardAppearance", type: KeyboardAppearance.self)
+    public static let contentType = assignable(name: "contentType", type: TextContentType.self)
+    public static let returnKey = assignable(name: "returnKey", type: ReturnKeyType.self)
+
     override class var availableProperties: [PropertyDescription] {
         return [
-            assignable(name: "text", type: .string),
-            assignable(name: "placeholder", type: .string),
-            assignable(name: "font", type: .font),
-            assignable(name: "textColor", type: .color(.uiColor)),
-            assignable(name: "textAlignment", type: .textAlignment),
-            assignable(name: "adjustsFontSizeToWidth", type: .bool),
-            assignable(name: "minimumFontSize", type: .float),
-            assignable(name: "clearsOnBeginEditing", type: .bool),
-            assignable(name: "clearsOnInsertion", type: .bool),
-            assignable(name: "allowsEditingTextAttributes", type: .bool),
-            assignable(name: "background", type: .image),
-            assignable(name: "disabledBackground", type: .image),
-            assignable(name: "borderStyle", type: .textBorderStyle),
-            assignable(name: "clearButtonMode", type: .textFieldViewMode),
-            assignable(name: "leftViewMode", type: .textFieldViewMode),
-            assignable(name: "rightViewMode", type: .textFieldViewMode),
-            assignable(name: "contentEdgeInsets", type: .edgeInsets),
-            assignable(name: "placeholderColor", type: .color(.uiColor)),
-            assignable(name: "placeholderFont", type: .font),
-            assignable(name: "secure", swiftName: "isSecureTextEntry", key: "secureTextEntry", type: .bool),
-            assignable(name: "keyboardType", type: .keyboardType),
-            assignable(name: "keyboardAppearance", type: .keyboardAppearance),
-            assignable(name: "contentType", type: .textContentType),
-            assignable(name: "returnKey", type: .returnKeyType),
+            text,
+            placeholder,
+            font,
+            textColor,
+            textAlignment,
+            adjustsFontSizeToWidth,
+            minimumFontSize,
+            clearsOnBeginEditing,
+            clearsOnInsertion,
+            allowsEditingTextAttributes,
+            background,
+            disabledBackground,
+            borderStyle,
+            clearButtonMode,
+            leftViewMode,
+            rightViewMode,
+            contentEdgeInsets,
+            placeholderColor,
+            placeholderFont,
+            isSecureTextEntry,
+            keyboardType,
+            keyboardAppearance,
+            contentType,
+            returnKey,
             ] + super.availableProperties
     }
 

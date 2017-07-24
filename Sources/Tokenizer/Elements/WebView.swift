@@ -9,9 +9,9 @@ import Foundation
 public class WebView: View {
     override class var availableProperties: [PropertyDescription] {
         return [
-            assignable(name: "allowsMagnification", type: .bool),
-            assignable(name: "magnification", type: .float),
-            assignable(name: "allowsBackForwardNavigationGestures", type: .bool),
+            assignable(name: "allowsMagnification", type: Bool.self),
+            assignable(name: "magnification", type: Float.self),
+            assignable(name: "allowsBackForwardNavigationGestures", type: Bool.self),
             ] + super.availableProperties
     }
 

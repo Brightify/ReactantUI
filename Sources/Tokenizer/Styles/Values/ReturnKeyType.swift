@@ -8,7 +8,9 @@
 
 import Foundation
 
-public enum ReturnKeyType: String {
+public enum ReturnKeyType: String, EnumPropertyType {
+    public static let enumName = "UIReturnKeyType"
+
     case `default`
     case go
     case google
@@ -26,9 +28,9 @@ public enum ReturnKeyType: String {
 #if ReactantRuntime
     import UIKit
 
-    extension ReturnKeyType: Applicable {
+    extension ReturnKeyType {
 
-        public var value: Any? {
+        public var runtimeValue: Any? {
             switch self {
             case .`default`:
                 return UIReturnKeyType.default.rawValue

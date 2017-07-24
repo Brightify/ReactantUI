@@ -1,6 +1,8 @@
 import Foundation
 
-public enum MapType: String {
+public enum MapType: String, EnumPropertyType {
+    public static let enumName = "MKMapType"
+
     case standard
     case satellite
     case hybrid
@@ -11,9 +13,9 @@ public enum MapType: String {
 #if ReactantRuntime
     import MapKit
 
-    extension MapType: Applicable {
+    extension MapType {
 
-        public var value: Any? {
+        public var runtimeValue: Any? {
             switch self {
             case .standard:
                 return MKMapType.standard.rawValue

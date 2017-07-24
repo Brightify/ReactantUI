@@ -1,8 +1,40 @@
 import Foundation
 
-public enum VisualEffect {
+public enum VisualEffect: SupportedPropertyType {
     case blur(BlurEffect)
     case vibrancy(BlurEffect)
+
+    public var generated: String {
+        switch self {
+        case .blur(let effect):
+            return "UIBlurEffect(style: .\(effect.rawValue))"
+        case .vibrancy(let effect):
+            return "UIVibrancyEffect(blurEffect: .\(effect.rawValue))"
+        }
+    }
+
+    #if ReactantRuntime
+    public var runtimeValue: Any? {
+        switch self {
+        case .blur(let effect):
+            return effect.runtimeValue
+        case .vibrancy(let effect):
+            guard let blurEffect = effect.runtimeValue as? UIBlurEffect else { return nil }
+            return UIVibrancyEffect(blurEffect: blurEffect)
+        }
+    }
+    #endif
+
+    public static func materialize(from value: String) throws -> VisualEffect {
+        let parts = value.components(separatedBy: ":")
+        guard parts.count == 2 && (parts.first == "blur" || parts.first == "vibrancy") else {
+            throw PropertyMaterializationError.unknownValue(value)
+        }
+        guard let effect = BlurEffect(rawValue: parts[1]) else {
+            throw PropertyMaterializationError.unknownValue(value)
+        }
+        return parts.first == "blur" ? .blur(effect) : .vibrancy(effect)
+    }
 }
 
 public enum BlurEffect: String {
@@ -16,9 +48,9 @@ public enum BlurEffect: String {
 #if ReactantRuntime
     import UIKit
 
-    extension BlurEffect: Applicable {
+    extension BlurEffect {
 
-        public var value: Any? {
+        public var runtimeValue: Any? {
             switch self {
             case .extraLight:
                 return UIBlurEffect(style: .extraLight)

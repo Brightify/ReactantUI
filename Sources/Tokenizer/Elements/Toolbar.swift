@@ -7,9 +7,9 @@ import Foundation
 public class Toolbar: View {
     override class var availableProperties: [PropertyDescription] {
         return [
-            assignable(name: "isTranslucent", key: "translucent", type: .bool),
-            assignable(name: "barStyle", type: .barStyle),
-            assignable(name: "barTintColor", type: .color(.uiColor)),
+            assignable(name: "isTranslucent", key: "translucent", type: Bool.self),
+            assignable(name: "barStyle", type: BarStyle.self),
+            assignable(name: "barTintColor", type: UIColorPropertyType.self),
             ] + super.availableProperties
     }
 

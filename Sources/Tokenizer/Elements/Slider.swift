@@ -7,18 +7,18 @@ import Foundation
 public class Slider: View {
     override class var availableProperties: [PropertyDescription] {
         return [
-            assignable(name: "value", type: .float),
-            assignable(name: "minimumValue", type: .float),
-            assignable(name: "maximumValue", type: .float),
-            assignable(name: "isContinuous", key: "continuous", type: .bool),
-            assignable(name: "minimumValueImage", type: .image),
-            assignable(name: "maximumValueImage", type: .image),
-            assignable(name: "minimumTrackTintColor", type: .color(.uiColor)),
-            assignable(name: "currentMinimumTrackImage", type: .image),
-            assignable(name: "maximumTrackTintColor", type: .color(.uiColor)),
-            assignable(name: "currentMaximumTrackImage", type: .image),
-            assignable(name: "thumbTintColor", type: .color(.uiColor)),
-            assignable(name: "currentThumbImage", type: .image),
+            assignable(name: "value", type: Float.self),
+            assignable(name: "minimumValue", type: Float.self),
+            assignable(name: "maximumValue", type: Float.self),
+            assignable(name: "isContinuous", key: "continuous", type: Bool.self),
+            assignable(name: "minimumValueImage", type: Image.self),
+            assignable(name: "maximumValueImage", type: Image.self),
+            assignable(name: "minimumTrackTintColor", type: UIColorPropertyType.self),
+            assignable(name: "currentMinimumTrackImage", type: Image.self),
+            assignable(name: "maximumTrackTintColor", type: UIColorPropertyType.self),
+            assignable(name: "currentMaximumTrackImage", type: Image.self),
+            assignable(name: "thumbTintColor", type: UIColorPropertyType.self),
+            assignable(name: "currentThumbImage", type: Image.self),
             ] + super.availableProperties
     }
 

@@ -55,7 +55,7 @@ public class UIGenerator: Generator {
                         l("return ReactantLiveUIManager.shared.extendedEdges(of: self)")
                         l("#else")
                     }
-                    l("return \(SupportedPropertyValue.rectEdge(root.edgesForExtendedLayout).generated)")
+                    l("return \(RectEdge.toGeneratedString(root.edgesForExtendedLayout))")
                     if isLiveEnabled {
                         l("#endif")
                     }
@@ -172,7 +172,7 @@ public class UIGenerator: Generator {
         }
 
         for property in element.properties {
-            l(property.application(property, name))
+            l(property.application(on: name))
         }
         l("\(superName).\(containedIn.addSubviewMethod)(\(name))")
         l()
@@ -287,7 +287,7 @@ public class UIGenerator: Generator {
                         l("\(root.stylesName).\(extendedStyle)(view)")
                     }
                     for property in style.properties {
-                        l(property.application(property, "view"))
+                        l(property.application(on: "view"))
                     }
                 }
             }
