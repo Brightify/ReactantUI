@@ -40,7 +40,7 @@ public class StyleGenerator: Generator {
                         l("\(group.swiftName).\(styleName)(view)")
                     }
                     for property in style.properties {
-                        l(property.application(property, "view"))
+                        l(property.application(on: "view"))
                     }
                 }
             }

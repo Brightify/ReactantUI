@@ -8,19 +8,22 @@
 
 import Foundation
 
-public enum TextFieldViewMode: String {
+public enum TextFieldViewMode: String, EnumPropertyType {
+    public static let enumName = "UITextFieldViewMode"
+
     case never
     case whileEditing
     case unlessEditing
     case always
 }
 
+
 #if ReactantRuntime
     import UIKit
 
-    extension TextFieldViewMode: Applicable {
+    extension TextFieldViewMode {
 
-        public var value: Any? {
+        public var runtimeValue: Any? {
             switch self {
             case .never:
                 return UITextFieldViewMode.never.rawValue

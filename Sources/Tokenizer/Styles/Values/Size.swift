@@ -8,17 +8,29 @@
 
 import Foundation
 
-public struct Size {
-    let width: Float
-    let height: Float
+public struct Size: SupportedPropertyType {
+    public let width: Float
+    public let height: Float
+
+    public var generated: String {
+        return "CGSize(width: \(width.cgFloat), height: \(height.cgFloat))"
+    }
+
+    public static func materialize(from value: String) throws -> Size {
+        let parts = value.components(separatedBy: ",").flatMap(Float.init)
+        guard parts.count == 2 else {
+            throw PropertyMaterializationError.unknownValue(value)
+        }
+        return Size(width: parts[0], height: parts[1])
+    }
 }
 
 #if ReactantRuntime
     import UIKit
 
-    extension Size: Applicable {
+    extension Size {
 
-        public var value: Any? {
+        public var runtimeValue: Any? {
             return CGSize(width: width.cgFloat, height: height.cgFloat)
         }
     }

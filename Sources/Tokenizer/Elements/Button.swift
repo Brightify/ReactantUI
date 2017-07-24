@@ -5,21 +5,35 @@ import UIKit
 #endif
 
 public class Button: Container {
+    public static let title = controlState(name: "title", type: TransformedText.self)
+    public static let titleColor = controlState(name: "titleColor", type: UIColorPropertyType.self)
+    public static let backgroundColorForState = controlState(name: "backgroundColor", type: UIColorPropertyType.self)
+    public static let titleShadowColor = controlState(name: "titleShadowColor", type: UIColorPropertyType.self)
+    public static let image = controlState(name: "image", type: Image.self)
+    public static let backgroundImage = controlState(name: "backgroundImage", type: Image.self)
+    public static let reversesTitleShadowWhenHighlighted = assignable(name: "reversesTitleShadowWhenHighlighted", type: Bool.self)
+    public static let adjustsImageWhenHighlighted = assignable(name: "adjustsImageWhenHighlighted", type: Bool.self)
+    public static let adjustsImageWhenDisabled = assignable(name: "adjustsImageWhenDisabled", type: Bool.self)
+    public static let showsTouchWhenHighlighted = assignable(name: "showsTouchWhenHighlighted", type: Bool.self)
+    public static let contentEdgeInsets = assignable(name: "contentEdgeInsets", type: EdgeInsets.self)
+    public static let titleEdgeInsets = assignable(name: "titleEdgeInsets", type: EdgeInsets.self)
+    public static let imageEdgeInsets = assignable(name: "imageEdgeInsets", type: EdgeInsets.self)
+
     override class var availableProperties: [PropertyDescription] {
         return [
-            controlState(name: "title", type: .string),
-            controlState(name: "titleColor", type: .color(.uiColor)),
-            controlState(name: "backgroundColor", type: .color(.uiColor)),
-            controlState(name: "titleShadowColor", type: .color(.uiColor)),
-            controlState(name: "image", type: .image),
-            controlState(name: "backgroundImage", type: .image),
-            assignable(name: "reversesTitleShadowWhenHighlighted", type: .bool),
-            assignable(name: "adjustsImageWhenHighlighted", type: .bool),
-            assignable(name: "adjustsImageWhenDisabled", type: .bool),
-            assignable(name: "showsTouchWhenHighlighted", type: .bool),
-            assignable(name: "contentEdgeInsets", type: .edgeInsets),
-            assignable(name: "titleEdgeInsets", type: .edgeInsets),
-            assignable(name: "imageEdgeInsets", type: .edgeInsets),
+            title,
+            titleColor,
+            backgroundColorForState,
+            titleShadowColor,
+            image,
+            backgroundImage,
+            reversesTitleShadowWhenHighlighted,
+            adjustsImageWhenHighlighted,
+            adjustsImageWhenDisabled,
+            showsTouchWhenHighlighted,
+            contentEdgeInsets,
+            titleEdgeInsets,
+            imageEdgeInsets,
         ] + super.availableProperties
             + nested(field: "titleLabel", namespace: "titleLabel", optional: true, properties: Label.availableProperties)
             + nested(field: "imageView", namespace: "imageView", optional: true, properties: Label.availableProperties)

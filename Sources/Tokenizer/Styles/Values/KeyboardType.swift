@@ -8,7 +8,9 @@
 
 import Foundation
 
-public enum KeyboardType: String {
+public enum KeyboardType: String, EnumPropertyType {
+    public static let enumName = "UIKeyboardType"
+
     case `default`
     case asciiCapable
     case numbersAndPunctuation
@@ -26,9 +28,9 @@ public enum KeyboardType: String {
 #if ReactantRuntime
     import UIKit
 
-    extension KeyboardType: Applicable {
+    extension KeyboardType {
 
-        public var value: Any? {
+        public var runtimeValue: Any? {
             switch self {
             case .`default`:
                 return UIKeyboardType.default.rawValue

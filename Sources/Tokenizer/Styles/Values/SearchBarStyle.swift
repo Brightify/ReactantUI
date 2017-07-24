@@ -1,6 +1,8 @@
 import Foundation
 
-public enum SearchBarStyle: String {
+public enum SearchBarStyle: String, EnumPropertyType {
+    public static let enumName = "UISearchBarStyle"
+
     case `default`
     case minimal
     case prominent
@@ -9,9 +11,9 @@ public enum SearchBarStyle: String {
 #if ReactantRuntime
     import UIKit
 
-    extension SearchBarStyle: Applicable {
+    extension SearchBarStyle {
 
-        public var value: Any? {
+        public var runtimeValue: Any? {
             switch self {
             case .`default`:
                 return UISearchBarStyle.default.rawValue

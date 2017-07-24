@@ -7,11 +7,11 @@ import Foundation
 public class Switch: View {
     override class var availableProperties: [PropertyDescription] {
         return [
-            assignable(name: "isOn", type: .bool),
-            assignable(name: "onTintColor", type: .color(.uiColor)),
-            assignable(name: "thumbTintColor", type: .color(.uiColor)),
-            assignable(name: "onImage", type: .image),
-            assignable(name: "offImage", type: .image),
+            assignable(name: "isOn", type: Bool.self),
+            assignable(name: "onTintColor", type: UIColorPropertyType.self),
+            assignable(name: "thumbTintColor", type: UIColorPropertyType.self),
+            assignable(name: "onImage", type: Image.self),
+            assignable(name: "offImage", type: Image.self),
             ] + super.availableProperties
     }
 

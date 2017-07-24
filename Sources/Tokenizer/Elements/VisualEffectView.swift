@@ -7,7 +7,7 @@ import Foundation
 public class VisualEffectView: View {
     override class var availableProperties: [PropertyDescription] {
         return [
-            assignable(name: "effect", type: .visualEffect),
+            assignable(name: "effect", type: VisualEffect.self),
             ] + super.availableProperties
     }
 

@@ -65,7 +65,7 @@ public class ReactantLiveUIApplier {
         }
 
         for property in try (commonStyles + definition.styles).resolveStyle(for: element) {
-            try property.apply(property, view)
+            try property.apply(on: view)
         }
 
         containedIn.add(subview: view, toInstanceOfSelf: superview)

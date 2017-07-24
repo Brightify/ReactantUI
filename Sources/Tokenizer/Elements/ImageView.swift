@@ -4,15 +4,37 @@ import Foundation
 import UIKit
 #endif
 
+public struct Image: SupportedPropertyType {
+    public let name: String
+
+    public var generated: String {
+        return "UIImage(named: \"\(name)\")"
+    }
+
+    #if ReactantRuntime
+    public var runtimeValue: Any? {
+        return UIImage(named: name)
+    }
+    #endif
+
+    public init(named name: String) {
+        self.name = name
+    }
+
+    public static func materialize(from value: String) throws -> Image {
+        return Image(named: value)
+    }
+}
+
 public class ImageView: View {
     override class var availableProperties: [PropertyDescription] {
         return [
-            assignable(name: "image", type: .image),
-            assignable(name: "highlightedImage", type: .image),
-            assignable(name: "animationDuration", type: .double),
-            assignable(name: "animationRepeatCount", type: .integer),
-            assignable(name: "isHighlighted", key: "highlighted", type: .bool),
-            assignable(name: "adjustsImageWhenAncestorFocused", type: .bool),
+            assignable(name: "image", type: Image.self),
+            assignable(name: "highlightedImage", type: Image.self),
+            assignable(name: "animationDuration", type: Double.self),
+            assignable(name: "animationRepeatCount", type: Int.self),
+            assignable(name: "isHighlighted", key: "highlighted", type: Bool.self),
+            assignable(name: "adjustsImageWhenAncestorFocused", type: Bool.self),
         ] + super.availableProperties
     }
 

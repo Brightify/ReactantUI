@@ -7,12 +7,12 @@ import Foundation
 public class TextView: View {
     override class var availableProperties: [PropertyDescription] {
         return [
-            assignable(name: "text", type: .string),
-            assignable(name: "font", type: .font),
-            assignable(name: "textColor", type: .color(.uiColor)),
-            assignable(name: "textAlignment", type: .textAlignment),
-            assignable(name: "textContainerInset", type: .edgeInsets),
-            assignable(name: "allowsEditingTextAttributes", type: .bool),
+            assignable(name: "text", type: TransformedText.self),
+            assignable(name: "font", type: Font.self),
+            assignable(name: "textColor", type: UIColorPropertyType.self),
+            assignable(name: "textAlignment", type: TextAlignment.self),
+            assignable(name: "textContainerInset", type: EdgeInsets.self),
+            assignable(name: "allowsEditingTextAttributes", type: Bool.self),
             ] + super.availableProperties
     }
 

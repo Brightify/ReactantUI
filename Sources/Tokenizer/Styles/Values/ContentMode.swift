@@ -1,4 +1,8 @@
-public enum ContentMode: String {
+
+
+public enum ContentMode: String, EnumPropertyType {
+    public static let enumName = "UIViewContentMode"
+
     case scaleAspectFit
     case scaleAspectFill
 }
@@ -6,9 +10,9 @@ public enum ContentMode: String {
 #if ReactantRuntime
 import UIKit
 
-extension ContentMode: Applicable {
+extension ContentMode {
 
-    public var value: Any? {
+    public var runtimeValue: Any? {
         switch self {
         case .scaleAspectFill:
             return UIViewContentMode.scaleAspectFill.rawValue

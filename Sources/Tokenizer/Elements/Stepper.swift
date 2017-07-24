@@ -7,13 +7,13 @@ import Foundation
 public class Stepper: View {
     override class var availableProperties: [PropertyDescription] {
         return [
-            assignable(name: "value", type: .double),
-            assignable(name: "minimumValue", type: .double),
-            assignable(name: "maximumValue", type: .double),
-            assignable(name: "stepValue", type: .double),
-            assignable(name: "isContinuous", key: "continuous", type: .bool),
-            assignable(name: "autorepeat", type: .bool),
-            assignable(name: "wraps", type: .bool),
+            assignable(name: "value", type: Double.self),
+            assignable(name: "minimumValue", type: Double.self),
+            assignable(name: "maximumValue", type: Double.self),
+            assignable(name: "stepValue", type: Double.self),
+            assignable(name: "isContinuous", key: "continuous", type: Bool.self),
+            assignable(name: "autorepeat", type: Bool.self),
+            assignable(name: "wraps", type: Bool.self),
             ] + super.availableProperties
     }
 

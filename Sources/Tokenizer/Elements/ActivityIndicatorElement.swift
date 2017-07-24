@@ -5,11 +5,15 @@ import Foundation
 #endif
 
 public class ActivityIndicatorElement: View {
+    public static let color = assignable(name: "color", type: UIColorPropertyType.self)
+    public static let hidesWhenStopped = assignable(name: "hidesWhenStopped", type: Bool.self)
+    public static let indicatorStyle = assignable(name: "indicatorStyle", swiftName: "activityIndicatorViewStyle", key: "activityIndicatorViewStyle", type: ActivityIndicatorStyle.self)
+
     override class var availableProperties: [PropertyDescription] {
         return [
-                assignable(name: "color", type: .color(.uiColor)),
-                assignable(name: "hidesWhenStopped", type: .bool),
-                assignable(name: "indicatorStyle", swiftName: "activityIndicatorViewStyle", key: "activityIndicatorViewStyle", type: .activityIndicatorStyle)
+                color,
+                hidesWhenStopped,
+                indicatorStyle,
             ] + super.availableProperties
     }
 

@@ -7,8 +7,8 @@ import Foundation
 public class DatePicker: View {
     override class var availableProperties: [PropertyDescription] {
         return [
-            assignable(name: "minuteInterval", type: .integer),
-            assignable(name: "mode", swiftName: "datePickerMode", key: "datePickerMode", type: .datePickerMode),
+            assignable(name: "minuteInterval", type: Int.self),
+            assignable(name: "mode", swiftName: "datePickerMode", key: "datePickerMode", type: DatePickerMode.self),
             ] + super.availableProperties
     }
 

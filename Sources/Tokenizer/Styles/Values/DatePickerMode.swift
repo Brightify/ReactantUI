@@ -8,7 +8,9 @@
 
 import Foundation
 
-public enum DatePickerMode: String {
+public enum DatePickerMode: String, EnumPropertyType {
+    public static let enumName = "UIDatePickerMode"
+
     case date
     case time
     case dateAndTime
@@ -18,9 +20,9 @@ public enum DatePickerMode: String {
 #if ReactantRuntime
 import UIKit
 
-extension DatePickerMode: Applicable {
+extension DatePickerMode {
 
-    public var value: Any? {
+    public var runtimeValue: Any? {
         switch self {
         case .time:
             return UIDatePickerMode.time.rawValue

@@ -8,13 +8,17 @@
 
 import Foundation
 
-public enum ViewVisibility: String {
+public enum ViewVisibility: String, EnumPropertyType {
+    public static let enumName = "Visibility"
+
     case visible
     case hidden
     case collapsed
 }
 
-public enum ViewCollapseAxis: String {
+public enum ViewCollapseAxis: String, EnumPropertyType {
+    public static let enumName = "CollapseAxis"
+
     case horizontal
     case vertical
     case both
@@ -23,9 +27,9 @@ public enum ViewCollapseAxis: String {
 #if ReactantRuntime
     import Reactant
 
-    extension ViewVisibility: Applicable {
+    extension ViewVisibility {
 
-        public var value: Any? {
+        public var runtimeValue: Any? {
             switch self {
             case .visible:
                 return Visibility.visible.rawValue
@@ -40,9 +44,9 @@ public enum ViewCollapseAxis: String {
 
 #if ReactantRuntime
 
-    extension ViewCollapseAxis: Applicable {
+    extension ViewCollapseAxis {
 
-        public var value: Any? {
+        public var runtimeValue: Any? {
             switch self {
             case .both:
                 return CollapseAxis.both.rawValue

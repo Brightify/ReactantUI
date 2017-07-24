@@ -8,19 +8,19 @@ import Foundation
 public class MapView: View {
     override class var availableProperties: [PropertyDescription] {
         return [
-            assignable(name: "mapType", type: .mapType),
-            assignable(name: "isZoomEnabled", key: "zoomEnabled", type: .bool),
-            assignable(name: "isScrollEnabled", key: "scrollEnabled", type: .bool),
-            assignable(name: "isPitchEnabled", key: "pitchEnabled", type: .bool),
-            assignable(name: "isRotateEnabled", key: "rotateEnabled", type: .bool),
-            assignable(name: "showsPointsOfInterest", type: .bool),
-            assignable(name: "showsBuildings", type: .bool),
-            assignable(name: "showsCompass", type: .bool),
-            assignable(name: "showsZoomControls", type: .bool),
-            assignable(name: "showsScale", type: .bool),
-            assignable(name: "showsTraffic", type: .bool),
-            assignable(name: "showsUserLocation", type: .bool),
-            assignable(name: "isUserLocationVisible", key: "userLocationVisible", type: .bool),
+            assignable(name: "mapType", type: MapType.self),
+            assignable(name: "isZoomEnabled", key: "zoomEnabled", type: Bool.self),
+            assignable(name: "isScrollEnabled", key: "scrollEnabled", type: Bool.self),
+            assignable(name: "isPitchEnabled", key: "pitchEnabled", type: Bool.self),
+            assignable(name: "isRotateEnabled", key: "rotateEnabled", type: Bool.self),
+            assignable(name: "showsPointsOfInterest", type: Bool.self),
+            assignable(name: "showsBuildings", type: Bool.self),
+            assignable(name: "showsCompass", type: Bool.self),
+            assignable(name: "showsZoomControls", type: Bool.self),
+            assignable(name: "showsScale", type: Bool.self),
+            assignable(name: "showsTraffic", type: Bool.self),
+            assignable(name: "showsUserLocation", type: Bool.self),
+            assignable(name: "isUserLocationVisible", key: "userLocationVisible", type: Bool.self),
             ] + super.availableProperties
     }
 

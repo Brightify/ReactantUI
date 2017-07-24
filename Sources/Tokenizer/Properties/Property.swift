@@ -2,13 +2,18 @@
 import UIKit
 #endif
 
-public struct Property {
-    public var attributeName: String
-    public var value: SupportedPropertyValue
+public protocol Property {
+    var attributeName: String { get }
 
-    public var application: (Property, String) -> String
+    func application(on target: String) -> String
 
     #if ReactantRuntime
-    public var apply: (Property, AnyObject) throws -> Void
+    func apply(on object: AnyObject) throws -> Void
     #endif
+}
+
+public protocol TypedProperty: Property {
+    associatedtype ValueType: SupportedPropertyType
+
+    var value: ValueType { get set }
 }

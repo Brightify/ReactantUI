@@ -8,7 +8,9 @@
 
 import Foundation
 
-public enum BarStyle: String {
+public enum BarStyle: String, EnumPropertyType {
+    public static let enumName = "UIBarStyle"
+
     case `default`
     case black
     case blackTranslucent
@@ -16,10 +18,10 @@ public enum BarStyle: String {
 
 #if ReactantRuntime
 import UIKit
-    
-extension BarStyle: Applicable {
 
-        public var value: Any? {
+extension BarStyle {
+
+        public var runtimeValue: Any? {
             switch self {
             case .`default`:
                 return UIBarStyle.default.rawValue

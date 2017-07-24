@@ -7,21 +7,21 @@ import UIKit
 public class Label: View {
     override class var availableProperties: [PropertyDescription] {
         return [
-            assignable(name: "text", type: .string),
-            assignable(name: "textColor", type: .color(.uiColor)),
-            assignable(name: "highlightedTextColor", type: .color(.uiColor)),
-            assignable(name: "font", type: .font),
-            assignable(name: "numberOfLines", type: .integer),
-            assignable(name: "textAlignment", type: .textAlignment),
-            assignable(name: "isEnabled", key: "enabled", type: .bool),
-            assignable(name: "adjustsFontSizeToFitWidth", type: .bool),
-            assignable(name: "allowsDefaultTighteningBeforeTruncation", type: .bool),
-            assignable(name: "minimumScaleFactor", type: .float),
-            assignable(name: "isHighlighted", key: "highlighted", type: .bool),
-            assignable(name: "shadowOffset", type: .size),
-            assignable(name: "shadowColor", type: .color(.uiColor)),
-            assignable(name: "preferredMaxLayoutWidth", type: .float),
-            assignable(name: "lineBreakMode", type: .lineBreakMode),
+            assignable(name: "text", type: TransformedText.self),
+            assignable(name: "textColor", type: UIColorPropertyType.self),
+            assignable(name: "highlightedTextColor", type: UIColorPropertyType.self),
+            assignable(name: "font", type: Font.self),
+            assignable(name: "numberOfLines", type: Int.self),
+            assignable(name: "textAlignment", type: TextAlignment.self),
+            assignable(name: "isEnabled", key: "enabled", type: Bool.self),
+            assignable(name: "adjustsFontSizeToFitWidth", type: Bool.self),
+            assignable(name: "allowsDefaultTighteningBeforeTruncation", type: Bool.self),
+            assignable(name: "minimumScaleFactor", type: Float.self),
+            assignable(name: "isHighlighted", key: "highlighted", type: Bool.self),
+            assignable(name: "shadowOffset", type: Size.self),
+            assignable(name: "shadowColor", type: UIColorPropertyType.self),
+            assignable(name: "preferredMaxLayoutWidth", type: Float.self),
+            assignable(name: "lineBreakMode", type: LineBreakMode.self),
         ] + super.availableProperties
     }
 

@@ -8,7 +8,9 @@
 
 import Foundation
 
-public enum KeyboardAppearance: String {
+public enum KeyboardAppearance: String, EnumPropertyType {
+    public static let enumName = "UIKeyboardAppearance"
+
     case `default`
     case dark
     case light
@@ -17,9 +19,9 @@ public enum KeyboardAppearance: String {
 #if ReactantRuntime
     import UIKit
 
-    extension KeyboardAppearance: Applicable {
+    extension KeyboardAppearance {
 
-        public var value: Any? {
+        public var runtimeValue: Any? {
             switch self {
             case .`default`:
                 return UIKeyboardAppearance.default.rawValue

@@ -8,7 +8,9 @@
 
 import Foundation
 
-public enum ScrollViewIndicatorStyle: String {
+public enum ScrollViewIndicatorStyle: String, EnumPropertyType {
+    public static let enumName = "UIScrollViewIndicatorStyle"
+
     case `default`
     case black
     case white
@@ -17,9 +19,9 @@ public enum ScrollViewIndicatorStyle: String {
 #if ReactantRuntime
     import UIKit
 
-    extension ScrollViewIndicatorStyle: Applicable {
+    extension ScrollViewIndicatorStyle {
 
-        public var value: Any? {
+        public var runtimeValue: Any? {
             switch self {
             case .default:
                 return UIScrollViewIndicatorStyle.default.rawValue

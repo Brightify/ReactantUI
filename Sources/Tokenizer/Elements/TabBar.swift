@@ -7,14 +7,14 @@ import Foundation
 public class TabBar: View {
     override class var availableProperties: [PropertyDescription] {
         return [
-            assignable(name: "isTranslucent", key: "translucent", type: .bool),
-            assignable(name: "barStyle", type: .barStyle),
-            assignable(name: "barTintColor", type: .color(.uiColor)),
-            assignable(name: "itemSpacing", type: .float),
-            assignable(name: "itemWidth", type: .float),
-            assignable(name: "backgroundImage", type: .image),
-            assignable(name: "shadowImage", type: .image),
-            assignable(name: "selectionIndicatorImage", type: .image),
+            assignable(name: "isTranslucent", key: "translucent", type: Bool.self),
+            assignable(name: "barStyle", type: BarStyle.self),
+            assignable(name: "barTintColor", type: UIColorPropertyType.self),
+            assignable(name: "itemSpacing", type: Float.self),
+            assignable(name: "itemWidth", type: Float.self),
+            assignable(name: "backgroundImage", type: Image.self),
+            assignable(name: "shadowImage", type: Image.self),
+            assignable(name: "selectionIndicatorImage", type: Image.self),
             ] + super.availableProperties
     }
 

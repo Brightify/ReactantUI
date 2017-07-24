@@ -1,4 +1,6 @@
-public enum TextAlignment: String {
+public enum TextAlignment: String, EnumPropertyType {
+    public static let enumName = "NSTextAlignment"
+
     case left
     case right
     case center
@@ -9,9 +11,9 @@ public enum TextAlignment: String {
 #if ReactantRuntime
     import UIKit
 
-    extension TextAlignment: Applicable {
+    extension TextAlignment {
 
-        public var value: Any? {
+        public var runtimeValue: Any? {
             switch self {
             case .center:
                 return NSTextAlignment.center.rawValue

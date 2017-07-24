@@ -8,7 +8,9 @@
 
 import Foundation
 
-public enum LayoutAlignment: String {
+public enum LayoutAlignment: String, EnumPropertyType {
+    public static let enumName = "UIStackViewAlignment"
+
     case fill
     case firstBaseline
     case lastBaseline
@@ -20,9 +22,9 @@ public enum LayoutAlignment: String {
 #if ReactantRuntime
     import UIKit
 
-    extension LayoutAlignment: Applicable {
+    extension LayoutAlignment {
 
-        public var value: Any? {
+        public var runtimeValue: Any? {
             switch self {
             case .center:
                 return UIStackViewAlignment.center.rawValue

@@ -8,7 +8,9 @@
 
 import Foundation
 
-public enum TextContentType: String {
+public enum TextContentType: String, EnumPropertyType {
+    public static let enumName = "UITextContentType"
+
     case URL
     case addressCity
     case addressCityAndState
@@ -39,9 +41,9 @@ public enum TextContentType: String {
 #if ReactantRuntime
     import UIKit
 
-    extension TextContentType: Applicable {
+    extension TextContentType {
 
-        public var value: Any? {
+        public var runtimeValue: Any? {
             if #available(iOS 10.0, *) {
                 switch self {
                 case .URL:

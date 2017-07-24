@@ -4,8 +4,6 @@ protocol OptionSetValue {
     var value: Value { get }
 }
 
-
-
 extension Sequence where Iterator.Element: OptionSetValue {
     func resolveUnion() -> Iterator.Element.Value {
         return reduce([] as Iterator.Element.Value) {

@@ -4,15 +4,44 @@ import Foundation
 import UIKit
 #endif
 
+public enum LayoutAxis: String, SupportedPropertyType {
+    case vertical
+    case horizontal
+
+    public var generated: String {
+        switch self {
+        case .vertical:
+            return "UILayoutConstraintAxis.vertical"
+        case .horizontal:
+            return "UILayoutConstraintAxis.horizontal"
+        }
+    }
+}
+
+#if ReactantRuntime
+    import UIKit
+
+    extension LayoutAxis {
+        public var runtimeValue: Any? {
+            switch self {
+            case .vertical:
+                return UILayoutConstraintAxis.vertical
+            case .horizontal:
+                return UILayoutConstraintAxis.horizontal
+            }
+        }
+    }
+#endif
+
 public class StackView: Container {
     override class var availableProperties: [PropertyDescription] {
         return [
-            assignable(name: "axis", type: .layoutAxis),
-            assignable(name: "spacing", type: .float),
-            assignable(name: "distribution", type: .layoutDistribution),
-            assignable(name: "alignment", type: .layoutAlignment),
-            assignable(name: "isBaselineRelativeArrangement", key: "baselineRelativeArrangement", type: .bool),
-            assignable(name: "isLayoutMarginsRelativeArrangement", key: "layoutMarginsRelativeArrangement", type: .bool),
+            assignable(name: "axis", type: LayoutAxis.self),
+            assignable(name: "spacing", type: Float.self),
+            assignable(name: "distribution", type: LayoutDistribution.self),
+            assignable(name: "alignment", type: LayoutAlignment.self),
+            assignable(name: "isBaselineRelativeArrangement", key: "baselineRelativeArrangement", type: Bool.self),
+            assignable(name: "isLayoutMarginsRelativeArrangement", key: "layoutMarginsRelativeArrangement", type: Bool.self),
         ] + super.availableProperties
     }
 

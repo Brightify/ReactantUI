@@ -8,19 +8,34 @@
 
 import Foundation
 
-public struct EdgeInsets {
+public struct EdgeInsets: SupportedPropertyType {
     let top: Float
     let left: Float
     let bottom: Float
     let right: Float
+
+    public var generated: String {
+        return "UIEdgeInsetsMake(\(top.cgFloat), \(left.cgFloat), \(bottom.cgFloat), \(right.cgFloat))"
+    }
+
+    public static func materialize(from value: String) throws -> EdgeInsets {
+        let parts = value.components(separatedBy: ",").flatMap(Float.init)
+        guard parts.count == 4 || parts.count == 2 else {
+            throw PropertyMaterializationError.unknownValue(value)
+        }
+        if parts.count == 4 {
+            return EdgeInsets(top: parts[0], left: parts[1], bottom: parts[2], right: parts[3])
+        }
+        return EdgeInsets(top: parts[1], left: parts[0], bottom: parts[1], right: parts[0])
+    }
 }
 
 #if ReactantRuntime
 import UIKit
 
-extension EdgeInsets: Applicable {
+extension EdgeInsets {
 
-    public var value: Any? {
+    public var runtimeValue: Any? {
         return UIEdgeInsetsMake(top.cgFloat, left.cgFloat, bottom.cgFloat, right.cgFloat)
     }
 }
