@@ -33,7 +33,7 @@ public class AnonymousLiveComponent: ViewBase<Void, Void>, Anonymous {
     public override func value(forUndefinedKey key: String) -> Any? {
         return _properties[key]
     }
-    
+
     public override func setValue(_ value: Any?, forUndefinedKey key: String) {
         _properties[key] = value
     }
@@ -58,11 +58,11 @@ extension AnonymousComponent: ReactantUI {
         fileprivate static var associatedObjectKey = 0 as UInt8
 
         let xmlPath: String
-        
+
         let typeName: String
-        
+
         private weak var target: AnonymousComponent?
-        
+
         fileprivate init(target: AnonymousComponent) {
             self.target = target
             self.xmlPath = target._xmlPath
