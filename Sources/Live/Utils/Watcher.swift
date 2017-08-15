@@ -33,7 +33,7 @@ public class Watcher {
         let path = self.path
         let handle = open(path , O_EVTONLY)
         guard handle != -1 else {
-            throw Error(message: "Failed to open file")
+            throw Error(message: "Watcher: Failed to open file \(path)")
         }
 
         let source = DispatchSource.makeFileSystemObjectSource(fileDescriptor: handle, eventMask: events, queue: queue)
