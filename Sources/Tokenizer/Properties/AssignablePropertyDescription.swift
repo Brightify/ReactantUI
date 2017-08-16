@@ -32,12 +32,14 @@ public struct AssignableProperty<T: SupportedPropertyType>: TypedProperty {
 
     #if ReactantRuntime
     public func apply(on object: AnyObject) throws {
+        NSLog("apply \(attributeName) \(value)")
         let key = description.key
         guard let resolvedValue = value.runtimeValue else {
             throw LiveUIError(message: "!! Value `\(value)` couldn't be resolved in runtime for key `\(key)`")
         }
 
         guard object.responds(to: Selector("set\(key.capitalizingFirstLetter()):")) else {
+            NSLog("THE FUCK apply \(attributeName) \(value)")
             throw LiveUIError(message: "!! Object `\(object)` doesn't respond to selector `\(key)` to set value `\(value)`")
         }
         var mutableObject: AnyObject? = resolvedValue as AnyObject

@@ -33,6 +33,58 @@ extension XMLElement {
     }
 }
 
+public protocol PropertyContainer {
+    static func assignable<T: SupportedPropertyType>(name: String, type: T.Type) -> AssignablePropertyDescription<T>
+    
+    static func assignable<T: SupportedPropertyType>(name: String, key: String, type: T.Type) -> AssignablePropertyDescription<T>
+    
+    static func assignable<T: SupportedPropertyType>(name: String, swiftName: String, key: String, type: T.Type) -> AssignablePropertyDescription<T>
+    
+    static func controlState<T: SupportedPropertyType>(name: String, type: T.Type) -> ControlStatePropertyDescription<T>
+    
+    static func controlState<T: SupportedPropertyType>(name: String, key: String, type: T.Type) -> ControlStatePropertyDescription<T>
+}
+
+public extension PropertyContainer {
+    public static func assignable<T: SupportedPropertyType>(name: String, type: T.Type) -> AssignablePropertyDescription<T> {
+        return assignable(name: name, key: name, type: type)
+    }
+    
+    public static func assignable<T: SupportedPropertyType>(name: String, key: String, type: T.Type) -> AssignablePropertyDescription<T> {
+        return assignable(name: name, swiftName: name, key: key, type: type)
+    }
+    
+    public static func assignable<T: SupportedPropertyType>(name: String, swiftName: String, key: String, type: T.Type) -> AssignablePropertyDescription<T> {
+        return AssignablePropertyDescription(name: name, swiftName: swiftName, key: key)
+    }
+    
+    public static func controlState<T: SupportedPropertyType>(name: String, type: T.Type) -> ControlStatePropertyDescription<T> {
+        return controlState(name: name, key: name, type: type)
+    }
+    
+    public static func controlState<T: SupportedPropertyType>(name: String, key: String, type: T.Type) -> ControlStatePropertyDescription<T> {
+        return ControlStatePropertyDescription(name: name, key: key)
+    }
+}
+
+public protocol NestedPropertyContainer {
+    static var namespace: String { get }
+    
+    static func nested<T: SupportedPropertyType>(_ property: AssignablePropertyDescription<T>) -> AssignablePropertyDescription<T>
+    
+    static func nested<T: SupportedPropertyType>(_ property: ControlStatePropertyDescription<T>) -> ControlStatePropertyDescription<T>
+}
+
+extension NestedPropertyContainer {
+    public static func nested<T: SupportedPropertyType>(_ property: AssignablePropertyDescription<T>) -> AssignablePropertyDescription<T> {
+        return AssignablePropertyDescription(name: "\(namespace).\(property.name)", swiftName: property.swiftName, key: property.key)
+    }
+    
+    public static func nested<T: SupportedPropertyType>(_ property: ControlStatePropertyDescription<T>) -> ControlStatePropertyDescription<T> {
+        return ControlStatePropertyDescription(name: "\(namespace).\(property.name)", key: property.key)
+    }
+}
+
 public class View: XMLElementDeserializable, UIElement {
     public static let backgroundColor = assignable(name: "backgroundColor", type: UIColorPropertyType.self)
     public static let clipsToBounds = assignable(name: "clipsToBounds", type: Bool.self)
@@ -78,7 +130,40 @@ public class View: XMLElementDeserializable, UIElement {
             ] + nested(field: "layer", namespace: "layer", properties: View.layerAvailableProperties)
     }
     
-    public struct Layer {
+    public struct Layer: NestedPropertyContainer {
+        public static let namespace = "layer"
+        
+        public static let cornerRadius = nested(LayerProperties.cornerRadius)
+        public static let borderWidth = nested(LayerProperties.borderWidth)
+        public static let borderColor = nested(LayerProperties.borderColor)
+        public static let opacity = nested(LayerProperties.opacity)
+        public static let isHidden = nested(LayerProperties.isHidden)
+        public static let masksToBounds = nested(LayerProperties.masksToBounds)
+        public static let isDoubleSided = nested(LayerProperties.isDoubleSided)
+        public static let backgroundColor = nested(LayerProperties.backgroundColor)
+        public static let shadowOpacity = nested(LayerProperties.shadowOpacity)
+        public static let shadowRadius = nested(LayerProperties.shadowRadius)
+        public static let shadowColor = nested(LayerProperties.shadowColor)
+        public static let allowsEdgeAntialiasing = nested(LayerProperties.allowsEdgeAntialiasing)
+        public static let allowsGroupOpacity = nested(LayerProperties.allowsGroupOpacity)
+        public static let isOpaque = nested(LayerProperties.isOpaque)
+        public static let isGeometryFlipped = nested(LayerProperties.isGeometryFlipped)
+        public static let shouldRasterize = nested(LayerProperties.shouldRasterize)
+        public static let rasterizationScale = nested(LayerProperties.rasterizationScale)
+        public static let contentsFormat = nested(LayerProperties.contentsFormat)
+        public static let contentsScale = nested(LayerProperties.contentsScale)
+        public static let zPosition = nested(LayerProperties.zPosition)
+        public static let name = nested(LayerProperties.name)
+        public static let contentsRect = nested(LayerProperties.contentsRect)
+        public static let contentsCenter = nested(LayerProperties.contentsCenter)
+        public static let shadowOffset = nested(LayerProperties.shadowOffset)
+        public static let frame = nested(LayerProperties.frame)
+        public static let bounds = nested(LayerProperties.bounds)
+        public static let position = nested(LayerProperties.position)
+        public static let anchorPoint = nested(LayerProperties.anchorPoint)
+    }
+    
+    public struct LayerProperties {
         public static let cornerRadius = assignable(name: "cornerRadius", type: Float.self)
         public static let borderWidth = assignable(name: "borderWidth", type: Float.self)
         public static let borderColor = assignable(name: "borderColor", type: CGColorPropertyType.self)
@@ -110,34 +195,34 @@ public class View: XMLElementDeserializable, UIElement {
     }
 
     static let layerAvailableProperties: [PropertyDescription] = [
-        Layer.cornerRadius,
-        Layer.borderWidth,
-        Layer.borderColor,
-        Layer.opacity,
-        Layer.isHidden,
-        Layer.masksToBounds,
-        Layer.isDoubleSided,
-        Layer.backgroundColor,
-        Layer.shadowOpacity,
-        Layer.shadowRadius,
-        Layer.shadowColor,
-        Layer.allowsEdgeAntialiasing,
-        Layer.allowsGroupOpacity,
-        Layer.isOpaque,
-        Layer.isGeometryFlipped,
-        Layer.shouldRasterize,
-        Layer.rasterizationScale,
-        Layer.contentsFormat,
-        Layer.contentsScale,
-        Layer.zPosition,
-        Layer.name,
-        Layer.contentsRect,
-        Layer.contentsCenter,
-        Layer.shadowOffset,
-        Layer.frame,
-        Layer.bounds,
-        Layer.position,
-        Layer.anchorPoint,
+        LayerProperties.cornerRadius,
+        LayerProperties.borderWidth,
+        LayerProperties.borderColor,
+        LayerProperties.opacity,
+        LayerProperties.isHidden,
+        LayerProperties.masksToBounds,
+        LayerProperties.isDoubleSided,
+        LayerProperties.backgroundColor,
+        LayerProperties.shadowOpacity,
+        LayerProperties.shadowRadius,
+        LayerProperties.shadowColor,
+        LayerProperties.allowsEdgeAntialiasing,
+        LayerProperties.allowsGroupOpacity,
+        LayerProperties.isOpaque,
+        LayerProperties.isGeometryFlipped,
+        LayerProperties.shouldRasterize,
+        LayerProperties.rasterizationScale,
+        LayerProperties.contentsFormat,
+        LayerProperties.contentsScale,
+        LayerProperties.zPosition,
+        LayerProperties.name,
+        LayerProperties.contentsRect,
+        LayerProperties.contentsCenter,
+        LayerProperties.shadowOffset,
+        LayerProperties.frame,
+        LayerProperties.bounds,
+        LayerProperties.position,
+        LayerProperties.anchorPoint,
     ]
 
     public class var runtimeType: String {

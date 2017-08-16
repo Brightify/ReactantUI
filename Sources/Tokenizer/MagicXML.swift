@@ -153,8 +153,6 @@ extension ComponentDefinition: MagicElementSerializable {
     public func serialize() -> MagicElement {
         var builder = MagicAttributeBuilder()
         
-        builder.attribute(name: "type", value: type)
-        
         if isRootView {
             builder.attribute(name: "rootView", value: "true")
         }
@@ -173,8 +171,6 @@ extension ComponentDefinition: MagicElementSerializable {
         let childElements = children.map { $0.serialize() }
         
         var viewElement = MagicElement(name: "Component", attributes: builder.attributes, children: stylesElement + childElements)
-        
-        viewElement.name = "Component"
         viewElement.attributes.insert(MagicAttribute(name: "type", value: type), at: 0)
         
         return viewElement
