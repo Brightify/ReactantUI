@@ -70,8 +70,7 @@ public struct NestedProperty<PROPERTY: Property, DESCRIPTION: PropertyDescriptio
     
     #if SanAndreas
     public func dematerialize() -> MagicAttribute {
-        // FIXME
-        return MagicAttribute(name: attributeName, value: "")//property.value.serialized)
+        return MagicAttribute(name: attributeName, value: "")//nestedProperty.dematerialize())
     }
     #endif
 

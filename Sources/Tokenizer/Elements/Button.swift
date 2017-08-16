@@ -36,8 +36,39 @@ public class Button: Container {
             imageEdgeInsets,
         ] + super.availableProperties
             + nested(field: "titleLabel", namespace: "titleLabel", optional: true, properties: Label.availableProperties)
-            + nested(field: "imageView", namespace: "imageView", optional: true, properties: Label.availableProperties)
+            + nested(field: "imageView", namespace: "imageView", optional: true, properties: ImageView.availableProperties)
 
+    }
+    
+    struct TitleLabel: NestedPropertyContainer {
+        public static let namespace: String = "titleLabel"
+        
+        public static let text = nested(Label.text)
+        public static let textColor = nested(Label.textColor)
+        public static let highlightedTextColor = nested(Label.highlightedTextColor)
+        public static let font = nested(Label.font)
+        public static let numberOfLines = nested(Label.numberOfLines)
+        public static let textAlignment = nested(Label.textAlignment)
+        public static let isEnabled = nested(Label.isEnabled)
+        public static let adjustsFontSizeToFitWidth = nested(Label.adjustsFontSizeToFitWidth)
+        public static let allowsDefaultTighteningBeforeTruncation = nested(Label.allowsDefaultTighteningBeforeTruncation)
+        public static let minimumScaleFactor = nested(Label.minimumScaleFactor)
+        public static let isHighlighted = nested(Label.isHighlighted)
+        public static let shadowOffset = nested(Label.shadowOffset)
+        public static let shadowColor = nested(Label.shadowColor)
+        public static let preferredMaxLayoutWidth = nested(Label.preferredMaxLayoutWidth)
+        public static let lineBreakMode = nested(Label.lineBreakMode)
+    }
+    
+    public struct ImageViewProperties: NestedPropertyContainer {
+        public static let namespace: String = "imageView"
+        
+        public static let image = nested(ImageView.image)
+        public static let highlightedImage = nested(ImageView.highlightedImage)
+        public static let animationDuration = nested(ImageView.animationDuration)
+        public static let animationRepeatCount = nested(ImageView.animationRepeatCount)
+        public static let isHighlighted = nested(ImageView.isHighlighted)
+        public static let adjustsImageWhenAncestorFocused = nested(ImageView.adjustsImageWhenAncestorFocused)
     }
 
     public class override var runtimeType: String {
