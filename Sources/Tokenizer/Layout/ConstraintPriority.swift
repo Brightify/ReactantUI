@@ -23,7 +23,7 @@ public enum ConstraintPriority {
         }
     }
 
-    init(_ value: String) throws {
+    public init(_ value: String) throws {
         switch value {
         case "required":
             self = .required
@@ -35,6 +35,21 @@ public enum ConstraintPriority {
             self = .low
         default:
             throw TokenizationError(message: "Unknown constraint priority \(value)")
+        }
+    }
+    
+    public init(numericValue: Float) {
+        switch numericValue {
+        case ConstraintPriority.required.numeric:
+            self = .required
+        case ConstraintPriority.high.numeric:
+            self = .high
+        case ConstraintPriority.medium.numeric:
+            self = .medium
+        case ConstraintPriority.low.numeric:
+            self = .low
+        default:
+            self = .custom(numericValue)
         }
     }
 }

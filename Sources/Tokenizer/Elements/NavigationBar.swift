@@ -5,14 +5,21 @@ import Foundation
 #endif
 
 public class NavigationBar: View {
+    public static let barTintColor = assignable(name: "barTintColor", type: UIColorPropertyType.self)
+    public static let backIndicatorImage = assignable(name: "backIndicatorImage", type: Image.self)
+    public static let backIndicatorTransitionMaskImage = assignable(name: "backIndicatorTransitionMaskImage", type: Image.self)
+    public static let shadowImage = assignable(name: "shadowImage", type: Image.self)
+    public static let isTranslucent = assignable(name: "isTranslucent", key: "translucent", type: Bool.self)
+    public static let barStyle = assignable(name: "barStyle", type: BarStyle.self)
+    
     override class var availableProperties: [PropertyDescription] {
         return [
-            assignable(name: "barTintColor", type: UIColorPropertyType.self),
-            assignable(name: "backIndicatorImage", type: Image.self),
-            assignable(name: "backIndicatorTransitionMaskImage", type: Image.self),
-            assignable(name: "shadowImage", type: Image.self),
-            assignable(name: "isTranslucent", key: "translucent", type: Bool.self),
-            assignable(name: "barStyle", type: BarStyle.self),
+            barTintColor,
+            backIndicatorImage,
+            backIndicatorTransitionMaskImage,
+            shadowImage,
+            isTranslucent,
+            barStyle,
             // FIXME add backgroundImage
             ] + super.availableProperties
     }

@@ -7,11 +7,16 @@ import Foundation
 #endif
 
 public class WebView: View {
+    
+    public static let allowsMagnification = assignable(name: "allowsMagnification", type: Bool.self)
+    public static let magnification = assignable(name: "magnification", type: Float.self)
+    public static let allowsBackForwardNavigationGestures = assignable(name: "allowsBackForwardNavigationGestures", type: Bool.self)
+    
     override class var availableProperties: [PropertyDescription] {
         return [
-            assignable(name: "allowsMagnification", type: Bool.self),
-            assignable(name: "magnification", type: Float.self),
-            assignable(name: "allowsBackForwardNavigationGestures", type: Bool.self),
+            allowsMagnification,
+            magnification,
+            allowsBackForwardNavigationGestures,
             ] + super.availableProperties
     }
 

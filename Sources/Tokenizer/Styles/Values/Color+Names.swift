@@ -1,5 +1,5 @@
-extension Color {
-    static let supportedNames: [String] = [
+public extension Color {
+    public static let supportedNames: [String] = [
         "black",
         "darkGray",
         "lightGray",

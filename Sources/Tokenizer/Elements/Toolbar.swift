@@ -5,11 +5,16 @@ import Foundation
 #endif
 
 public class Toolbar: View {
+    
+    public static let isTranslucent = assignable(name: "isTranslucent", key: "translucent", type: Bool.self)
+    public static let barStyle = assignable(name: "barStyle", type: BarStyle.self)
+    public static let barTintColor = assignable(name: "barTintColor", type: UIColorPropertyType.self)
+    
     override class var availableProperties: [PropertyDescription] {
         return [
-            assignable(name: "isTranslucent", key: "translucent", type: Bool.self),
-            assignable(name: "barStyle", type: BarStyle.self),
-            assignable(name: "barTintColor", type: UIColorPropertyType.self),
+            isTranslucent,
+            barStyle,
+            barTintColor,
             ] + super.availableProperties
     }
 

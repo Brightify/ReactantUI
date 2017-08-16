@@ -20,6 +20,12 @@ public struct ControlStateProperty<T: SupportedPropertyType>: Property {
         let stringState = state.map { "UIControlState.\($0.rawValue)" }.joined(separator: ", ")
         return "\(target).set\(description.key.capitalizingFirstLetter())(\(value.generated), for: [\(stringState)])"
     }
+    
+    #if SanAndreas
+    public func dematerialize() -> MagicAttribute {
+        return MagicAttribute(name: attributeName, value: value.dematerialize())
+    }
+    #endif
 
     #if ReactantRuntime
     public func apply(on object: AnyObject) throws {

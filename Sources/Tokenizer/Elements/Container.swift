@@ -31,6 +31,15 @@ public class Container: View, UIContainer {
     public class override var runtimeType: String {
         return "ContainerView"
     }
+    
+    
+    public override func serialize() -> MagicElement {
+        var viewElement = super.serialize()
+        
+        viewElement.children.append(contentsOf: children.map { $0.serialize() })
+        
+        return viewElement
+    }
 
     #if ReactantRuntime
     public override func initialize() -> UIView {

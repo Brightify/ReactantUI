@@ -19,7 +19,7 @@ Pod::Spec.new do |spec|
     spec.social_media_url = 'https://twitter.com/BrightifyOrg'
     spec.requires_arc = true
 
-    spec.ios.deployment_target = '9.0'
+    spec.osx.deployment_target = '10.11'
     spec.pod_target_xcconfig = {
         'OTHER_SWIFT_FLAGS' => '-D SanAndreas'
     }

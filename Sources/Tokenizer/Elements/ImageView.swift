@@ -16,6 +16,12 @@ public struct Image: SupportedPropertyType {
         return UIImage(named: name)
     }
     #endif
+    
+    #if SanAndreas
+    public func dematerialize() -> String {
+    return name
+    }
+    #endif
 
     public init(named name: String) {
         self.name = name
@@ -27,14 +33,20 @@ public struct Image: SupportedPropertyType {
 }
 
 public class ImageView: View {
+    public static let image = assignable(name: "image", type: Image.self)
+    public static let highlightedImage = assignable(name: "highlightedImage", type: Image.self)
+    public static let animationDuration = assignable(name: "animationDuration", type: Double.self)
+    public static let animationRepeatCount = assignable(name: "animationRepeatCount", type: Int.self)
+    public static let isHighlighted = assignable(name: "isHighlighted", key: "highlighted", type: Bool.self)
+    public static let adjustsImageWhenAncestorFocused = assignable(name: "adjustsImageWhenAncestorFocused", type: Bool.self)
     override class var availableProperties: [PropertyDescription] {
         return [
-            assignable(name: "image", type: Image.self),
-            assignable(name: "highlightedImage", type: Image.self),
-            assignable(name: "animationDuration", type: Double.self),
-            assignable(name: "animationRepeatCount", type: Int.self),
-            assignable(name: "isHighlighted", key: "highlighted", type: Bool.self),
-            assignable(name: "adjustsImageWhenAncestorFocused", type: Bool.self),
+            image,
+            highlightedImage,
+            animationDuration,
+            animationRepeatCount,
+            isHighlighted,
+            adjustsImageWhenAncestorFocused,
         ] + super.availableProperties
     }
 
