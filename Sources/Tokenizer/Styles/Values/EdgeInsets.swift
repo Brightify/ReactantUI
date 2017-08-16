@@ -17,6 +17,12 @@ public struct EdgeInsets: SupportedPropertyType {
     public var generated: String {
         return "UIEdgeInsetsMake(\(top.cgFloat), \(left.cgFloat), \(bottom.cgFloat), \(right.cgFloat))"
     }
+    
+    #if SanAndreas
+    public func dematerialize() -> String {
+        return "\(top), \(left), \(bottom), \(right)"
+    }
+    #endif
 
     public static func materialize(from value: String) throws -> EdgeInsets {
         let parts = value.components(separatedBy: ",").flatMap(Float.init)

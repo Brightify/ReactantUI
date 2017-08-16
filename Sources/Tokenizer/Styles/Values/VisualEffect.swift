@@ -12,6 +12,17 @@ public enum VisualEffect: SupportedPropertyType {
             return "UIVibrancyEffect(blurEffect: .\(effect.rawValue))"
         }
     }
+    
+    #if SanAndreas
+    public func dematerialize() -> String {
+        switch self {
+        case .blur(let effect):
+            return effect.rawValue
+        case .vibrancy(let effect):
+            return effect.rawValue
+        }
+    }
+    #endif
 
     #if ReactantRuntime
     public var runtimeValue: Any? {

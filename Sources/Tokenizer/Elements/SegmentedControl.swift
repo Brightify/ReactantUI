@@ -6,11 +6,16 @@ import Foundation
 
 // TODO add a way of adding segments
 public class SegmentedControl: View {
+    
+    public static let selectedSegmentIndex = assignable(name: "selectedSegmentIndex", type: Int.self)
+    public static let isMomentary = assignable(name: "isMomentary", type: Bool.self)
+    public static let apportionsSegmentWidthsByContent = assignable(name: "apportionsSegmentWidthsByContent", type: Bool.self)
+    
     override class var availableProperties: [PropertyDescription] {
         return [
-            assignable(name: "selectedSegmentIndex", type: Int.self),
-            assignable(name: "isMomentary", type: Bool.self),
-            assignable(name: "apportionsSegmentWidthsByContent", type: Bool.self),
+            selectedSegmentIndex,
+            isMomentary,
+            apportionsSegmentWidthsByContent,
             ] + super.availableProperties
     }
 

@@ -8,8 +8,8 @@
 import CoreGraphics
 import Foundation
 
-extension Float {
-    var cgFloat: CGFloat {
+public extension Float {
+    public var cgFloat: CGFloat {
         return CGFloat(self)
     }
 }

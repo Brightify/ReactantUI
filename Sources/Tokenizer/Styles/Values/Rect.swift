@@ -20,6 +20,12 @@ public struct Rect: SupportedPropertyType {
         self.origin = origin
         self.size = size
     }
+    
+    #if SanAndreas
+    public func dematerialize() -> String {
+        return "\(origin.x), \(origin.y), \(size.width), \(size.height)"
+    }
+    #endif
 
     public init(x: Float, y: Float, width: Float, height: Float) {
         self.init(origin: Point(x: x, y: y), size: Size(width: width, height: height))

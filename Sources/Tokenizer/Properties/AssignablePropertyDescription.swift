@@ -15,6 +15,7 @@ public func assignable<T: SupportedPropertyType>(name: String, swiftName: String
 }
 
 public struct AssignableProperty<T: SupportedPropertyType>: TypedProperty {
+
     public let attributeName: String
     public let description: AssignablePropertyDescription<T>
     public var value: T
@@ -22,6 +23,12 @@ public struct AssignableProperty<T: SupportedPropertyType>: TypedProperty {
     public func application(on target: String) -> String {
         return "\(target).\(description.swiftName) = \(value.generated)"
     }
+    
+    #if SanAndreas
+    public func dematerialize() -> MagicAttribute {
+        return MagicAttribute(name: attributeName, value: value.dematerialize())
+    }
+    #endif
 
     #if ReactantRuntime
     public func apply(on object: AnyObject) throws {

@@ -15,6 +15,12 @@ public struct Point: SupportedPropertyType {
     public var generated: String {
         return "CGPoint(x: \(x.cgFloat), y: \(y.cgFloat))"
     }
+    
+    #if SanAndreas
+    public func dematerialize() -> String {
+        return "\(x), \(y)"
+    }
+    #endif
 
     public static func materialize(from value: String) throws -> Point {
         let parts = value.components(separatedBy: ",").flatMap(Float.init)

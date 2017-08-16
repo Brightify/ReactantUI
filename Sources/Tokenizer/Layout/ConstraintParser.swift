@@ -14,11 +14,11 @@ enum ParseError: Error {
 class BaseParser<ITEM> {
     private var tokens: [Lexer.Token]
     private var position: Int = 0
-
+    
     init(tokens: [Lexer.Token]) {
         self.tokens = tokens
     }
-
+    
     func parse() throws -> [ITEM] {
         // Reset
         let tokensBackup = tokens
@@ -26,46 +26,46 @@ class BaseParser<ITEM> {
             tokens = tokensBackup
             position = 0
         }
-
+        
         var items = [] as [ITEM]
         while !hasEnded() {
             let currentPosition = position
-
+            
             let item = try parseSingle()
             items.append(item)
-
+            
             if let token = peekToken(), currentPosition == position {
                 throw ParseError.unexpectedToken(token)
             }
         }
         return items
     }
-
+    
     func hasEnded() -> Bool {
         return peekToken() == nil
     }
-
+    
     func parseSingle() throws -> ITEM {
         fatalError("Abstract!")
     }
-
+    
     func peekToken() -> Lexer.Token? {
         guard position < tokens.count else { return nil }
         return tokens[position]
     }
-
+    
     func peekNextToken() -> Lexer.Token? {
         guard position < tokens.count - 1 else { return nil }
         return tokens[position + 1]
     }
-
+    
     func peekNext<T>(_ f: (Lexer.Token) throws -> T?) rethrows -> T? {
         guard let nextToken = peekNextToken() else { return nil }
         position += 1
         defer { position -= 1 }
         return try f(nextToken)
     }
-
+    
     @discardableResult
     func popTokens(_ count: Int) throws -> [Lexer.Token] {
         guard position < tokens.count - count + 1 else {
@@ -75,7 +75,7 @@ class BaseParser<ITEM> {
         position += count
         return Array(poppedTokens)
     }
-
+    
     @discardableResult
     func popToken() throws -> Lexer.Token {
         guard position < tokens.count else {
@@ -85,7 +85,7 @@ class BaseParser<ITEM> {
         position += 1
         return token
     }
-
+    
     @discardableResult
     func popLastToken() throws -> Lexer.Token {
         guard !tokens.isEmpty else {
@@ -97,17 +97,17 @@ class BaseParser<ITEM> {
 
 class ConstraintParser: BaseParser<Constraint> {
     private let layoutAttribute: LayoutAttribute
-
+    
     init(tokens: [Lexer.Token], layoutAttribute: LayoutAttribute) {
         self.layoutAttribute = layoutAttribute
         super.init(tokens: tokens)
     }
-
+    
     override func parseSingle() throws -> Constraint {
         let field = try parseField()
-
+        
         let relation = try parseRelation() ?? .equal
-
+        
         let type: ConstraintType
         if case .number(let constant)? = peekToken() {
             type = .constant(constant)
@@ -115,7 +115,7 @@ class ConstraintParser: BaseParser<Constraint> {
         } else {
             let target = try parseTarget()
             let targetAnchor = try parseTargetAnchor()
-
+            
             var multiplier = 1 as Float
             var constant = 0 as Float
             while try !constraintEnd(), let modifier = try parseModifier() {
@@ -130,18 +130,18 @@ class ConstraintParser: BaseParser<Constraint> {
                     constant += by * layoutAttribute.insetDirection
                 }
             }
-
+            
             type = .targeted(target: target ?? (targetAnchor != nil ? .this : .parent),
                              targetAnchor: targetAnchor ?? layoutAttribute.targetAnchor,
                              multiplier: multiplier,
                              constant: constant)
         }
-
+        
         let priority = try parsePriority() ?? .required
-
-        return Constraint(field: field, anchor: layoutAttribute.anchor, type: type, relation: relation, priority: priority)
+        
+        return Constraint(field: field, attribute: layoutAttribute, type: type, relation: relation, priority: priority)
     }
-
+    
     private func constraintEnd() throws -> Bool {
         if hasEnded() {
             return true
@@ -152,21 +152,21 @@ class ConstraintParser: BaseParser<Constraint> {
             return false
         }
     }
-
+    
     private func parseField() throws -> String? {
         guard case .identifier(let identifier)? = peekToken(), peekNextToken() == .assignment else { return nil }
-
+        
         try popTokens(2)
         return identifier
     }
-
+    
     private func parseRelation() throws -> ConstraintRelation? {
         guard case .colon? = peekToken(), case .identifier(let identifier)? = peekNextToken() else { return nil }
         try popTokens(2)
         
         return try ConstraintRelation(identifier)
     }
-
+    
     private func parseTarget() throws -> ConstraintTarget? {
         guard case .identifier(let identifier)? = peekToken(), peekNextToken() != .parensOpen else { return nil }
         try popToken()
@@ -182,26 +182,26 @@ class ConstraintParser: BaseParser<Constraint> {
             return .field(identifier)
         }
     }
-
+    
     private func parseTargetAnchor() throws -> LayoutAnchor? {
         guard peekToken() == .period, case .identifier(let identifier)? = peekNextToken() else { return nil }
         try popTokens(2)
         return try LayoutAnchor(identifier)
     }
-
+    
     private func parseModifier() throws -> ConstraintModifier? {
         guard case .identifier(let identifier)? = peekToken(), peekNextToken() == .parensOpen else { return nil }
         try popTokens(2)
-
+        
         if case .identifier("by")? = peekToken(), peekNextToken() == .colon {
             try popTokens(2)
         }
-
+        
         guard case .number(let number)? = peekToken(), .parensClose == peekNextToken() else {
             throw ParseError.message("Modifier `\(identifier)` couldn't be parsed!")
         }
         try popTokens(2)
-
+        
         switch identifier {
         case "multiplied":
             return .multiplied(by: number)
@@ -215,7 +215,7 @@ class ConstraintParser: BaseParser<Constraint> {
             throw ParseError.message("Unknown modifier `\(identifier)`")
         }
     }
-
+    
     private func parsePriority() throws -> ConstraintPriority? {
         guard case .at? = peekToken() else { return nil }
         if case .number(let number)? = peekNextToken() {
@@ -233,7 +233,7 @@ class ConstraintParser: BaseParser<Constraint> {
 public enum TransformedText {
     case text(String)
     indirect case transform(Transform, TransformedText)
-
+    
     public enum Transform: String {
         case uppercased
         case lowercased
@@ -264,7 +264,7 @@ class TextParser: BaseParser<TransformedText> {
                 return .transform(transform, inner)
             }
         }
-
+        
         var components = [] as [String]
         while let token = peekToken() {
             try popToken()
@@ -329,7 +329,7 @@ class FontParser: BaseParser<Font> {
             var components = [] as [String]
             while let token = peekToken() {
                 guard token != .at else { break }
-
+                
                 try popToken()
                 switch token {
                 case .identifier(let identifier):

@@ -5,9 +5,12 @@ import Foundation
 #endif
 
 public class VisualEffectView: View {
+    
+    public static let effect = assignable(name: "effect", type: VisualEffect.self)
+    
     override class var availableProperties: [PropertyDescription] {
         return [
-            assignable(name: "effect", type: VisualEffect.self),
+            effect,
             ] + super.availableProperties
     }
 

@@ -12,6 +12,17 @@ public enum Font: SupportedPropertyType {
             return "UIFont(\"\(name)\", \(size))"
         }
     }
+    
+    #if SanAndreas
+    public func dematerialize() -> String {
+        switch self {
+        case .system(let weight, let size):
+            return ":\(weight.rawValue):\(size)"
+        case .named(let name, let size):
+            return "\(name)@\(size)"
+        }
+    }
+    #endif
 
     public static func materialize(from value: String) throws -> Font {
         let tokens = Lexer.tokenize(input: value, keepWhitespace: true)

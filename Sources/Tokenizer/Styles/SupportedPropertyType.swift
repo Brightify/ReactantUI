@@ -10,6 +10,10 @@ public enum PropertyMaterializationError: Error {
 
 public protocol SupportedPropertyType {
     var generated: String { get }
+    
+    #if SanAndreas
+    func dematerialize() -> String
+    #endif
 
     #if ReactantRuntime
     var runtimeValue: Any? { get }
@@ -24,6 +28,12 @@ public struct CGColorPropertyType: SupportedPropertyType {
     public var generated: String {
         return "\(color.generated).cgColor"
     }
+    
+    #if SanAndreas
+    public func dematerialize() -> String {
+    return color.dematerialize()
+    }
+    #endif
 
     #if ReactantRuntime
     public var runtimeValue: Any? {
@@ -51,8 +61,19 @@ public struct UIColorPropertyType: SupportedPropertyType {
         case .named(let name):
             return "UIColor.\(name)"
         }
-
     }
+    
+    #if SanAndreas
+    public func dematerialize() -> String {
+        switch color {
+        case .absolute(let red, let green, let blue, let alpha):
+            let rgb: Int = Int(red * 255) << 16 | Int(green * 255) << 8 | Int(blue * 255)
+            return String(format:"#%06x", rgb)
+        case .named(let name):
+            return name
+        }
+    }
+    #endif
 
     #if ReactantRuntime
     public var runtimeValue: Any? {
@@ -98,6 +119,26 @@ extension TransformedText: SupportedPropertyType {
         }
         return resolveTransformations(text: self)
     }
+    
+    #if SanAndreas
+    public func dematerialize() -> String {
+        func resolveTransformations(text: TransformedText) -> String {
+            switch text {
+            case .transform(.uppercased, let inner):
+                return ":uppercased(\(resolveTransformations(text: inner)))"
+            case .transform(.lowercased, let inner):
+                return ":lowercased(\(resolveTransformations(text: inner)))"
+            case .transform(.localized, let inner):
+                return ":localized(\(resolveTransformations(text: inner)))"
+            case .transform(.capitalized, let inner):
+                return ":capitalized(\(resolveTransformations(text: inner)))"
+            case .text(let value):
+                return value
+            }
+        }
+        return resolveTransformations(text: self)
+    }
+    #endif
 
     #if ReactantRuntime
     public var runtimeValue: Any? {
@@ -155,6 +196,12 @@ extension EnumPropertyType where Self.RawValue == String {
 }
 
 extension SupportedPropertyType where Self: RawRepresentable, Self.RawValue == String {
+    #if SanAndreas
+    public func dematerialize() -> String {
+        return rawValue
+    }
+    #endif
+    
     public static func materialize(from value: String) throws -> Self {
         guard let materialized = Self(rawValue: value) else {
             throw PropertyMaterializationError.unknownValue(value)
@@ -167,6 +214,12 @@ extension Bool: SupportedPropertyType {
     public var generated: String {
         return self ? "true" : "false"
     }
+    
+    #if SanAndreas
+    public func dematerialize() -> String {
+        return generated
+    }
+    #endif
 
     #if ReactantRuntime
     public var runtimeValue: Any? {
@@ -194,6 +247,12 @@ extension Float: SupportedPropertyType {
     }
     #endif
     
+    #if SanAndreas
+    public func dematerialize() -> String {
+        return generated
+    }
+    #endif
+    
     public static func materialize(from value: String) throws -> Float {
         guard let materialized = Float(value) else {
             throw PropertyMaterializationError.unknownValue(value)
@@ -210,6 +269,12 @@ extension Double: SupportedPropertyType {
     #if ReactantRuntime
     public var runtimeValue: Any? {
         return self
+    }
+    #endif
+    
+    #if SanAndreas
+    public func dematerialize() -> String {
+        return generated
     }
     #endif
 
@@ -229,6 +294,12 @@ extension Int: SupportedPropertyType {
     #if ReactantRuntime
     public var runtimeValue: Any? {
         return self
+    }
+    #endif
+    
+    #if SanAndreas
+    public func dematerialize() -> String {
+        return generated
     }
     #endif
 

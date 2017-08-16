@@ -34,61 +34,110 @@ extension XMLElement {
 }
 
 public class View: XMLElementDeserializable, UIElement {
-    static let backgroundColor = assignable(name: "backgroundColor", type: UIColorPropertyType.self)
+    public static let backgroundColor = assignable(name: "backgroundColor", type: UIColorPropertyType.self)
+    public static let clipsToBounds = assignable(name: "clipsToBounds", type: Bool.self)
+    public static let isUserInteractionEnabled = assignable(name: "isUserInteractionEnabled", key: "userInteractionEnabled", type: Bool.self)
+    public static let tintColor = assignable(name: "tintColor", type: UIColorPropertyType.self)
+    public static let isHidden = assignable(name: "isHidden", type: Bool.self)
+    public static let alpha = assignable(name: "alpha", type: Float.self)
+    public static let isOpaque = assignable(name: "isOpaque", type: Bool.self)
+    public static let isMultipleTouchEnabled = assignable(name: "isMultipleTouchEnabled", key: "multipleTouchEnabled", type: Bool.self)
+    public static let isExclusiveTouch = assignable(name: "isExclusiveTouch", key: "exclusiveTouch", type: Bool.self)
+    public static let autoresizesSubviews = assignable(name: "autoresizesSubviews", type: Bool.self)
+    public static let contentMode = assignable(name: "contentMode", type: ContentMode.self)
+    public static let translatesAutoresizingMaskIntoConstraints = assignable(name: "translatesAutoresizingMaskIntoConstraints", type: Bool.self)
+    public static let preservesSuperviewLayoutMargins = assignable(name: "preservesSuperviewLayoutMargins", type: Bool.self)
+    public static let tag = assignable(name: "tag", type: Int.self)
+    public static let canBecomeFocused = assignable(name: "canBecomeFocused", type: Bool.self)
+    public static let visibility = assignable(name: "visibility", type: ViewVisibility.self)
+    public static let frame = assignable(name: "frame", type: Rect.self)
+    public static let bounds = assignable(name: "bounds", type: Rect.self)
+    public static let layoutMargins = assignable(name: "layoutMargins", type: EdgeInsets.self)
 
     class var availableProperties: [PropertyDescription] {
         return [
             backgroundColor,
-            assignable(name: "clipsToBounds", type: Bool.self),
-            assignable(name: "isUserInteractionEnabled", key: "userInteractionEnabled", type: Bool.self),
-            assignable(name: "tintColor", type: UIColorPropertyType.self),
-            assignable(name: "isHidden", type: Bool.self),
-            assignable(name: "alpha", type: Float.self),
-            assignable(name: "isOpaque", type: Bool.self),
-            assignable(name: "isMultipleTouchEnabled", key: "multipleTouchEnabled", type: Bool.self),
-            assignable(name: "isExclusiveTouch", key: "exclusiveTouch", type: Bool.self),
-            assignable(name: "autoresizesSubviews", type: Bool.self),
-            assignable(name: "contentMode", type: ContentMode.self),
-            assignable(name: "translatesAutoresizingMaskIntoConstraints", type: Bool.self),
-            assignable(name: "preservesSuperviewLayoutMargins", type: Bool.self),
-            assignable(name: "tag", type: Int.self),
-            assignable(name: "canBecomeFocused", type: Bool.self),
-            assignable(name: "visibility", type: ViewVisibility.self),
-            assignable(name: "frame", type: Rect.self),
-            assignable(name: "bounds", type: Rect.self),
-            assignable(name: "layoutMargins", type: EdgeInsets.self)
+            clipsToBounds,
+            isUserInteractionEnabled,
+            tintColor,
+            isHidden,
+            alpha,
+            isOpaque,
+            isMultipleTouchEnabled,
+            isExclusiveTouch,
+            autoresizesSubviews,
+            contentMode,
+            translatesAutoresizingMaskIntoConstraints,
+            preservesSuperviewLayoutMargins,
+            tag,
+            canBecomeFocused,
+            visibility,
+            frame,
+            bounds,
+            layoutMargins,
             ] + nested(field: "layer", namespace: "layer", properties: View.layerAvailableProperties)
+    }
+    
+    public struct Layer {
+        public static let cornerRadius = assignable(name: "cornerRadius", type: Float.self)
+        public static let borderWidth = assignable(name: "borderWidth", type: Float.self)
+        public static let borderColor = assignable(name: "borderColor", type: CGColorPropertyType.self)
+        public static let opacity = assignable(name: "opacity", type: Float.self)
+        public static let isHidden = assignable(name: "isHidden", type: Bool.self)
+        public static let masksToBounds = assignable(name: "masksToBounds", type: Bool.self)
+        public static let isDoubleSided = assignable(name: "isDoubleSided", key: "doubleSided", type: Bool.self)
+        public static let backgroundColor = assignable(name: "backgroundColor", type: CGColorPropertyType.self)
+        public static let shadowOpacity = assignable(name: "shadowOpacity", type: Float.self)
+        public static let shadowRadius = assignable(name: "shadowRadius", type: Float.self)
+        public static let shadowColor = assignable(name: "shadowColor", type: CGColorPropertyType.self)
+        public static let allowsEdgeAntialiasing = assignable(name: "allowsEdgeAntialiasing", type: Bool.self)
+        public static let allowsGroupOpacity = assignable(name: "allowsGroupOpacity", type: Bool.self)
+        public static let isOpaque = assignable(name: "isOpaque", key: "opaque", type: Bool.self)
+        public static let isGeometryFlipped = assignable(name: "isGeometryFlipped", key: "geometryFlipped", type: Bool.self)
+        public static let shouldRasterize = assignable(name: "shouldRasterize", type: Bool.self)
+        public static let rasterizationScale = assignable(name: "rasterizationScale", type: Float.self)
+        public static let contentsFormat = assignable(name: "contentsFormat", type: TransformedText.self)
+        public static let contentsScale = assignable(name: "contentsScale", type: Float.self)
+        public static let zPosition = assignable(name: "zPosition", type: Float.self)
+        public static let name = assignable(name: "name", type: TransformedText.self)
+        public static let contentsRect = assignable(name: "contentsRect", type: Rect.self)
+        public static let contentsCenter = assignable(name: "contentsCenter", type: Rect.self)
+        public static let shadowOffset = assignable(name: "shadowOffset", type: Size.self)
+        public static let frame = assignable(name: "frame", type: Rect.self)
+        public static let bounds = assignable(name: "bounds", type: Rect.self)
+        public static let position = assignable(name: "position", type: Point.self)
+        public static let anchorPoint = assignable(name: "anchorPoint", type: Point.self)
     }
 
     static let layerAvailableProperties: [PropertyDescription] = [
-        assignable(name: "cornerRadius", type: Float.self),
-        assignable(name: "borderWidth", type: Float.self),
-        assignable(name: "borderColor", type: CGColorPropertyType.self),
-        assignable(name: "opacity", type: Float.self),
-        assignable(name: "isHidden", type: Bool.self),
-        assignable(name: "masksToBounds", type: Bool.self),
-        assignable(name: "isDoubleSided", key: "doubleSided", type: Bool.self),
-        assignable(name: "backgroundColor", type: CGColorPropertyType.self),
-        assignable(name: "shadowOpacity", type: Float.self),
-        assignable(name: "shadowRadius", type: Float.self),
-        assignable(name: "shadowColor", type: CGColorPropertyType.self),
-        assignable(name: "allowsEdgeAntialiasing", type: Bool.self),
-        assignable(name: "allowsGroupOpacity", type: Bool.self),
-        assignable(name: "isOpaque", key: "opaque", type: Bool.self),
-        assignable(name: "isGeometryFlipped", key: "geometryFlipped", type: Bool.self),
-        assignable(name: "shouldRasterize", type: Bool.self),
-        assignable(name: "rasterizationScale", type: Float.self),
-        assignable(name: "contentsFormat", type: TransformedText.self),
-        assignable(name: "contentsScale", type: Float.self),
-        assignable(name: "zPosition", type: Float.self),
-        assignable(name: "name", type: TransformedText.self),
-        assignable(name: "contentsRect", type: Rect.self),
-        assignable(name: "contentsCenter", type: Rect.self),
-        assignable(name: "shadowOffset", type: Size.self),
-        assignable(name: "frame", type: Rect.self),
-        assignable(name: "bounds", type: Rect.self),
-        assignable(name: "position", type: Point.self),
-        assignable(name: "anchorPoint", type: Point.self),
+        Layer.cornerRadius,
+        Layer.borderWidth,
+        Layer.borderColor,
+        Layer.opacity,
+        Layer.isHidden,
+        Layer.masksToBounds,
+        Layer.isDoubleSided,
+        Layer.backgroundColor,
+        Layer.shadowOpacity,
+        Layer.shadowRadius,
+        Layer.shadowColor,
+        Layer.allowsEdgeAntialiasing,
+        Layer.allowsGroupOpacity,
+        Layer.isOpaque,
+        Layer.isGeometryFlipped,
+        Layer.shouldRasterize,
+        Layer.rasterizationScale,
+        Layer.contentsFormat,
+        Layer.contentsScale,
+        Layer.zPosition,
+        Layer.name,
+        Layer.contentsRect,
+        Layer.contentsCenter,
+        Layer.shadowOffset,
+        Layer.frame,
+        Layer.bounds,
+        Layer.position,
+        Layer.anchorPoint,
     ]
 
     public class var runtimeType: String {
@@ -162,5 +211,26 @@ public class View: XMLElementDeserializable, UIElement {
             result.append(property)
         }
         return result
+    }
+    
+    public func serialize() -> MagicElement {
+        var builder = MagicAttributeBuilder()
+        if let field = field {
+            builder.attribute(name: "field", value: field)
+        }
+        let styleNames = styles.joined(separator: " ")
+        if !styleNames.isEmpty {
+            builder.attribute(name: "style", value: styleNames)
+        }
+        
+        #if SanAndreas
+            properties.map { $0.dematerialize() }.forEach { builder.add(attribute: $0) }
+        #endif
+        
+        layout.serialize().forEach { builder.add(attribute: $0) }
+        
+        let typeOfSelf = type(of: self)
+        let name = Element.elementMapping.first(where: { $0.value == typeOfSelf })?.key ?? "\(typeOfSelf)"
+        return MagicElement(name: name, attributes: builder.attributes, children: [])
     }
 }

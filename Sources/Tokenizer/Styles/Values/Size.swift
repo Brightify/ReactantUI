@@ -15,6 +15,12 @@ public struct Size: SupportedPropertyType {
     public var generated: String {
         return "CGSize(width: \(width.cgFloat), height: \(height.cgFloat))"
     }
+    
+    #if SanAndreas
+    public func dematerialize() -> String {
+    return "\(width), \(height)"
+    }
+    #endif
 
     public static func materialize(from value: String) throws -> Size {
         let parts = value.components(separatedBy: ",").flatMap(Float.init)

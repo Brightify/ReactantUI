@@ -7,6 +7,10 @@ public protocol Property {
 
     func application(on target: String) -> String
 
+    #if SanAndreas
+    func dematerialize() -> MagicAttribute
+    #endif
+    
     #if ReactantRuntime
     func apply(on object: AnyObject) throws -> Void
     #endif

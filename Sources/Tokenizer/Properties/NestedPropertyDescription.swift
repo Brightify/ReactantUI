@@ -67,6 +67,13 @@ public struct NestedProperty<PROPERTY: Property, DESCRIPTION: PropertyDescriptio
     public func application(on target: String) -> String {
         return nestedProperty.application(on: "\(target).\(description.field)\(description.optional ? "?" : "")")
     }
+    
+    #if SanAndreas
+    public func dematerialize() -> MagicAttribute {
+        // FIXME
+        return MagicAttribute(name: attributeName, value: "")//property.value.serialized)
+    }
+    #endif
 
     #if ReactantRuntime
     public func apply(on object: AnyObject) throws {

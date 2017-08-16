@@ -3,7 +3,7 @@ import Foundation
 import UIKit
 #endif
 
-public protocol UIElement: Assignable {
+public protocol UIElement: class, Assignable, MagicElementSerializable {
     var layout: Layout { get set }
     var properties: [Property] { get set }
     var styles: [String] { get set }

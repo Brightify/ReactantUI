@@ -11,9 +11,10 @@ public protocol PropertyDescription {
 
 //    func application(of property: Property, on target: String) -> String
 
-//    #if ReactantRuntime
+    #if ReactantRuntime
+
 //    func apply(_ property: Property, on object: AnyObject) throws -> Void
-//    #endif
+    #endif
 }
 
 public protocol TypedPropertyDescription: PropertyDescription {
