@@ -62,3 +62,23 @@ public class StackView: Container {
     }
     #endif
 }
+
+public class StackViewProperties: ViewProperties {
+    public let axis: AssignablePropertyDescription<LayoutAxis>
+    public let spacing: AssignablePropertyDescription<Float>
+    public let distribution: AssignablePropertyDescription<LayoutDistribution>
+    public let alignment: AssignablePropertyDescription<LayoutAlignment>
+    public let isBaselineRelativeArrangement: AssignablePropertyDescription<Bool>
+    public let isLayoutMarginsRelativeArrangement: AssignablePropertyDescription<Bool>
+    
+    public required init(configuration: Configuration) {
+        axis = configuration.property(name: "axis")
+        spacing = configuration.property(name: "spacing")
+        distribution = configuration.property(name: "distribution")
+        alignment = configuration.property(name: "alignment")
+        isBaselineRelativeArrangement = configuration.property(name: "isBaselineRelativeArrangement", key: "baselineRelativeArrangement")
+        isLayoutMarginsRelativeArrangement = configuration.property(name: "isLayoutMarginsRelativeArrangement", key: "layoutMarginsRelativeArrangement")
+        
+        super.init(configuration: configuration)
+    }
+}

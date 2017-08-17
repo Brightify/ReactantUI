@@ -23,3 +23,17 @@ public class ActivityIndicatorElement: View {
     }
     #endif
 }
+
+public class ActivityIndicatorProperties: ViewProperties {
+    public let color: AssignablePropertyDescription<UIColorPropertyType>
+    public let hidesWhenStopped: AssignablePropertyDescription<Bool>
+    public let indicatorStyle: AssignablePropertyDescription<ActivityIndicatorStyle>
+    
+    public required init(configuration: PropertyContainer.Configuration) {
+        color = configuration.property(name: "color")
+        hidesWhenStopped = configuration.property(name: "hidesWhenStopped")
+        indicatorStyle = configuration.property(name: "indicatorStyle", swiftName: "activityIndicatorViewStyle", key: "activityIndicatorViewStyle")
+        
+        super.init(configuration: configuration)
+    }
+}

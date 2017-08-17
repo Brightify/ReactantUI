@@ -20,3 +20,14 @@ public class VisualEffectView: View {
     }
     #endif
 }
+
+public class VisualEffectViewProperties: ViewProperties {
+    public let effect: AssignablePropertyDescription<VisualEffect>
+    
+    public required init(configuration: Configuration) {
+        effect = configuration.property(name: "effect")
+        
+        super.init(configuration: configuration)
+    }
+}
+    

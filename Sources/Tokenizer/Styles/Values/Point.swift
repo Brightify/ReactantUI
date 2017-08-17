@@ -23,7 +23,7 @@ public struct Point: SupportedPropertyType {
     #endif
 
     public static func materialize(from value: String) throws -> Point {
-        let parts = value.components(separatedBy: ",").flatMap(Float.init)
+        let parts = value.trimmingCharacters(in: CharacterSet.whitespaces).components(separatedBy: ",").flatMap(Float.init)
         guard parts.count == 2 else {
             throw PropertyMaterializationError.unknownValue(value)
         }

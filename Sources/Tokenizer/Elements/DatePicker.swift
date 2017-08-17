@@ -19,3 +19,14 @@ public class DatePicker: View {
     }
     #endif
 }
+
+public class DatePickerProperties: ViewProperties {
+    public let minuteInterval: AssignablePropertyDescription<Int>
+    public let mode: AssignablePropertyDescription<DatePickerMode>
+    
+    public required init(configuration: PropertyContainer.Configuration) {
+        minuteInterval = configuration.property(name: "minuteInterval")
+        mode = configuration.property(name: "mode", swiftName: "datePickerMode", key: "datePickerMode")
+        super.init(configuration: configuration)
+    }
+}

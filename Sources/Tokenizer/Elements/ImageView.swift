@@ -47,3 +47,23 @@ public class ImageView: View {
     }
     #endif
 }
+
+public class ImageViewProperties: ViewProperties {
+    public let image: AssignablePropertyDescription<Image>
+    public let highlightedImage: AssignablePropertyDescription<Image>
+    public let animationDuration: AssignablePropertyDescription<Double>
+    public let animationRepeatCount: AssignablePropertyDescription<Int>
+    public let isHighlighted: AssignablePropertyDescription<Bool>
+    public let adjustsImageWhenAncestorFocused: AssignablePropertyDescription<Bool>
+    
+    public required init(configuration: Configuration) {
+        image = configuration.property(name: "image")
+        highlightedImage = configuration.property(name: "highlightedImage")
+        animationDuration = configuration.property(name: "animationDuration")
+        animationRepeatCount = configuration.property(name: "animationRepeatCount")
+        isHighlighted = configuration.property(name: "isHighlighted", key: "highlighted")
+        adjustsImageWhenAncestorFocused = configuration.property(name: "adjustsImageWhenAncestorFocused")
+        
+        super.init(configuration: configuration)
+    }
+}
