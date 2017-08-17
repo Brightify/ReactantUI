@@ -6,12 +6,8 @@ import Foundation
 
 public class VisualEffectView: View {
     
-    public static let effect = assignable(name: "effect", type: VisualEffect.self)
-    
     override class var availableProperties: [PropertyDescription] {
-        return [
-            effect,
-            ] + super.availableProperties
+        return Properties.visualEffectView.allProperties
     }
 
     public class override var runtimeType: String {

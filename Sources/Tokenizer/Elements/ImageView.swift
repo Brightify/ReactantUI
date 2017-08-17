@@ -33,21 +33,8 @@ public struct Image: SupportedPropertyType {
 }
 
 public class ImageView: View {
-    public static let image = assignable(name: "image", type: Image.self)
-    public static let highlightedImage = assignable(name: "highlightedImage", type: Image.self)
-    public static let animationDuration = assignable(name: "animationDuration", type: Double.self)
-    public static let animationRepeatCount = assignable(name: "animationRepeatCount", type: Int.self)
-    public static let isHighlighted = assignable(name: "isHighlighted", key: "highlighted", type: Bool.self)
-    public static let adjustsImageWhenAncestorFocused = assignable(name: "adjustsImageWhenAncestorFocused", type: Bool.self)
     override class var availableProperties: [PropertyDescription] {
-        return [
-            image,
-            highlightedImage,
-            animationDuration,
-            animationRepeatCount,
-            isHighlighted,
-            adjustsImageWhenAncestorFocused,
-        ] + super.availableProperties
+        return Properties.imageView.allProperties
     }
 
     public class override var runtimeType: String {

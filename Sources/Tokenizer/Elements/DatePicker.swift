@@ -5,14 +5,8 @@ import Foundation
 #endif
 
 public class DatePicker: View {
-    public static let minuteInterval = assignable(name: "minuteInterval", type: Int.self)
-    public static let mode = assignable(name: "mode", swiftName: "datePickerMode", key: "datePickerMode", type: DatePickerMode.self)
-    
     override class var availableProperties: [PropertyDescription] {
-        return [
-            minuteInterval,
-            mode,
-            ] + super.availableProperties
+        return Properties.datePicker.allProperties
     }
 
     public class override var runtimeType: String {

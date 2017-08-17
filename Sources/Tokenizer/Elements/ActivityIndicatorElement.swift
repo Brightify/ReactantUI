@@ -5,16 +5,8 @@ import Foundation
 #endif
 
 public class ActivityIndicatorElement: View {
-    public static let color = assignable(name: "color", type: UIColorPropertyType.self)
-    public static let hidesWhenStopped = assignable(name: "hidesWhenStopped", type: Bool.self)
-    public static let indicatorStyle = assignable(name: "indicatorStyle", swiftName: "activityIndicatorViewStyle", key: "activityIndicatorViewStyle", type: ActivityIndicatorStyle.self)
-
     override class var availableProperties: [PropertyDescription] {
-        return [
-                color,
-                hidesWhenStopped,
-                indicatorStyle,
-            ] + super.availableProperties
+        return Properties.activityIndicator.allProperties
     }
 
     public static var defaultContentHugging: (horizontal: ConstraintPriority, vertical: ConstraintPriority) {

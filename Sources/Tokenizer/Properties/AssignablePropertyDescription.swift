@@ -15,13 +15,14 @@ import UIKit
 //}
 
 public struct AssignableProperty<T: SupportedPropertyType>: TypedProperty {
-
+    public let namespace: [PropertyContainer.Namespace]
     public let attributeName: String
     public let description: AssignablePropertyDescription<T>
     public var value: T
 
     public func application(on target: String) -> String {
-        return "\(target).\(description.swiftName) = \(value.generated)"
+        let namespacedTarget = namespace.resolvedSwiftName(target: target)
+        return "\(namespacedTarget).\(description.swiftName) = \(value.generated)"
     }
     
     #if SanAndreas
@@ -55,7 +56,8 @@ public struct AssignableProperty<T: SupportedPropertyType>: TypedProperty {
 
 public struct AssignablePropertyDescription<T: SupportedPropertyType>: TypedPropertyDescription {
     public typealias ValueType = T
-
+    
+    public let namespace: [PropertyContainer.Namespace]
     public let name: String
     public let swiftName: String
     public let key: String
@@ -77,15 +79,19 @@ public struct AssignablePropertyDescription<T: SupportedPropertyType>: TypedProp
     }
 
     private func getProperty(from dictionary: [String: Property]) -> AssignableProperty<T>? {
-        return dictionary[name] as? AssignableProperty<T>
+        return dictionary[dictionaryKey()] as? AssignableProperty<T>
     }
 
     private func setProperty(_ property: Property, to dictionary: inout [String: Property]) {
-        dictionary[name] = property
+        dictionary[dictionaryKey()] = property
+    }
+    
+    private func dictionaryKey() -> String {
+        return namespace.resolvedAttributeName(name: name)
     }
 
     private func makeProperty(with attributeName: String, value: T) -> AssignableProperty<T> {
-        return AssignableProperty(attributeName: attributeName, description: self, value: value)
+        return AssignableProperty(namespace: namespace, attributeName: attributeName, description: self, value: value)
     }
 
 //    func application(of property: Property, on target: String) -> String {

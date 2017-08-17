@@ -35,22 +35,8 @@ public enum LayoutAxis: String, SupportedPropertyType {
 
 public class StackView: Container {
     
-    public static let axis = assignable(name: "axis", type: LayoutAxis.self)
-    public static let spacing = assignable(name: "spacing", type: Float.self)
-    public static let distribution = assignable(name: "distribution", type: LayoutDistribution.self)
-    public static let alignment = assignable(name: "alignment", type: LayoutAlignment.self)
-    public static let isBaselineRelativeArrangement = assignable(name: "isBaselineRelativeArrangement", key: "baselineRelativeArrangement", type: Bool.self)
-    public static let isLayoutMarginsRelativeArrangement = assignable(name: "isLayoutMarginsRelativeArrangement", key: "layoutMarginsRelativeArrangement", type: Bool.self)
-    
     override class var availableProperties: [PropertyDescription] {
-        return [
-            axis,
-            spacing,
-            distribution,
-            alignment,
-            isBaselineRelativeArrangement,
-            isLayoutMarginsRelativeArrangement,
-        ] + super.availableProperties
+        return Properties.stackView.allProperties
     }
 
     public override var addSubviewMethod: String {
