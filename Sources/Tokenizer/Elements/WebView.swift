@@ -25,3 +25,17 @@ public class WebView: View {
     }
     #endif
 }
+
+public class WebViewProperties: ViewProperties {
+    public let allowsMagnification: AssignablePropertyDescription<Bool>
+    public let magnification: AssignablePropertyDescription<Float>
+    public let allowsBackForwardNavigationGestures: AssignablePropertyDescription<Bool>
+    
+    public required init(configuration: Configuration) {
+        allowsMagnification = configuration.property(name: "allowsMagnification")
+        magnification = configuration.property(name: "magnification")
+        allowsBackForwardNavigationGestures = configuration.property(name: "allowsBackForwardNavigationGestures")
+        
+        super.init(configuration: configuration)
+    }
+}

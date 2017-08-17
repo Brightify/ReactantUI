@@ -20,3 +20,21 @@ public class Switch: View {
     }
     #endif
 }
+
+public class SwitchProperties: ViewProperties {
+    public let isOn: AssignablePropertyDescription<Bool>
+    public let onTintColor: AssignablePropertyDescription<UIColorPropertyType>
+    public let thumbTintColor: AssignablePropertyDescription<UIColorPropertyType>
+    public let onImage: AssignablePropertyDescription<Image>
+    public let offImage: AssignablePropertyDescription<Image>
+    
+    public required init(configuration: Configuration) {
+        isOn = configuration.property(name: "isOn")
+        onTintColor = configuration.property(name: "onTintColor")
+        thumbTintColor = configuration.property(name: "thumbTintColor")
+        onImage = configuration.property(name: "onImage")
+        offImage = configuration.property(name: "offImage")
+        
+        super.init(configuration: configuration)
+    }
+}

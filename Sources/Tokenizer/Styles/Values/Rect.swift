@@ -32,7 +32,7 @@ public struct Rect: SupportedPropertyType {
     }
 
     public static func materialize(from value: String) throws -> Rect {
-        let parts = value.components(separatedBy: ",").flatMap(Float.init)
+        let parts = value.trimmingCharacters(in: CharacterSet.whitespaces).components(separatedBy: ",").flatMap(Float.init)
         guard parts.count == 4 else {
             throw PropertyMaterializationError.unknownValue(value)
         }

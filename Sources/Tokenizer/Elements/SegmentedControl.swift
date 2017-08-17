@@ -21,3 +21,18 @@ public class SegmentedControl: View {
     }
     #endif
 }
+
+public class SegmentedControlProperties: ViewProperties {
+    public let selectedSegmentIndex: AssignablePropertyDescription<Int>
+    public let isMomentary: AssignablePropertyDescription<Bool>
+    public let apportionsSegmentWidthsByContent: AssignablePropertyDescription<Bool>
+    
+    public required init(configuration: Configuration) {
+        selectedSegmentIndex = configuration.property(name: "selectedSegmentIndex")
+        isMomentary = configuration.property(name: "isMomentary")
+        apportionsSegmentWidthsByContent = configuration.property(name: "apportionsSegmentWidthsByContent")
+        
+        super.init(configuration: configuration)
+    }
+}
+    

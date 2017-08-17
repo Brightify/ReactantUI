@@ -19,3 +19,11 @@ public class TableView: View {
     }
     #endif
 }
+
+public class TableViewProperties: ViewProperties {
+    
+    public required init(configuration: Configuration) {
+        
+        super.init(configuration: configuration)
+    }
+}

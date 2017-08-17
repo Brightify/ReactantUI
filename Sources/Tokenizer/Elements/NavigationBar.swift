@@ -20,3 +20,23 @@ public class NavigationBar: View {
     }
     #endif
 }
+
+public class NavigationBarProperties: ViewProperties {
+    public let barTintColor: AssignablePropertyDescription<UIColorPropertyType>
+    public let backIndicatorImage: AssignablePropertyDescription<Image>
+    public let backIndicatorTransitionMaskImage: AssignablePropertyDescription<Image>
+    public let shadowImage: AssignablePropertyDescription<Image>
+    public let isTranslucent: AssignablePropertyDescription<Bool>
+    public let barStyle: AssignablePropertyDescription<BarStyle>
+    
+    public required init(configuration: Configuration) {
+        barTintColor = configuration.property(name: "barTintColor")
+        backIndicatorImage = configuration.property(name: "backIndicatorImage")
+        backIndicatorTransitionMaskImage = configuration.property(name: "backIndicatorTransitionMaskImage")
+        shadowImage = configuration.property(name: "shadowImage")
+        isTranslucent = configuration.property(name: "isTranslucent", key: "translucent")
+        barStyle = configuration.property(name: "barStyle")
+        
+        super.init(configuration: configuration)
+    }
+}
