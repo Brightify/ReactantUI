@@ -2,17 +2,17 @@
 import UIKit
 #endif
 
-public func assignable<T: SupportedPropertyType>(name: String, type: T.Type) -> AssignablePropertyDescription<T> {
-    return assignable(name: name, key: name, type: type)
-}
-
-public func assignable<T: SupportedPropertyType>(name: String, key: String, type: T.Type) -> AssignablePropertyDescription<T> {
-    return assignable(name: name, swiftName: name, key: key, type: type)
-}
-
-public func assignable<T: SupportedPropertyType>(name: String, swiftName: String, key: String, type: T.Type) -> AssignablePropertyDescription<T> {
-    return AssignablePropertyDescription(name: name, swiftName: swiftName, key: key)
-}
+//public func assignable<T: SupportedPropertyType>(name: String, type: T.Type) -> AssignablePropertyDescription<T> {
+//    return assignable(name: name, key: name, type: type)
+//}
+//
+//public func assignable<T: SupportedPropertyType>(name: String, key: String, type: T.Type) -> AssignablePropertyDescription<T> {
+//    return assignable(name: name, swiftName: name, key: key, type: type)
+//}
+//
+//public func assignable<T: SupportedPropertyType>(name: String, swiftName: String, key: String, type: T.Type) -> AssignablePropertyDescription<T> {
+//    return AssignablePropertyDescription(name: name, swiftName: swiftName, key: key)
+//}
 
 public struct AssignableProperty<T: SupportedPropertyType>: TypedProperty {
 
