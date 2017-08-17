@@ -55,7 +55,7 @@ public struct Constraint {
             case .this:
                 targetString = "this"
             }
-            if targetAnchor != anchor {
+            if targetAnchor != anchor && attribute != .before && attribute != .after {
                 targetString += ".\(targetAnchor.description)"
             }
             value += targetString
@@ -90,6 +90,19 @@ public enum ConstraintType {
     case targeted(target: ConstraintTarget, targetAnchor: LayoutAnchor, multiplier: Float, constant: Float)
 }
 
+extension ConstraintType: Equatable {
+    public static func ==(lhs: ConstraintType, rhs: ConstraintType) -> Bool {
+        switch(lhs, rhs) {
+        case (.constant(let lhsConstant), .constant(let rhsConstant)):
+            return lhsConstant == rhsConstant
+        case (.targeted(let lhsTarget, let lhsAnchor, let lhsMultiplier, let lhsConstant), .targeted(let rhsTarget, let rhsAnchor, let rhsMultiplier, let rhsConstant)):
+            return lhsTarget == rhsTarget && lhsAnchor == rhsAnchor && lhsMultiplier == rhsMultiplier && lhsConstant == rhsConstant
+        default:
+            return false
+        }
+    }
+}
+
 public enum ConstraintTarget {
     case field(String)
     case layoutId(String)
@@ -109,5 +122,15 @@ extension ConstraintTarget: Equatable {
         default:
             return false
         }
+    }
+}
+
+extension Constraint: Equatable {
+    public static func ==(lhs: Constraint, rhs: Constraint) -> Bool {
+        return lhs.field == rhs.field
+            && lhs.attribute == rhs.attribute
+            && lhs.priority == rhs.priority
+            && lhs.relation == rhs.relation
+            && lhs.type == rhs.type
     }
 }

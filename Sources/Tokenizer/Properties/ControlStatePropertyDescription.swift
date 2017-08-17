@@ -2,13 +2,13 @@
 import UIKit
 #endif
 
-public func controlState<T: SupportedPropertyType>(name: String, type: T.Type) -> ControlStatePropertyDescription<T> {
-    return controlState(name: name, key: name, type: type)
-}
-
-public func controlState<T: SupportedPropertyType>(name: String, key: String, type: T.Type) -> ControlStatePropertyDescription<T> {
-    return ControlStatePropertyDescription(name: name, key: key)
-}
+//public func controlState<T: SupportedPropertyType>(name: String, type: T.Type) -> ControlStatePropertyDescription<T> {
+//    return controlState(name: name, key: name, type: type)
+//}
+//
+//public func controlState<T: SupportedPropertyType>(name: String, key: String, type: T.Type) -> ControlStatePropertyDescription<T> {
+//    return ControlStatePropertyDescription(name: name, key: key)
+//}
 
 public struct ControlStateProperty<T: SupportedPropertyType>: Property {
     public let attributeName: String

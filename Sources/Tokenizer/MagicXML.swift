@@ -220,7 +220,7 @@ extension Style: MagicElementSerializable {
 
 extension Layout {
     public func serialize() -> [MagicAttribute] {
-        var builder = MagicAttributeBuilder()
+        var builder = MagicAttributeBuilder(namespace: "layout")
         
         if let id = id {
             builder.attribute(name: "id", value: id)
@@ -330,6 +330,12 @@ private enum ConstraintShortcutOrConstraint {
         var result = [] as [ConstraintShortcutOrConstraint]
         for shortcut in ConstraintShortcut.allValues {
             let constraintsForShortcut = mutableConstraints.filter { shortcut.attributes.contains($0.attribute) }
+            if case .before = shortcut {
+                print("beforko, constraints: \(constraintsForShortcut)")
+            }
+            if case .after = shortcut {
+                print("afterko, constraints: \(constraintsForShortcut)")
+            }
             guard constraintsForShortcut.count == shortcut.attributes.count else { continue }
             let grouped = constraintsForShortcut.groupBy { $0.serialize().value }
             for (key, group) in grouped {
@@ -338,42 +344,42 @@ private enum ConstraintShortcutOrConstraint {
                 guard let firstConstraint = group.first else { continue }
                 
                 result.append(.shortcut(shortcut: shortcut, firstConstraint))
-                
+                constraintsForShortcut.forEach { constraint in
+                    guard let index = mutableConstraints.index(of: constraint) else { return }
+                    mutableConstraints.remove(at: index)
+                }
             }
             
-            
-            
-            
-            //            let allConstraintsEqual = equal(constraintsForShortcut) { lhs, rhs in
-            //                guard lhs.field == rhs.field else { return false }
-            //                guard lhs.relation == rhs.relation else { return false }
-            //                guard lhs.priority == rhs.priority else { return false }
-            //
-            //                switch (lhs.type, rhs.type) {
-            //                case (.targeted(let lhsTargeted), .targeted(let rhsTargeted)):
-            //                    let conditions: [Bool] = [
-            //                        lhsTargeted.targetAnchor == lhs.anchor,
-            //                        rhsTargeted.targetAnchor == rhs.anchor,
-            //                        lhsTargeted.target == rhsTargeted.target,
-            //                        lhsTargeted.constant == rhsTargeted.constant
-            //                    ]
-            //
-            //                    // Check if all conditions are true
-            //                    guard conditions.first(where: { $0 == false }) == nil else { return false }
-            //                case (.constant(let lhsConstant), .constant(let rhsConstant)):
-            //                    guard lhsConstant == rhsConstant else { return false }
-            //                default:
-            //                    return false
-            //                }
-            //
-            //                // If we get all the way here they are equal
-            //                return true
-            //            }
-            //
-            //            guard allConstraintsEqual else { continue }
-            //
-            //            removedAttributes.append(contentsOf: shortcut.attributes)
-            //            shortcut.attributes.forEach { constraintDictionary.removeValue(forKey: $0) }
+//            let allConstraintsEqual = equal(constraintsForShortcut) { lhs, rhs in
+//                guard lhs.field == rhs.field else { return false }
+//                guard lhs.relation == rhs.relation else { return false }
+//                guard lhs.priority == rhs.priority else { return false }
+//                
+//                switch (lhs.type, rhs.type) {
+//                case (.targeted(let lhsTargeted), .targeted(let rhsTargeted)):
+//                    let conditions: [Bool] = [
+//                        lhsTargeted.targetAnchor == lhs.anchor,
+//                        rhsTargeted.targetAnchor == rhs.anchor,
+//                        lhsTargeted.target == rhsTargeted.target,
+//                        lhsTargeted.constant == rhsTargeted.constant
+//                    ]
+//                    
+//                    // Check if all conditions are true
+//                    guard conditions.first(where: { $0 == false }) == nil else { return false }
+//                case (.constant(let lhsConstant), .constant(let rhsConstant)):
+//                    guard lhsConstant == rhsConstant else { return false }
+//                default:
+//                    return false
+//                }
+//                
+//                // If we get all the way here they are equal
+//                return true
+//            }
+//            
+//            guard allConstraintsEqual else { continue }
+//            
+//            removedAttributes.append(contentsOf: shortcut.attributes)
+//            shortcut.attributes.forEach { constraintDictionary.removeValue(forKey: $0) }
             
             
         }
@@ -389,6 +395,8 @@ private enum ConstraintShortcut: String {
     case fillHorizontally
     case fillVertically
     case center
+    case before
+    case after
     
     var attributes: Set<LayoutAttribute> {
         switch self {
@@ -400,10 +408,14 @@ private enum ConstraintShortcut: String {
             return [.top, .bottom]
         case .center:
             return [.centerX, .centerY]
+        case .before:
+            return [.before]
+        case .after:
+            return [.after]
         }
     }
     
-    static let allValues: [ConstraintShortcut] = [.edges, .fillHorizontally, .fillVertically, .center]
+    static let allValues: [ConstraintShortcut] = [.edges, .fillHorizontally, .fillVertically, .center, .before, .after]
 }
 
 extension Collection {

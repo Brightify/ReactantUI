@@ -2,14 +2,14 @@
 import UIKit
 #endif
 
-public func nestedAssignment<T: SupportedPropertyType>(name: String, field: String, namespace: String? = nil, optional: Bool = false, type: T.Type) -> NestedPropertyDescription<AssignablePropertyDescription<T>> {
-    return nestedAssignment(name: name, field: field, namespace: namespace, optional: optional, key: name, type: type)
-}
-
-public func nestedAssignment<T: SupportedPropertyType>(name: String, field: String, namespace: String? = nil, optional: Bool = false, key: String, type: T.Type) -> NestedPropertyDescription<AssignablePropertyDescription<T>> {
-    return nested(field: field, namespace: namespace, optional: optional,
-        property: assignable(name: name, key: key, type: type))
-}
+//public func nestedAssignment<T: SupportedPropertyType>(name: String, field: String, namespace: String? = nil, optional: Bool = false, type: T.Type) -> NestedPropertyDescription<AssignablePropertyDescription<T>> {
+//    return nestedAssignment(name: name, field: field, namespace: namespace, optional: optional, key: name, type: type)
+//}
+//
+//public func nestedAssignment<T: SupportedPropertyType>(name: String, field: String, namespace: String? = nil, optional: Bool = false, key: String, type: T.Type) -> NestedPropertyDescription<AssignablePropertyDescription<T>> {
+//    return nested(field: field, namespace: namespace, optional: optional,
+//        property: assignable(name: name, key: key, type: type))
+//}
 
 public func nested<PROPERTY: PropertyDescription>(field: String, namespace: String? = nil, optional: Bool = false, property: PROPERTY) -> NestedPropertyDescription<PROPERTY> {
     return NestedPropertyDescription<PROPERTY>(field: field, namespace: namespace, optional: optional, nestedDescription: property)
@@ -70,7 +70,7 @@ public struct NestedProperty<PROPERTY: Property, DESCRIPTION: PropertyDescriptio
     
     #if SanAndreas
     public func dematerialize() -> MagicAttribute {
-        return MagicAttribute(name: attributeName, value: "")//nestedProperty.dematerialize())
+        return nestedProperty.dematerialize()//MagicAttribute(name: nestedProperty.attributeName, value: nestedProperty.dematerialize())
     }
     #endif
 

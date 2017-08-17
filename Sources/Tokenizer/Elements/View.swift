@@ -85,7 +85,7 @@ extension NestedPropertyContainer {
     }
 }
 
-public class View: XMLElementDeserializable, UIElement {
+public class View: XMLElementDeserializable, UIElement, PropertyContainer {
     public static let backgroundColor = assignable(name: "backgroundColor", type: UIColorPropertyType.self)
     public static let clipsToBounds = assignable(name: "clipsToBounds", type: Bool.self)
     public static let isUserInteractionEnabled = assignable(name: "isUserInteractionEnabled", key: "userInteractionEnabled", type: Bool.self)
@@ -163,7 +163,7 @@ public class View: XMLElementDeserializable, UIElement {
         public static let anchorPoint = nested(LayerProperties.anchorPoint)
     }
     
-    public struct LayerProperties {
+    public struct LayerProperties: PropertyContainer {
         public static let cornerRadius = assignable(name: "cornerRadius", type: Float.self)
         public static let borderWidth = assignable(name: "borderWidth", type: Float.self)
         public static let borderColor = assignable(name: "borderColor", type: CGColorPropertyType.self)
