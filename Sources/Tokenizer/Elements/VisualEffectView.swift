@@ -9,9 +9,7 @@ public class VisualEffectView: Container {
     public static let effect = assignable(name: "effect", type: VisualEffect.self)
     
     override class var availableProperties: [PropertyDescription] {
-        return [
-            effect,
-            ] + super.availableProperties
+        return Properties.visualEffectView.allProperties
     }
 
     public override var addSubviewMethod: String {

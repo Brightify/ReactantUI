@@ -6,8 +6,7 @@ import Foundation
 
 public class TableView: View {
     override class var availableProperties: [PropertyDescription] {
-        // FIXME implement properties
-        return super.availableProperties
+        return Properties.tableView.allProperties
     }
 
     public override var initialization: String {

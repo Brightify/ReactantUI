@@ -330,12 +330,6 @@ private enum ConstraintShortcutOrConstraint {
         var result = [] as [ConstraintShortcutOrConstraint]
         for shortcut in ConstraintShortcut.allValues {
             let constraintsForShortcut = mutableConstraints.filter { shortcut.attributes.contains($0.attribute) }
-            if case .before = shortcut {
-                print("beforko, constraints: \(constraintsForShortcut)")
-            }
-            if case .after = shortcut {
-                print("afterko, constraints: \(constraintsForShortcut)")
-            }
             guard constraintsForShortcut.count == shortcut.attributes.count else { continue }
             let grouped = constraintsForShortcut.groupBy { $0.serialize().value }
             for (key, group) in grouped {

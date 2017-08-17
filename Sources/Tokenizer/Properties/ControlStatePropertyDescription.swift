@@ -11,6 +11,7 @@ import UIKit
 //}
 
 public struct ControlStateProperty<T: SupportedPropertyType>: Property {
+    public let namespace: [PropertyContainer.Namespace]
     public let attributeName: String
     public let description: ControlStatePropertyDescription<T>
     public var value: T
@@ -18,7 +19,8 @@ public struct ControlStateProperty<T: SupportedPropertyType>: Property {
     public func application(on target: String) -> String {
         let state = parseState(from: attributeName) as [ControlState]
         let stringState = state.map { "UIControlState.\($0.rawValue)" }.joined(separator: ", ")
-        return "\(target).set\(description.key.capitalizingFirstLetter())(\(value.generated), for: [\(stringState)])"
+        let namespacedTarget = namespace.resolvedSwiftName(target: target)
+        return "\(namespacedTarget).set\(description.key.capitalizingFirstLetter())(\(value.generated), for: [\(stringState)])"
     }
     
     #if SanAndreas
@@ -31,6 +33,9 @@ public struct ControlStateProperty<T: SupportedPropertyType>: Property {
     public func apply(on object: AnyObject) throws {
         let key = description.key
         let selector = Selector("set\(key.capitalizingFirstLetter()):forState:")
+        
+        let target = try resolveTarget(for: object)
+        
         guard object.responds(to: selector) else {
             throw LiveUIError(message: "!! Object \(object) doesn't respond to \(selector) (property: \(self))")
         }
@@ -43,6 +48,18 @@ public struct ControlStateProperty<T: SupportedPropertyType>: Property {
         let method = unsafeBitCast(signature, to: setValueForControlStateIMP.self)
         method(object, selector, resolvedValue as AnyObject, parseState(from: attributeName).resolveUnion())
     }
+    
+    private func resolveTarget(for object: AnyObject) throws -> AnyObject {
+        if namespace.isEmpty {
+            return object
+        } else {
+            let keyPath = namespace.resolvedKeyPath
+            guard let target = object.value(forKeyPath: keyPath) else {
+                throw LiveUIError(message: "!! Object \(object) doesn't have keyPath \(keyPath) to resolve real target")
+            }
+            return target as AnyObject
+        }
+    }
     #endif
 
     private func parseState(from attributeName: String) -> [ControlState] {
@@ -52,12 +69,14 @@ public struct ControlStateProperty<T: SupportedPropertyType>: Property {
 
 public struct ControlStatePropertyDescription<T: SupportedPropertyType>: TypedPropertyDescription {
     public typealias ValueType = T
-
+    
+    public let namespace: [PropertyContainer.Namespace]
     public let name: String
     public let key: String
 
     public func matches(attributeName: String) -> Bool {
-        return attributeName == name || attributeName.hasPrefix("\(name).")
+        let resolvedAttributeName = namespace.resolvedAttributeName(name: name)
+        return attributeName == resolvedAttributeName || attributeName.hasPrefix("\(resolvedAttributeName).")
     }
 
     public func get(from properties: [String: Property], for state: [ControlState]) -> T? {
@@ -77,14 +96,18 @@ public struct ControlStatePropertyDescription<T: SupportedPropertyType>: TypedPr
     }
 
     private func getProperty(from dictionary: [String: Property], for state: [ControlState]) -> ControlStateProperty<T>? {
-        return dictionary["\(name).\(state.name)"] as? ControlStateProperty<T>
+        return dictionary[dictionaryKey(for: state)] as? ControlStateProperty<T>
     }
 
     private func setProperty(_ property: Property, to dictionary: inout [String: Property], for state: [ControlState]) {
-        dictionary["\(name).\(state.name)"] = property
+        dictionary[dictionaryKey(for: state)] = property
+    }
+    
+    private func dictionaryKey(for state: [ControlState]) -> String {
+        return namespace.resolvedAttributeName(name: "\(name).\(state.name)")
     }
 
     private func makeProperty(with attributeName: String, value: T) -> ControlStateProperty<T> {
-        return ControlStateProperty(attributeName: attributeName, description: self, value: value)
+        return ControlStateProperty(namespace: namespace, attributeName: attributeName, description: self, value: value)
     }
 }

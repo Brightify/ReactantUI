@@ -6,20 +6,8 @@ import Foundation
 
 public class Switch: View {
     
-    public static let isOn = assignable(name: "isOn", type: Bool.self)
-    public static let onTintColor = assignable(name: "onTintColor", type: UIColorPropertyType.self)
-    public static let thumbTintColor = assignable(name: "thumbTintColor", type: UIColorPropertyType.self)
-    public static let onImage = assignable(name: "onImage", type: Image.self)
-    public static let offImage = assignable(name: "offImage", type: Image.self)
-    
     override class var availableProperties: [PropertyDescription] {
-        return [
-            isOn,
-            onTintColor,
-            thumbTintColor,
-            onImage,
-            offImage,
-            ] + super.availableProperties
+        return Properties.switch.allProperties
     }
 
     public class override var runtimeType: String {

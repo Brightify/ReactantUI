@@ -6,22 +6,8 @@ import Foundation
 
 public class PageControl: View {
     
-    public static let currentPage = assignable(name: "currentPage", type: Int.self)
-    public static let numberOfPages = assignable(name: "numberOfPages", type: Int.self)
-    public static let hidesForSinglePage = assignable(name: "hidesForSinglePage", type: Bool.self)
-    public static let pageIndicatorTintColor = assignable(name: "pageIndicatorTintColor", type: UIColorPropertyType.self)
-    public static let currentPageIndicatorTintColor = assignable(name: "currentPageIndicatorTintColor", type: UIColorPropertyType.self)
-    public static let defersCurrentPageDisplay = assignable(name: "defersCurrentPageDisplay", type: Bool.self)
-    
     override class var availableProperties: [PropertyDescription] {
-        return [
-            currentPage,
-            numberOfPages,
-            hidesForSinglePage,
-            pageIndicatorTintColor,
-            currentPageIndicatorTintColor,
-            defersCurrentPageDisplay,
-            ] + super.availableProperties
+        return Properties.pageControl.allProperties
     }
 
     public class override var runtimeType: String {

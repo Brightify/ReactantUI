@@ -4,6 +4,7 @@ import UIKit
 
 public protocol PropertyDescription {
     var name: String { get }
+    var namespace: [PropertyContainer.Namespace] { get }
 
     func materialize(attributeName: String, value: String) throws -> Property
 
@@ -23,6 +24,6 @@ public protocol TypedPropertyDescription: PropertyDescription {
 
 extension PropertyDescription {
     public func matches(attributeName: String) -> Bool {
-        return attributeName == name
+        return attributeName == namespace.resolvedAttributeName(name: name)
     }
 }

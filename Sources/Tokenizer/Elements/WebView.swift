@@ -7,17 +7,8 @@ import Foundation
 #endif
 
 public class WebView: View {
-    
-    public static let allowsMagnification = assignable(name: "allowsMagnification", type: Bool.self)
-    public static let magnification = assignable(name: "magnification", type: Float.self)
-    public static let allowsBackForwardNavigationGestures = assignable(name: "allowsBackForwardNavigationGestures", type: Bool.self)
-    
     override class var availableProperties: [PropertyDescription] {
-        return [
-            allowsMagnification,
-            magnification,
-            allowsBackForwardNavigationGestures,
-            ] + super.availableProperties
+        return Properties.webView.allProperties
     }
 
     public override var requiredImports: Set<String> {
