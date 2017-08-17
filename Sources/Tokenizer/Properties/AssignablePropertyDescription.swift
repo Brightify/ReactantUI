@@ -39,16 +39,29 @@ public struct AssignableProperty<T: SupportedPropertyType>: TypedProperty {
             throw LiveUIError(message: "!! Value `\(value)` couldn't be resolved in runtime for key `\(key)`")
         }
 
-        guard object.responds(to: Selector("set\(key.capitalizingFirstLetter()):")) else {
-            NSLog("THE FUCK apply \(attributeName) \(value)")
-            throw LiveUIError(message: "!! Object `\(object)` doesn't respond to selector `\(key)` to set value `\(value)`")
+        let target = try resolveTarget(for: object)
+    
+        guard target.responds(to: Selector("set\(key.capitalizingFirstLetter()):")) else {
+            throw LiveUIError(message: "!! Object `\(target)` doesn't respond to selector `\(key)` to set value `\(value)`")
         }
         var mutableObject: AnyObject? = resolvedValue as AnyObject
         do {
             //            try object.validateValue(&mutableObject, forKey: key)
-            object.setValue(mutableObject, forKey: key)
+            target.setValue(mutableObject, forKey: key)
         } catch {
-            throw LiveUIError(message: "!! Value `\(value)` isn't valid for key `\(key)` on object `\(object)")
+            throw LiveUIError(message: "!! Value `\(value)` isn't valid for key `\(key)` on object `\(target)")
+        }
+    }
+    
+    private func resolveTarget(for object: AnyObject) throws -> AnyObject {
+        if namespace.isEmpty {
+            return object
+        } else {
+            let keyPath = namespace.resolvedKeyPath
+            guard let target = object.value(forKeyPath: keyPath) else {
+                throw LiveUIError(message: "!! Object \(object) doesn't have keyPath \(keyPath) to resolve real target")
+            }
+            return target as AnyObject
         }
     }
     #endif

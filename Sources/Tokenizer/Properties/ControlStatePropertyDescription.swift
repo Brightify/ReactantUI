@@ -36,17 +36,17 @@ public struct ControlStateProperty<T: SupportedPropertyType>: Property {
         
         let target = try resolveTarget(for: object)
         
-        guard object.responds(to: selector) else {
-            throw LiveUIError(message: "!! Object \(object) doesn't respond to \(selector) (property: \(self))")
+        guard target.responds(to: selector) else {
+            throw LiveUIError(message: "!! Object \(target) doesn't respond to \(selector) (property: \(self))")
         }
         guard let resolvedValue = value.runtimeValue else {
             throw LiveUIError(message: "!! Value `\(value)` couldn't be resolved in runtime for key `\(key)`")
         }
-        let signature = object.method(for: selector)
+        let signature = target.method(for: selector)
 
         typealias setValueForControlStateIMP = @convention(c) (AnyObject, Selector, AnyObject, UIControlState) -> Void
         let method = unsafeBitCast(signature, to: setValueForControlStateIMP.self)
-        method(object, selector, resolvedValue as AnyObject, parseState(from: attributeName).resolveUnion())
+        method(target, selector, resolvedValue as AnyObject, parseState(from: attributeName).resolveUnion())
     }
     
     private func resolveTarget(for object: AnyObject) throws -> AnyObject {
