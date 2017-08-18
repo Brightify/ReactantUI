@@ -16,9 +16,13 @@ import UIKit
 
 public struct AssignableProperty<T: SupportedPropertyType>: TypedProperty {
     public let namespace: [PropertyContainer.Namespace]
-    public let attributeName: String
+    public let name: String
     public let description: AssignablePropertyDescription<T>
     public var value: T
+    
+    public var attributeName: String {
+        return namespace.resolvedAttributeName(name: name)
+    }
 
     public func application(on target: String) -> String {
         let namespacedTarget = namespace.resolvedSwiftName(target: target)
@@ -81,14 +85,21 @@ public struct AssignablePropertyDescription<T: SupportedPropertyType>: TypedProp
     }
 
     public func set(value: T, to properties: inout [String: Property]) {
-        var property = getProperty(from: properties) ?? makeProperty(with: name, value: value)
+        var property: AssignableProperty<T>
+        if let storedProperty = getProperty(from: properties) {
+            property = storedProperty
+        } else {
+            property = AssignableProperty(namespace: namespace, name: name, description: self, value: value)
+        }
         property.value = value
         setProperty(property, to: &properties)
     }
 
     public func materialize(attributeName: String, value: String) throws -> Property {
         let materializedValue = try T.materialize(from: value)
-        return makeProperty(with: attributeName, value: materializedValue)
+        let keyPath = namespace.resolvedKeyPath + "."
+        
+        return AssignableProperty(namespace: namespace, name: name, description: self, value: materializedValue)
     }
 
     private func getProperty(from dictionary: [String: Property]) -> AssignableProperty<T>? {
@@ -101,10 +112,6 @@ public struct AssignablePropertyDescription<T: SupportedPropertyType>: TypedProp
     
     private func dictionaryKey() -> String {
         return namespace.resolvedAttributeName(name: name)
-    }
-
-    private func makeProperty(with attributeName: String, value: T) -> AssignableProperty<T> {
-        return AssignableProperty(namespace: namespace, attributeName: attributeName, description: self, value: value)
     }
 
 //    func application(of property: Property, on target: String) -> String {

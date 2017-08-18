@@ -12,9 +12,20 @@ import UIKit
 
 public struct ControlStateProperty<T: SupportedPropertyType>: Property {
     public let namespace: [PropertyContainer.Namespace]
-    public let attributeName: String
+    public let name: String
+    public let state: [ControlState]
+    
     public let description: ControlStatePropertyDescription<T>
     public var value: T
+    
+    public var attributeName: String {
+        let namespacedName = namespace.resolvedAttributeName(name: name)
+        if state == [] || state == [.normal] {
+            return namespacedName
+        } else {
+            return namespacedName + "." + state.name
+        }
+    }
 
     public func application(on target: String) -> String {
         let state = parseState(from: attributeName) as [ControlState]
@@ -61,9 +72,9 @@ public struct ControlStateProperty<T: SupportedPropertyType>: Property {
         }
     }
     #endif
-
+    
     private func parseState(from attributeName: String) -> [ControlState] {
-        return attributeName.components(separatedBy: ".").dropFirst().flatMap(ControlState.init)
+        return attributeName.components(separatedBy: ".").dropFirst(namespace.count + 1).flatMap(ControlState.init)
     }
 }
 
@@ -85,14 +96,19 @@ public struct ControlStatePropertyDescription<T: SupportedPropertyType>: TypedPr
     }
 
     public func set(value: T, to properties: inout [String: Property], for state: [ControlState]) {
-        var property = getProperty(from: properties, for: state) ?? makeProperty(with: name, value: value)
+        var property: ControlStateProperty<T>
+        if let storedProperty = getProperty(from: properties, for: state) {
+            property = storedProperty
+        } else {
+            property = ControlStateProperty(namespace: namespace, name: name, state: state, description: self, value: value)
+        }
         property.value = value
         setProperty(property, to: &properties, for: state)
     }
 
     public func materialize(attributeName: String, value: String) throws -> Property {
         let materializedValue = try T.materialize(from: value)
-        return makeProperty(with: attributeName, value: materializedValue)
+        return ControlStateProperty(namespace: namespace, name: name, state: parseState(from: attributeName), description: self, value: materializedValue)
     }
 
     private func getProperty(from dictionary: [String: Property], for state: [ControlState]) -> ControlStateProperty<T>? {
@@ -104,10 +120,14 @@ public struct ControlStatePropertyDescription<T: SupportedPropertyType>: TypedPr
     }
     
     private func dictionaryKey(for state: [ControlState]) -> String {
-        return namespace.resolvedAttributeName(name: "\(name).\(state.name)")
+        if state == [.normal] || state == [] {
+            return namespace.resolvedAttributeName(name: "\(name)")
+        } else {
+            return namespace.resolvedAttributeName(name: "\(name).\(state.name)")
+        }
     }
 
-    private func makeProperty(with attributeName: String, value: T) -> ControlStateProperty<T> {
-        return ControlStateProperty(namespace: namespace, attributeName: attributeName, description: self, value: value)
+    private func parseState(from attributeName: String) -> [ControlState] {
+        return attributeName.components(separatedBy: ".").dropFirst(namespace.count + 1).flatMap(ControlState.init)
     }
 }

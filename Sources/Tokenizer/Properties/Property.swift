@@ -3,8 +3,12 @@ import UIKit
 #endif
 
 public protocol Property {
+    var name: String { get }
+    
     var attributeName: String { get }
-
+    
+    var namespace: [PropertyContainer.Namespace] { get }
+    
     func application(on target: String) -> String
 
     #if SanAndreas

@@ -44,4 +44,10 @@ public class ComponentReference: View, ComponentDefinitionContainer {
         return try ReactantLiveUIManager.shared.componentInstantiation(named: type)()
     }
     #endif
+    
+    public override func serialize() -> MagicElement {
+        var serialized = super.serialize()
+        serialized.attributes.insert(MagicAttribute(name: "type", value: type), at: 0)
+        return serialized
+    }
 }

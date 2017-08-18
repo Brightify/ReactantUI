@@ -23,7 +23,7 @@ public protocol SupportedPropertyType {
 }
 
 public struct CGColorPropertyType: SupportedPropertyType {
-    private let color: UIColorPropertyType
+    public let color: UIColorPropertyType
 
     public var generated: String {
         return "\(color.generated).cgColor"
@@ -37,7 +37,7 @@ public struct CGColorPropertyType: SupportedPropertyType {
 
     #if ReactantRuntime
     public var runtimeValue: Any? {
-        return (color as? UIColor)?.cgColor
+        return (color.runtimeValue as? UIColor)?.cgColor
     }
     #endif
 
@@ -52,7 +52,7 @@ public struct CGColorPropertyType: SupportedPropertyType {
 }
 
 public struct UIColorPropertyType: SupportedPropertyType {
-    private let color: Color
+    public let color: Color
 
     public var generated: String {
         switch color {
