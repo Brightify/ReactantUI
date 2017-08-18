@@ -25,7 +25,7 @@ public struct EdgeInsets: SupportedPropertyType {
     #endif
 
     public static func materialize(from value: String) throws -> EdgeInsets {
-        let parts = value.trimmingCharacters(in: CharacterSet.whitespaces).components(separatedBy: ",").flatMap(Float.init)
+        let parts = value.components(separatedBy: ",").flatMap { Float($0.trimmingCharacters(in: CharacterSet.whitespaces)) }
         guard parts.count == 4 || parts.count == 2 else {
             throw PropertyMaterializationError.unknownValue(value)
         }

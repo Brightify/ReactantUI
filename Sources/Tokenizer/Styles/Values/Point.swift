@@ -11,6 +11,11 @@ import Foundation
 public struct Point: SupportedPropertyType {
     public let x: Float
     public let y: Float
+    
+    public init(x: Float, y: Float) {
+        self.x = x
+        self.y = y
+    }
 
     public var generated: String {
         return "CGPoint(x: \(x.cgFloat), y: \(y.cgFloat))"
@@ -23,7 +28,7 @@ public struct Point: SupportedPropertyType {
     #endif
 
     public static func materialize(from value: String) throws -> Point {
-        let parts = value.trimmingCharacters(in: CharacterSet.whitespaces).components(separatedBy: ",").flatMap(Float.init)
+        let parts = value.components(separatedBy: ",").flatMap { Float($0.trimmingCharacters(in: CharacterSet.whitespaces)) }
         guard parts.count == 2 else {
             throw PropertyMaterializationError.unknownValue(value)
         }
