@@ -1,6 +1,5 @@
 import Foundation
 
-
 public struct Style: XMLElementDeserializable {
     public var type: String
     // this is name with group
