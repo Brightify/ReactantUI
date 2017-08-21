@@ -53,7 +53,7 @@ public struct Constraint {
             case .parent:
                 targetString = "super"
             case .this:
-                targetString = "this"
+                targetString = "self"
             }
             if targetAnchor != anchor && attribute != .before && attribute != .after {
                 targetString += ".\(targetAnchor.description)"
