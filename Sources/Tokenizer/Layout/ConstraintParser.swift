@@ -172,7 +172,6 @@ class ConstraintParser: BaseParser<Constraint> {
         try popToken()
         if peekToken() == .colon, case .identifier(let layoutId)? = peekNextToken() {
             try popTokens(2)
-            // FIXME Add `enum Target { field(String); layoutId(String) }` and return .layoutId here
             return .layoutId(layoutId)
         } else if identifier == "super" {
             return .parent
