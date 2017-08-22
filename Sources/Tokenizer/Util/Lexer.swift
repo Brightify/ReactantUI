@@ -23,7 +23,31 @@ struct Lexer {
         case other(String)
         case whitespace(String)
     }
+}
 
+extension Lexer.Token: Equatable {
+    static func ==(lhs: Lexer.Token, rhs: Lexer.Token) -> Bool {
+        switch (lhs, rhs) {
+        case (.identifier(let lhsIdentifier), .identifier(let rhsIdentifier)):
+            return lhsIdentifier == rhsIdentifier
+        case (.number(let lhsNumber), .number(let rhsNumber)):
+            return lhsNumber == rhsNumber
+        case (.parensOpen, .parensOpen), (.parensClose, .parensClose), (.colon, .colon), (.semicolon, .semicolon),
+             (.period, .period), (.assignment, .assignment), (.at, .at):
+            return true
+        case (.operatorToken(let lhsOperator), .operatorToken(let rhsOperator)):
+            return lhsOperator == rhsOperator
+        case (.other(let lhsOther), .other(let rhsOther)):
+            return lhsOther == rhsOther
+        case (.whitespace(let lhsWhitespace), .whitespace(let rhsWhitespace)):
+            return lhsWhitespace == rhsWhitespace
+        default:
+            return false
+        }
+    }
+}
+
+extension Lexer {
     typealias TokenGenerator = (String) -> Token?
     static let tokenList: [(String, TokenGenerator)] = [
         ("[ \t\n]", { .whitespace($0) }),
@@ -69,25 +93,6 @@ struct Lexer {
         }
         
         return tokens
-    }
-}
-
-extension Lexer.Token: Equatable {
-    static func ==(lhs: Lexer.Token, rhs: Lexer.Token) -> Bool {
-        switch (lhs, rhs) {
-        case (.identifier(let lhsIdentifier), .identifier(let rhsIdentifier)):
-            return lhsIdentifier == rhsIdentifier
-        case (.number(let lhsNumber), .number(let rhsNumber)):
-            return lhsNumber == rhsNumber
-        case (.parensOpen, .parensOpen), (.parensClose, .parensClose), (.colon, .colon), (.period, .period), (.assignment, .assignment), (.at, .at):
-            return true
-        case (.operatorToken(let lhsOperator), .operatorToken(let rhsOperator)):
-            return lhsOperator == rhsOperator
-        case (.other(let lhsOther), .other(let rhsOther)):
-            return lhsOther == rhsOther
-        default:
-            return false
-        }
     }
 }
 

@@ -137,7 +137,13 @@ class ConstraintParser: BaseParser<Constraint> {
                              constant: constant)
         }
 
-        let priority = try parsePriority() ?? .required
+        let priority: ConstraintPriority
+        if peekToken() != .semicolon {
+            priority = try parsePriority() ?? .required
+        } else {
+            priority = .required
+            try popToken()
+        }
 
         return Constraint(field: field, anchor: layoutAttribute.anchor, type: type, relation: relation, priority: priority)
     }
@@ -146,7 +152,6 @@ class ConstraintParser: BaseParser<Constraint> {
         if hasEnded() {
             return true
         } else if peekToken() == .semicolon {
-            try popToken()
             return true
         } else {
             return false
