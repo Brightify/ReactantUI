@@ -17,6 +17,20 @@ public struct Layout: XMLElementDeserializable {
     public var contentHuggingPriorityHorizontal: ConstraintPriority?
     public var contentHuggingPriorityVertical: ConstraintPriority?
     public var constraints: [Constraint]
+    
+    init(id: String? = nil,
+         contentCompressionPriorityHorizontal: ConstraintPriority?,
+         contentCompressionPriorityVertical: ConstraintPriority?,
+         contentHuggingPriorityHorizontal: ConstraintPriority?,
+         contentHuggingPriorityVertical: ConstraintPriority?,
+         constraints: [Constraint] = []) {
+        self.id = id
+        self.constraints = constraints
+        self.contentCompressionPriorityHorizontal = contentCompressionPriorityHorizontal
+        self.contentCompressionPriorityVertical = contentCompressionPriorityVertical
+        self.contentHuggingPriorityHorizontal = contentHuggingPriorityHorizontal
+        self.contentHuggingPriorityVertical = contentHuggingPriorityVertical
+    }
 
     public static func deserialize(_ node: XMLElement) throws -> Layout {
         let layoutAttributes = node.allAttributes

@@ -1,5 +1,5 @@
 public protocol UIContainer {
-    var children: [UIElement] { get }
+    var children: [UIElement] { get set }
 
     var addSubviewMethod: String { get }
 

@@ -38,6 +38,13 @@ public class ComponentReference: View, ComponentDefinitionContainer {
         
         try super.init(node: node)
     }
+    
+    public init(type: String, definition: ComponentDefinition?) {
+        self.type = type
+        self.definition = definition
+        
+        super.init()
+    }
 
     #if ReactantRuntime
     public override func initialize() throws -> UIView {

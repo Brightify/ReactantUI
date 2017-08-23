@@ -23,6 +23,11 @@ public class Container: View, UIContainer {
 
         try super.init(node: node)
     }
+    
+    public override init() {
+        children = []
+        super.init()
+    }
 
     public override var requiredImports: Set<String> {
         return Set(arrayLiteral: "UIKit").union(children.flatMap { $0.requiredImports })

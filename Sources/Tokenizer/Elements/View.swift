@@ -44,6 +44,16 @@ public class View: XMLElementDeserializable, UIElement {
 
         properties = try View.deserializeSupportedProperties(properties: type(of: self).availableProperties, in: node)
     }
+    
+    public init() {
+        field = nil
+        styles = []
+        layout = Layout(contentCompressionPriorityHorizontal: View.defaultContentCompression.horizontal,
+                             contentCompressionPriorityVertical: View.defaultContentCompression.vertical,
+                             contentHuggingPriorityHorizontal: View.defaultContentHugging.horizontal,
+                             contentHuggingPriorityVertical: View.defaultContentHugging.vertical)
+        properties = []
+    }
 
     public static func deserialize(_ node: XMLElement) throws -> Self {
         return try self.init(node: node)
