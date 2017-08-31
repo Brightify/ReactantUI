@@ -1,4 +1,6 @@
-import SpriteKit
+#if os(iOS) || os(watchOS) || os(tvOS)
+import UIKit
+#endif
 import Foundation
 
 public enum Color {
@@ -40,26 +42,33 @@ public enum Color {
         self = Color.absolute(red: red, green: green, blue: blue, alpha: alpha)
     }
 
-    public var skColor: SKColor {
+    #if os(OSX)
+        public typealias SystemColor = NSColor
+    #else
+        public typealias SystemColor = UIColor
+    #endif
+
+
+    public var color: SystemColor {
         switch self {
         case .absolute(let red, let green, let blue, let alpha):
-            return SKColor(red: red, green: green, blue: blue, alpha: alpha)
+            return SystemColor(red: red, green: green, blue: blue, alpha: alpha)
         case .named(let name):
             switch name {
             case "clear":
-                return SKColor.clear
+                return SystemColor.clear
             case "red":
-                return SKColor.red
+                return SystemColor.red
             case "green":
-                return SKColor.green
+                return SystemColor.green
             case "blue":
-                return SKColor.blue
+                return SystemColor.blue
             case "white":
-                return SKColor.white
+                return SystemColor.white
             case "black":
-                return SKColor.black
+                return SystemColor.black
             default:
-                return SKColor.red
+                return SystemColor.red
             }
         }
     }
