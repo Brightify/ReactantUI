@@ -17,7 +17,7 @@ public enum Font: SupportedPropertyType {
     public func dematerialize() -> String {
         switch self {
         case .system(let weight, let size):
-            return ":\(weight.rawValue):\(size)"
+            return ":\(weight.rawValue)@\(size)"
         case .named(let name, let size):
             return "\(name)@\(size)"
         }
