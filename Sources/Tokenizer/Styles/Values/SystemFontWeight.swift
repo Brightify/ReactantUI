@@ -2,7 +2,7 @@ import Foundation
 
 public enum SystemFontWeight: String {
     public static let allValues: [SystemFontWeight] = [
-        .ultralight, .thin, .light, .regular, .medium, .semibold, .bold, .heavy, .black
+        .thin, .ultralight, .light, .regular, .medium, .semibold, .bold, .heavy, .black
     ]
 
     case ultralight
@@ -17,10 +17,10 @@ public enum SystemFontWeight: String {
 
     public var name: String {
         switch self {
-        case .ultralight:
-            return "UIFontWeightUltraLight"
         case .thin:
             return "UIFontWeightThin"
+        case .ultralight:
+            return "UIFontWeightUltraLight"
         case .light:
             return "UIFontWeightLight"
         case .regular:
@@ -41,10 +41,10 @@ public enum SystemFontWeight: String {
     #if ReactantRuntime
     public var value: CGFloat {
         switch self {
-        case .ultralight:
-            return UIFontWeightUltraLight
         case .thin:
             return UIFontWeightThin
+        case .ultralight:
+            return UIFontWeightUltraLight
         case .light:
             return UIFontWeightLight
         case .regular:
