@@ -1,4 +1,4 @@
-import CoreGraphics
+import SpriteKit
 import Foundation
 
 public enum Color {
@@ -38,6 +38,30 @@ public enum Color {
         let alpha = CGFloat(rgba & 0xFF) / 255.0
 
         self = Color.absolute(red: red, green: green, blue: blue, alpha: alpha)
+    }
+
+    public var skColor: SKColor {
+        switch self {
+        case .absolute(let red, let green, let blue, let alpha):
+            return SKColor(red: red, green: green, blue: blue, alpha: alpha)
+        case .named(let name):
+            switch name {
+            case "clear":
+                return SKColor.clear
+            case "red":
+                return SKColor.red
+            case "green":
+                return SKColor.green
+            case "blue":
+                return SKColor.blue
+            case "white":
+                return SKColor.white
+            case "black":
+                return SKColor.black
+            default:
+                return SKColor.red
+            }
+        }
     }
 }
 
