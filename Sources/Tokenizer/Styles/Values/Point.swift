@@ -17,6 +17,11 @@ public struct Point: SupportedPropertyType {
         self.y = y
     }
 
+    public init(x: Double, y: Double) {
+        self.x = Float(x)
+        self.y = Float(y)
+    }
+
     public var generated: String {
         return "CGPoint(x: \(x.cgFloat), y: \(y.cgFloat))"
     }
