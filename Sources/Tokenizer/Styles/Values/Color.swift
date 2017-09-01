@@ -1,5 +1,7 @@
 #if os(iOS) || os(watchOS) || os(tvOS)
 import UIKit
+#else
+import AppKit
 #endif
 import Foundation
 
