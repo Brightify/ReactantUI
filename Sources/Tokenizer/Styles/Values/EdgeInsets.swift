@@ -9,10 +9,24 @@
 import Foundation
 
 public struct EdgeInsets: SupportedPropertyType {
-    let top: Float
-    let left: Float
-    let bottom: Float
-    let right: Float
+    public let top: Float
+    public let left: Float
+    public let bottom: Float
+    public let right: Float
+
+    init(top: Float, left: Float, bottom: Float, right: Float) {
+        self.top = top
+        self.left = left
+        self.bottom = bottom
+        self.right = right
+    }
+
+    init(top: Double, left: Double, bottom: Double, right: Double) {
+        self.top = Float(top)
+        self.left = Float(left)
+        self.bottom = Float(bottom)
+        self.right = Float(right)
+    }
 
     public var generated: String {
         return "UIEdgeInsetsMake(\(top.cgFloat), \(left.cgFloat), \(bottom.cgFloat), \(right.cgFloat))"
