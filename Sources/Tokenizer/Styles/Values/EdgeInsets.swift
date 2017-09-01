@@ -14,14 +14,14 @@ public struct EdgeInsets: SupportedPropertyType {
     public let bottom: Float
     public let right: Float
 
-    init(top: Float, left: Float, bottom: Float, right: Float) {
+    public init(top: Float, left: Float, bottom: Float, right: Float) {
         self.top = top
         self.left = left
         self.bottom = bottom
         self.right = right
     }
 
-    init(top: Double, left: Double, bottom: Double, right: Double) {
+    public init(top: Double, left: Double, bottom: Double, right: Double) {
         self.top = Float(top)
         self.left = Float(left)
         self.bottom = Float(bottom)
