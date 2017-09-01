@@ -37,7 +37,6 @@ public struct AssignableProperty<T: SupportedPropertyType>: TypedProperty {
 
     #if ReactantRuntime
     public func apply(on object: AnyObject) throws {
-        NSLog("apply \(attributeName) \(value)")
         let key = description.key
         guard let resolvedValue = value.runtimeValue else {
             throw LiveUIError(message: "!! Value `\(value)` couldn't be resolved in runtime for key `\(key)`")
