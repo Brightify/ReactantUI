@@ -67,8 +67,14 @@ public struct UIColorPropertyType: SupportedPropertyType {
     public func dematerialize() -> String {
         switch color {
         case .absolute(let red, let green, let blue, let alpha):
-            let rgb: Int = Int(red * 255) << 16 | Int(green * 255) << 8 | Int(blue * 255)
-            return String(format:"#%06x", rgb)
+            if alpha < 1 {
+                let rgba: Int = Int(red * 255) << 24 | Int(green * 255) << 16 | Int(blue * 255) << 8 | Int(alpha * 255)
+                return String(format:"#%08x", rgba)
+            } else {
+                let rgb: Int = Int(red * 255) << 16 | Int(green * 255) << 8 | Int(blue * 255)
+                return String(format:"#%06x", rgb)
+            }
+
         case .named(let name):
             return name
         }
