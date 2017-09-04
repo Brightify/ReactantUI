@@ -23,21 +23,6 @@ public enum ConstraintPriority {
         }
     }
 
-    public init(_ value: String) throws {
-        switch value {
-        case "required":
-            self = .required
-        case "high":
-            self = .high
-        case "medium":
-            self = .medium
-        case "low":
-            self = .low
-        default:
-            throw TokenizationError(message: "Unknown constraint priority \(value)")
-        }
-    }
-    
     public init(numericValue: Float) {
         switch numericValue {
         case ConstraintPriority.required.numeric:
@@ -50,6 +35,24 @@ public enum ConstraintPriority {
             self = .low
         default:
             self = .custom(numericValue)
+        }
+    }
+
+    public init(_ value: String) throws {
+        switch value {
+        case "required":
+            self.init(numericValue: ConstraintPriority.required.numeric)
+        case "high":
+            self.init(numericValue: ConstraintPriority.high.numeric)
+        case "medium":
+            self.init(numericValue: ConstraintPriority.medium.numeric)
+        case "low":
+            self.init(numericValue: ConstraintPriority.low.numeric)
+        default:
+            guard let floatValue = Float(value) else {
+                throw TokenizationError(message: "Unknown constraint priority \(value)")
+            }
+            self.init(numericValue: floatValue)
         }
     }
 }
