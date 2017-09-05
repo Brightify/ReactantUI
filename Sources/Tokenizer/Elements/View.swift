@@ -185,7 +185,7 @@ public class ViewProperties: PropertyContainer {
 }
 
 public final class ViewToolingProperties: PropertyContainer {
-    public let preferedSize: ValuePropertyDescription<PreferredSizeValue>
+    public let preferedSize: ValuePropertyDescription<PreferredSize>
 
     public required init(configuration: Configuration) {
         preferedSize = configuration.property(name: "tooling:preferedSize")
@@ -193,7 +193,7 @@ public final class ViewToolingProperties: PropertyContainer {
     }
 }
 
-public enum PreferredSize {
+public enum PreferredDimension {
     case fill
     case wrap
     case numeric(Float)
@@ -206,7 +206,7 @@ public enum PreferredSize {
             self = .wrap
         default:
             guard let floatValue = Float(value) else {
-                throw TokenizationError(message: "Unknown preferred size \(value)")
+                throw TokenizationError(message: "Unknown preferred dimension \(value)")
             }
             self = .numeric(floatValue)
         }
@@ -224,8 +224,8 @@ public enum PreferredSize {
     }
 }
 
-extension PreferredSize: Equatable {
-    public static func ==(lhs: PreferredSize, rhs: PreferredSize) -> Bool {
+extension PreferredDimension: Equatable {
+    public static func ==(lhs: PreferredDimension, rhs: PreferredDimension) -> Bool {
         switch (lhs, rhs) {
         case (.fill, .fill):
             return true
@@ -239,11 +239,11 @@ extension PreferredSize: Equatable {
     }
 }
 
-public struct PreferredSizeValue: SupportedPropertyType {
-    public var width: PreferredSize
-    public var height: PreferredSize
+public struct PreferredSize: SupportedPropertyType {
+    public var width: PreferredDimension
+    public var height: PreferredDimension
 
-    init(width: PreferredSize, height: PreferredSize) {
+    init(width: PreferredDimension, height: PreferredDimension) {
         self.width = width
         self.height = height
     }
@@ -268,16 +268,16 @@ public struct PreferredSizeValue: SupportedPropertyType {
     }
     #endif
 
-    public static func materialize(from value: String) throws -> PreferredSizeValue {
+    public static func materialize(from value: String) throws -> PreferredSize {
         if value.contains(",") == false {
-            let size = try PreferredSize(value)
-            return PreferredSizeValue.init(width: size, height: size)
+            let size = try PreferredDimension(value)
+            return PreferredSize.init(width: size, height: size)
         } else {
             let components = value.components(separatedBy: ",")
-            guard components.count == 2, let width = try? PreferredSize(components[0]), let height = try? PreferredSize(components[1]) else {
+            guard components.count == 2, let width = try? PreferredDimension(components[0]), let height = try? PreferredDimension(components[1]) else {
                 throw TokenizationError(message: "Failed to materialize PreferredSizeValue")
             }
-            return PreferredSizeValue(width: width, height: height)
+            return PreferredSize(width: width, height: height)
         }
     }
 }
