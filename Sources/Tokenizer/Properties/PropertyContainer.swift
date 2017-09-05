@@ -41,6 +41,12 @@ public class PropertyContainer {
             properties.append(property)
             return property
         }
+
+        func value<T>(name: String) -> ValuePropertyDescription<T> {
+            let property = ValuePropertyDescription<T>(namespace: namespace, name: name)
+            properties.append(property)
+            return property
+        }
         
         func controlState<T>(name: String, key: String) -> ControlStatePropertyDescription<T> {
             let property = ControlStatePropertyDescription<T>(namespace: namespace, name: name, key: key)
@@ -70,6 +76,10 @@ public class PropertyContainer {
         
         public func property<T>(name: String, key: String) -> ControlStatePropertyDescription<T> {
             return controlState(name: name, key: key)
+        }
+
+        public func property<T>(name: String) -> ValuePropertyDescription<T> {
+            return value(name: name)
         }
         
         public func namespaced<T: PropertyContainer>(in namespace: String, optional: Bool = false, _ type: T.Type) -> T {

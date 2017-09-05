@@ -9,6 +9,10 @@ public class View: XMLElementDeserializable, UIElement {
         return Properties.view.allProperties
     }
 
+    class var availableToolingProperties: [PropertyDescription] {
+        return ToolingProperties.view.allProperties
+    }
+
     public class var runtimeType: String {
         return "UIView"
     }
@@ -21,6 +25,7 @@ public class View: XMLElementDeserializable, UIElement {
     public var styles: [String]
     public var layout: Layout
     public var properties: [Property]
+    public var toolingProperties: [String: Property]
 
     public var initialization: String {
         return "\(type(of: self).runtimeType)()"
@@ -43,6 +48,7 @@ public class View: XMLElementDeserializable, UIElement {
         }
 
         properties = try View.deserializeSupportedProperties(properties: type(of: self).availableProperties, in: node)
+        toolingProperties = try View.deserializeToolingProperties(properties: type(of: self).availableToolingProperties, in: node)
     }
     
     public init() {
@@ -53,6 +59,7 @@ public class View: XMLElementDeserializable, UIElement {
                              contentHuggingPriorityHorizontal: View.defaultContentHugging.horizontal,
                              contentHuggingPriorityVertical: View.defaultContentHugging.vertical)
         properties = []
+        toolingProperties = [:]
     }
 
     public static func deserialize(_ node: XMLElement) throws -> Self {
@@ -91,6 +98,18 @@ public class View: XMLElementDeserializable, UIElement {
         }
         return result
     }
+
+    static func deserializeToolingProperties(properties: [PropertyDescription], in element: SWXMLHash.XMLElement) throws -> [String: Property] {
+        var result = [:] as [String: Property]
+        for (attributeName, attribute) in (element.allAttributes.filter { name, _ in name.hasPrefix("tooling") }) {
+            guard let propertyDescription = properties.first(where: { $0.matches(attributeName: attributeName) }) else {
+                continue
+            }
+            let property = try propertyDescription.materialize(attributeName: attributeName, value: attribute.text)
+            result[attributeName] = property
+        }
+        return result
+    }
     
     public func serialize() -> MagicElement {
         var builder = MagicAttributeBuilder()
@@ -104,6 +123,7 @@ public class View: XMLElementDeserializable, UIElement {
         
         #if SanAndreas
             properties.map { $0.dematerialize() }.forEach { builder.add(attribute: $0) }
+            toolingProperties.map { _, property in property.dematerialize() }.forEach { builder.add(attribute: $0) }
         #endif
         
         layout.serialize().forEach { builder.add(attribute: $0) }
@@ -161,5 +181,103 @@ public class ViewProperties: PropertyContainer {
         layer = configuration.namespaced(in: "layer", LayerProperties.self)
         
         super.init(configuration: configuration)
+    }
+}
+
+public final class ViewToolingProperties: PropertyContainer {
+    public let preferedSize: ValuePropertyDescription<PreferredSizeValue>
+
+    public required init(configuration: Configuration) {
+        preferedSize = configuration.property(name: "tooling:preferedSize")
+        super.init(configuration: configuration)
+    }
+}
+
+public enum PreferredSize {
+    case fill
+    case wrap
+    case numeric(Float)
+
+    public init(_ value: String) throws {
+        switch value {
+        case "fill":
+            self = .fill
+        case "wrap":
+            self = .wrap
+        default:
+            guard let floatValue = Float(value) else {
+                throw TokenizationError(message: "Unknown preferred size \(value)")
+            }
+            self = .numeric(floatValue)
+        }
+    }
+
+    var stringValue: String {
+        switch self {
+        case .fill:
+            return "fill"
+        case .numeric(let number):
+            return "\(number)"
+        case .wrap:
+            return "wrap"
+        }
+    }
+}
+
+extension PreferredSize: Equatable {
+    public static func ==(lhs: PreferredSize, rhs: PreferredSize) -> Bool {
+        switch (lhs, rhs) {
+        case (.fill, .fill):
+            return true
+        case (.wrap, .wrap):
+            return true
+        case (.numeric(let lhsNumber), .numeric(let rhsNumber)):
+            return lhsNumber == rhsNumber
+        default:
+            return false
+        }
+    }
+}
+
+public struct PreferredSizeValue: SupportedPropertyType {
+    public var width: PreferredSize
+    public var height: PreferredSize
+
+    init(width: PreferredSize, height: PreferredSize) {
+        self.width = width
+        self.height = height
+    }
+
+    // FIXME what happens in generated code
+    public var generated: String {
+        return ""
+    }
+
+    #if SanAndreas
+    public func dematerialize() -> String {
+        if width == height {
+            return "\(width.stringValue)"
+        }
+        return "\(width.stringValue),\(height.stringValue)"
+    }
+    #endif
+
+    #if ReactantRuntime
+    public var runtimeValue: Any? {
+        return nil
+    }
+    #endif
+
+    public static func materialize(from value: String) throws -> PreferredSizeValue {
+        if value.contains(",") == false {
+            let size = try PreferredSize(value)
+            return PreferredSizeValue.init(width: size, height: size)
+        } else {
+            let components = value.components(separatedBy: ",")
+            guard components.count == 2, let width = try? PreferredSize(components[0]), let height = try? PreferredSize(components[1]) else {
+                throw TokenizationError(message: "Failed to materialize PreferredSizeValue")
+            }
+            return PreferredSizeValue(width: width, height: height)
+        }
     }
 }
