@@ -8,7 +8,17 @@
 
 import Foundation
 
-public struct Properties {
+protocol PropertiesContainer {
+    static func prepare<T: PropertyContainer>(_ type: T.Type) -> T
+}
+
+extension PropertiesContainer {
+    static func prepare<T: PropertyContainer>(_ type: T.Type) -> T {
+        return T.init(configuration: PropertyContainer.Configuration(namespace: []))
+    }
+}
+
+public struct Properties: PropertiesContainer {
     public static let view = prepare(ViewProperties.self)
     public static let label = prepare(LabelProperties.self)
     public static let button = prepare(ButtonProperties.self)
@@ -33,8 +43,9 @@ public struct Properties {
     public static let toolbar = prepare(ToolbarProperties.self)
     public static let visualEffectView = prepare(VisualEffectViewProperties.self)
     public static let webView = prepare(WebViewProperties.self)
-    
-    static func prepare<T: PropertyContainer>(_ type: T.Type) -> T {
-        return T.init(configuration: PropertyContainer.Configuration(namespace: []))
-    }
+}
+
+public struct ToolingProperties: PropertiesContainer {
+    public static let view = prepare(ViewToolingProperties.self)
+    public static let plainTableView = prepare(PlainTableViewToolingProperties.self)
 }

@@ -15,12 +15,15 @@ import Reactant
 
 public class PlainTableView: View, ComponentDefinitionContainer {
     override class var availableProperties: [PropertyDescription] {
-        return super.availableProperties
+        return Properties.view.allProperties
+    }
+
+    override class var availableToolingProperties: [PropertyDescription] {
+        return ToolingProperties.plainTableView.allProperties
     }
 
     public var cellType: String
     public var cellDefinition: ComponentDefinition?
-    public var exampleCount: Int
 
     public var componentTypes: [String] {
         return cellDefinition?.componentTypes ?? [cellType]
@@ -44,7 +47,6 @@ public class PlainTableView: View, ComponentDefinitionContainer {
 
     public required init(node: SWXMLHash.XMLElement) throws {
         cellType = try node.value(ofAttribute: "cell")
-        exampleCount = node.value(ofAttribute: "examples") ?? 5
         if let cellElement = try node.singleOrNoElement(named: "cell") {
             cellDefinition = try ComponentDefinition(node: cellElement, type: cellType)
         } else {
@@ -54,33 +56,73 @@ public class PlainTableView: View, ComponentDefinitionContainer {
         try super.init(node: node)
     }
 
+    public override func serialize() -> MagicElement {
+        var element = super.serialize()
+        element.attributes.append(MagicAttribute(name: "cell", value: cellType))
+        return element
+    }
+
     #if ReactantRuntime
     public override func initialize() throws -> UIView {
         let createCell = try ReactantLiveUIManager.shared.componentInstantiation(named: cellType)
-        return Reactant.PlainTableView<CellHack>(cellFactory: {
+        let tableView =  Reactant.PlainTableView<CellHack>(cellFactory: {
             CellHack(wrapped: createCell())
-        }).with(state: .items(Array(repeating: (), count: exampleCount)))
+    }).with(state: .items(Array(repeating: (), count: ToolingProperties.plainTableView.exampleCount.get(from: self.toolingProperties) ?? 5)))
+
+        tableView.tableView.rowHeight = UITableViewAutomaticDimension
+
+        return tableView
     }
 
-    final class CellHack: ViewBase<Void, Void> {
+    public final class CellHack: ViewBase<Void, Void> {
         private let wrapped: UIView
 
-        init(wrapped: UIView) {
+        public init(wrapped: UIView) {
             self.wrapped = wrapped
             super.init()
         }
 
-        override func loadView() {
+        public override func loadView() {
             children(
                 wrapped
             )
         }
 
-        override func setupConstraints() {
+        public override func setupConstraints() {
             wrapped.snp.makeConstraints { make in
                 make.edges.equalToSuperview()
             }
         }
     }
     #endif
+}
+
+public class PlainTableViewToolingProperties: PropertyContainer {
+    public let exampleCount: ValuePropertyDescription<Int>
+
+    public required init(configuration: Configuration) {
+        exampleCount = configuration.property(name: "tooling:exampleCount")
+
+        super.init(configuration: configuration)
+    }
+}
+
+extension String: SupportedPropertyType {
+    public var generated: String {
+        return "\"\(self)\""
+    }
+
+    #if SanAndreas
+    public func dematerialize() -> String {
+        return self
+    }
+    #endif
+
+    #if ReactantRuntime
+    public var runtimeValue: Any? { return self }
+    #endif
+
+    public static func materialize(from value: String) throws -> String {
+        return value
+    }
 }
