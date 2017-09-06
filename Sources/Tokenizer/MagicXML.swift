@@ -169,7 +169,11 @@ extension ComponentDefinition: MagicElementSerializable {
         let stylesElement = styles.isEmpty ? [] : [MagicElement(name: "styles", attributes: styleNameAttribute, children: styles.map { $0.serialize() })]
         
         let childElements = children.map { $0.serialize() }
-        
+
+        #if SanAndreas
+        toolingProperties.map { _, property in property.dematerialize() }.forEach { builder.add(attribute: $0) }
+        #endif
+
         var viewElement = MagicElement(name: "Component", attributes: builder.attributes, children: stylesElement + childElements)
         viewElement.attributes.insert(MagicAttribute(name: "type", value: type), at: 0)
         

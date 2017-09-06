@@ -11,6 +11,7 @@ import Foundation
 #if ReactantRuntime
 import UIKit
 import Reactant
+import RxDataSources
 #endif
 
 public class PlainTableView: View, ComponentDefinitionContainer {
@@ -101,28 +102,123 @@ public class PlainTableViewToolingProperties: PropertyContainer {
     public let exampleCount: ValuePropertyDescription<Int>
 
     public required init(configuration: Configuration) {
-        exampleCount = configuration.property(name: "tooling:exampleCount")
+        exampleCount = configuration.property(name: "tools:exampleCount")
 
         super.init(configuration: configuration)
     }
 }
 
-extension String: SupportedPropertyType {
-    public var generated: String {
-        return "\"\(self)\""
+// MARK - Header
+
+public class HeaderTableView: View, ComponentDefinitionContainer {
+    override class var availableProperties: [PropertyDescription] {
+        return Properties.view.allProperties
     }
 
-    #if SanAndreas
-    public func dematerialize() -> String {
-        return self
+    override class var availableToolingProperties: [PropertyDescription] {
+        return ToolingProperties.headerTableView.allProperties
     }
-    #endif
+
+    public var cellType: String
+    public var headerType: String
+    public var cellDefinition: ComponentDefinition?
+    public var headerDefinition: ComponentDefinition?
+
+    public var componentTypes: [String] {
+        return (cellDefinition?.componentTypes ?? [cellType]) + (headerDefinition?.componentTypes ?? [headerType])
+    }
+
+    public var isAnonymous: Bool {
+        return (cellDefinition?.isAnonymous ?? false) || (headerDefinition?.isAnonymous ?? false)
+    }
+
+    public var componentDefinitions: [ComponentDefinition] {
+        return (cellDefinition?.componentDefinitions ?? []) + (headerDefinition?.componentDefinitions ?? [])
+    }
+
+    public class override var runtimeType: String {
+        return "UITableView"
+    }
+
+    public override var initialization: String {
+        return "HeaderTableView<\(headerType), \(cellType)>()"
+    }
+
+    public required init(node: SWXMLHash.XMLElement) throws {
+        cellType = try node.value(ofAttribute: "cell")
+        headerType = try node.value(ofAttribute: "header")
+        if let cellElement = try node.singleOrNoElement(named: "cell") {
+            cellDefinition = try ComponentDefinition(node: cellElement, type: cellType)
+        } else {
+            cellDefinition = nil
+        }
+
+        if let headerElement = try node.singleOrNoElement(named: "header") {
+            headerDefinition = try ComponentDefinition(node: headerElement, type: headerType)
+        } else {
+            headerDefinition = nil
+        }
+
+        try super.init(node: node)
+    }
+
+    public override func serialize() -> MagicElement {
+        var element = super.serialize()
+        element.attributes.append(MagicAttribute(name: "cell", value: cellType))
+        return element
+    }
 
     #if ReactantRuntime
-    public var runtimeValue: Any? { return self }
-    #endif
+    public override func initialize() throws -> UIView {
+        let createCell = try ReactantLiveUIManager.shared.componentInstantiation(named: cellType)
+        let createHeader = try ReactantLiveUIManager.shared.componentInstantiation(named: headerType)
+        let sectionCount = ToolingProperties.headerTableView.sectionCount.get(from: self.toolingProperties) ?? 5
+        let itemCount = ToolingProperties.headerTableView.itemCount.get(from: self.toolingProperties) ?? 5
+        let tableView = Reactant.HeaderTableView<CellHack, CellHack>(
+            cellFactory: {
+                CellHack(wrapped: createCell())
+            },
+            headerFactory: {
+                CellHack(wrapped: createHeader())
+            })
+            .with(state: .items(Array(repeating: SectionModel(model: (), items: Array(repeating: (), count: itemCount)), count: sectionCount)))
 
-    public static func materialize(from value: String) throws -> String {
-        return value
+        tableView.tableView.rowHeight = UITableViewAutomaticDimension
+
+        return tableView
+    }
+
+    public final class CellHack: ViewBase<Void, Void> {
+        private let wrapped: UIView
+
+        public init(wrapped: UIView) {
+            self.wrapped = wrapped
+            super.init()
+        }
+
+        public override func loadView() {
+            children(
+                wrapped
+            )
+        }
+
+        public override func setupConstraints() {
+            wrapped.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
+        }
+    }
+    #endif
+}
+
+public class HeaderTableViewToolingProperties: PropertyContainer {
+    public let sectionCount: ValuePropertyDescription<Int>
+    public let itemCount: ValuePropertyDescription<Int>
+
+    public required init(configuration: Configuration) {
+        sectionCount = configuration.property(name: "tools:sectionCount")
+        itemCount = configuration.property(name: "tools:exampleCount")
+        
+        super.init(configuration: configuration)
     }
 }

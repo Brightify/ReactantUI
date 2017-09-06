@@ -101,7 +101,7 @@ public class View: XMLElementDeserializable, UIElement {
 
     static func deserializeToolingProperties(properties: [PropertyDescription], in element: SWXMLHash.XMLElement) throws -> [String: Property] {
         var result = [:] as [String: Property]
-        for (attributeName, attribute) in (element.allAttributes.filter { name, _ in name.hasPrefix("tooling") }) {
+        for (attributeName, attribute) in (element.allAttributes.filter { name, _ in name.hasPrefix("tools") }) {
             guard let propertyDescription = properties.first(where: { $0.matches(attributeName: attributeName) }) else {
                 continue
             }
@@ -185,10 +185,8 @@ public class ViewProperties: PropertyContainer {
 }
 
 public final class ViewToolingProperties: PropertyContainer {
-    public let preferedSize: ValuePropertyDescription<PreferredSize>
 
     public required init(configuration: Configuration) {
-        preferedSize = configuration.property(name: "tooling:preferedSize")
         super.init(configuration: configuration)
     }
 }
@@ -243,7 +241,7 @@ public struct PreferredSize: SupportedPropertyType {
     public var width: PreferredDimension
     public var height: PreferredDimension
 
-    init(width: PreferredDimension, height: PreferredDimension) {
+    public init(width: PreferredDimension, height: PreferredDimension) {
         self.width = width
         self.height = height
     }
@@ -271,7 +269,7 @@ public struct PreferredSize: SupportedPropertyType {
     public static func materialize(from value: String) throws -> PreferredSize {
         if value.contains(",") == false {
             let size = try PreferredDimension(value)
-            return PreferredSize.init(width: size, height: size)
+            return PreferredSize(width: size, height: size)
         } else {
             let components = value.components(separatedBy: ",")
             guard components.count == 2, let width = try? PreferredDimension(components[0]), let height = try? PreferredDimension(components[1]) else {

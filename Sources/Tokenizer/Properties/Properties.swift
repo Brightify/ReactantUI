@@ -47,5 +47,7 @@ public struct Properties: PropertiesContainer {
 
 public struct ToolingProperties: PropertiesContainer {
     public static let view = prepare(ViewToolingProperties.self)
+    public static let componentDefinition = prepare(ComponentDefinitionToolingProperties.self)
     public static let plainTableView = prepare(PlainTableViewToolingProperties.self)
+    public static let headerTableView = prepare(HeaderTableViewToolingProperties.self)
 }
