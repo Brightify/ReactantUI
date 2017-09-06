@@ -98,10 +98,10 @@ extension ComponentDefinition {
 }
 
 public final class ComponentDefinitionToolingProperties: PropertyContainer {
-    public let preferedSize: ValuePropertyDescription<PreferredSize>
+    public let preferredSize: ValuePropertyDescription<PreferredSize>
 
     public required init(configuration: Configuration) {
-        preferedSize = configuration.property(name: "tools:preferredSize")
+        preferredSize = configuration.property(name: "tools:preferredSize")
         super.init(configuration: configuration)
     }
 }
