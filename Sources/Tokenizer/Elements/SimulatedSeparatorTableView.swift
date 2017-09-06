@@ -1,11 +1,3 @@
-//
-//  PlainTableView.swift
-//  Reactant
-//
-//  Created by Tadeas Kriz on 4/22/17.
-//  Copyright © 2017 Brightify. All rights reserved.
-//
-
 import Foundation
 
 #if ReactantRuntime
@@ -14,13 +6,13 @@ import Reactant
 import RxDataSources
 #endif
 
-public class PlainTableView: View, ComponentDefinitionContainer {
+public class SimulatedSeparatorTableView: View, ComponentDefinitionContainer {
     override class var availableProperties: [PropertyDescription] {
-        return Properties.view.allProperties
+        return Properties.simulatedSeparator.allProperties
     }
 
     override class var availableToolingProperties: [PropertyDescription] {
-        return ToolingProperties.plainTableView.allProperties
+        return ToolingProperties.simulatedSeparatorTableView.allProperties
     }
 
     public var cellType: String
@@ -43,7 +35,7 @@ public class PlainTableView: View, ComponentDefinitionContainer {
     }
 
     public override var initialization: String {
-        return "PlainTableView<\(cellType)>()"
+        return "SimulatedSeparatorTableView<\(cellType)>()"
     }
 
     public required init(node: SWXMLHash.XMLElement) throws {
@@ -66,9 +58,9 @@ public class PlainTableView: View, ComponentDefinitionContainer {
     #if ReactantRuntime
     public override func initialize() throws -> UIView {
         let createCell = try ReactantLiveUIManager.shared.componentInstantiation(named: cellType)
-        let tableView =  Reactant.PlainTableView<CellHack>(cellFactory: {
+        let tableView =  Reactant.SimulatedSeparatorTableView<CellHack>(cellFactory: {
             CellHack(wrapped: createCell())
-    }).with(state: .items(Array(repeating: (), count: ToolingProperties.plainTableView.exampleCount.get(from: self.toolingProperties) ?? 5)))
+    }).with(state: .items(Array(repeating: (), count: ToolingProperties.simulatedSeparatorTableView.exampleCount.get(from: self.toolingProperties) ?? 5)))
 
         tableView.tableView.rowHeight = UITableViewAutomaticDimension
 
@@ -98,7 +90,19 @@ public class PlainTableView: View, ComponentDefinitionContainer {
     #endif
 }
 
-public class PlainTableViewToolingProperties: PropertyContainer {
+public class SimulatedSeparatorTableViewProperties: PropertyContainer {
+    public let separatorHeight: AssignablePropertyDescription<Float>
+    public let separatorColor: AssignablePropertyDescription<UIColorPropertyType>
+
+    public required init(configuration: Configuration) {
+        separatorHeight = configuration.property(name: "separatorHeight")
+        separatorColor = configuration.property(name: "separatorColor")
+
+        super.init(configuration: configuration)
+    }
+}
+
+public class SimulatedSeparatorTableViewToolingProperties: PropertyContainer {
     public let exampleCount: ValuePropertyDescription<Int>
 
     public required init(configuration: Configuration) {
