@@ -11,6 +11,7 @@ import Foundation
 public enum TextContentType: String, EnumPropertyType {
     public static let enumName = "UITextContentType"
 
+    case none
     case URL
     case addressCity
     case addressCityAndState
@@ -46,6 +47,8 @@ public enum TextContentType: String, EnumPropertyType {
         public var runtimeValue: Any? {
             if #available(iOS 10.0, *) {
                 switch self {
+                case .none:
+                    return nil
                 case .URL:
                     return UITextContentType(UITextContentType.URL.rawValue)
                 case .addressCity:
