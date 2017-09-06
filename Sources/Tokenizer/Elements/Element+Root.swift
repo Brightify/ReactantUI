@@ -1,6 +1,5 @@
 import Foundation
 
-
 public protocol ComponentDefinitionContainer {
     var componentTypes: [String] { get }
 
@@ -15,6 +14,8 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, StyleC
     public var children: [UIElement]
     public var edgesForExtendedLayout: [RectEdge]
     public var isAnonymous: Bool
+
+    public var toolingProperties: [String: Property]
 
     public var requiredImports: Set<String> {
         return Set(arrayLiteral: "Reactant").union(children.flatMap { $0.requiredImports })
@@ -46,11 +47,26 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, StyleC
         children = try View.deserialize(nodes: node.xmlChildren)
         edgesForExtendedLayout = (node.attribute(by: "extend")?.text).map(RectEdge.parse) ?? []
         isAnonymous = node.value(ofAttribute: "anonymous") ?? false
+
+        toolingProperties = try ComponentDefinition.deserializeToolingProperties(properties: ToolingProperties.componentDefinition.allProperties, in: node)
     }
 
     public static func deserialize(_ node: SWXMLHash.XMLElement) throws -> ComponentDefinition {
         return try ComponentDefinition(node: node, type: node.value(ofAttribute: "type"))
     }
+
+    static func deserializeToolingProperties(properties: [PropertyDescription], in element: SWXMLHash.XMLElement) throws -> [String: Property] {
+        var result = [:] as [String: Property]
+        for (attributeName, attribute) in (element.allAttributes.filter { name, _ in name.hasPrefix("tools") }) {
+            guard let propertyDescription = properties.first(where: { $0.matches(attributeName: attributeName) }) else {
+                continue
+            }
+            let property = try propertyDescription.materialize(attributeName: attributeName, value: attribute.text)
+            result[attributeName] = property
+        }
+        return result
+    }
+
 }
 
 extension ComponentDefinition {
@@ -80,3 +96,13 @@ extension ComponentDefinition {
         }
     }
 }
+
+public final class ComponentDefinitionToolingProperties: PropertyContainer {
+    public let preferedSize: ValuePropertyDescription<PreferredSize>
+
+    public required init(configuration: Configuration) {
+        preferedSize = configuration.property(name: "tools:preferredSize")
+        super.init(configuration: configuration)
+    }
+}
+
