@@ -24,7 +24,7 @@ public class ScrollView: Container {
 public class ScrollViewProperties: ViewProperties {
     public let contentOffset: AssignablePropertyDescription<Point>
     public let contentSize: AssignablePropertyDescription<Size>
-    public let contentInset: AssignablePropertyDescription<EdgeInsets>
+    public let contentInsets: AssignablePropertyDescription<EdgeInsets>
     public let isScrollEnabled: AssignablePropertyDescription<Bool>
     public let isDirectionalLockEnabled: AssignablePropertyDescription<Bool>
     public let isPagingEnabled: AssignablePropertyDescription<Bool>
@@ -45,7 +45,7 @@ public class ScrollViewProperties: ViewProperties {
     public required init(configuration: Configuration) {
         contentOffset = configuration.property(name: "contentOffset")
         contentSize = configuration.property(name: "contentSize")
-        contentInset = configuration.property(name: "contentInset")
+        contentInsets = configuration.property(name: "contentInsets")
         isScrollEnabled = configuration.property(name: "isScrollEnabled", key: "scrollEnabled")
         isDirectionalLockEnabled = configuration.property(name: "isDirectionalLockEnabled", key: "directionalLockEnabled")
         isPagingEnabled = configuration.property(name: "isPagingEnabled", key: "pagingEnabled")
