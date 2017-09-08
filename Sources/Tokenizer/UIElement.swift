@@ -6,6 +6,7 @@ import UIKit
 public protocol UIElement: class, Assignable, MagicElementSerializable {
     var layout: Layout { get set }
     var properties: [Property] { get set }
+    var toolingProperties: [String: Property] { get set }
     var styles: [String] { get set }
 
     static var defaultContentCompression: (horizontal: ConstraintPriority, vertical: ConstraintPriority) { get }
