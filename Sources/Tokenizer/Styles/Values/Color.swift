@@ -50,7 +50,6 @@ public enum Color {
         public typealias SystemColor = UIColor
     #endif
 
-
     public var color: SystemColor {
         switch self {
         case .absolute(let red, let green, let blue, let alpha):
@@ -69,6 +68,24 @@ public enum Color {
                 return SystemColor.white
             case "black":
                 return SystemColor.black
+            case "gray":
+                return SystemColor.gray
+            case "darkGray":
+                return SystemColor.darkGray
+            case "lightGray":
+                return SystemColor.lightGray
+            case "cyan":
+                return SystemColor.cyan
+            case "yellow":
+                return SystemColor.yellow
+            case "magenta":
+                return SystemColor.magenta
+            case "orange":
+                return SystemColor.orange
+            case "purple":
+                return SystemColor.purple
+            case "brown":
+                return SystemColor.brown
             default:
                 return SystemColor.red
             }
