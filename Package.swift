@@ -17,7 +17,7 @@ let package = Package(
     dependencies: [
         //.Package(url: "https://github.com/Carthage/Commandant.git", versions: Version(0, 11, 3)..<Version(0, 11, .max)),
         //.Package(url: "https://github.com/jpsim/SourceKitten.git", versions: Version(0, 15, 0)..<Version(0, 17, .max)),
-        .Package(url: "https://github.com/nvzqz/FileKit.git", versions: Version(5, 0, 0)..<Version(5, 0, .max),
+        .Package(url: "https://github.com/nvzqz/FileKit.git", versions: Version(5, 0, 0)..<Version(5, 0, .max)),
     ],
     exclude: [
         "Sources/Live",
