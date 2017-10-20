@@ -1,21 +1,30 @@
-// swift-tools-version:3.1
+// swift-tools-version:4.0
 
 import PackageDescription
 
 let package = Package(
     name: "ReactantUI",
-    targets: [
-        Target(name: "Tokenizer", dependencies: []),
-        Target(name: "Generator", dependencies: [
-            .Target(name: "Tokenizer")
-        ]),
-
-        Target(name: "reactant-ui", dependencies: [
-            .Target(name: "Generator")
-        ]),
+    products: [
+        .executable(
+            name: "reactant-ui",
+            targets: ["reactant-ui"]),
+        .library(
+            name: "Tokenizer",
+            targets: ["Tokenizer"]),
+        .library(
+            name: "Generator",
+            targets: ["Generator"])
     ],
     dependencies: [],
-    exclude: [
-        "Sources/Live",
+    targets: [
+        .target(
+            name: "Tokenizer",
+            dependencies: []),
+        .target(
+            name: "Generator",
+            dependencies: ["Tokenizer"]),
+        .target(
+            name: "reactant-ui",
+            dependencies: ["Tokenizer", "Generator"])
     ]
 )
