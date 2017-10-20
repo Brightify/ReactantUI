@@ -14,10 +14,7 @@ let package = Package(
             .Target(name: "Generator")
         ]),
     ],
-    dependencies: [
-        //.Package(url: "https://github.com/Carthage/Commandant.git", versions: Version(0, 11, 3)..<Version(0, 11, .max)),
-        //.Package(url: "https://github.com/jpsim/SourceKitten.git", versions: Version(0, 15, 0)..<Version(0, 17, .max)),
-    ],
+    dependencies: [],
     exclude: [
         "Sources/Live",
     ]
