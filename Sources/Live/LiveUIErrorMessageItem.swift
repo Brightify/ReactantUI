@@ -40,7 +40,7 @@ extension LiveUIErrorMessageItem {
         static func path(label: UILabel) {
             label.textColor = .white
             label.numberOfLines = 0
-            label.font = UIFont.monospacedDigitSystemFont(ofSize: 14, weight: UIFontWeightRegular)
+            label.font = UIFont.monospacedDigitSystemFont(ofSize: 14, weight: UIFont.Weight.regular)
         }
 
         static func message(label: UILabel) {

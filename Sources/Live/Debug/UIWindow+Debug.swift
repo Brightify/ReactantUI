@@ -20,11 +20,13 @@ extension UIWindow {
         ]
     }
 
+    @objc
     func openLiveUIDebugMenu() {
         let controller = DebugAlertController.create(manager: ReactantLiveUIManager.shared, window: self)
         self.rootViewController?.present(controller: controller)
     }
 
+    @objc
     func dissmissErrorView() {
         ReactantLiveUIManager.shared.resetErrors()
     }

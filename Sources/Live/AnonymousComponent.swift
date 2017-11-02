@@ -71,7 +71,7 @@ extension AnonymousComponent: ReactantUI {
 
         func setupReactantUI() {
             guard let target = self.target else { /* FIXME Should we fatalError here? */ return }
-            ReactantLiveUIManager.shared.register(target, setConstraint: { _ in true })
+            ReactantLiveUIManager.shared.register(target, setConstraint: { _, _ in true })
         }
 
         static func destroyReactantUI(target: UIView) {

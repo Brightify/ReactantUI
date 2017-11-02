@@ -38,7 +38,7 @@ public enum Font: SupportedPropertyType {
         public var runtimeValue: Any? {
             switch self {
             case .system(let weight, let size):
-                return UIFont.systemFont(ofSize: CGFloat(size), weight: weight.value)
+                return UIFont.systemFont(ofSize: CGFloat(size), weight: UIFont.Weight(rawValue: weight.value))
             case .named(let name, let size):
                 return UIFont(name, CGFloat(size))
             }

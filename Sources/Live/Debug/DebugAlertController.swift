@@ -19,6 +19,7 @@ class DebugAlertController: UIAlertController {
         ]
     }
 
+    @objc
     func close() {
         dismiss(animated: true)
     }

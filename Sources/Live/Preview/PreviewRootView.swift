@@ -32,7 +32,7 @@ final class PreviewRootView: ViewBase<Void, Void>, RootView {
             make.leading.equalToSuperview()
             make.top.equalToSuperview()
             make.trailing.equalToSuperview()
-            make.bottom.lessThanOrEqualToSuperview().priority(UILayoutPriorityDefaultHigh)
+            make.bottom.lessThanOrEqualToSuperview().priority(.high)
         }
     }
 }

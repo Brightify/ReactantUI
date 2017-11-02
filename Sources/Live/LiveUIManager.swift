@@ -189,7 +189,7 @@ public class ReactantLiveUIManager {
 
     }
 
-    public func register<UI: UIView>(_ view: UI, setConstraint: @escaping (String, SnapKit.Constraint) -> Bool = { _ in false }) where UI: ReactantUI {
+    public func register<UI: UIView>(_ view: UI, setConstraint: @escaping (String, SnapKit.Constraint) -> Bool = { _, _ in false }) where UI: ReactantUI {
         let xmlPath = view.__rui.xmlPath
         if !watchers.keys.contains(xmlPath) {
             let watcher: Watcher
