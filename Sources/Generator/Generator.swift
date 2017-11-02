@@ -99,7 +99,7 @@ public class UIGenerator: Generator {
                         l("ReactantLiveUIManager.shared.register(target)") {
 
                             if constraintFields.isEmpty {
-                                l("_ in")
+                                l("_, _ in")
                                 l("return false")
                             } else {
                                 l("[constraints] field, constraint -> Bool in")
@@ -158,7 +158,7 @@ public class UIGenerator: Generator {
 
         for style in element.styles {
             if style.hasPrefix(":") {
-                let components = style.substring(from: style.index(style.startIndex, offsetBy: 1)).components(separatedBy: ":")
+                let components = style[style.index(after: style.startIndex)...].components(separatedBy: ":")
                 if components.count != 2 {
                     print("// Global style \(style) assignment has wrong format.")
                 }
