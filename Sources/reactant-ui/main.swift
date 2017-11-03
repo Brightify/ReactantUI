@@ -80,11 +80,15 @@ if enableLive {
     }
     print("    ]")
 
-    print("    let componentTypes: [String: UIView.Type] = [")
-    for type in Set(componentTypes) {
-        print("        \"\(type)\": \(type).self,")
+    if componentTypes.isEmpty {
+        print("    let componentTypes: [String: UIView.Type] = [:]")
+    } else {
+        print("    let componentTypes: [String: UIView.Type] = [")
+        for type in Set(componentTypes) {
+            print("        \"\(type)\": \(type).self,")
+        }
+        print("    ]")
     }
-    print("    ]")
     print("}")
     print("#endif")
 }
