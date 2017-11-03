@@ -19,12 +19,20 @@ public class Toolbar: View {
     }
 
     public class override var runtimeType: String {
+        #if os(tvOS)
+            fatalError("View not available in tvOS")
+        #else
         return "UIToolbar"
+        #endif
     }
 
     #if ReactantRuntime
     public override func initialize() -> UIView {
-    return UIToolbar()
+        #if os(tvOS)
+            fatalError("View not available in tvOS")
+        #else
+            return UIToolbar()
+        #endif
     }
     #endif
 }

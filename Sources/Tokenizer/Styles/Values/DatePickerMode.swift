@@ -23,6 +23,9 @@ import UIKit
 extension DatePickerMode {
 
     public var runtimeValue: Any? {
+        #if os(tvOS)
+            return nil
+        #else
         switch self {
         case .time:
             return UIDatePickerMode.time.rawValue
@@ -33,6 +36,7 @@ extension DatePickerMode {
         case .countDownTimer:
             return UIDatePickerMode.countDownTimer.rawValue
         }
+        #endif
     }
 }
 #endif

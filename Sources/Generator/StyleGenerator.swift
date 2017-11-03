@@ -24,7 +24,7 @@ public class StyleGenerator: Generator {
             l("import Reactant")
             l("import SnapKit")
             if isLiveEnabled {
-                l("#if (arch(i386) || arch(x86_64)) && os(iOS)")
+                l("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
                 l("import ReactantLiveUI")
                 l("#endif")
             }

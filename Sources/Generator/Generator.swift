@@ -51,7 +51,7 @@ public class UIGenerator: Generator {
             if root.isRootView {
                 l("var edgesForExtendedLayout: UIRectEdge") {
                     if isLiveEnabled {
-                        l("#if (arch(i386) || arch(x86_64)) && os(iOS)")
+                        l("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
                         l("return ReactantLiveUIManager.shared.extendedEdges(of: self)")
                         l("#else")
                     }
@@ -94,7 +94,7 @@ public class UIGenerator: Generator {
                 l("func setupReactantUI()") {
                     l("guard let target = self.target else { /* FIXME Should we fatalError here? */ return }")
                     if isLiveEnabled {
-                        l("#if (arch(i386) || arch(x86_64)) && os(iOS)")
+                        l("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
                         // This will register `self` to remove `deinit` from ViewBase
                         l("ReactantLiveUIManager.shared.register(target)") {
 
@@ -126,7 +126,7 @@ public class UIGenerator: Generator {
                 l()
                 l("static func destroyReactantUI(target: UIView)") {
                     if isLiveEnabled {
-                        l("#if (arch(i386) || arch(x86_64)) && os(iOS)")
+                        l("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
                         l("guard let knownTarget = target as? \(root.type) else { /* FIXME Should we fatalError here? */ return }")
                         l("ReactantLiveUIManager.shared.unregister(knownTarget)")
                         l("#endif")
@@ -193,19 +193,19 @@ public class UIGenerator: Generator {
         }
 
         if let horizontalCompressionPriority = element.layout.contentCompressionPriorityHorizontal {
-            l("\(name).setContentCompressionResistancePriority(\(horizontalCompressionPriority.numeric), for: .horizontal)")
+            l("\(name).setContentCompressionResistancePriority(UILayoutPriority(rawValue: \(horizontalCompressionPriority.numeric)), for: .horizontal)")
         }
 
         if let verticalCompressionPriority = element.layout.contentCompressionPriorityVertical {
-            l("\(name).setContentCompressionResistancePriority(\(verticalCompressionPriority.numeric), for: .vertical)")
+            l("\(name).setContentCompressionResistancePriority(UILayoutPriority(rawValue: \(verticalCompressionPriority.numeric)), for: .vertical)")
         }
 
         if let horizontalHuggingPriority = element.layout.contentHuggingPriorityHorizontal {
-            l("\(name).setContentHuggingPriority(\(horizontalHuggingPriority.numeric), for: .horizontal)")
+            l("\(name).setContentHuggingPriority(UILayoutPriority(rawValue: \(horizontalHuggingPriority.numeric)), for: .horizontal)")
         }
 
         if let verticalHuggingPriority = element.layout.contentHuggingPriorityVertical {
-            l("\(name).setContentHuggingPriority(\(verticalHuggingPriority.numeric), for: .vertical)")
+            l("\(name).setContentHuggingPriority(UILayoutPriority(rawValue: \(verticalHuggingPriority.numeric)), for: .vertical)")
         }
 
         l("\(name).snp.makeConstraints") {

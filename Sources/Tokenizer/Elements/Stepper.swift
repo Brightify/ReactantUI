@@ -19,12 +19,20 @@ public class Stepper: View {
     }
 
     public class override var runtimeType: String {
-        return "UIStepper"
+        #if os(tvOS)
+            return "UIView"
+        #else
+            return "UIStepper"
+        #endif
     }
 
     #if ReactantRuntime
     public override func initialize() -> UIView {
-    return UIStepper()
+        #if os(tvOS)
+            return UIView()
+        #else
+            return UIStepper()
+        #endif
     }
     #endif
 }

@@ -10,7 +10,9 @@ import Foundation
 
 #if ReactantRuntime
     import UIKit
+#if os(iOS)
     import WebKit
+#endif
     import Reactant
 #endif
 
@@ -20,16 +22,28 @@ public class WebView: View {
     }
 
     public override var requiredImports: Set<String> {
-        return ["WebKit"]
+        #if os(tvOS)
+            return []
+        #else
+            return ["WebKit"]
+        #endif
     }
 
     public class override var runtimeType: String {
-        return "WKWebView"
+        #if os(tvOS)
+            return "UIView"
+        #else
+            return "WKWebView"
+        #endif
     }
 
     #if ReactantRuntime
     public override func initialize() -> UIView {
-    return WKWebView()
+        #if os(tvOS)
+            return UIView()
+        #else
+            return WKWebView()
+        #endif
     }
     #endif
 }

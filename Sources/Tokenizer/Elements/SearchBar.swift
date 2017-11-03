@@ -19,12 +19,20 @@ public class SearchBar: View {
     }
 
     public class override var runtimeType: String {
+        #if os(tvOS)
+            return "UIView"
+        #else
         return "UISearchBar"
+        #endif
     }
 
     #if ReactantRuntime
     public override func initialize() -> UIView {
-    return UISearchBar()
+        #if os(tvOS)
+            return UIView()
+        #else
+            return UISearchBar()
+        #endif
     }
     #endif
 }

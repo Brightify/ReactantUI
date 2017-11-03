@@ -19,12 +19,20 @@ public class PickerView: View {
     }
 
     public class override var runtimeType: String {
-        return "UIPickerView"
+        #if os(tvOS)
+            return "UIView"
+        #else
+            return "UIPickerView"
+        #endif
     }
 
     #if ReactantRuntime
     public override func initialize() -> UIView {
-    return UIPickerView()
+        #if os(tvOS)
+            return UIView()
+        #else
+            return UIPickerView()
+        #endif
     }
     #endif
 }

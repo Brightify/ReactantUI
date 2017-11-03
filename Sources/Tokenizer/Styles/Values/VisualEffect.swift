@@ -78,14 +78,14 @@ public enum BlurEffect: String {
             case .dark:
                 return UIBlurEffect(style: .dark)
             case .prominent:
-                if #available(iOS 10.0, *) {
+                if #available(iOS 10.0, tvOS 10.0, *) {
                     return UIBlurEffect(style: .prominent)
                 } else {
                     // FIXME check default values
                     return UIBlurEffect(style: .light)
                 }
             case .regular:
-                if #available(iOS 10.0, *) {
+                if #available(iOS 10.0, tvOS 10.0, *) {
                     return UIBlurEffect(style: .regular)
                 } else {
                     return UIBlurEffect(style: .light)

@@ -20,6 +20,7 @@ Pod::Spec.new do |spec|
     spec.requires_arc = true
 
     spec.ios.deployment_target = '9.0'
+    spec.tvos.deployment_target = '9.2'
     spec.pod_target_xcconfig = {
         'OTHER_SWIFT_FLAGS' => '-D ReactantRuntime'
     }

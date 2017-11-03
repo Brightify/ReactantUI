@@ -45,7 +45,7 @@ public enum TextContentType: String, EnumPropertyType {
     extension TextContentType {
 
         public var runtimeValue: Any? {
-            if #available(iOS 10.0, *) {
+            if #available(iOS 10.0, tvOS 10.0, *) {
                 switch self {
                 case .none:
                     return nil

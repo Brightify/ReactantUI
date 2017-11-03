@@ -52,7 +52,7 @@ print("import UIKit")
 print("import Reactant")
 print("import SnapKit")
 if enableLive {
-    print("#if (arch(i386) || arch(x86_64)) && os(iOS)")
+    print("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
     print("import ReactantLiveUI")
     print("#endif")
 }
@@ -70,7 +70,7 @@ for (path, rootDefinition) in componentDefinitions {
 
 
 if enableLive {
-    print("#if (arch(i386) || arch(x86_64)) && os(iOS)")
+    print("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
     print("struct GeneratedReactantLiveUIConfiguration: ReactantLiveUIConfiguration {")
     print("    let rootDir = \"\(currentPath)\"")
 
@@ -91,7 +91,7 @@ if enableLive {
 
 print("func activateLiveReload(in window: UIWindow) {")
 if enableLive {
-    print("#if (arch(i386) || arch(x86_64)) && os(iOS)")
+    print("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
     print("ReactantLiveUIManager.shared.activate(in: window, configuration: GeneratedReactantLiveUIConfiguration())")
     print("#endif")
 }

@@ -21,14 +21,25 @@ public enum ActivityIndicatorStyle: String, EnumPropertyType {
 
     extension ActivityIndicatorStyle {
         public var runtimeValue: Any? {
+            #if os(tvOS)
             switch self {
             case .whiteLarge:
                 return UIActivityIndicatorViewStyle.whiteLarge.rawValue
             case .white:
                 return UIActivityIndicatorViewStyle.white.rawValue
-            case .gray:
-                return UIActivityIndicatorViewStyle.gray.rawValue
+            default:
+                return nil
             }
+            #else
+                switch self {
+                case .whiteLarge:
+                    return UIActivityIndicatorViewStyle.whiteLarge.rawValue
+                case .white:
+                    return UIActivityIndicatorViewStyle.white.rawValue
+                case .gray:
+                    return UIActivityIndicatorViewStyle.gray.rawValue
+                }
+            #endif
         }
     }
 #endif

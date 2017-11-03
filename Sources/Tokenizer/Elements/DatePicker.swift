@@ -18,12 +18,20 @@ public class DatePicker: View {
     }
 
     public class override var runtimeType: String {
+        #if os(tvOS)
+            return "UIView"
+        #else
         return "UIDatePicker"
+        #endif
     }
 
     #if ReactantRuntime
     public override func initialize() -> UIView {
-        return UIDatePicker()
+        #if os(tvOS)
+            return UIView()
+        #else
+            return UIDatePicker()
+        #endif
     }
     #endif
 }

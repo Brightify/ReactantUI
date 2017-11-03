@@ -17,7 +17,7 @@ final class LiveUIErrorMessage: ViewBase<[String: String], LiveUIErrorMessageIte
 
     override var actions: [Observable<LiveUIErrorMessageItemAction>] {
         return [
-            button.rx.tap.rewrite(with: .dismiss)
+            button.rx.controlEvent(.touchUpInside).rewrite(with: .dismiss)
         ]
     }
 

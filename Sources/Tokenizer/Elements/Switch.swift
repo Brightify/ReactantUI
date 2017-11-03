@@ -19,12 +19,20 @@ public class Switch: View {
     }
 
     public class override var runtimeType: String {
+        #if os(tvOS)
+            return "UIView"
+        #else
         return "UISwitch"
+        #endif
     }
 
     #if ReactantRuntime
     public override func initialize() -> UIView {
-    return UISwitch()
+        #if os(tvOS)
+            return UIView()
+        #else
+            return UISwitch()
+        #endif
     }
     #endif
 }

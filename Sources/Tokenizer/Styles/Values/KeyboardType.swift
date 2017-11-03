@@ -55,7 +55,7 @@ public enum KeyboardType: String, EnumPropertyType {
             case .webSearch:
                 return UIKeyboardType.webSearch.rawValue
             case .asciiCapableNumberPad:
-                if #available(iOS 10.0, *) {
+                if #available(iOS 10.0, tvOS 10.0, *) {
                     return UIKeyboardType.asciiCapableNumberPad.rawValue
                 } else {
                     return UIKeyboardType.numberPad.rawValue

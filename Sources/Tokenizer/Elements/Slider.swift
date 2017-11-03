@@ -19,12 +19,20 @@ public class Slider: View {
     }
 
     public class override var runtimeType: String {
+        #if os(tvOS)
+            return "UIView"
+        #else
         return "UISlider"
+        #endif
     }
 
     #if ReactantRuntime
     public override func initialize() -> UIView {
-        return UISlider()
+        #if os(tvOS)
+            return UIView()
+        #else
+            return UISlider()
+        #endif
     }
     #endif
 }

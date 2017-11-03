@@ -25,11 +25,15 @@ final class PreviewController: ControllerBase<Void, PreviewRootView> {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        #if os(iOS)
         navigationController?.hidesBarsOnTap = true
+        #endif
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        #if os(iOS)
         navigationController?.hidesBarsOnTap = false
+        #endif
     }
 }

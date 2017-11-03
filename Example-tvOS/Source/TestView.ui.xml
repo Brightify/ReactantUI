@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Component xmlns="http://schema.reactant.tech/ui"
+    xmlns:layout="http://schema.reactant.tech/layout"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://schema.reactant.tech/ui http://schema.reactant.tech/ui.xsd
+    http://schema.reactant.tech/layout http://schema.reactant.tech/layout.xsd"
+    type="TestView"
+    extend="all"
+    rootView="true">
+
+    <ImageView
+    layout:edges="super"
+    image="falcon"
+    visibility="visible"
+    clipsToBounds="true"
+    layout:compressionPriority="high"
+    layout:huggingPriority="low"
+    contentMode="scaleAspectFill" />
+
+    <Label text="Test"
+        textColor="white"
+        layout:center="super"/>
+</Component>
