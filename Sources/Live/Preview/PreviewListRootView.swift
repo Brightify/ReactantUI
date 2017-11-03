@@ -13,6 +13,7 @@ final class PreviewListRootView: Reactant.PlainTableView<PreviewListCell>, RootV
         return .all
     }
 
+    @objc
     init() {
         super.init(
             cellFactory: PreviewListCell.init,

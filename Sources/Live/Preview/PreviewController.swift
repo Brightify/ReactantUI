@@ -16,11 +16,22 @@ final class PreviewController: ControllerBase<Void, PreviewRootView> {
 
     private let parameters: Parameters
 
+    private let closeButton = UIBarButtonItem(title: "Close", style: .done)
+
     init(parameters: Parameters) {
         self.parameters = parameters
 
         super.init(title: "Previewing: \(parameters.typeName)",
             root: PreviewRootView(previewing: parameters.view))
+    }
+
+    override func afterInit() {
+        navigationItem.leftBarButtonItem = closeButton
+        closeButton.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                self?.dismiss()
+            })
+            .addDisposableTo(lifetimeDisposeBag)
     }
 
     override func viewWillAppear(_ animated: Bool) {

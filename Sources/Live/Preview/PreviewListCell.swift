@@ -28,7 +28,7 @@ final class PreviewListCell: ViewBase<String, Void> {
             make.leading.equalToSuperview().inset(20)
             make.trailing.equalToSuperview().inset(20)
             make.top.greaterThanOrEqualToSuperview().inset(10)
-            make.top.lessThanOrEqualToSuperview().inset(10)
+            make.bottom.lessThanOrEqualToSuperview().inset(10)
             make.centerY.equalToSuperview()
         }
     }

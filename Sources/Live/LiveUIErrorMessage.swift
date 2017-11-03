@@ -15,10 +15,20 @@ enum LiveUIErrorMessageItemAction {
 
 final class LiveUIErrorMessage: ViewBase<[String: String], LiveUIErrorMessageItemAction> {
 
+    override var preferredFocusedView: UIView? {
+        return button
+    }
+
     override var actions: [Observable<LiveUIErrorMessageItemAction>] {
+        #if os(tvOS)
         return [
-            button.rx.controlEvent(.touchUpInside).rewrite(with: .dismiss)
+            button.rx.primaryAction.rewrite(with: .dismiss)
         ]
+        #else
+        return [
+            button.rx.tap.rewrite(with: .dismiss)
+        ]
+        #endif
     }
 
     private let scrollView = UIScrollView()
@@ -63,6 +73,12 @@ final class LiveUIErrorMessage: ViewBase<[String: String], LiveUIErrorMessageIte
 
         button.setTitle("Dismiss (ESC)", for: .normal)
         button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(.black, for: .focused)
+        button.setBackgroundColor(UIColor.white.withAlphaComponent(0.1), for: .normal)
+        button.setBackgroundColor(UIColor.white, for: .focused)
+
+        button.clipsToBounds = true
+        button.layer.cornerRadius = 16
     }
 
     override func setupConstraints() {
@@ -78,13 +94,19 @@ final class LiveUIErrorMessage: ViewBase<[String: String], LiveUIErrorMessageIte
         }
 
         button.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-            make.trailing.equalToSuperview()
+            make.leading.greaterThanOrEqualToSuperview()
+            make.trailing.lessThanOrEqualToSuperview()
+            make.centerX.equalToSuperview()
+            make.width.equalToSuperview().dividedBy(3)
 
             make.top.equalTo(scrollView.snp.bottom)
-            make.bottom.equalToSuperview()
-
-            make.height.equalTo(50)
+            #if os(tvOS)
+            make.bottom.equalToSuperview().inset(48)
+            make.height.equalTo(80)
+            #else
+                make.bottom.equalToSuperview().inset(16)
+                make.height.equalTo(48)
+            #endif
         }
     }
 }
