@@ -5,12 +5,15 @@ import Foundation
 let enableLive = CommandLine.arguments.contains("--enable-live")
 
 let currentPath = FileManager.default.currentDirectoryPath
+let currentPathUrl = URL(fileURLWithPath: currentPath)
 
 let uiXmlEnumerator = FileManager.default.enumerator(atPath: currentPath)
-let uiFiles = uiXmlEnumerator?.flatMap { $0 as? String }.filter { $0.hasSuffix(".ui.xml") } ?? []
+let uiFiles = uiXmlEnumerator?.flatMap { $0 as? String }.filter { $0.hasSuffix(".ui.xml") }
+    .map { currentPathUrl.appendingPathComponent($0).path } ?? []
 
 let styleXmlEnumerator = FileManager.default.enumerator(atPath: currentPath)
-let styleFiles = styleXmlEnumerator?.flatMap { $0 as? String }.filter { $0.hasSuffix(".styles.xml") } ?? []
+let styleFiles = styleXmlEnumerator?.flatMap { $0 as? String }.filter { $0.hasSuffix(".styles.xml") }
+    .map { currentPathUrl.appendingPathComponent($0).path } ?? []
 
 var stylePaths = [] as [String]
 for (index, path) in styleFiles.enumerated() {
