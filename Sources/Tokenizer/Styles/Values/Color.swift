@@ -19,8 +19,8 @@ public enum Color {
 
     /// Accepted formats: "#RRGGBB" and "#RRGGBBAA".
     init?(hex: String) {
-        let hexNumber = String(hex.characters.dropFirst())
-        let length = hexNumber.characters.count
+        let hexNumber = String(hex.dropFirst())
+        let length = hexNumber.count
         guard length == 6 || length == 8 else {
             return nil
         }
