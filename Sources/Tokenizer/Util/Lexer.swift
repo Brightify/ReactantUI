@@ -43,7 +43,7 @@ struct Lexer {
         var tokens = [] as [Token]
         var content = input
 
-        while content.characters.count > 0 {
+        while content.count > 0 {
             var matched = false
             for (pattern, generator) in tokenList {
                 if let match = content.match(regex: pattern) {
@@ -54,8 +54,7 @@ struct Lexer {
                             tokens.append(token)
                         }
                     }
-                    content = content.substring(from:
-                        content.index(content.startIndex, offsetBy: match.characters.count))
+                    content = String(content[content.index(content.startIndex, offsetBy: match.count)...])
                     matched = true
                     break
                 }
@@ -63,8 +62,8 @@ struct Lexer {
 
             if !matched {
                 let index = content.index(after: content.startIndex)
-                tokens.append(.other(content.substring(to: index)))
-                content = content.substring(from: index)
+                tokens.append(.other(String(content[...index])))
+                content = String(content[index...])
             }
         }
         

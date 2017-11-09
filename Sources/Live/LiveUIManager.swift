@@ -62,7 +62,7 @@ public class ReactantLiveUIManager {
             .subscribe(onNext: { [weak self] _ in
                 self?.resetErrors()
             })
-            .addDisposableTo(disposeBag)
+            .disposed(by: disposeBag)
     }
 
     public var commonStyles: [Style] {
@@ -214,7 +214,7 @@ public class ReactantLiveUIManager {
                         self.logError(error, in: path)
                     }
                 })
-                .addDisposableTo(disposeBag)
+                .disposed(by: disposeBag)
 
 
         } else {
@@ -231,7 +231,7 @@ public class ReactantLiveUIManager {
                     self.logError(error, in: xmlPath)
                 }
             })
-            .addDisposableTo(disposeBag)
+            .disposed(by: disposeBag)
     }
 
     public func unregister<UI: UIView>(_ ui: UI) where UI: ReactantUI {
@@ -278,7 +278,8 @@ public class ReactantLiveUIManager {
                     } catch let error {
                         self.logError(error, in: path)
                     }
-                }).addDisposableTo(disposeBag)
+                })
+                .disposed(by: disposeBag)
 
                 styleWatchers[path] = watcher
             }
