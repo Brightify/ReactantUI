@@ -33,7 +33,7 @@ final class PreviewListController: ControllerBase<Void, PreviewListRootView> {
         navigationItem.leftBarButtonItem = closeButton
         closeButton.rx.tap
             .subscribe(onNext: reactions.close)
-            .addDisposableTo(lifetimeDisposeBag)
+            .disposed(by: lifetimeDisposeBag)
     }
 
     override func update() {
