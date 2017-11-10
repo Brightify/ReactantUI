@@ -19,5 +19,6 @@
 
     <Label text="Test"
         textColor="white"
+        font=":medium@15"
         layout:center="super"/>
 </Component>

@@ -26,23 +26,23 @@ public enum SystemFontWeight: String {
     public var name: String {
         switch self {
         case .thin:
-            return "UIFontWeightThin"
+            return "UIFont.Weight.thin"
         case .ultralight:
-            return "UIFontWeightUltraLight"
+            return "UIFont.Weight.ultraLight"
         case .light:
-            return "UIFontWeightLight"
+            return "UIFont.Weight.light"
         case .regular:
-            return "UIFontWeightRegular"
+            return "UIFont.Weight.regular"
         case .medium:
-            return "UIFontWeightMedium"
+            return "UIFont.Weight.medium"
         case .semibold:
-            return "UIFontWeightSemibold"
+            return "UIFont.Weight.semibold"
         case .bold:
-            return "UIFontWeightBold"
+            return "UIFont.Weight.bold"
         case .heavy:
-            return "UIFontWeightHeavy"
+            return "UIFont.Weight.heavy"
         case .black:
-            return "UIFontWeightBlack"
+            return "UIFont.Weight.black"
         }
     }
 
