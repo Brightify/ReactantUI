@@ -11,7 +11,7 @@ before_install:
 
 script:
     - xcodebuild -workspace 'ReactantUI.xcworkspace' -scheme ReactantUI -sdk iphonesimulator clean build
-    - pod lib lint
+    - pod lib lint --allow-warnings
 
 env:
   global:
