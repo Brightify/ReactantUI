@@ -1,0 +1,23 @@
+language: objective-c
+osx_image: xcode9
+xcode_project: ReactantUI.xcodeproj
+xcode_scheme: ReactantUI
+xcode_sdk: macosx
+
+before_install:
+    - pod repo update --silent
+    - make dev
+    - pod install
+
+script:
+    - xcodebuild -workspace 'ReactantUI.xcworkspace' -scheme ReactantUI -sdk iphonesimulator clean build
+    - pod lib lint
+
+env:
+  global:
+    - GIT_NAME: Travis CI
+    - GIT_EMAIL: info@brightify.org
+    - GITHUB_REPO: Brightify/ReactantUI
+
+notifications:
+    slack: brightify:00rIGJIfWqG5RyWCVoRNEgxt
