@@ -30,7 +30,13 @@ extension WeakUIBox: Equatable {
     }
 }
 
+/**
+ * A class to be used as singleton - `ReactantLiveUIManager.shared`.
+ *
+ * Manages ComponentDefinitions and sends an event every time a componentDefinition gets updated, this is achieved through Watchers that notify the manager when a file changes.
+ */
 public class ReactantLiveUIManager {
+    /// Shared instance of the `ReactantLiveUIManager`.
     public static let shared = ReactantLiveUIManager()
 
     private var configuration: ReactantLiveUIConfiguration?
@@ -44,7 +50,8 @@ public class ReactantLiveUIManager {
         }
     }
     private let definitionsSubject = ReplaySubject<[String: (definition: ComponentDefinition, loaded: Date, xmlPath: String)]>.create(bufferSize: 1)
-    
+
+    /// Closure to be called right after applying new constraints to Live UI.
     public var onApplied: ((ComponentDefinition, UIView) -> Void)?
 
     private var styles: [String: StyleGroup] = [:] {
@@ -87,6 +94,7 @@ public class ReactantLiveUIManager {
         return configurationNames.union(runtimeDefinitions.keys).sorted()
     }
 
+    /// Prepares the manager for use.
     public func activate(in window: UIWindow, configuration: ReactantLiveUIConfiguration) {
         self.configuration = configuration
         self.activeWindow = window
@@ -98,10 +106,16 @@ public class ReactantLiveUIManager {
         loadStyles(configuration.commonStylePaths)
     }
 
+    /**
+     * Method for checking view's extendedEdges field as `UIRectEdge`.
+     * - parameter view: `ReactantUI` view to be checked.
+     * - returns: `UIRectEdge` (can be empty if no edges are found)
+     */
     public func extendedEdges<UI: UIView>(of view: UI) -> UIRectEdge where UI: ReactantUI {
         return extendedEdges[view.__rui.xmlPath] ?? []
     }
 
+    /// Provided the root directory is set, it reloads the component definitions from all `ui.xml` files, including subfolders.
     public func reloadFiles() {
         guard let rootDir = configuration?.rootDir else { return }
         guard let enumerator = FileManager.default.enumerator(atPath: rootDir) else { return }
@@ -120,6 +134,10 @@ public class ReactantLiveUIManager {
         }
     }
 
+    /**
+     * Presents the passed controller.
+     * - parameter controller: `UIViewController` to be presented
+     */
     public func presentPreview(in controller: UIViewController) {
         let navigation = UINavigationController()
         let dependencies = PreviewListController.Dependencies(manager: self)
@@ -197,6 +215,11 @@ public class ReactantLiveUIManager {
 
     }
 
+    /**
+     * Method for registering a new view to Watchlist. It will get updated as its `ui.xml` file changes.
+     * - parameter view: `ReactantUI` view to be registered
+     * - parameter setConstraint: Closure to be called when constraining the view
+     */
     public func register<UI: UIView>(_ view: UI, setConstraint: @escaping (String, SnapKit.Constraint) -> Bool = { _, _ in false }) where UI: ReactantUI {
         let xmlPath = view.__rui.xmlPath
         if !watchers.keys.contains(xmlPath) {
@@ -242,6 +265,10 @@ public class ReactantLiveUIManager {
             .addDisposableTo(disposeBag)
     }
 
+    /**
+     * Method used to unregister a view from Watchlist.
+     * - parameter ui: `ReactantUI` view to be unregistered
+     */
     public func unregister<UI: UIView>(_ ui: UI) where UI: ReactantUI {
         let xmlPath = ui.__rui.xmlPath
         guard let watcher = watchers[xmlPath] else {
@@ -293,14 +320,24 @@ public class ReactantLiveUIManager {
         }
     }
 
+    /**
+     * Removes the error for given path if present.
+     * - parameter path: `String` for which the error should be reset
+     */
     public func resetError(for path: String) {
         errorView.componentState.removeValue(forKey: path)
     }
 
+    /// Removes all errors for all paths.
     public func resetErrors() {
         errorView.componentState.removeAll()
     }
 
+    /**
+     * Method for logging error into the console.
+     * - parameter error: `Error` to be logged
+     * - parameter path: `String` describing the path for which the error should be logged
+     */
     public func logError(_ error: Error, in path: String) {
         switch error {
         case let liveUiError as LiveUIError:
@@ -323,6 +360,12 @@ public class ReactantLiveUIManager {
         }
     }
 
+    /**
+     * Method for logging an error directly through string.
+     * - parameter error: `String` describing the error to be logged
+     * - parameter path: `String` describing the path for which the error should be logged
+     * - NOTE: Using `logError(_ error: Error, in path: String)` is preferred to using this method.
+     */
     public func logError(_ error: String?, in path: String) {
         print(error ?? "")
 
