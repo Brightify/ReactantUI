@@ -1,3 +1,11 @@
+//
+//  LiveUIErrorMessageItem.swift
+//  ReactantUI
+//
+//  Created by Tadeas Kriz.
+//  Copyright © 2017 Brightify. All rights reserved.
+//
+
 import Reactant
 
 final class LiveUIErrorMessageItem: ViewBase<(file: String, message: String), Void> {

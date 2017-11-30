@@ -1,3 +1,11 @@
+//
+//  Element.swift
+//  ReactantUI
+//
+//  Created by Matous Hybl.
+//  Copyright © 2017 Brightify. All rights reserved.
+//
+
 typealias ElementaryDearWatson = Element
 
 public struct Element {

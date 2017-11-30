@@ -1,3 +1,11 @@
+//
+//  SearchBarStyle.swift
+//  ReactantUI
+//
+//  Created by Matous Hybl.
+//  Copyright © 2017 Brightify. All rights reserved.
+//
+
 import Foundation
 
 public enum SearchBarStyle: String, EnumPropertyType {

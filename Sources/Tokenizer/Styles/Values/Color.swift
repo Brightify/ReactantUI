@@ -1,3 +1,11 @@
+//
+//  Color.swift
+//  ReactantUI
+//
+//  Created by Tadeas Kriz.
+//  Copyright © 2017 Brightify. All rights reserved.
+//
+
 #if os(iOS) || os(watchOS) || os(tvOS)
 import UIKit
 #else

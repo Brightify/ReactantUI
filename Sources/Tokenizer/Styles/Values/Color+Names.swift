@@ -1,3 +1,11 @@
+//
+//  Color+Names.swift
+//  ReactantUI
+//
+//  Created by Matous Hybl.
+//  Copyright © 2017 Brightify. All rights reserved.
+//
+
 public extension Color {
     public static let supportedNames: [String] = [
         "black",

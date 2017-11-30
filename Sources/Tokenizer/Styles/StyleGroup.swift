@@ -1,4 +1,10 @@
-
+//
+//  StyleGroup.swift
+//  ReactantUI
+//
+//  Created by Tadeas Kriz.
+//  Copyright © 2017 Brightify. All rights reserved.
+//
 
 public struct StyleGroup: XMLElementDeserializable {
     public var swiftName: String {
