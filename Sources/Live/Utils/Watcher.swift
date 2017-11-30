@@ -9,6 +9,7 @@
 import Foundation
 import RxSwift
 
+/// Watches for file changes inside a specific path and sends an event through `subject` containing the path of changed file.
 public class Watcher {
     public struct Error: Swift.Error {
         public let message: String
