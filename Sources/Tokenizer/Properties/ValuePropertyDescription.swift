@@ -1,10 +1,11 @@
 //
 //  ValuePropertyDescription.swift
-//  Pods
+//  ReactantUI
 //
 //  Created by Matous Hybl on 05/09/2017.
+//  Copyright © 2017 Brightify. All rights reserved.
 //
-//
+
 #if ReactantRuntime
     import UIKit
 #endif

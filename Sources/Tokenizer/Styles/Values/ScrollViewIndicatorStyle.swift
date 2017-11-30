@@ -1,9 +1,9 @@
 //
 //  ScrollViewIndicatorStyle.swift
-//  Pods
+//  ReactantUI
 //
 //  Created by Matouš Hýbl on 28/04/2017.
-//
+//  Copyright © 2017 Brightify. All rights reserved.
 //
 
 import Foundation

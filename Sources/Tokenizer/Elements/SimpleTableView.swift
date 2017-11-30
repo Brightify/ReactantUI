@@ -1,10 +1,11 @@
 //
-//  HeaderTableView.swift
-//  Pods
+//  SimpleTableView.swift
+//  ReactantUI
 //
 //  Created by Matous Hybl on 06/09/2017.
+//  Copyright © 2017 Brightify. All rights reserved.
 //
-//
+
 import Foundation
 
 #if ReactantRuntime

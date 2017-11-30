@@ -1,9 +1,9 @@
 //
 //  UIWindow+Debug.swift
-//  Pods
+//  ReactantUI
 //
 //  Created by Tadeas Kriz on 4/25/17.
-//
+//  Copyright © 2017 Brightify. All rights reserved.
 //
 
 import UIKit

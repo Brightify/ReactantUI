@@ -3,7 +3,7 @@
 //  ReactantUI
 //
 //  Created by Matyáš Kříž on 21/06/2017.
-//
+//  Copyright © 2017 Brightify. All rights reserved.
 //
 
 import Foundation

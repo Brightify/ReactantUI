@@ -1,9 +1,9 @@
 //
 //  Lexer.swift
-//  Pods
+//  ReactantUI
 //
 //  Created by Tadeas Kriz on 4/29/17.
-//
+//  Copyright © 2017 Brightify. All rights reserved.
 //
 
 import Foundation
