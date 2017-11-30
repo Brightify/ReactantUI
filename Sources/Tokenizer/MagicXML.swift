@@ -6,10 +6,6 @@
 //  Copyright © 2017 Brightify. All rights reserved.
 //
 
-public class Generator {
-}
-
-
 public protocol MagicElementSerializable {
     func serialize() -> MagicElement
 }
