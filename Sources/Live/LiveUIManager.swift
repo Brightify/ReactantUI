@@ -151,7 +151,7 @@ public class ReactantLiveUIManager {
         }
         let xml = SWXMLHash.parse(data)
 
-        guard let node = xml["Component"].element else { throw LiveUIError(message: "ERROR: Noder is not Component") }
+        guard let node = xml["Component"].element else { throw LiveUIError(message: "ERROR: Node is not Component") }
         var rootDefinition: ComponentDefinition
 
         if let type: String = xml["Component"].value(ofAttribute: "type") {
