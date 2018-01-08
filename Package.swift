@@ -15,14 +15,16 @@ let package = Package(
             name: "Generator",
             targets: ["Generator"])
     ],
-    dependencies: [],
+    dependencies: [
+        .package(url: "https://github.com/xcodeswift/xcproj.git", .upToNextMajor(from: "2.0.0")),
+    ],
     targets: [
         .target(
             name: "Tokenizer",
             dependencies: []),
         .target(
             name: "Generator",
-            dependencies: ["Tokenizer"]),
+            dependencies: ["Tokenizer", "xcproj"]),
         .target(
             name: "reactant-ui",
             dependencies: ["Tokenizer", "Generator"])

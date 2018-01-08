@@ -1,16 +1,25 @@
 import Foundation
 import Tokenizer
+public struct GeneratorConfiguration {
+    public let minimumMajorVersion: Int
+    public let localXmlPath: String
+    public let isLiveEnabled: Bool
+    
+    public init(minimumMajorVersion: Int, localXmlPath: String, isLiveEnabled: Bool) {
+        self.minimumMajorVersion = minimumMajorVersion
+        self.localXmlPath = localXmlPath
+        self.isLiveEnabled = isLiveEnabled
+    }
+}
 
 public class Generator {
 
-    let localXmlPath: String
-    let isLiveEnabled: Bool
+    let configuration: GeneratorConfiguration
 
     var nestLevel: Int = 0
 
-    init(localXmlPath: String, isLiveEnabled: Bool) {
-        self.localXmlPath = localXmlPath
-        self.isLiveEnabled = isLiveEnabled
+    init(configuration: GeneratorConfiguration) {
+        self.configuration = configuration
     }
 
     func generate(imports: Bool) {
@@ -37,9 +46,9 @@ public class UIGenerator: Generator {
 
     private var tempCounter: Int = 1
 
-    public init(definition: ComponentDefinition, localXmlPath: String, isLiveEnabled: Bool) {
+    public init(definition: ComponentDefinition, configuration: GeneratorConfiguration) {
         self.root = definition
-        super.init(localXmlPath: localXmlPath, isLiveEnabled: isLiveEnabled)
+        super.init(configuration: configuration)
     }
 
     public override func generate(imports: Bool) {
@@ -50,13 +59,13 @@ public class UIGenerator: Generator {
         l("extension \(root.type): ReactantUI" + (root.isRootView ? ", RootView" : "")) {
             if root.isRootView {
                 l("var edgesForExtendedLayout: UIRectEdge") {
-                    if isLiveEnabled {
+                    if configuration.isLiveEnabled {
                         l("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
                         l("return ReactantLiveUIManager.shared.extendedEdges(of: self)")
                         l("#else")
                     }
                     l("return \(RectEdge.toGeneratedString(root.edgesForExtendedLayout))")
-                    if isLiveEnabled {
+                    if configuration.isLiveEnabled {
                         l("#endif")
                     }
                 }
@@ -76,7 +85,7 @@ public class UIGenerator: Generator {
                 l("fileprivate static var associatedObjectKey = 0 as UInt8")
                 l()
                 l("var xmlPath: String") {
-                    l("return \"\(localXmlPath)\"")
+                    l("return \"\(configuration.localXmlPath)\"")
                 }
                 l()
                 l("var typeName: String") {
@@ -93,7 +102,7 @@ public class UIGenerator: Generator {
                 l()
                 l("func setupReactantUI()") {
                     l("guard let target = self.target else { /* FIXME Should we fatalError here? */ return }")
-                    if isLiveEnabled {
+                    if configuration.isLiveEnabled {
                         l("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
                         // This will register `self` to remove `deinit` from ViewBase
                         l("ReactantLiveUIManager.shared.register(target)") {
@@ -119,13 +128,13 @@ public class UIGenerator: Generator {
                     root.children.forEach { generate(element: $0, superName: "target", containedIn: root) }
                     tempCounter = 1
                     root.children.forEach { generateConstraints(element: $0, superName: "target") }
-                    if isLiveEnabled {
+                    if configuration.isLiveEnabled {
                         l("#endif")
                     }
                 }
                 l()
                 l("static func destroyReactantUI(target: UIView)") {
-                    if isLiveEnabled {
+                    if configuration.isLiveEnabled {
                         l("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
                         l("guard let knownTarget = target as? \(root.type) else { /* FIXME Should we fatalError here? */ return }")
                         l("ReactantLiveUIManager.shared.unregister(knownTarget)")
@@ -211,14 +220,18 @@ public class UIGenerator: Generator {
         l("\(name).snp.makeConstraints") {
             l("make in")
             for constraint in element.layout.constraints {
-                if case .targeted(target: .safeAreaLayoutGuide, targetAnchor: _, multiplier: _, constant: _) = constraint.type {
-                    l("if #available(iOS 11.0, tvOS 11.0, *)") {
+                if configuration.minimumMajorVersion < 11 {
+                    if case .targeted(target: .safeAreaLayoutGuide, targetAnchor: _, multiplier: _, constant: _) = constraint.type {
+                        l("if #available(iOS 11.0, tvOS 11.0, *)") {
+                            l(constraintLine(constraint: constraint, superName: superName, name: name, fallback: false))
+                        }
+                        l("else") {
+                            // If xcode says that there is no such thing as fallback_safeAreaLayoutGuide,
+                            // add Reactant/FallbackSafeAreaInsets to your podfile
+                            l(constraintLine(constraint: constraint, superName: superName, name: name, fallback: true))
+                        }
+                    } else {
                         l(constraintLine(constraint: constraint, superName: superName, name: name, fallback: false))
-                    }
-                    l("else") {
-                        // If xcode says that there is no such thing as fallback_safeAreaLayoutGuide,
-                        // add Reactant/FallbackSafeAreaInsets to your podfile
-                        l(constraintLine(constraint: constraint, superName: superName, name: name, fallback: true))
                     }
                 } else {
                     l(constraintLine(constraint: constraint, superName: superName, name: name, fallback: false))

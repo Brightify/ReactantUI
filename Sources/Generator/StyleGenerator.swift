@@ -13,9 +13,9 @@ public class StyleGenerator: Generator {
     private let group: StyleGroup
     private var tempCounter: Int = 1
 
-    public init(group: StyleGroup, localXmlPath: String, isLiveEnabled: Bool) {
+    public init(group: StyleGroup, configuration: GeneratorConfiguration) {
         self.group = group
-        super.init(localXmlPath: localXmlPath, isLiveEnabled: isLiveEnabled)
+        super.init(configuration: configuration)
     }
 
     public override func generate(imports: Bool) {
@@ -23,7 +23,7 @@ public class StyleGenerator: Generator {
             l("import UIKit")
             l("import Reactant")
             l("import SnapKit")
-            if isLiveEnabled {
+            if configuration.isLiveEnabled {
                 l("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
                 l("import ReactantLiveUI")
                 l("#endif")

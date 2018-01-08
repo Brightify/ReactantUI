@@ -1,11 +1,42 @@
 import Generator
 import Tokenizer
 import Foundation
+import xcproj
 
 let enableLive = CommandLine.arguments.contains("--enable-live")
 
 let currentPath = FileManager.default.currentDirectoryPath
 let currentPathUrl = URL(fileURLWithPath: currentPath)
+
+
+private func xcodeProjPath(currentDir: URL) -> URL? {
+    let contents = (try? FileManager.default.contentsOfDirectory(atPath: currentDir.absoluteURL.path)) ?? []
+    if contents.isEmpty {
+         return nil
+    }
+    if let xcodeProj = contents.first(where: { $0.hasSuffix(".xcodeproj") }) {
+        return currentDir.appendingPathComponent(xcodeProj)
+    } else {
+        if currentDir.pathComponents.isEmpty {
+            return nil
+        }
+        return xcodeProjPath(currentDir: currentDir.deletingLastPathComponent())
+    }
+}
+
+guard let xcprojpath = xcodeProjPath(currentDir: currentPathUrl) else { fatalError("Couldn't find path to .xcodeproj") }
+
+guard let project = try? XcodeProj(pathString: xcprojpath.absoluteURL.path) else { fatalError("Couldn't read the .xcodeproj") }
+
+let minimumDeploymentTarget = project.pbxproj.objects.buildConfigurations.values
+    .flatMap { config -> Substring? in
+        let value = (config.buildSettings["TVOS_DEPLOYMENT_TARGET"] ?? config.buildSettings["IPHONEOS_DEPLOYMENT_TARGET"]) as? String
+
+        return value?.split(separator: ".").first
+    }
+    .flatMap { Int(String($0)) }.reduce(50) { previous, new in
+        return previous < new ? previous : new
+    }
 
 let uiXmlEnumerator = FileManager.default.enumerator(atPath: currentPath)
 let uiFiles = uiXmlEnumerator?.flatMap { $0 as? String }.filter { $0.hasSuffix(".ui.xml") }
@@ -23,7 +54,8 @@ for (index, path) in styleFiles.enumerated() {
     let xml = SWXMLHash.parse(data)
     let group: StyleGroup = try! xml["styleGroup"].value()
     stylePaths.append(path)
-    StyleGenerator(group: group, localXmlPath: path, isLiveEnabled: enableLive)
+    let configuration = GeneratorConfiguration(minimumMajorVersion: minimumDeploymentTarget, localXmlPath: path, isLiveEnabled: enableLive)
+    StyleGenerator(group: group, configuration: configuration)
         .generate(imports: index == 0)
 }
 
@@ -62,8 +94,9 @@ for imp in imports {
 
 for (path, rootDefinition) in componentDefinitions {
     print("// Generated from \(path)")
+    let configuration = GeneratorConfiguration(minimumMajorVersion: minimumDeploymentTarget, localXmlPath: path, isLiveEnabled: enableLive)
     for definition in rootDefinition.componentDefinitions {
-        UIGenerator(definition: definition, localXmlPath: path, isLiveEnabled: enableLive)
+        UIGenerator(definition: definition, configuration: configuration)
             .generate(imports: false)
     }
 }
