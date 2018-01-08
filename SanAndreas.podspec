@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
     spec.name             = 'SanAndreas'
-    spec.version          = '0.1.1'
+    spec.version          = '0.2.0'
     spec.summary          = 'Live reloading of ReactantUI XML files.'
     spec.description      = <<-DESC
                             ReactantLiveUI adds live reloading capabilities to ReactantUI.
