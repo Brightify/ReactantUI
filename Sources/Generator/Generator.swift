@@ -211,59 +211,76 @@ public class UIGenerator: Generator {
         l("\(name).snp.makeConstraints") {
             l("make in")
             for constraint in element.layout.constraints {
-                //let x = UIView().widthAnchor
-
-                var constraintLine = "make.\(constraint.anchor).\(constraint.relation)("
-
-                switch constraint.type {
-                case .targeted(let targetDefinition):
-                    let target: String
-                    switch targetDefinition.target {
-                    case .field(let targetName):
-                        target = "target.\(targetName)"
-                    case .layoutId(let layoutId):
-                        target = "named_\(layoutId)"
-                    case .parent:
-                        target = superName
-                    case .this:
-                        target = name
-                    case .safeAreaLayoutGuide:
-                        target = "target.fallback_safeAreaLayoutGuide"
+                //#if ENABLE_SAFEAREAINSETS_FALLBACK
+                if case .targeted(target: .safeAreaLayoutGuide, targetAnchor: _, multiplier: _, constant: _) = constraint.type {
+                    l("if #available(iOS 11.0, tvOS 11.0, *)") {
+                        l(constraintLine(constraint: constraint, superName: superName, name: name, fallback: false))
                     }
-                    constraintLine += target
-                    if targetDefinition.targetAnchor != constraint.anchor {
-                        constraintLine += ".snp.\(targetDefinition.targetAnchor)"
+                    l("else") {
+                        l(constraintLine(constraint: constraint, superName: superName, name: name, fallback: true))
                     }
-
-                case .constant(let constant):
-                    constraintLine += "\(constant)"
+                } else {
+                    l(constraintLine(constraint: constraint, superName: superName, name: name, fallback: false))
                 }
-                constraintLine += ")"
-
-                if case .targeted(let targetDefinition) = constraint.type {
-                    if targetDefinition.constant != 0 {
-                        constraintLine += ".offset(\(targetDefinition.constant))"
-                    }
-                    if targetDefinition.multiplier != 1 {
-                        constraintLine += ".multipliedBy(\(targetDefinition.multiplier))"
-                    }
-                }
-
-                if constraint.priority.numeric != 1000 {
-                    constraintLine += ".priority(\(constraint.priority.numeric))"
-                }
-
-                if let field = constraint.field {
-                    constraintLine = "constraints.\(field) = \(constraintLine).constraint"
-                }
-
-                l(constraintLine)
+                //#else
+                //    l(constraintLine(constraint: constraint, superName: superName, name: name, fallback: false))
+                //#endif
             }
         }
-
         if let container = element as? UIContainer {
             container.children.forEach { generateConstraints(element: $0, superName: name) }
         }
+    }
+    
+    private func constraintLine(constraint: Constraint, superName: String, name: String, fallback: Bool) -> String {
+        var constraintLine = "make.\(constraint.anchor).\(constraint.relation)("
+        
+        switch constraint.type {
+        case .targeted(let targetDefinition):
+            let target: String
+            switch targetDefinition.target {
+            case .field(let targetName):
+                target = "target.\(targetName)"
+            case .layoutId(let layoutId):
+                target = "named_\(layoutId)"
+            case .parent:
+                target = superName
+            case .this:
+                target = name
+            case .safeAreaLayoutGuide:
+                if fallback {
+                    target = "target.fallback_safeAreaLayoutGuide"
+                } else {
+                    target = "target.safeAreaLayoutGuide"
+                }
+            }
+            constraintLine += target
+            if targetDefinition.targetAnchor != constraint.anchor {
+                constraintLine += ".snp.\(targetDefinition.targetAnchor)"
+            }
+            
+        case .constant(let constant):
+            constraintLine += "\(constant)"
+        }
+        constraintLine += ")"
+        
+        if case .targeted(let targetDefinition) = constraint.type {
+            if targetDefinition.constant != 0 {
+                constraintLine += ".offset(\(targetDefinition.constant))"
+            }
+            if targetDefinition.multiplier != 1 {
+                constraintLine += ".multipliedBy(\(targetDefinition.multiplier))"
+            }
+        }
+        
+        if constraint.priority.numeric != 1000 {
+            constraintLine += ".priority(\(constraint.priority.numeric))"
+        }
+        
+        if let field = constraint.field {
+            constraintLine = "constraints.\(field) = \(constraintLine).constraint"
+        }
+        return constraintLine
     }
 
     private func constraintFields(element: UIElement) -> [String] {
