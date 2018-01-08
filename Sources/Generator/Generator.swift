@@ -228,11 +228,7 @@ public class UIGenerator: Generator {
                     case .this:
                         target = name
                     case .safeAreaLayoutGuide:
-                        if #available(iOS 11.0, tvOS 11.0, *) {
-                            target = "safeAreaLayoutGuide"
-                        } else {
-                            target = "fallback_safeAreaLayoutGuide"
-                        }
+                        target = "target.fallback_safeAreaLayoutGuide"
                     }
                     constraintLine += target
                     if targetDefinition.targetAnchor != constraint.anchor {
