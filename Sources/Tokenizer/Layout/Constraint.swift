@@ -62,6 +62,12 @@ public struct Constraint {
                 targetString = "super"
             case .this:
                 targetString = "self"
+            case .safeAreaLayoutGuide:
+                if #available(iOS 11.0, tvOS 11.0, *) {
+                    targetString = "safeAreaLayoutGuide"
+                } else {
+                    targetString = "fallback_safeAreaLayoutGuide"
+                }
             }
             if targetAnchor != anchor && attribute != .before && attribute != .after {
                 targetString += ".\(targetAnchor.description)"
@@ -116,6 +122,7 @@ public enum ConstraintTarget {
     case layoutId(String)
     case parent
     case this
+    case safeAreaLayoutGuide
 }
 
 extension ConstraintTarget: Equatable {
@@ -125,7 +132,7 @@ extension ConstraintTarget: Equatable {
             return lhsField == rhsField
         case (.layoutId(let lhsId), .layoutId(let rhsId)):
             return lhsId == rhsId
-        case (.parent, .parent), (.this, .this):
+        case (.parent, .parent), (.this, .this), (.safeAreaLayoutGuide, .safeAreaLayoutGuide):
             return true
         default:
             return false

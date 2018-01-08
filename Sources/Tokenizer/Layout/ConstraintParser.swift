@@ -182,6 +182,8 @@ class ConstraintParser: BaseParser<Constraint> {
             return .parent
         } else if identifier == "self" {
             return .this
+        } else if identifier == "safeAreaLayoutGuide" {
+            return .safeAreaLayoutGuide
         } else {
             return .field(identifier)
         }

@@ -19,6 +19,7 @@ target 'Example' do
 
     pod 'Reactant', :git => 'https://github.com/Brightify/Reactant.git', :branch => 'tvOS'
     pod 'Reactant/TableView', :git => 'https://github.com/Brightify/Reactant.git', :branch => 'tvOS'
+    pod 'Reactant/FallbackSafeAreaInsets', :git => 'https://github.com/Brightify/Reactant.git', :branch => 'tvOS'
     pod 'ReactantUI', :path => './'
     pod 'ReactantLiveUI', :path => './', :configuration => 'Debug'
 end
@@ -29,6 +30,7 @@ target 'Example-tvOS' do
 
     pod 'Reactant', :git => 'https://github.com/Brightify/Reactant.git', :branch => 'tvOS'
     pod 'Reactant/TableView', :git => 'https://github.com/Brightify/Reactant.git', :branch => 'tvOS'
+    pod 'Reactant/FallbackSafeAreaInsets', :git => 'https://github.com/Brightify/Reactant.git', :branch => 'tvOS'
     pod 'ReactantUI', :path => './'
     pod 'ReactantLiveUI', :path => './', :configuration => 'Debug'
 end

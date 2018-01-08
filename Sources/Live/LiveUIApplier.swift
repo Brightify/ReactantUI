@@ -167,58 +167,67 @@ public class ReactantLiveUIApplier {
 
                 switch constraint.type {
                 case .targeted(let targetDefinition):
-                    let targetView: UIView
+                    let targetView: ConstraintAttributesDSL
                     switch targetDefinition.target {
                     case .field(let targetName):
                         guard let fieldView = findView(named: targetName, in: views) else {
                             error = LiveUIError(message: "Couldn't find view with field name `\(targetName)` in view hierarchy")
                             return
                         }
-                        targetView = fieldView
+                        targetView = fieldView.snp
                     case .layoutId(let layoutId):
                         let targetName = "named_\(layoutId)"
                         guard let fieldView = findView(named: targetName, in: views) else {
                             error = LiveUIError(message: "Couldn't find view with layout id `\(targetName)` in view hierarchy")
                             return
                         }
-                        targetView = fieldView
+                        targetView = fieldView.snp
                     case .parent:
-                        targetView = superview
+                        targetView = superview.snp
                     case .this:
-                        targetView = view
+                        targetView = view.snp
+                    case .safeAreaLayoutGuide:
+                        if #available(iOS 11.0, tvOS 11.0, *) {
+                            targetView = superview.safeAreaLayoutGuide.snp
+                        } else {
+                            targetView = superview.fallback_safeAreaLayoutGuide.snp
+                        }
                     }
 
                     if targetDefinition.targetAnchor != constraint.anchor {
                         switch targetDefinition.targetAnchor {
                         case .top:
-                            target = targetView.snp.top
+                            target = targetView.top
                         case .bottom:
-                            target = targetView.snp.bottom
+                            target = targetView.bottom
                         case .leading:
-                            target = targetView.snp.leading
+                            target = targetView.leading
                         case .trailing:
-                            target = targetView.snp.trailing
+                            target = targetView.trailing
                         case .left:
-                            target = targetView.snp.left
+                            target = targetView.left
                         case .right:
-                            target = targetView.snp.right
+                            target = targetView.right
                         case .width:
-                            target = targetView.snp.width
+                            target = targetView.width
                         case .height:
-                            target = targetView.snp.height
+                            target = targetView.height
                         case .centerX:
-                            target = targetView.snp.centerX
+                            target = targetView.centerX
                         case .centerY:
-                            target = targetView.snp.centerY
+                            target = targetView.centerY
                         case .firstBaseline:
-                            target = targetView.snp.firstBaseline
+                            target = targetView.firstBaseline
                         case .lastBaseline:
-                            target = targetView.snp.lastBaseline
+                            target = targetView.lastBaseline
                         case .size:
-                            target = targetView.snp.size
+                            target = targetView.size
                         }
                     } else {
-                        target = targetView
+                        guard let constraintTarget = targetView.target as? ConstraintRelatableTarget else {
+                            fatalError("Target view was not what was expected, please report this crash to Issues on GitHub.")
+                        }
+                        target = constraintTarget
                     }
 
                 case .constant(let constant):

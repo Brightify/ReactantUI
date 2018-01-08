@@ -16,6 +16,21 @@
             backgroundColor.highlighted="white"
             isUserInteractionEnabled="true" />
     </styles>
+    
+    <View
+        backgroundColor="blue"
+        layout:id="test"
+        layout:leading="super"
+        layout:top="safeAreaLayoutGuide.top"
+        layout:width="100"
+        layout:height="50"/>
+    <View
+        backgroundColor="red"
+        layout:leading="super"
+        layout:top="id:test.bottom offset(10)"
+        layout:width="100"
+        layout:height="50"/>
+    
     <!-- <View> <Label/> </View> -->
     <View/>
     <!-- <ImageView
