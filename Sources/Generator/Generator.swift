@@ -211,20 +211,22 @@ public class UIGenerator: Generator {
         l("\(name).snp.makeConstraints") {
             l("make in")
             for constraint in element.layout.constraints {
-                //#if ENABLE_SAFEAREAINSETS_FALLBACK
-                if case .targeted(target: .safeAreaLayoutGuide, targetAnchor: _, multiplier: _, constant: _) = constraint.type {
-                    l("if #available(iOS 11.0, tvOS 11.0, *)") {
+                if #available(iOS 9.0, tvOS 9.0, *) {
+                    if case .targeted(target: .safeAreaLayoutGuide, targetAnchor: _, multiplier: _, constant: _) = constraint.type {
+                        l("if #available(iOS 11.0, tvOS 11.0, *)") {
+                            l(constraintLine(constraint: constraint, superName: superName, name: name, fallback: false))
+                        }
+                        l("else") {
+                            // If xcode says that there is no such thing as fallback_safeAreaLayoutGuide,
+                            // add Reactant/FallbackSafeAreaInsets to your podfile
+                            l(constraintLine(constraint: constraint, superName: superName, name: name, fallback: true))
+                        }
+                    } else {
                         l(constraintLine(constraint: constraint, superName: superName, name: name, fallback: false))
-                    }
-                    l("else") {
-                        l(constraintLine(constraint: constraint, superName: superName, name: name, fallback: true))
                     }
                 } else {
                     l(constraintLine(constraint: constraint, superName: superName, name: name, fallback: false))
                 }
-                //#else
-                //    l(constraintLine(constraint: constraint, superName: superName, name: name, fallback: false))
-                //#endif
             }
         }
         if let container = element as? UIContainer {
