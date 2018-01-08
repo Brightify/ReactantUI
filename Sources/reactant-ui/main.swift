@@ -24,9 +24,15 @@ private func xcodeProjPath(currentDir: URL) -> URL? {
     }
 }
 
-guard let xcprojpath = xcodeProjPath(currentDir: currentPathUrl) else { fatalError("Couldn't find path to .xcodeproj") }
+guard let xcprojpath = xcodeProjPath(currentDir: currentPathUrl) else {
+    print("Couldn't find path to .xcodeproj")
+    fatalError("Couldn't find path to .xcodeproj")
+}
 
-guard let project = try? XcodeProj(pathString: xcprojpath.absoluteURL.path) else { fatalError("Couldn't read the .xcodeproj") }
+guard let project = try? XcodeProj(pathString: xcprojpath.absoluteURL.path) else {
+    print("Couldn't read the .xcodeproj")
+    fatalError("Couldn't read the .xcodeproj")
+}
 
 let minimumDeploymentTarget = project.pbxproj.objects.buildConfigurations.values
     .flatMap { config -> Substring? in

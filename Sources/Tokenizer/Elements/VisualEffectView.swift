@@ -13,8 +13,6 @@ import Foundation
 #endif
 
 public class VisualEffectView: Container {
-
-    public static let effect = assignable(name: "effect", type: VisualEffect.self)
     
     override class var availableProperties: [PropertyDescription] {
         return Properties.visualEffectView.allProperties

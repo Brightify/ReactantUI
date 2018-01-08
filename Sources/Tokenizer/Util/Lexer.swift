@@ -86,7 +86,7 @@ extension Lexer {
 
             if !matched {
                 let index = content.index(after: content.startIndex)
-                tokens.append(.other(String(content[...index])))
+                tokens.append(.other(String(content[..<index])))
                 content = String(content[index...])
             }
         }
