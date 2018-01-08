@@ -25,6 +25,7 @@ PODS:
     - RxDataSources (~> 3.0)
   - ReactantLiveUI (0.1.1):
     - Reactant (> 1.0)
+    - Reactant/FallbackSafeAreaInsets (> 1.0)
     - Reactant/TableView (> 1.0)
     - RxCocoa
   - ReactantUI (0.1.1)
@@ -44,7 +45,6 @@ PODS:
 DEPENDENCIES:
   - Kingfisher (~> 4.0)
   - Reactant (from `https://github.com/Brightify/Reactant.git`, branch `tvOS`)
-  - Reactant/FallbackSafeAreaInsets (from `https://github.com/Brightify/Reactant.git`, branch `tvOS`)
   - Reactant/TableView (from `https://github.com/Brightify/Reactant.git`, branch `tvOS`)
   - ReactantLiveUI (from `./`)
   - ReactantUI (from `./`)
@@ -73,7 +73,7 @@ SPEC CHECKSUMS:
   Differentiator: a87be69eba49ec4ab460c7671143ee3a9eececfd
   Kingfisher: 9ee7e788d8ba07c3f21ce0d43f33cec310a4f781
   Reactant: b94af04013acb83e6f952699c29f272d29bf88d9
-  ReactantLiveUI: f08a73995182eddc578bebf9ca98846cab833438
+  ReactantLiveUI: 0bb5d41a728de312b96b1555fbfe38ab51924e0e
   ReactantUI: a38a6706526f0dfc95c4920eefb1791b3344f3bb
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   RxCocoa: d62846ca96495d862fa4c59ea7d87e5031d7340e
@@ -82,6 +82,6 @@ SPEC CHECKSUMS:
   RxSwift: fd680d75283beb5e2559486f3c0ff852f0d35334
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
 
-PODFILE CHECKSUM: d3035beb54e4980dbad9396d33d22094fb2c1775
+PODFILE CHECKSUM: fedc38b4cff026ff72771ba332e08fb42578c5b5
 
 COCOAPODS: 1.3.1
