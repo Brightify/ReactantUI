@@ -3,11 +3,17 @@ import Tokenizer
 import Foundation
 import xcproj
 
+enum GeneratorError: Error {
+    case inavlidType
+}
+
+let forbiddenNames = ["RootView", "UIView", "UIViewController", "self", "switch",
+                      "if", "else", "guard", "func", "class", "ViewBase", "ControllerBase", "for"]
+
 let enableLive = CommandLine.arguments.contains("--enable-live")
 
 let currentPath = FileManager.default.currentDirectoryPath
 let currentPathUrl = URL(fileURLWithPath: currentPath)
-
 
 private func xcodeProjPath(currentDir: URL) -> URL? {
     let contents = (try? FileManager.default.contentsOfDirectory(atPath: currentDir.absoluteURL.path)) ?? []
@@ -80,6 +86,9 @@ for (index, path) in uiFiles.enumerated() {
         definition = try! ComponentDefinition(node: node, type: type)
     } else {
         definition = try! ComponentDefinition(node: node, type: componentType(from: path))
+    }
+    if forbiddenNames.contains(definition.type) {
+        throw GeneratorError.inavlidType
     }
     componentTypes.append(contentsOf: definition.componentTypes)
     componentDefinitions[path] = definition
