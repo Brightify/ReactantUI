@@ -18,15 +18,15 @@ public class StyleGenerator: Generator {
         super.init(configuration: configuration)
     }
 
-    public override func generate(imports: Bool) {
+    public override func generate(imports: Bool) -> String {
         if imports {
-            l("import UIKit")
-            l("import Reactant")
-            l("import SnapKit")
+            l("""
+              import UIKit
+              import Reactant
+              import SnapKit
+              """)
             if configuration.isLiveEnabled {
-                l("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
-                l("import ReactantLiveUI")
-                l("#endif")
+                l(ifSimulator("import ReactantLiveUI"))
             }
         }
         l()
@@ -45,5 +45,7 @@ public class StyleGenerator: Generator {
                 }
             }
         }
+        
+        return output
     }
 }

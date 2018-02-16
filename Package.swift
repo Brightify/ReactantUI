@@ -17,6 +17,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/xcodeswift/xcproj.git", .upToNextMajor(from: "2.0.0")),
+        .package(url: "https://github.com/jakeheis/SwiftCLI", from: "4.0.0")
     ],
     targets: [
         .target(
@@ -24,7 +25,7 @@ let package = Package(
             dependencies: []),
         .target(
             name: "Generator",
-            dependencies: ["Tokenizer", "xcproj"]),
+            dependencies: ["Tokenizer", "xcproj", "SwiftCLI"]),
         .target(
             name: "reactant-ui",
             dependencies: ["Tokenizer", "Generator"])

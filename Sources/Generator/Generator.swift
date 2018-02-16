@@ -21,23 +21,33 @@ public class Generator {
     init(configuration: GeneratorConfiguration) {
         self.configuration = configuration
     }
+    
+    var output = ""
 
-    func generate(imports: Bool) {
-
+    func generate(imports: Bool) -> String {
+        return output
     }
 
     func l(_ line: String = "") {
-        print((0..<nestLevel).map { _ in "    " }.joined() + line)
+        output.append((0..<nestLevel).map { _ in "    " }.joined() + line + "\n")
     }
 
     func l(_ line: String = "", _ f: () -> Void) {
-        print((0..<nestLevel).map { _ in "    " }.joined() + line, terminator: "")
+        output.append((0..<nestLevel).map { _ in "    " }.joined() + line)
 
         nestLevel += 1
-        print(" {")
+        output.append(" {" + "\n")
         f()
         nestLevel -= 1
         l("}")
+    }
+    
+    func ifSimulator(_ commands: String) -> String {
+        return """
+        #if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))
+        \(commands)
+        #endif
+        """
     }
 }
 
@@ -51,7 +61,7 @@ public class UIGenerator: Generator {
         super.init(configuration: configuration)
     }
 
-    public override func generate(imports: Bool) {
+    public override func generate(imports: Bool) -> String {
         if root.isAnonymous {
             l("final class \(root.type): ViewBase<Void, Void>") { }
         }
@@ -135,10 +145,10 @@ public class UIGenerator: Generator {
                 l()
                 l("static func destroyReactantUI(target: UIView)") {
                     if configuration.isLiveEnabled {
-                        l("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
-                        l("guard let knownTarget = target as? \(root.type) else { /* FIXME Should we fatalError here? */ return }")
-                        l("ReactantLiveUIManager.shared.unregister(knownTarget)")
-                        l("#endif")
+                        l(ifSimulator("""
+                                      guard let knownTarget = target as? \(root.type) else { /* FIXME Should we fatalError here? */ return }
+                                      ReactantLiveUIManager.shared.unregister(knownTarget)
+                                      """))
                     }
                 }
             }
@@ -150,6 +160,8 @@ public class UIGenerator: Generator {
             }
             generateStyles()
         }
+        
+        return output
     }
 
     private func generate(element: UIElement, superName: String, containedIn: UIContainer) {

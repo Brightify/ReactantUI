@@ -1,0 +1,179 @@
+//
+//  GenerateCommand.swift
+//  ReactantUI
+//
+//  Created by Matouš Hýbl on 16/02/2018.
+//
+import Generator
+import Tokenizer
+import Foundation
+import xcproj
+import SwiftCLI
+
+class GenerateCommand: Command {
+    enum GenerateCommandError: Error {
+        case inputPathInvalid
+        case ouputFileInvalid
+        case XCodeProjectPathInvalid
+        case cannotReadXCodeProj
+        case invalidType
+    }
+    
+    static let forbiddenNames = ["RootView", "UIView", "UIViewController", "self", "switch",
+                                 "if", "else", "guard", "func", "class", "ViewBase", "ControllerBase", "for"]
+    
+    let name: String = "generate"
+    let shortDescription = "Generate Swift UI code from XMLs"
+    let enableLive = Flag("--enable-live")
+    
+    let xcodeProjectPath = Key<String>("--xcodeprojPath")
+    let inputPath = Key<String>("--inputPath")
+    let outputFile = Key<String>("--outputFile")
+    
+    func execute() throws {
+        var output: [String] = []
+        
+        guard let inputPath = inputPath.value, let inputPathURL = URL(string: "file://\(inputPath)") else {
+            throw GenerateCommandError.inputPathInvalid
+        }
+        
+        guard let outputFile = outputFile.value, let outputPathURL = URL(string: "file://\(outputFile)") else {
+            throw GenerateCommandError.ouputFileInvalid
+        }
+        
+        let minimumDeploymentTarget = try self.minimumDeploymentTarget()
+        
+        let uiXmlEnumerator = FileManager.default.enumerator(atPath: inputPath)
+        let uiFiles = uiXmlEnumerator?.flatMap { $0 as? String }.filter { $0.hasSuffix(".ui.xml") }
+            .map { inputPathURL.appendingPathComponent($0).path } ?? []
+        
+        let styleXmlEnumerator = FileManager.default.enumerator(atPath: inputPath)
+        let styleFiles = styleXmlEnumerator?.flatMap { $0 as? String }.filter { $0.hasSuffix(".styles.xml") }
+            .map { inputPathURL.appendingPathComponent($0).path } ?? []
+        
+        var stylePaths = [] as [String]
+        for (index, path) in styleFiles.enumerated() {
+            output.append("// Generated from \(path)")
+            let data = try! Data(contentsOf: URL(fileURLWithPath: path))
+            
+            let xml = SWXMLHash.parse(data)
+            let group: StyleGroup = try xml["styleGroup"].value()
+            stylePaths.append(path)
+            let configuration = GeneratorConfiguration(minimumMajorVersion: minimumDeploymentTarget,
+                                                       localXmlPath: path,
+                                                       isLiveEnabled: enableLive.value)
+            output.append(StyleGenerator(group: group, configuration: configuration).generate(imports: index == 0))
+        }
+        
+        var componentTypes: [String] = []
+        var componentDefinitions: [String: ComponentDefinition] = [:]
+        var imports: Set<String> = []
+        for (index, path) in uiFiles.enumerated() {
+            let data = try! Data(contentsOf: URL(fileURLWithPath: path))
+            
+            let xml = SWXMLHash.parse(data)
+            
+            let node = xml["Component"].element!
+            var definition: ComponentDefinition
+            if let type: String = xml["Component"].value(ofAttribute: "type") {
+                definition = try! ComponentDefinition(node: node, type: type)
+            } else {
+                definition = try! ComponentDefinition(node: node, type: componentType(from: path))
+            }
+            if GenerateCommand.forbiddenNames.contains(definition.type) {
+                throw GenerateCommandError.invalidType
+            }
+            componentTypes.append(contentsOf: definition.componentTypes)
+            componentDefinitions[path] = definition
+            imports.formUnion(definition.requiredImports)
+        }
+        
+        output.append("""
+              import UIKit
+              import Reactant
+              import SnapKit
+              """)
+        
+        if enableLive.value {
+            output.append(ifSimulator("import ReactantLiveUI"))
+        }
+        for imp in imports {
+            output.append("import \(imp)")
+        }
+        
+        for (path, rootDefinition) in componentDefinitions {
+            output.append("// Generated from \(path)")
+            let configuration = GeneratorConfiguration(minimumMajorVersion: minimumDeploymentTarget, localXmlPath: path, isLiveEnabled: enableLive.value)
+            for definition in rootDefinition.componentDefinitions {
+                output.append(UIGenerator(definition: definition, configuration: configuration).generate(imports: false))
+            }
+        }
+        
+        
+        if enableLive.value {
+            output.append("""
+                  #if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))
+                      struct GeneratedReactantLiveUIConfiguration: ReactantLiveUIConfiguration {
+                      let rootDir = \"\(inputPath)\"
+                      let commonStylePaths: [String] = [
+                  """)
+            for path in stylePaths {
+                output.append("        \"\(path)\",")
+            }
+            output.append("    ]")
+            
+            if componentTypes.isEmpty {
+                output.append("    let componentTypes: [String: UIView.Type] = [:]")
+            } else {
+                output.append("    let componentTypes: [String: UIView.Type] = [")
+                for type in Set(componentTypes) {
+                    output.append("        \"\(type)\": \(type).self,")
+                }
+                output.append("    ]")
+            }
+            output.append("""
+                  }
+                  #endif
+                  """)
+        }
+        
+        output.append("func activateLiveReload(in window: UIWindow) {")
+        if enableLive.value {
+            output.append(ifSimulator("ReactantLiveUIManager.shared.activate(in: window, configuration: GeneratedReactantLiveUIConfiguration())"))
+        }
+        output.append("}")
+        
+        try output.joined(separator: "\n").write(to: outputPathURL, atomically: true, encoding: .utf8)
+    }
+    
+    private func minimumDeploymentTarget() throws -> Int {
+        guard let xcodeProjectPathsString = xcodeProjectPath.value, let xcprojpath = URL(string: xcodeProjectPathsString) else {
+            print("Couldn't find path to .xcodeproj")
+            throw GenerateCommandError.XCodeProjectPathInvalid
+        }
+        
+        guard let project = try? XcodeProj(pathString: xcprojpath.absoluteURL.path) else {
+            print("Couldn't read the .xcodeproj")
+            throw GenerateCommandError.cannotReadXCodeProj
+        }
+        
+        return project.pbxproj.objects.buildConfigurations.values
+            .flatMap { config -> Substring? in
+                let value = (config.buildSettings["TVOS_DEPLOYMENT_TARGET"] ?? config.buildSettings["IPHONEOS_DEPLOYMENT_TARGET"]) as? String
+                
+                return value?.split(separator: ".").first
+            }
+            .flatMap { Int(String($0)) }.reduce(50) { previous, new in
+                return previous < new ? previous : new
+        }
+    }
+    
+    private func ifSimulator(_ commands: String) -> String {
+        return """
+               #if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))
+               \(commands)
+               #endif
+               """
+    }
+}
+
