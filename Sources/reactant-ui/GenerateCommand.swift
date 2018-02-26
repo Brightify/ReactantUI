@@ -175,12 +175,10 @@ class GenerateCommand: Command {
     
     private func minimumDeploymentTarget() throws -> Int {
         guard let xcodeProjectPathsString = xcodeProjectPath.value, let xcprojpath = URL(string: xcodeProjectPathsString) else {
-            print("Couldn't find path to .xcodeproj")
             throw GenerateCommandError.XCodeProjectPathInvalid
         }
         
         guard let project = try? XcodeProj(pathString: xcprojpath.absoluteURL.path) else {
-            print("Couldn't read the .xcodeproj")
             throw GenerateCommandError.cannotReadXCodeProj
         }
         
