@@ -10,19 +10,42 @@ import Foundation
 import xcproj
 import SwiftCLI
 
-class GenerateCommand: Command {
-    enum GenerateCommandError: Error {
-        case inputPathInvalid
-        case ouputFileInvalid
-        case XCodeProjectPathInvalid
-        case cannotReadXCodeProj
-        case invalidType
+public enum GenerateCommandError: Error, LocalizedError {
+    case inputPathInvalid
+    case ouputFileInvalid
+    case XCodeProjectPathInvalid
+    case cannotReadXCodeProj
+    case invalidType(String)
+    case tokenizationError(path: String, error: Error)
+
+    public var localizedDescription: String {
+        switch self {
+        case .inputPathInvalid:
+            return "Input path is invalid."
+        case .ouputFileInvalid:
+            return "Output file path is invalid."
+        case .XCodeProjectPathInvalid:
+            return "xcodeproj path is invalid."
+        case .cannotReadXCodeProj:
+            return "Cannot read xcodeproj."
+        case .invalidType(let path):
+            return "Invalid Component type at path: \(path) - do not use keywords.";
+        case .tokenizationError(let path, let error):
+            return "Tokenization error in file: \(path), error: \(error.localizedDescription)"
+        }
     }
+
+    public var errorDescription: String? {
+        return localizedDescription
+    }
+}
+
+class GenerateCommand: Command {
     
     static let forbiddenNames = ["RootView", "UIView", "UIViewController", "self", "switch",
                                  "if", "else", "guard", "func", "class", "ViewBase", "ControllerBase", "for"]
     
-    let name: String = "generate"
+    let name = "generate"
     let shortDescription = "Generate Swift UI code from XMLs"
     let enableLive = Flag("--enable-live")
     
@@ -30,7 +53,7 @@ class GenerateCommand: Command {
     let inputPath = Key<String>("--inputPath")
     let outputFile = Key<String>("--outputFile")
     
-    func execute() throws {
+    public func execute() throws {
         var output: [String] = []
         
         guard let inputPath = inputPath.value, let inputPathURL = URL(string: "file://\(inputPath)") else {
@@ -54,7 +77,7 @@ class GenerateCommand: Command {
         var stylePaths = [] as [String]
         for (index, path) in styleFiles.enumerated() {
             output.append("// Generated from \(path)")
-            let data = try! Data(contentsOf: URL(fileURLWithPath: path))
+            let data = try Data(contentsOf: URL(fileURLWithPath: path))
             
             let xml = SWXMLHash.parse(data)
             let group: StyleGroup = try xml["styleGroup"].value()
@@ -69,19 +92,23 @@ class GenerateCommand: Command {
         var componentDefinitions: [String: ComponentDefinition] = [:]
         var imports: Set<String> = []
         for (index, path) in uiFiles.enumerated() {
-            let data = try! Data(contentsOf: URL(fileURLWithPath: path))
+            let data = try Data(contentsOf: URL(fileURLWithPath: path))
             
             let xml = SWXMLHash.parse(data)
             
             let node = xml["Component"].element!
             var definition: ComponentDefinition
-            if let type: String = xml["Component"].value(ofAttribute: "type") {
-                definition = try! ComponentDefinition(node: node, type: type)
-            } else {
-                definition = try! ComponentDefinition(node: node, type: componentType(from: path))
-            }
-            if GenerateCommand.forbiddenNames.contains(definition.type) {
-                throw GenerateCommandError.invalidType
+            do {
+                if let type: String = xml["Component"].value(ofAttribute: "type") {
+                    definition = try ComponentDefinition(node: node, type: type)
+                } else {
+                    definition = try ComponentDefinition(node: node, type: componentType(from: path))
+                }
+                if GenerateCommand.forbiddenNames.contains(definition.type) {
+                    throw GenerateCommandError.invalidType(path)
+                }
+            } catch let error {
+                throw GenerateCommandError.tokenizationError(path: path, error: error)
             }
             componentTypes.append(contentsOf: definition.componentTypes)
             componentDefinitions[path] = definition
