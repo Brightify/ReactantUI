@@ -71,6 +71,7 @@ public class View: XMLElementDeserializable, UIElement {
                              contentHuggingPriorityVertical: View.defaultContentHugging.vertical)
         properties = []
         toolingProperties = [:]
+        transformation = nil
     }
 
     public static func deserialize(_ node: XMLElement) throws -> Self {
