@@ -29,10 +29,10 @@ class TransformationParser: BaseParser<Transformation> {
             }
             try popTokens(2)
 
-            return .rotate(by: Double(number))
+            return .rotate(by: number)
         case "scale", "translate":
-            var x: Double? = nil
-            var y: Double? = nil
+            var x: Float? = nil
+            var y: Float? = nil
 
             if case .identifier("y")? = peekToken(), peekNextToken() == .colon {
                 try popTokens(2)

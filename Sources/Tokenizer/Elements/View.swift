@@ -49,7 +49,6 @@ public class View: XMLElementDeserializable, UIElement {
     public required init(node: XMLElement) throws {
         field = node.value(ofAttribute: "field")
         layout = try node.value()
-        //transformation = AffineTransformation(transformations: [Transformation(modifier: .rotate(by: 5))])
         transformation = try? node.value(ofAttribute: "transform")
         styles = (node.value(ofAttribute: "style") as String?)?
             .components(separatedBy: CharacterSet.whitespacesAndNewlines) ?? []

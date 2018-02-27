@@ -110,7 +110,7 @@ class ConstraintParser: BaseParser<Constraint> {
         
         let type: ConstraintType
         if case .number(let constant)? = peekToken() {
-            type = .constant(Float(constant))
+            type = .constant(constant)
             try popToken()
         } else {
             let target = try parseTarget()
@@ -210,13 +210,13 @@ class ConstraintParser: BaseParser<Constraint> {
         
         switch identifier {
         case "multiplied":
-            return .multiplied(by: Float(number))
+            return .multiplied(by: number)
         case "divided":
-            return .divided(by: Float(number))
+            return .divided(by: number)
         case "offset":
-            return .offset(by: Float(number))
+            return .offset(by: number)
         case "inset":
-            return .inset(by: Float(number))
+            return .inset(by: number)
         default:
             throw ParseError.message("Unknown modifier `\(identifier)`")
         }
@@ -226,7 +226,7 @@ class ConstraintParser: BaseParser<Constraint> {
         guard case .at? = peekToken() else { return nil }
         if case .number(let number)? = peekNextToken() {
             try popTokens(2)
-            return ConstraintPriority.custom(Float(number))
+            return ConstraintPriority.custom(number)
         } else if case .identifier(let identifier)? = peekNextToken() {
             try popTokens(2)
             return try ConstraintPriority(identifier)
@@ -324,7 +324,7 @@ class FontParser: BaseParser<Font> {
                 guard case .number(let fontSize) = possibleSize else {
                     throw ParseError.message("Unexpected token `\(possibleSize)`, expected font size float")
                 }
-                size = Float(fontSize)
+                size = fontSize
             } else {
                 // Default
                 size = 15
@@ -332,7 +332,7 @@ class FontParser: BaseParser<Font> {
             return .system(weight: weight, size: size)
         } else if case .number(let size)? = peekToken() {
             try popToken()
-            return .system(weight: .regular, size: Float(size))
+            return .system(weight: .regular, size: size)
         } else {
             var components = [] as [String]
             while let token = peekToken() {
@@ -374,7 +374,7 @@ class FontParser: BaseParser<Font> {
                 guard case .number(let fontSize) = possibleSize else {
                     throw ParseError.message("Unexpected token `\(possibleSize)`, expected font size float")
                 }
-                size = Float(fontSize)
+                size = fontSize
             } else {
                 // Default
                 size = 15

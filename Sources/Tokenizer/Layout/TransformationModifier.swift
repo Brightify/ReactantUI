@@ -8,7 +8,7 @@
 
 public enum TransformationModifier {
     case identity
-    case rotate(by: Double)
-    case scale(byX: Double, byY: Double)
-    case translate(byX: Double, byY: Double)
+    case rotate(by: Float)
+    case scale(byX: Float, byY: Float)
+    case translate(byX: Float, byY: Float)
 }
