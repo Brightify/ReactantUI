@@ -6,6 +6,7 @@
 //  Copyright © 2017 Brightify. All rights reserved.
 //
 
+import Foundation
 import Tokenizer
 
 public class StyleGenerator: Generator {
