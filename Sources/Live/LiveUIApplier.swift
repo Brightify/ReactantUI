@@ -44,7 +44,6 @@ public class ReactantLiveUIApplier {
         tempCounter = 1
         try definition.children.forEach { element in
             try applyConstraints(views: views, element: element, superview: instance)
-            try applyTransformations(views: views, element: element)
         }
     }
 
@@ -278,49 +277,6 @@ public class ReactantLiveUIApplier {
 
         if let container = element as? UIContainer {
             try container.children.forEach { try applyConstraints(views: views, element: $0, superview: view) }
-        }
-    }
-
-    private func applyTransformations(views: [(String, UIView)], element: UIElement) throws {
-        guard let transformations = element.transformation?.transformations else {
-            if let container = element as? UIContainer {
-                try container.children.forEach { try applyTransformations(views: views, element: $0) }
-            }
-            return
-        }
-
-        let elementType = type(of: element)
-        let name: String
-        if let field = element.field {
-            name = "\(field)"
-        } else if let layoutId = element.layout.id {
-            name = "named_\(layoutId)"
-        } else {
-            name = "temp_\(elementType)_\(tempCounter)"
-            tempCounter += 1
-        }
-
-        guard var view = findView(named: name, in: views) else {
-            throw LiveUIError(message: "Couldn't find view with name \(name) in view hierarchy")
-        }
-
-        var cgTransform = CGAffineTransform.identity
-        for transformation in transformations {
-            switch transformation.modifier {
-            case .identity:
-                continue
-            case .rotate(by: let degrees):
-                cgTransform = cgTransform.rotated(by: CGFloat((.pi/180) * degrees))
-            case .scale(byX: let x, byY: let y):
-                cgTransform = cgTransform.scaledBy(x: CGFloat(x), y: CGFloat(y))
-            case .translate(byX: let x, byY: let y):
-                cgTransform = cgTransform.translatedBy(x: CGFloat(x), y: CGFloat(y))
-            }
-        }
-        view.transform = cgTransform
-
-        if let container = element as? UIContainer {
-            try container.children.forEach { try applyTransformations(views: views, element: $0) }
         }
     }
 }

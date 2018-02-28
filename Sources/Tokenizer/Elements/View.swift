@@ -33,7 +33,6 @@ public class View: XMLElementDeserializable, UIElement {
     public var styles: [String]
     public var layout: Layout
     public var properties: [Property]
-    public let transformation: AffineTransformation?
     public var toolingProperties: [String: Property]
 
     public var initialization: String {
@@ -49,7 +48,6 @@ public class View: XMLElementDeserializable, UIElement {
     public required init(node: XMLElement) throws {
         field = node.value(ofAttribute: "field")
         layout = try node.value()
-        transformation = try? node.value(ofAttribute: "transform")
         styles = (node.value(ofAttribute: "style") as String?)?
             .components(separatedBy: CharacterSet.whitespacesAndNewlines) ?? []
 
@@ -70,7 +68,6 @@ public class View: XMLElementDeserializable, UIElement {
                              contentHuggingPriorityVertical: View.defaultContentHugging.vertical)
         properties = []
         toolingProperties = [:]
-        transformation = nil
     }
 
     public static func deserialize(_ node: XMLElement) throws -> Self {
@@ -165,6 +162,7 @@ public class ViewProperties: PropertyContainer {
     public let frame: AssignablePropertyDescription<Rect>
     public let bounds: AssignablePropertyDescription<Rect>
     public let layoutMargins: AssignablePropertyDescription<EdgeInsets>
+    public let transform: AssignablePropertyDescription<AffineTransformation>
     
     public let layer: LayerProperties
     
@@ -188,6 +186,8 @@ public class ViewProperties: PropertyContainer {
         frame = configuration.property(name: "frame")
         bounds = configuration.property(name: "bounds")
         layoutMargins = configuration.property(name: "layoutMargins")
+        
+        transform = configuration.property(name: "transform")
         
         layer = configuration.namespaced(in: "layer", LayerProperties.self)
         

@@ -24,7 +24,7 @@
             textAlignment="center"
             layout:top="super inset(10)"
             layout:fillHorizontally="super inset(20)"
-            transform="rotate(-11) scale(1.2,1.5) translate(y: -10)"/>
+            transform="rotate(-25) scale(x: 1, y:1.5) translate(x:-30)"/>
 
 
         <Button
