@@ -37,7 +37,7 @@ public class Stepper: View {
     #endif
 }
 
-public class StepperProperties: ViewProperties {
+public class StepperProperties: ControlProperties {
     public let value: AssignablePropertyDescription<Double>
     public let minimumValue: AssignablePropertyDescription<Double>
     public let maximumValue: AssignablePropertyDescription<Double>

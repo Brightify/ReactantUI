@@ -30,7 +30,7 @@ public class SegmentedControl: View {
     #endif
 }
 
-public class SegmentedControlProperties: ViewProperties {
+public class SegmentedControlProperties: ControlProperties {
     public let selectedSegmentIndex: AssignablePropertyDescription<Int>
     public let isMomentary: AssignablePropertyDescription<Bool>
     public let apportionsSegmentWidthsByContent: AssignablePropertyDescription<Bool>

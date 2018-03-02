@@ -36,7 +36,7 @@ public class DatePicker: View {
     #endif
 }
 
-public class DatePickerProperties: ViewProperties {
+public class DatePickerProperties: ControlProperties {
     public let minuteInterval: AssignablePropertyDescription<Int>
     public let mode: AssignablePropertyDescription<DatePickerMode>
     

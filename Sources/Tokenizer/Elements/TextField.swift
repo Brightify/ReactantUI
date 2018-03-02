@@ -30,7 +30,7 @@ public class TextField: View {
     #endif
 }
 
-public class TextFieldProperties: ViewProperties {
+public class TextFieldProperties: ControlProperties {
     public let text: AssignablePropertyDescription<TransformedText>
     public let placeholder: AssignablePropertyDescription<TransformedText>
     public let font: AssignablePropertyDescription<Font>

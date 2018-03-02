@@ -29,7 +29,7 @@ public class PageControl: View {
     #endif
 }
 
-public class PageControlProperties: ViewProperties {
+public class PageControlProperties: ControlProperties {
     public let currentPage: AssignablePropertyDescription<Int>
     public let numberOfPages: AssignablePropertyDescription<Int>
     public let hidesForSinglePage: AssignablePropertyDescription<Bool>

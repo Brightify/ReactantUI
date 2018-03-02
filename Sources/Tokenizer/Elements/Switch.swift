@@ -37,7 +37,7 @@ public class Switch: View {
     #endif
 }
 
-public class SwitchProperties: ViewProperties {
+public class SwitchProperties: ControlProperties {
     public let isOn: AssignablePropertyDescription<Bool>
     public let onTintColor: AssignablePropertyDescription<UIColorPropertyType>
     public let thumbTintColor: AssignablePropertyDescription<UIColorPropertyType>

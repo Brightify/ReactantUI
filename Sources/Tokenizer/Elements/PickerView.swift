@@ -37,7 +37,7 @@ public class PickerView: View {
     #endif
 }
 
-public class PickerViewProperties: ViewProperties {
+public class PickerViewProperties: ControlProperties {
     public required init(configuration: Configuration) {
         
         super.init(configuration: configuration)

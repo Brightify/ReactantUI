@@ -29,7 +29,7 @@ public class Button: Container {
     #endif
 }
 
-public class ButtonProperties: ViewProperties {
+public class ButtonProperties: ControlProperties {
     public let title: ControlStatePropertyDescription<TransformedText>
     public let titleColor: ControlStatePropertyDescription<UIColorPropertyType>
     public let backgroundColorForState: ControlStatePropertyDescription<UIColorPropertyType>
@@ -63,6 +63,25 @@ public class ButtonProperties: ViewProperties {
         imageEdgeInsets = configuration.property(name: "imageEdgeInsets")
         titleLabel = configuration.namespaced(in: "titleLabel", optional: true, LabelProperties.self)
         imageView = configuration.namespaced(in: "imageView", ImageViewProperties.self)
+        
+        super.init(configuration: configuration)
+    }
+}
+
+// FIXME maybe create Control Element and move it there
+public class ControlProperties: ViewProperties {
+    public let isEnabled: AssignablePropertyDescription<Bool>
+    public let isSelected: AssignablePropertyDescription<Bool>
+    public let isHighlighted: AssignablePropertyDescription<Bool>
+    public let contentVerticalAlignment: AssignablePropertyDescription<ControlContentVerticalAlignment>
+    public let contentHorizontalAlignment: AssignablePropertyDescription<ControlContentHorizontalAlignment>
+    
+    public required init(configuration: PropertyContainer.Configuration) {
+        isEnabled = configuration.property(name: "isEnabled", key: "enabled")
+        isSelected = configuration.property(name: "isSelected", key: "selected")
+        isHighlighted = configuration.property(name: "isHighlighted", key: "highlighted")
+        contentVerticalAlignment = configuration.property(name: "contentVerticalAlignment")
+        contentHorizontalAlignment = configuration.property(name: "contentHorizontalAlignment")
         
         super.init(configuration: configuration)
     }

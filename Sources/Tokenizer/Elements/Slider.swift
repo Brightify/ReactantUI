@@ -37,7 +37,7 @@ public class Slider: View {
     #endif
 }
 
-public class SliderProperties: ViewProperties {
+public class SliderProperties: ControlProperties {
     public let value: AssignablePropertyDescription<Float>
     public let minimumValue: AssignablePropertyDescription<Float>
     public let maximumValue: AssignablePropertyDescription<Float>

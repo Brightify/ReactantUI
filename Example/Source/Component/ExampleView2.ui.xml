@@ -29,6 +29,8 @@
         <Button
             title="Forgotten password?"
             backgroundColor="#FFddaa"
+            isSelected="true"
+            contentHorizontalAlignment="center"
             layout:fillHorizontally="super inset(60)"
             layout:height="50"
             layout:below="id:label offset(20)"
