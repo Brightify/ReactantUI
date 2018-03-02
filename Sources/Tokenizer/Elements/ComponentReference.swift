@@ -37,7 +37,12 @@ public class ComponentReference: View, ComponentDefinitionContainer {
     }
 
     public required init(node: SWXMLHash.XMLElement) throws {
-        type = try node.value(ofAttribute: "type")
+        // if field is defined, there is no need to check for type
+        if let field = try? node.value(ofAttribute: "field") as String, !field.isEmpty {
+            type = (try? node.value(ofAttribute: "type")) ?? ""
+        } else {
+            type = try node.value(ofAttribute: "type")
+        }
         if !node.xmlChildren.isEmpty {
             definition = try node.value() as ComponentDefinition
         } else {

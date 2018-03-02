@@ -16,7 +16,7 @@
             backgroundColor.highlighted="white"
             isUserInteractionEnabled="true" />
     </styles>
-    
+
     <View
         backgroundColor="blue"
         layout:id="test"
@@ -30,7 +30,7 @@
         layout:top="id:test.bottom offset(10)"
         layout:width="100"
         layout:height="50"/>
-    
+
     <!-- <View> <Label/> </View> -->
     <View/>
     <ImageView
@@ -92,7 +92,7 @@
             backgroundColor="black"
             layout:top="super inset(50)"
             layout:fillHorizontally="super inset(20)">
-            <Component type="ExampleView2" />
+            <Component field="test" />
             <Component type="ExampleView2" />
             <TextField text="Test" secure="true" layout:height="50" />
         </StackView>
