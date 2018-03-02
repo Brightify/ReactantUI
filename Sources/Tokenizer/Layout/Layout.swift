@@ -70,7 +70,7 @@ public struct Layout: XMLElementDeserializable {
         }
 
         if let verticalHuggingPriority = node.value(ofAttribute: "layout:huggingPriority.vertical") as String? {
-            contentCompressionPriorityVertical = try ConstraintPriority(verticalHuggingPriority)
+            contentHuggingPriorityVertical = try ConstraintPriority(verticalHuggingPriority)
         }
 
         if let horizontalHuggingPriority = node.value(ofAttribute: "layout:huggingPriority.horizontal") as String? {

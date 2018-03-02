@@ -247,13 +247,13 @@ extension Layout {
             }
         }
         
-        if let horizontalHuggingPriority = contentCompressionPriorityHorizontal,
-            let verticalHuggingPriority = contentCompressionPriorityVertical,
+        if let horizontalHuggingPriority = contentHuggingPriorityHorizontal,
+            let verticalHuggingPriority = contentHuggingPriorityVertical,
             horizontalHuggingPriority == verticalHuggingPriority {
             
             builder.attribute(name: "huggingPriority", value: horizontalHuggingPriority.serialized)
         } else {
-            if let horizontalHuggingPriority = contentCompressionPriorityHorizontal {
+            if let horizontalHuggingPriority = contentHuggingPriorityHorizontal {
                 builder.attribute(name: "huggingPriority.horizontal", value: horizontalHuggingPriority.serialized)
             }
             if let verticalHuggingPriority = contentHuggingPriorityVertical {
