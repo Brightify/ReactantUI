@@ -152,8 +152,8 @@ extension TransformedText: SupportedPropertyType {
                 return ":capitalized(\(resolveTransformations(text: inner)))"
             case .text(let value):
                 return value.replacingOccurrences(of: "\"", with: "&quot;")
-                            .replacingOccurrences(of: "\n", with: "&#xA")
-                            .replacingOccurrences(of: "\r", with: "&#xD")
+                            .replacingOccurrences(of: "\n", with: "\\n")
+                            .replacingOccurrences(of: "\r", with: "\\r")
             }
         }
         return resolveTransformations(text: self)
