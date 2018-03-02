@@ -2,7 +2,7 @@
 
 ## Reactant extension for UI declaration in XML
 
-Reactant UI is an extension for Reactant allowing you to declare views and layout using XML. Don't worry, there's no runtime overhead, as all those declarations are precompiled into Swift. Reactant then uses the generated code to create your UI. Check our our [quick-start guide][quick-start] to learn more.
+Reactant UI is an extension for Reactant for declaration of views and layout using XML. There is no runtime overhead, as all the XML declarations are precompiled into Swift. Reactant then uses the generated code to create your UI. Reactant Live UI is an optional part responsible for live rendering your XML file in the simulator on every save. Check the [quick-start guide][quick-start] to learn more.
 
 ## Important note
 Reactant UI is currently a preview. However we’ll try to keep the number of API changes to a minimum.
