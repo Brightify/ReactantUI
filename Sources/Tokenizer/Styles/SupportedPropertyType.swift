@@ -127,7 +127,12 @@ extension TransformedText: SupportedPropertyType {
             case .transform(.capitalized, let inner):
                 return resolveTransformations(text: inner) + ".capitalized"
             case .text(let value):
-                return "\"\(value.replacingOccurrences(of: "\"", with: "\\\""))\""
+                let escapedValue = value
+                    .replacingOccurrences(of: "\"", with: "\\\"")
+                    .replacingOccurrences(of: "\n", with: "\\n")
+                    .replacingOccurrences(of: "\r", with: "\\r")
+                
+                return "\"\(escapedValue)\""
             }
         }
         return resolveTransformations(text: self)
@@ -146,7 +151,9 @@ extension TransformedText: SupportedPropertyType {
             case .transform(.capitalized, let inner):
                 return ":capitalized(\(resolveTransformations(text: inner)))"
             case .text(let value):
-                return value
+                return value.replacingOccurrences(of: "\"", with: "&quot;")
+                            .replacingOccurrences(of: "\n", with: "&#xA")
+                            .replacingOccurrences(of: "\r", with: "&#xD")
             }
         }
         return resolveTransformations(text: self)
@@ -166,7 +173,8 @@ extension TransformedText: SupportedPropertyType {
             case .transform(.capitalized, let inner):
                 return resolveTransformations(text: inner).capitalized
             case .text(let value):
-                return value
+                return value.replacingOccurrences(of: "\\n", with: "\n")
+                            .replacingOccurrences(of: "\\r", with: "\r")
             }
         }
         return resolveTransformations(text: self)

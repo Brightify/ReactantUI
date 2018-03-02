@@ -18,7 +18,7 @@
 
         <Label
             layout:id="label"
-            text="And your droneship too 888.56 &quot;!"
+            text="And your droneship \n too 888.56 &quot;!"
             font=":regular@20"
             numberOfLines="0"
             textAlignment="center"
