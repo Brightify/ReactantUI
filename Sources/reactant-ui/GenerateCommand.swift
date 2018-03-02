@@ -154,7 +154,7 @@ class GenerateCommand: Command {
             } else {
                 output.append("    let componentTypes: [String: UIView.Type] = [")
                 // filter out empty component types - these components are initialized in code, so they should already be included if they use RUI
-                for type in Set(componentTypes).filter({ !$0.isEmpty }) {
+                for type in Set(componentTypes) {
                     output.append("        \"\(type)\": \(type).self,")
                 }
                 output.append("    ]")

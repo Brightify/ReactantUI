@@ -13,7 +13,7 @@ import UIKit
 #endif
 
 public class ComponentReference: View, ComponentDefinitionContainer {
-    public var type: String
+    public var type: String?
     public var definition: ComponentDefinition?
 
     public var isAnonymous: Bool {
@@ -21,7 +21,11 @@ public class ComponentReference: View, ComponentDefinitionContainer {
     }
 
     public var componentTypes: [String] {
-        return definition?.componentTypes ?? [type]
+        if let type = type {
+            return definition?.componentTypes ?? [type]
+        } else {
+            return []
+        }
     }
 
     public var componentDefinitions: [ComponentDefinition] {
@@ -33,16 +37,13 @@ public class ComponentReference: View, ComponentDefinitionContainer {
     }
 
     public override var initialization: String {
+        guard let type = type else { fatalError("Should never initialize when type is undefined.") }
         return "\(type)()"
     }
 
     public required init(node: SWXMLHash.XMLElement) throws {
-        // if field is defined, there is no need to check for type
-        if let field = try? node.value(ofAttribute: "field") as String, !field.isEmpty {
-            type = (try? node.value(ofAttribute: "type")) ?? ""
-        } else {
-            type = try node.value(ofAttribute: "type")
-        }
+        type = try? node.value(ofAttribute: "type")
+        
         if !node.xmlChildren.isEmpty {
             definition = try node.value() as ComponentDefinition
         } else {
@@ -61,13 +62,16 @@ public class ComponentReference: View, ComponentDefinitionContainer {
 
     #if ReactantRuntime
     public override func initialize() throws -> UIView {
+        guard let type = type else { throw LiveUIError(message: "Should never initialize when type is undefined.") }
         return try ReactantLiveUIManager.shared.componentInstantiation(named: type)()
     }
     #endif
     
     public override func serialize() -> MagicElement {
         var serialized = super.serialize()
-        serialized.attributes.insert(MagicAttribute(name: "type", value: type), at: 0)
+        if let type = type {
+            serialized.attributes.insert(MagicAttribute(name: "type", value: type), at: 0)
+        }
         return serialized
     }
 }
