@@ -18,13 +18,12 @@
 
         <Label
             layout:id="label"
-            text="And your droneship too!"
+            text="And your droneship too 888.56 &quot;!"
             font=":regular@20"
             numberOfLines="0"
             textAlignment="center"
             layout:top="super inset(10)"
-            layout:fillHorizontally="super inset(20)"
-            transform="rotate(-25) scale(x: 1, y:1.5) translate(x:-30)"/>
+            layout:fillHorizontally="super inset(20)"/>
 
 
         <Button

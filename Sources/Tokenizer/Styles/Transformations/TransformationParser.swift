@@ -28,7 +28,7 @@ class TransformationParser: BaseParser<TransformationModifier> {
                 try popTokens(2)
             }
 
-            guard case .number(let number)? = peekToken(), .parensClose == peekNextToken() else {
+            guard case .number(let number, _)? = peekToken(), .parensClose == peekNextToken() else {
                 throw ParseError.message("Modifier `\(identifier)` couldn't be parsed!")
             }
             try popTokens(2)
@@ -40,7 +40,7 @@ class TransformationParser: BaseParser<TransformationModifier> {
             
             if peekToken() == .identifier("x") && peekNextToken() == .colon { //x:, x:y:
                 try popTokens(2)
-                guard case .number(let parsedX)? = peekToken() else {
+                guard case .number(let parsedX, _)? = peekToken() else {
                     throw ParseError.message("Modifier `\(identifier)` couldn't be parsed!")
                 }
                 try popToken()
@@ -51,7 +51,7 @@ class TransformationParser: BaseParser<TransformationModifier> {
                     if peekToken() == .identifier("y") && peekNextToken() == .colon {
                         try popTokens(2)
                         
-                        guard case .number(let parsedY)? = peekToken() else {
+                        guard case .number(let parsedY, _)? = peekToken() else {
                             throw ParseError.message("Modifier `\(identifier)` couldn't be parsed!")
                         }
                         y = parsedY
@@ -65,20 +65,20 @@ class TransformationParser: BaseParser<TransformationModifier> {
             } else if peekToken() == .identifier("y") && peekNextToken() == .colon { //y:
                 try popTokens(2)
                 
-                guard case .number(let parsedY)? = peekToken(), peekNextToken() == .parensClose else {
+                guard case .number(let parsedY, _)? = peekToken(), peekNextToken() == .parensClose else {
                     throw ParseError.message("Modifier `\(identifier)` couldn't be parsed!")
                 }
                 y = parsedY
                 try popTokens(2)
-            } else if case .number(let parsedX)? = peekToken(), peekNextToken() == .comma { //x,y
+            } else if case .number(let parsedX, _)? = peekToken(), peekNextToken() == .comma { //x,y
                 try popTokens(2)
-                guard case .number(let parsedY)? = peekToken(), peekNextToken() == .parensClose else {
+                guard case .number(let parsedY, _)? = peekToken(), peekNextToken() == .parensClose else {
                     throw ParseError.message("Modifier `\(identifier)` couldn't be parsed!")
                 }
                 x = parsedX
                 y = parsedY
                 try popTokens(2)
-            } else if case .number(let number)? = peekToken(), peekNextToken() == .parensClose { //two axis, one number
+            } else if case .number(let number, _)? = peekToken(), peekNextToken() == .parensClose { //two axis, one number
                 x = number
                 y = number
                 try popTokens(2)

@@ -127,7 +127,7 @@ extension TransformedText: SupportedPropertyType {
             case .transform(.capitalized, let inner):
                 return resolveTransformations(text: inner) + ".capitalized"
             case .text(let value):
-                return "\"\(value)\""
+                return "\"\(value.replacingOccurrences(of: "\"", with: "\\\""))\""
             }
         }
         return resolveTransformations(text: self)

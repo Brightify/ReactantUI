@@ -126,7 +126,7 @@ class ConstraintParser: BaseParser<Constraint> {
         let relation = try parseRelation() ?? .equal
         
         let type: ConstraintType
-        if case .number(let constant)? = peekToken() {
+        if case .number(let constant, _)? = peekToken() {
             type = .constant(constant)
             try popToken()
         } else {
@@ -220,7 +220,7 @@ class ConstraintParser: BaseParser<Constraint> {
             try popTokens(2)
         }
         
-        guard case .number(let number)? = peekToken(), .parensClose == peekNextToken() else {
+        guard case .number(let number, _)? = peekToken(), .parensClose == peekNextToken() else {
             throw ParseError.message("Modifier `\(identifier)` couldn't be parsed!")
         }
         try popTokens(2)
@@ -241,7 +241,7 @@ class ConstraintParser: BaseParser<Constraint> {
     
     private func parsePriority() throws -> ConstraintPriority? {
         guard case .at? = peekToken() else { return nil }
-        if case .number(let number)? = peekNextToken() {
+        if case .number(let number, _)? = peekNextToken() {
             try popTokens(2)
             return ConstraintPriority.custom(number)
         } else if case .identifier(let identifier)? = peekNextToken() {
@@ -268,6 +268,7 @@ public enum TransformedText {
 
 
 class TextParser: BaseParser<TransformedText> {
+    
     override func parseSingle() throws -> TransformedText {
         if peekToken() == .colon {
             let transformIdentifier: String? = peekNext {
@@ -294,8 +295,8 @@ class TextParser: BaseParser<TransformedText> {
             switch token {
             case .identifier(let identifier):
                 components.append(identifier)
-            case .number(let number):
-                components.append("\(number)")
+            case .number(_, let original):
+                components.append(original)
             case .parensOpen:
                 components.append("(")
             case .parensClose:
@@ -338,7 +339,7 @@ class FontParser: BaseParser<Font> {
             let size: Float
             if case .at? = try? popToken() {
                 let possibleSize = try popToken()
-                guard case .number(let fontSize) = possibleSize else {
+                guard case .number(let fontSize, _) = possibleSize else {
                     throw ParseError.message("Unexpected token `\(possibleSize)`, expected font size float")
                 }
                 size = fontSize
@@ -347,7 +348,7 @@ class FontParser: BaseParser<Font> {
                 size = 15
             }
             return .system(weight: weight, size: size)
-        } else if case .number(let size)? = peekToken() {
+        } else if case .number(let size, _)? = peekToken() {
             try popToken()
             return .system(weight: .regular, size: size)
         } else {
@@ -388,7 +389,7 @@ class FontParser: BaseParser<Font> {
             let size: Float
             if case .at? = try? popToken() {
                 let possibleSize = try popToken()
-                guard case .number(let fontSize) = possibleSize else {
+                guard case .number(let fontSize, _) = possibleSize else {
                     throw ParseError.message("Unexpected token `\(possibleSize)`, expected font size float")
                 }
                 size = fontSize

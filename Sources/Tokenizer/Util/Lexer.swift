@@ -11,7 +11,7 @@ import Foundation
 struct Lexer {
     enum Token {
         case identifier(String)
-        case number(Float)
+        case number(value: Float, original: String)
         case parensOpen
         case parensClose
         case assignment
@@ -31,8 +31,8 @@ extension Lexer.Token: Equatable {
         switch (lhs, rhs) {
         case (.identifier(let lhsIdentifier), .identifier(let rhsIdentifier)):
             return lhsIdentifier == rhsIdentifier
-        case (.number(let lhsNumber), .number(let rhsNumber)):
-            return lhsNumber == rhsNumber
+        case (.number(let lhsNumber, let lhsOriginal), .number(let rhsNumber, let rhsOriginal)):
+            return lhsNumber == rhsNumber && lhsOriginal == rhsOriginal
         case (.parensOpen, .parensOpen), (.parensClose, .parensClose), (.colon, .colon), (.semicolon, .semicolon),
              (.period, .period), (.assignment, .assignment), (.at, .at), (.comma, .comma):
             return true
@@ -53,7 +53,7 @@ extension Lexer {
     static let tokenList: [(String, TokenGenerator)] = [
         ("[ \t\n]", { .whitespace($0) }),
         ("[a-zA-Z][a-zA-Z0-9]*", { .identifier($0) }),
-        ("-?[0-9]+(\\.[0-9]+)?", { Float($0).map(Token.number) }),
+        ("-?[0-9]+(\\.[0-9]+)?", { original in Float(original).map { Token.number(value: $0, original: original) } }),
         ("\\(", { _ in .parensOpen }),
         ("\\)", { _ in .parensClose }),
         (":", { _ in .colon }),
