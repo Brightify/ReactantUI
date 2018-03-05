@@ -29,18 +29,20 @@ public enum ControlContentVerticalAlignment: Int, EnumPropertyType {
     }
     
     #if SanAndreas
+
     public func dematerialize() -> String {
-    switch self {
-    case .center:
-    return "center"
-    case .top:
-    return "top"
-    case .bottom:
-    return "bottom"
-    case .fill:
-    return "fill"
+        switch self {
+            case .center:
+                return "center"
+            case .top:
+                return "top"
+            case .bottom:
+                return "bottom"
+            case .fill:
+                return "fill"
+        }
     }
-    }
+
     #endif
     
     public static func materialize(from value: String) throws -> ControlContentVerticalAlignment {
