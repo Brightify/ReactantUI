@@ -23,6 +23,7 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, StyleC
     public var edgesForExtendedLayout: [RectEdge]
     public var isAnonymous: Bool
 
+    public var properties: [Property]
     public var toolingProperties: [String: Property]
 
     public var requiredImports: Set<String> {
@@ -56,23 +57,12 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, StyleC
         edgesForExtendedLayout = (node.attribute(by: "extend")?.text).map(RectEdge.parse) ?? []
         isAnonymous = node.value(ofAttribute: "anonymous") ?? false
 
-        toolingProperties = try ComponentDefinition.deserializeToolingProperties(properties: ToolingProperties.componentDefinition.allProperties, in: node)
+        toolingProperties = try PropertyHelper.deserializeToolingProperties(properties: ToolingProperties.componentDefinition.allProperties, in: node)
+        properties = try PropertyHelper.deserializeSupportedProperties(properties: View.availableProperties, in: node)
     }
 
     public static func deserialize(_ node: SWXMLHash.XMLElement) throws -> ComponentDefinition {
         return try ComponentDefinition(node: node, type: node.value(ofAttribute: "type"))
-    }
-
-    static func deserializeToolingProperties(properties: [PropertyDescription], in element: SWXMLHash.XMLElement) throws -> [String: Property] {
-        var result = [:] as [String: Property]
-        for (attributeName, attribute) in (element.allAttributes.filter { name, _ in name.hasPrefix("tools") }) {
-            guard let propertyDescription = properties.first(where: { $0.matches(attributeName: attributeName) }) else {
-                continue
-            }
-            let property = try propertyDescription.materialize(attributeName: attributeName, value: attribute.text)
-            result[attributeName] = property
-        }
-        return result
     }
 
 }
@@ -102,6 +92,40 @@ extension ComponentDefinition {
                 return []
             }
         }
+    }
+}
+
+extension ComponentDefinition: MagicElementSerializable {
+
+    public func serialize() -> MagicElement {
+        var builder = MagicAttributeBuilder()
+
+        if isRootView {
+            builder.attribute(name: "rootView", value: "true")
+        }
+
+        let extend = edgesForExtendedLayout.map { $0.rawValue }.joined(separator: " ")
+        if !extend.isEmpty {
+            builder.attribute(name: "extend", value: extend)
+        }
+        if isAnonymous {
+            builder.attribute(name: "anonymous", value: "true")
+        }
+
+        let styleNameAttribute = stylesName == "Styles" ? [] : [MagicAttribute(name: "name", value: stylesName)]
+        let stylesElement = styles.isEmpty ? [] : [MagicElement(name: "styles", attributes: styleNameAttribute, children: styles.map { $0.serialize() })]
+
+        let childElements = children.map { $0.serialize() }
+
+        #if SanAndreas
+            properties.map { $0.dematerialize() }.forEach { builder.add(attribute: $0) }
+            toolingProperties.map { _, property in property.dematerialize() }.forEach { builder.add(attribute: $0) }
+        #endif
+
+        var viewElement = MagicElement(name: "Component", attributes: builder.attributes, children: stylesElement + childElements)
+        viewElement.attributes.insert(MagicAttribute(name: "type", value: type), at: 0)
+
+        return viewElement
     }
 }
 

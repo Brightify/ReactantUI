@@ -55,8 +55,8 @@ public class View: XMLElementDeserializable, UIElement {
             throw TokenizationError(message: "View must not have any children, use Container instead.")
         }
 
-        properties = try View.deserializeSupportedProperties(properties: type(of: self).availableProperties, in: node)
-        toolingProperties = try View.deserializeToolingProperties(properties: type(of: self).availableToolingProperties, in: node)
+        properties = try PropertyHelper.deserializeSupportedProperties(properties: type(of: self).availableProperties, in: node)
+        toolingProperties = try PropertyHelper.deserializeToolingProperties(properties: type(of: self).availableToolingProperties, in: node)
     }
     
     public init() {
@@ -87,38 +87,6 @@ public class View: XMLElementDeserializable, UIElement {
         }
     }
 
-    static func deserializeSupportedProperties(properties: [PropertyDescription], in element: SWXMLHash.XMLElement) throws -> [Property] {
-        var result = [] as [Property]
-        for (attributeName, attribute) in element.allAttributes {
-            guard let propertyDescription = properties.first(where: { $0.matches(attributeName: attributeName) }) else {
-                continue
-            }
-//            guard
-            let property = try propertyDescription.materialize(attributeName: attributeName, value: attribute.text)
-//            else {
-//                #if ReactantRuntime
-//                throw LiveUIError(message: "// Could not materialize property `\(propertyDescription)` from `\(attribute)`")
-//                #else
-//                throw TokenizationError(message: "// Could not materialize property `\(propertyDescription)` from `\(attribute)`")
-//                #endif
-//            }
-            result.append(property)
-        }
-        return result
-    }
-
-    static func deserializeToolingProperties(properties: [PropertyDescription], in element: SWXMLHash.XMLElement) throws -> [String: Property] {
-        var result = [:] as [String: Property]
-        for (attributeName, attribute) in (element.allAttributes.filter { name, _ in name.hasPrefix("tools") }) {
-            guard let propertyDescription = properties.first(where: { $0.matches(attributeName: attributeName) }) else {
-                continue
-            }
-            let property = try propertyDescription.materialize(attributeName: attributeName, value: attribute.text)
-            result[attributeName] = property
-        }
-        return result
-    }
-    
     public func serialize() -> MagicElement {
         var builder = MagicAttributeBuilder()
         if let field = field {

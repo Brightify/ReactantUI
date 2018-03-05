@@ -92,6 +92,9 @@ public class UIGenerator: Generator {
                         }
                         l("#else")
                     }
+                    for property in root.properties {
+                        l(property.application(on: "self"))
+                    }
                     root.children.forEach { generate(element: $0, superName: "target", containedIn: root) }
                     tempCounter = 1
                     root.children.forEach { generateConstraints(element: $0, superName: "target") }

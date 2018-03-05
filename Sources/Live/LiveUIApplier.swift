@@ -37,6 +37,9 @@ public class ReactantLiveUIApplier {
 
     public func apply() throws {
         defer { onApplied?(definition, instance) }
+        for property in try definition.properties {
+            try property.apply(on: instance)
+        }
         instance.subviews.forEach { $0.removeFromSuperview() }
         let views = try definition.children.flatMap {
             try apply(element: $0, superview: instance, containedIn: definition)
