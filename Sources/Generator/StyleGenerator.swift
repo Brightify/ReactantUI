@@ -30,6 +30,10 @@ public class StyleGenerator: Generator {
                 l(ifSimulator("import ReactantLiveUI"))
             }
         }
+        let styleImports = Set(group.styles.flatMap { $0.imports })
+        for styleImport in styleImports {
+            l("import \(styleImport)")
+        }
         l()
         l("struct \(group.swiftName)") {
             for style in group.styles {
