@@ -283,7 +283,16 @@ public class UIGenerator: Generator {
             for style in root.styles {
                 l("static func \(style.name)(_ view: \(Element.elementMapping[style.type]?.runtimeType ?? "UIView"))") {
                     for extendedStyle in style.extend {
-                        l("\(root.stylesName).\(extendedStyle)(view)")
+                        let components = extendedStyle.components(separatedBy: ":").filter { $0.isEmpty == false }
+                        if let styleName = components.last {
+                            if let groupName = components.first, components.count > 1 {
+                                l("\(groupName.capitalizingFirstLetter() + "Styles").\(styleName)(view)")
+                            } else {
+                                l("\(root.stylesName).\(styleName)(view)")
+                            }
+                        } else {
+                            continue
+                        }
                     }
                     for property in style.properties {
                         l(property.application(on: "view"))

@@ -35,10 +35,16 @@ public class StyleGenerator: Generator {
             for style in group.styles {
                 l("static func \(style.styleName)(_ view: \(Element.elementMapping[style.type]?.runtimeType ?? "UIView"))") {
                     for extendedStyle in style.extend {
-                        guard let styleName = extendedStyle.components(separatedBy: ":").last else {
+                        let components = extendedStyle.components(separatedBy: ":").filter { $0.isEmpty == false }
+                        if let styleName = components.last {
+                            if let groupName = components.first, components.count > 1 {
+                                l("\(groupName.capitalizingFirstLetter() + "Styles").\(styleName)(view)")
+                            } else {
+                                l("\(group.swiftName).\(styleName)(view)")
+                            }
+                        } else {
                             continue
                         }
-                        l("\(group.swiftName).\(styleName)(view)")
                     }
                     for property in style.properties {
                         l(property.application(on: "view"))
@@ -46,7 +52,15 @@ public class StyleGenerator: Generator {
                 }
             }
         }
-        
+
         return output
+    }
+}
+
+extension String {
+    public func capitalizingFirstLetter() -> String {
+        let first = String(self[self.startIndex]).capitalized
+        let other = String(self.dropFirst())
+        return first + other
     }
 }

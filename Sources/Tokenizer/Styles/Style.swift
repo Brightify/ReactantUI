@@ -16,6 +16,7 @@ public struct Style: XMLElementDeserializable {
     public var styleName: String
     public var extend: [String]
     public var properties: [Property]
+    public var groupName: String?
 
     init(node: XMLElement, groupName: String? = nil) throws {
         let properties: [Property]
@@ -96,6 +97,7 @@ public struct Style: XMLElementDeserializable {
         let name = try node.value(ofAttribute: "name") as String
         self.styleName = name
         let extendedStyles = (node.value(ofAttribute: "extend") as String?)?.components(separatedBy: " ") ?? []
+        self.groupName = groupName
         if let groupName = groupName {
             self.name = ":\(groupName):\(name)"
             self.extend = extendedStyles.map {
