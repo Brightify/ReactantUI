@@ -95,12 +95,20 @@ public struct Style: XMLElementDeserializable {
         // FIXME The name has to be done some other way
         let name = try node.value(ofAttribute: "name") as String
         self.styleName = name
+        let extendedStyles = (node.value(ofAttribute: "extend") as String?)?.components(separatedBy: " ") ?? []
         if let groupName = groupName {
             self.name = ":\(groupName):\(name)"
+            self.extend = extendedStyles.map {
+                                if $0.contains(":") {
+                                    return $0
+                                } else {
+                                    return ":\(groupName):\($0)"
+                                }
+                            }
         } else {
             self.name = name
+            self.extend = extendedStyles
         }
-        self.extend = (node.value(ofAttribute: "extend") as String?)?.components(separatedBy: " ") ?? []
         self.properties = properties
     }
 
