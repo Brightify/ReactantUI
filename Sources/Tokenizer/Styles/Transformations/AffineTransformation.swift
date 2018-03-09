@@ -46,4 +46,8 @@ public struct AffineTransformation: SupportedPropertyType {
         return cgTransform
     }
     #endif
+
+    public static var xsdType: XSDType {
+        return .builtin(.string)
+    }
 }

@@ -14,6 +14,14 @@ public enum ActivityIndicatorStyle: String, EnumPropertyType {
     case whiteLarge
     case white
     case gray
+
+    static var allValues: [ActivityIndicatorStyle] = [.whiteLarge, .white, .gray]
+
+    public static var xsdType: XSDType {
+        let values = Set(ActivityIndicatorStyle.allValues.map { $0.rawValue })
+
+        return .enumeration(EnumerationXSDType(name: ActivityIndicatorStyle.enumName, base: .string, values: values))
+    }
 }
 
 #if ReactantRuntime

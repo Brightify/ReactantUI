@@ -22,6 +22,16 @@ public enum ContentMode: String, EnumPropertyType {
     case topRight
     case bottomLeft
     case bottomRight
+
+    static var allValues: [ContentMode] = [.scaleToFill, .scaleAspectFit, .scaleAspectFill,
+                                           .redraw, .center, .top, .bottom, .left, .right,
+                                           .topLeft, .topRight, .bottomLeft, .bottomRight]
+
+    public static var xsdType: XSDType {
+        let values = Set(ContentMode.allValues.map { $0.rawValue })
+
+        return .enumeration(EnumerationXSDType(name: ContentMode.enumName, base: .string, values: values))
+    }
 }
 
 #if ReactantRuntime

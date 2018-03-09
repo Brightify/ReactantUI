@@ -15,7 +15,7 @@ import Reactant
 
 public class TextField: View {
 
-    override class var availableProperties: [PropertyDescription] {
+    public override class var availableProperties: [PropertyDescription] {
         return Properties.textField.allProperties
     }
 

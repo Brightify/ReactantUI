@@ -23,6 +23,14 @@ public enum ReturnKeyType: String, EnumPropertyType {
     case done
     case emergencyCall
     case `continue`
+
+    static var allValues: [ReturnKeyType] = [.`default`, .go, .google, .join, .next, .route, .search, .send, .yahoo, .done, .emergencyCall]
+
+    public static var xsdType: XSDType {
+        let values = Set(ReturnKeyType.allValues.map { $0.rawValue })
+
+        return .enumeration(EnumerationXSDType(name: ReturnKeyType.enumName, base: .string, values: values))
+    }
 }
 
 #if ReactantRuntime

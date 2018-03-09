@@ -44,6 +44,10 @@ public struct Point: SupportedPropertyType {
 
         return Point(x: x, y: y)
     }
+
+    public static var xsdType: XSDType {
+        return .builtin(.string)
+    }
 }
 
 #if ReactantRuntime

@@ -44,6 +44,10 @@ public struct Size: SupportedPropertyType {
             throw PropertyMaterializationError.unknownValue(value)
         }
     }
+
+    public static var xsdType: XSDType {
+        return .builtin(.number)
+    }
 }
 
 #if ReactantRuntime

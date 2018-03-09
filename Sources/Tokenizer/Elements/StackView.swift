@@ -24,6 +24,14 @@ public enum LayoutAxis: String, SupportedPropertyType {
             return "UILayoutConstraintAxis.horizontal"
         }
     }
+
+    static var allValues: [LayoutAxis] = [.vertical, .horizontal]
+
+    public static var xsdType: XSDType {
+        let values = Set(LayoutAxis.allValues.map { $0.rawValue })
+
+        return .enumeration(EnumerationXSDType(name: "LayoutAxis", base: .string, values: values))
+    }
 }
 
 #if ReactantRuntime
@@ -43,7 +51,7 @@ public enum LayoutAxis: String, SupportedPropertyType {
 
 public class StackView: Container {
     
-    override class var availableProperties: [PropertyDescription] {
+    public override class var availableProperties: [PropertyDescription] {
         return Properties.stackView.allProperties
     }
 

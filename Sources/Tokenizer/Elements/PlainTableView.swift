@@ -15,11 +15,11 @@ import RxDataSources
 #endif
 
 public class PlainTableView: View, ComponentDefinitionContainer {
-    override class var availableProperties: [PropertyDescription] {
+    public override class var availableProperties: [PropertyDescription] {
         return Properties.plainTableView.allProperties
     }
 
-    override class var availableToolingProperties: [PropertyDescription] {
+    public override class var availableToolingProperties: [PropertyDescription] {
         return ToolingProperties.plainTableView.allProperties
     }
 

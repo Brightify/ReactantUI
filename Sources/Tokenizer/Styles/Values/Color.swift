@@ -99,6 +99,14 @@ public enum Color {
             }
         }
     }
+
+    static var xsdType: XSDType {
+        let hexColor = PatternXSDType(name: "hexColor", base: .token, value: "#[\\dA-Fa-f]{6}([\\dA-Fa-f][\\dA-Fa-f])?")
+        let colors = Set<String>(arrayLiteral: "clear", "red", "green", "blue", "white", "black", "gray", "darkGray", "lightGray", "cyan", "yellow",
+                                 "magenta", "orange", "purple", "brown")
+        let namedColor = EnumerationXSDType(name: "namedColor", base: .string, values: colors)
+        return .union(UnionXSDType(name: "color", memberTypes: [.pattern(hexColor), .enumeration(namedColor)]))
+    }
 }
 
 //public struct Color {

@@ -14,7 +14,7 @@ import Foundation
 
 public class VisualEffectView: Container {
     
-    override class var availableProperties: [PropertyDescription] {
+    public override class var availableProperties: [PropertyDescription] {
         return Properties.visualEffectView.allProperties
     }
 

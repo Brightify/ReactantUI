@@ -16,6 +16,14 @@ public enum LayoutDistribution: String, EnumPropertyType {
     case fillProportionaly
     case equalCentering
     case equalSpacing
+
+    static var allValues: [LayoutDistribution] = [.fill, .fillEqually, .fillProportionaly, .equalCentering, .equalSpacing]
+
+    public static var xsdType: XSDType {
+        let values = Set(LayoutDistribution.allValues.map { $0.rawValue })
+
+        return .enumeration(EnumerationXSDType(name: LayoutDistribution.enumName, base: .string, values: values))
+    }
 }
 
 #if ReactantRuntime

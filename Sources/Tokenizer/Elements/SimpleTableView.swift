@@ -15,11 +15,11 @@ import Foundation
 #endif
 
 public class SimpleTableView: View, ComponentDefinitionContainer {
-    override class var availableProperties: [PropertyDescription] {
+    public override class var availableProperties: [PropertyDescription] {
         return Properties.simpleTableView.allProperties
     }
 
-    override class var availableToolingProperties: [PropertyDescription] {
+    public override class var availableToolingProperties: [PropertyDescription] {
         return ToolingProperties.simpleTableView.allProperties
     }
 

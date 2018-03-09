@@ -14,7 +14,7 @@ import UIKit
 
 public class Label: View {
     
-    override class var availableProperties: [PropertyDescription] {
+    public override class var availableProperties: [PropertyDescription] {
         return Properties.label.allProperties
     }
 

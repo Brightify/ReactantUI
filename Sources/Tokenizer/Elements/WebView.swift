@@ -17,7 +17,7 @@ import Foundation
 #endif
 
 public class WebView: View {
-    override class var availableProperties: [PropertyDescription] {
+    public override class var availableProperties: [PropertyDescription] {
         return Properties.webView.allProperties
     }
 

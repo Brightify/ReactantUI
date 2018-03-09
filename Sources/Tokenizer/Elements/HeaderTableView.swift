@@ -15,11 +15,11 @@ import Foundation
 #endif
 
 public class HeaderTableView: View, ComponentDefinitionContainer {
-    override class var availableProperties: [PropertyDescription] {
+    public override class var availableProperties: [PropertyDescription] {
         return Properties.headerTableView.allProperties
     }
 
-    override class var availableToolingProperties: [PropertyDescription] {
+    public override class var availableToolingProperties: [PropertyDescription] {
         return ToolingProperties.headerTableView.allProperties
     }
 

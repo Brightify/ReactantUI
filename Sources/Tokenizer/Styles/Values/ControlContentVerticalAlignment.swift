@@ -8,6 +8,7 @@
 import Foundation
 
 public enum ControlContentVerticalAlignment: Int, EnumPropertyType {
+
     public static let enumName = "UIControlContentVerticalAlignment"
     
     case center
@@ -60,6 +61,11 @@ public enum ControlContentVerticalAlignment: Int, EnumPropertyType {
             throw PropertyMaterializationError.unknownValue(value)
         }
         return materialized
+    }
+
+    public static var xsdType: XSDType {
+        let values = Set(arrayLiteral: "center", "top", "bottom", "fill")
+        return .enumeration(EnumerationXSDType(name: ControlContentVerticalAlignment.enumName, base: .string, values: values))
     }
 }
 

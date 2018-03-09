@@ -42,6 +42,10 @@ public struct Rect: SupportedPropertyType {
         let height = (dimensions.first(where: { $0.identifier == "height" }) ?? dimensions[3]).value
         return Rect(x: x, y: y, width: width, height: height)
     }
+
+    public static var xsdType: XSDType {
+        return .builtin(.string)
+    }
 }
 
 #if ReactantRuntime

@@ -86,6 +86,10 @@ public struct EdgeInsets: SupportedPropertyType {
             }
         }
     }
+
+    public static var xsdType: XSDType {
+        return .builtin(.string)
+    }
 }
 
 #if ReactantRuntime

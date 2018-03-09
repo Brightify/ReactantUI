@@ -15,11 +15,11 @@ import Foundation
 #endif
 
 public class FooterTableView: View, ComponentDefinitionContainer {
-    override class var availableProperties: [PropertyDescription] {
+    public override class var availableProperties: [PropertyDescription] {
         return Properties.footerTableView.allProperties
     }
 
-    override class var availableToolingProperties: [PropertyDescription] {
+    public override class var availableToolingProperties: [PropertyDescription] {
         return ToolingProperties.footerTableView.allProperties
     }
 

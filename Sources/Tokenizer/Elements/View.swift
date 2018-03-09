@@ -13,11 +13,11 @@ import UIKit
 
 public class View: XMLElementDeserializable, UIElement {
     
-    class var availableProperties: [PropertyDescription] {
+    public class var availableProperties: [PropertyDescription] {
         return Properties.view.allProperties
     }
 
-    class var availableToolingProperties: [PropertyDescription] {
+    public class var availableToolingProperties: [PropertyDescription] {
         return ToolingProperties.view.allProperties
     }
 
@@ -256,5 +256,9 @@ public struct PreferredSize: SupportedPropertyType {
             }
             return PreferredSize(width: width, height: height)
         }
+    }
+
+    public static var xsdType: XSDType {
+        return .builtin(.string)
     }
 }

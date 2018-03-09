@@ -14,6 +14,14 @@ public enum ScrollViewIndicatorStyle: String, EnumPropertyType {
     case `default`
     case black
     case white
+
+    static var allValues: [ScrollViewIndicatorStyle] = [.`default`, .black, .white]
+
+    public static var xsdType: XSDType {
+        let values = Set(ScrollViewIndicatorStyle.allValues.map { $0.rawValue })
+
+        return .enumeration(EnumerationXSDType(name: ScrollViewIndicatorStyle.enumName, base: .string, values: values))
+    }
 }
 
 #if ReactantRuntime

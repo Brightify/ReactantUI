@@ -14,7 +14,7 @@ import Foundation
 
 public class SearchBar: View {
     
-    override class var availableProperties: [PropertyDescription] {
+    public override class var availableProperties: [PropertyDescription] {
         return Properties.searchBar.allProperties
     }
 

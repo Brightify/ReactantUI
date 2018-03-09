@@ -15,6 +15,14 @@ public enum DatePickerMode: String, EnumPropertyType {
     case time
     case dateAndTime
     case countDownTimer
+
+    static var allValues: [DatePickerMode] = [.date, .time, .dateAndTime, .countDownTimer]
+
+    public static var xsdType: XSDType {
+        let values = Set(DatePickerMode.allValues.map { $0.rawValue })
+
+        return .enumeration(EnumerationXSDType(name: DatePickerMode.enumName, base: .string, values: values))
+    }
 }
 
 #if ReactantRuntime

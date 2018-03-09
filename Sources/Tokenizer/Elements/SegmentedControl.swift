@@ -15,7 +15,7 @@ import Foundation
 // TODO add a way of adding segments
 public class SegmentedControl: View {
     
-    override class var availableProperties: [PropertyDescription] {
+    public override class var availableProperties: [PropertyDescription] {
         return Properties.segmentedControl.allProperties
     }
 

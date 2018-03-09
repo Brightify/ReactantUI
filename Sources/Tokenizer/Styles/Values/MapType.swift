@@ -16,6 +16,14 @@ public enum MapType: String, EnumPropertyType {
     case hybrid
     case satelliteFlyover
     case hybridFlyover
+
+    static var allValues: [MapType] = [.standard, .satellite, .hybrid, .satelliteFlyover, .hybridFlyover]
+
+    public static var xsdType: XSDType {
+        let values = Set(MapType.allValues.map { $0.rawValue })
+
+        return .enumeration(EnumerationXSDType(name: MapType.enumName, base: .string, values: values))
+    }
 }
 
 #if ReactantRuntime

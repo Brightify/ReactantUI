@@ -15,7 +15,7 @@ import Foundation
 
 public class MapView: View {
     
-    override class var availableProperties: [PropertyDescription] {
+    public override class var availableProperties: [PropertyDescription] {
         return Properties.mapView.allProperties
     }
 

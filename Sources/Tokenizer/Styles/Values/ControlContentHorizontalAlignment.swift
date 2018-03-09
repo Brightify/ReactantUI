@@ -85,6 +85,11 @@ public enum ControlContentHorizontalAlignment: Int, EnumPropertyType {
         
         return materialized
     }
+
+    public static var xsdType: XSDType {
+        let values = Set(arrayLiteral: "center", "left", "right", "fill", "leading", "trailing")
+        return .enumeration(EnumerationXSDType(name: ControlContentHorizontalAlignment.enumName, base: .string, values: values))
+    }
 }
 
 #if ReactantRuntime

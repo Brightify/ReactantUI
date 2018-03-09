@@ -15,6 +15,14 @@ public enum TextBorderStyle: String, EnumPropertyType {
     case line
     case bezel
     case roundedRect
+
+    static var allValues: [TextBorderStyle] = [.none, .line, .bezel, .roundedRect]
+
+    public static var xsdType: XSDType {
+        let values = Set(TextBorderStyle.allValues.map { $0.rawValue })
+
+        return .enumeration(EnumerationXSDType(name: TextBorderStyle.enumName, base: .string, values: values))
+    }
 }
 
 #if ReactantRuntime

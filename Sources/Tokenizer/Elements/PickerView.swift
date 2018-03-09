@@ -14,7 +14,7 @@ import Foundation
 
 // TODO might be replaced with our generic implementation
 public class PickerView: View {
-    override class var availableProperties: [PropertyDescription] {
+    public override class var availableProperties: [PropertyDescription] {
         return Properties.pickerView.allProperties
     }
 

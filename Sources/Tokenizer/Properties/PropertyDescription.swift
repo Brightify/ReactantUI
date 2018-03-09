@@ -13,6 +13,7 @@ import UIKit
 public protocol PropertyDescription {
     var name: String { get }
     var namespace: [PropertyContainer.Namespace] { get }
+    var type: SupportedPropertyType.Type { get }
 
     func materialize(attributeName: String, value: String) throws -> Property
 
@@ -28,6 +29,12 @@ public protocol PropertyDescription {
 
 public protocol TypedPropertyDescription: PropertyDescription {
     associatedtype ValueType: SupportedPropertyType
+}
+
+extension TypedPropertyDescription {
+    public var type: SupportedPropertyType.Type {
+        return ValueType.self
+    }
 }
 
 extension PropertyDescription {

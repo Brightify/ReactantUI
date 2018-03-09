@@ -14,7 +14,7 @@ import UIKit
 
 public class ScrollView: Container {
     
-    override class var availableProperties: [PropertyDescription] {
+    public override class var availableProperties: [PropertyDescription] {
         return Properties.scrollView.allProperties
     }
 

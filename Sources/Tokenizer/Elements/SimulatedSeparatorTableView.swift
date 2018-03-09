@@ -15,11 +15,11 @@ import RxDataSources
 #endif
 
 public class SimulatedSeparatorTableView: View, ComponentDefinitionContainer {
-    override class var availableProperties: [PropertyDescription] {
+    public override class var availableProperties: [PropertyDescription] {
         return Properties.simulatedSeparator.allProperties
     }
 
-    override class var availableToolingProperties: [PropertyDescription] {
+    public override class var availableToolingProperties: [PropertyDescription] {
         return ToolingProperties.simulatedSeparatorTableView.allProperties
     }
 

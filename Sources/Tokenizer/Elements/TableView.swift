@@ -13,7 +13,7 @@ import Foundation
 #endif
 
 public class TableView: View {
-    override class var availableProperties: [PropertyDescription] {
+    public override class var availableProperties: [PropertyDescription] {
         return Properties.tableView.allProperties
     }
 

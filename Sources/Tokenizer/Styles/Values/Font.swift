@@ -37,6 +37,10 @@ public enum Font: SupportedPropertyType {
         return try FontParser(tokens: tokens).parseSingle()
     }
 
+    public static var xsdType: XSDType {
+        return .builtin(.string)
+    }
+
 }
 
 #if ReactantRuntime
