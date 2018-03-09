@@ -44,8 +44,8 @@ PODS:
 
 DEPENDENCIES:
   - Kingfisher (~> 4.0)
-  - Reactant
-  - Reactant/TableView
+  - Reactant (from `https://github.com/Brightify/Reactant.git`, branch `deselection-fix`)
+  - Reactant/TableView (from `https://github.com/Brightify/Reactant.git`, branch `deselection-fix`)
   - ReactantLiveUI (from `./`)
   - ReactantUI (from `./`)
   - Result (~> 3.0)
@@ -56,15 +56,23 @@ DEPENDENCIES:
   - SnapKit (~> 4.0)
 
 EXTERNAL SOURCES:
+  Reactant:
+    :branch: deselection-fix
+    :git: https://github.com/Brightify/Reactant.git
   ReactantLiveUI:
     :path: ./
   ReactantUI:
     :path: ./
 
+CHECKOUT OPTIONS:
+  Reactant:
+    :commit: 2c667eb1dc05f75a6cc44c33f30b81921013143b
+    :git: https://github.com/Brightify/Reactant.git
+
 SPEC CHECKSUMS:
   Differentiator: a87be69eba49ec4ab460c7671143ee3a9eececfd
   Kingfisher: 9ee7e788d8ba07c3f21ce0d43f33cec310a4f781
-  Reactant: 1910427bc0b05afeeb4e959e24bdd768dedb5258
+  Reactant: 3ee14c938c8dc0f311cd211c4ff13284e2cfbac4
   ReactantLiveUI: 4f2b527cd5a6df39aad3ae7590b381d9a006d4ac
   ReactantUI: d47816c5e9c343b0f1a9221df8d38c65e954ed52
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
@@ -74,6 +82,6 @@ SPEC CHECKSUMS:
   RxSwift: fd680d75283beb5e2559486f3c0ff852f0d35334
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
 
-PODFILE CHECKSUM: 090992f1b33a047bef2bc88db242d45a805f42e0
+PODFILE CHECKSUM: c481de8dc5bccd660160b1e98506929bb207f3e6
 
 COCOAPODS: 1.4.0

@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let window = UIWindow()
         self.window = window
         window.backgroundColor = .white
-        window.rootViewController = ViewController()
+        window.rootViewController = MainWireframe().entrypoint()
         window.makeKeyAndVisible()
         activateLiveReload(in: window)
         return true

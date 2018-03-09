@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Component xmlns="http://schema.reactant.tech/ui"
+    xmlns:layout="http://schema.reactant.tech/layout"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://schema.reactant.tech/ui http://schema.reactant.tech/ui.xsd
+                        http://schema.reactant.tech/layout http://schema.reactant.tech/layout.xsd">
+
+    <Label
+        field="name"
+        textColor="black"
+        layout:fillHorizontally="super inset(20)"
+        layout:fillVertically="super inset(12)" />
+
+    <View
+        backgroundColor="lightGray"
+        layout:height="1"
+        layout:fillHorizontally="super"
+        layout:bottom="super"/>
+</Component>
