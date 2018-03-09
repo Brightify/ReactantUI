@@ -101,10 +101,16 @@ public class SimulatedSeparatorTableView: View, ComponentDefinitionContainer {
 public class SimulatedSeparatorTableViewProperties: PropertyContainer {
     public let separatorHeight: AssignablePropertyDescription<Float>
     public let separatorColor: AssignablePropertyDescription<UIColorPropertyType>
+    public let tableViewProperties: TableViewProperties
+    public let emptyLabelProperties: LabelProperties
+    public let loadingIndicatorProperties: ActivityIndicatorProperties
 
     public required init(configuration: Configuration) {
         separatorHeight = configuration.property(name: "separatorHeight")
         separatorColor = configuration.property(name: "separatorColor")
+        tableViewProperties = configuration.namespaced(in: "tableView", TableViewProperties.self)
+        emptyLabelProperties = configuration.namespaced(in: "emptyLabel", LabelProperties.self)
+        loadingIndicatorProperties = configuration.namespaced(in: "loadingIndicator", ActivityIndicatorProperties.self)
 
         super.init(configuration: configuration)
     }

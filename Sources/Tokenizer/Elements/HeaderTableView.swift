@@ -16,7 +16,7 @@ import Foundation
 
 public class HeaderTableView: View, ComponentDefinitionContainer {
     override class var availableProperties: [PropertyDescription] {
-        return Properties.view.allProperties
+        return Properties.headerTableView.allProperties
     }
 
     override class var availableToolingProperties: [PropertyDescription] {
@@ -116,6 +116,21 @@ public class HeaderTableView: View, ComponentDefinitionContainer {
     }
     #endif
 }
+
+public class HeaderTableViewProperites: PropertyContainer {
+    public let tableViewProperties: TableViewProperties
+    public let emptyLabelProperties: LabelProperties
+    public let loadingIndicatorProperties: ActivityIndicatorProperties
+
+    public required init(configuration: Configuration) {
+        tableViewProperties = configuration.namespaced(in: "tableView", TableViewProperties.self)
+        emptyLabelProperties = configuration.namespaced(in: "emptyLabel", LabelProperties.self)
+        loadingIndicatorProperties = configuration.namespaced(in: "loadingIndicator", ActivityIndicatorProperties.self)
+
+        super.init(configuration: configuration)
+    }
+}
+
 
 public class HeaderTableViewToolingProperties: PropertyContainer {
     public let sectionCount: ValuePropertyDescription<Int>

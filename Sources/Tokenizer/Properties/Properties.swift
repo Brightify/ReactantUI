@@ -43,7 +43,11 @@ public struct Properties: PropertiesContainer {
     public static let toolbar = prepare(ToolbarProperties.self)
     public static let visualEffectView = prepare(VisualEffectViewProperties.self)
     public static let webView = prepare(WebViewProperties.self)
+    public static let plainTableView = prepare(PlainTableViewProperites.self)
     public static let simulatedSeparator = prepare(SimulatedSeparatorTableViewProperties.self)
+    public static let headerTableView = prepare(HeaderTableViewProperites.self)
+    public static let footerTableView = prepare(FooterTableViewProperites.self)
+    public static let simpleTableView = prepare(SimpleTableViewProperites.self)
 }
 
 public struct ToolingProperties: PropertiesContainer {
