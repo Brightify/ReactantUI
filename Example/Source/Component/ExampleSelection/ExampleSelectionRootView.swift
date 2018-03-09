@@ -5,7 +5,8 @@
 //  Created by Matouš Hýbl on 09/03/2018.
 //
 
-import ViewBase
+import Reactant
+import RxSwift
 
 final class ExampleSelectionRootView: ViewBase<Void, ExampleType> {
 
