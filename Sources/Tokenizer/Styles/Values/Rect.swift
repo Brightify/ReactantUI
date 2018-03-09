@@ -20,23 +20,27 @@ public struct Rect: SupportedPropertyType {
         self.origin = origin
         self.size = size
     }
-    
-    #if SanAndreas
-    public func dematerialize() -> String {
-        return "\(origin.x), \(origin.y), \(size.width), \(size.height)"
-    }
-    #endif
 
     public init(x: Float, y: Float, width: Float, height: Float) {
         self.init(origin: Point(x: x, y: y), size: Size(width: width, height: height))
     }
+    
+    #if SanAndreas
+    public func dematerialize() -> String {
+        return "x: \(origin.x), y: \(origin.y), width: \(size.width), height: \(size.height)"
+    }
+    #endif
 
     public static func materialize(from value: String) throws -> Rect {
-        let parts = value.components(separatedBy: ",").flatMap { Float($0.trimmingCharacters(in: CharacterSet.whitespaces)) }
-        guard parts.count == 4 else {
+        let dimensions = try DimensionParser(tokens: Lexer.tokenize(input: value)).parse()
+        guard dimensions.count == 4 else {
             throw PropertyMaterializationError.unknownValue(value)
         }
-        return Rect(x: parts[0], y: parts[1], width: parts[2], height: parts[3])
+        let x = (dimensions.first(where: { $0.identifier == "x" }) ?? dimensions[0]).value
+        let y = (dimensions.first(where: { $0.identifier == "y" }) ?? dimensions[1]).value
+        let width = (dimensions.first(where: { $0.identifier == "width" }) ?? dimensions[2]).value
+        let height = (dimensions.first(where: { $0.identifier == "height" }) ?? dimensions[3]).value
+        return Rect(x: x, y: y, width: width, height: height)
     }
 }
 

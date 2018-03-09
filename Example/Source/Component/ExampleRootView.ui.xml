@@ -198,7 +198,7 @@
 
     <Button
         title="Testtesttesttest"
-        contentEdgeInsets="50, 10"
+        contentEdgeInsets="vertical: 50, horizontal: 20"
         layout:top="safeAreaLayoutGuide"
         layout:fillHorizontally="super"
         backgroundColor="blue"/>

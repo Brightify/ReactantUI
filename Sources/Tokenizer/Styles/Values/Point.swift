@@ -28,16 +28,21 @@ public struct Point: SupportedPropertyType {
     
     #if SanAndreas
     public func dematerialize() -> String {
-        return "\(x), \(y)"
+        return "x: \(x), y: \(y)"
     }
     #endif
 
     public static func materialize(from value: String) throws -> Point {
-        let parts = value.components(separatedBy: ",").flatMap { Float($0.trimmingCharacters(in: CharacterSet.whitespaces)) }
-        guard parts.count == 2 else {
+        let dimensions = try DimensionParser(tokens: Lexer.tokenize(input: value)).parse()
+
+        guard dimensions.count == 2 else {
             throw PropertyMaterializationError.unknownValue(value)
         }
-        return Point(x: parts[0], y: parts[1])
+
+        let x = (dimensions.first(where: { $0.identifier == "x" }) ?? dimensions[0]).value
+        let y = (dimensions.first(where: { $0.identifier == "y" }) ?? dimensions[1]).value
+
+        return Point(x: x, y: y)
     }
 }
 
