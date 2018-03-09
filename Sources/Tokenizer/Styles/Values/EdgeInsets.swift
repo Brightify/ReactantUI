@@ -42,7 +42,9 @@ public struct EdgeInsets: SupportedPropertyType {
     public static func materialize(from value: String) throws -> EdgeInsets {
         let tokens = Lexer.tokenize(input: value)
         let dimensions = try DimensionParser(tokens: tokens).parse()
-        if dimensions.count == 2 {
+        if let allDimension = dimensions.first, dimensions.count == 1, allDimension.identifier == "all" || allDimension.identifier == nil {
+            return EdgeInsets(horizontal: allDimension.value, vertical: allDimension.value)
+        } else if dimensions.count == 2 {
             let horizontal = (dimensions.first(where: { $0.identifier == "horizontal" }) ?? dimensions[0]).value
             let vertical = (dimensions.first(where: { $0.identifier == "vertical" }) ?? dimensions[1]).value
 

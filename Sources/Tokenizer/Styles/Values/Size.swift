@@ -28,18 +28,21 @@ public struct Size: SupportedPropertyType {
     
     #if SanAndreas
     public func dematerialize() -> String {
-    return "width: \(width), height: \(height)"
+        return "width: \(width), height: \(height)"
     }
     #endif
 
     public static func materialize(from value: String) throws -> Size {
         let dimensions = try DimensionParser(tokens: Lexer.tokenize(input: value)).parse()
-        guard dimensions.count == 2 else {
+        if let singleDimension = dimensions.first, dimensions.count == 1 {
+            return Size(width: singleDimension.value, height: singleDimension.value)
+        } else if dimensions.count == 2 {
+            let width = (dimensions.first(where: { $0.identifier == "width" }) ?? dimensions[0]).value
+            let height = (dimensions.first(where: { $0.identifier == "height" }) ?? dimensions[1]).value
+            return Size(width: width, height: height)
+        } else {
             throw PropertyMaterializationError.unknownValue(value)
         }
-        let width = (dimensions.first(where: { $0.identifier == "width"}) ?? dimensions[0]).value
-        let height = (dimensions.first(where: { $0.identifier == "height"}) ?? dimensions[1]).value
-        return Size(width: width, height: height)
     }
 }
 
