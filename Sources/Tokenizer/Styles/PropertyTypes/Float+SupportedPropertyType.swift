@@ -33,6 +33,6 @@ extension Float: SupportedPropertyType {
     }
 
     public static var xsdType: XSDType {
-        return .builtin(.number)
+        return .builtin(.decimal)
     }
 }

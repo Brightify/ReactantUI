@@ -2,7 +2,7 @@
 <Component xmlns="http://schema.reactant.tech/ui"
     xmlns:layout="http://schema.reactant.tech/layout"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://schema.reactant.tech/ui http://schema.reactant.tech/ui.xsd
+    xsi:schemaLocation="http://schema.reactant.tech/ui ../../../../XSD.xsd
                         http://schema.reactant.tech/layout http://schema.reactant.tech/layout.xsd"
                         type="ExampleView2">
 <!--    <styles>-->
@@ -11,6 +11,7 @@
 <!--            <font>System(10)</font>-->
 <!--        </style>-->
 <!--    </styles>-->
+
 
     <Container
         layout:edges="super"
@@ -26,15 +27,15 @@
             layout:fillHorizontally="super inset(20)"/>
 
 
-        <Button
-            title="Forgotten password?"
-            backgroundColor="#FFddaa"
-            isSelected="true"
-            contentHorizontalAlignment="center"
-            layout:fillHorizontally="super inset(60)"
-            layout:height="50"
-            layout:below="id:label offset(20)"
-            layout:bottom="super inset(10)"/>
+            <Button
+                title="Forgotten password?"
+                backgroundColor="#FFddaa"
+                isSelected="true"
+                contentHorizontalAlignment="center"
+                layout:fillHorizontally="super inset(60)"
+                layout:height="50"
+                layout:below="id:label offset(20)"
+                layout:bottom="super inset(10)"/>
 
         <ActivityIndicator
             indicatorStyle="gray"/>

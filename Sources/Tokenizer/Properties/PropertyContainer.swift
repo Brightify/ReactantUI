@@ -8,16 +8,16 @@
 
 import Foundation
 
-extension Array where Element == PropertyContainer.Namespace {
-    var resolvedKeyPath: String {
+public extension Array where Element == PropertyContainer.Namespace {
+    public var resolvedKeyPath: String {
         return map { $0.name }.joined(separator: ".")
     }
     
-    func resolvedAttributeName(name: String) -> String {
+    public func resolvedAttributeName(name: String) -> String {
         return (map { $0.name } + [name]).joined(separator: ".")
     }
     
-    func resolvedSwiftName(target: String) -> String {
+    public func resolvedSwiftName(target: String) -> String {
         return ([target] + map { "\($0.name)\($0.isOptional ? "?" : "")" }).joined(separator: ".")
     }
 }
