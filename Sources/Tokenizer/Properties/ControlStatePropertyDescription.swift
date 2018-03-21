@@ -18,6 +18,10 @@ import UIKit
 //    return ControlStatePropertyDescription(name: name, key: key)
 //}
 
+public protocol ControlStatePropertyDescriptionMarker {
+
+}
+
 public struct ControlStateProperty<T: SupportedPropertyType>: Property {
     public let namespace: [PropertyContainer.Namespace]
     public let name: String
@@ -86,7 +90,7 @@ public struct ControlStateProperty<T: SupportedPropertyType>: Property {
     }
 }
 
-public struct ControlStatePropertyDescription<T: SupportedPropertyType>: TypedPropertyDescription {
+public struct ControlStatePropertyDescription<T: SupportedPropertyType>: TypedPropertyDescription, ControlStatePropertyDescriptionMarker {
     public typealias ValueType = T
     
     public let namespace: [PropertyContainer.Namespace]

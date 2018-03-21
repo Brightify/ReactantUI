@@ -24,15 +24,6 @@ extension XSDElement: Hashable, Equatable {
     }
 }
 
-//<xs:complexType>
-//<xs:complexContent>
-//<xs:extension base="viewType">
-//<xs:choice maxOccurs="unbounded" minOccurs="0">
-//<xs:group ref="ViewGroup"/>
-//</xs:choice>
-//</xs:extension>
-//</xs:complexContent>
-//</xs:complexType>
 extension XSDElement: MagicElementSerializable {
     func serialize() -> MagicElement {
         var attributeBuilder = MagicAttributeBuilder()
@@ -50,7 +41,7 @@ extension XSDElement: MagicElementSerializable {
                                       attributes: [MagicAttribute(name: "maxOccurs", value: "unbounded"),
                                                    MagicAttribute(name: "minOccurs", value: "0")],
                                       children: [groupRef])
-            complexTypeChildren = [choice] + attributeGroupRefs 
+            complexTypeChildren = [choice] + attributeGroupRefs
         } else {
             complexTypeChildren = attributeGroupRefs
         }

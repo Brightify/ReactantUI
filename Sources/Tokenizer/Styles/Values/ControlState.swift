@@ -29,11 +29,18 @@ public enum ControlState: String {
             return nil
         }
     }
+
+    public static let allValues: [ControlState] = [.normal, .highlighted, .disabled, .selected, .focused]
+    fileprivate static let allValuesDictionary: [ControlState: Int] =
+        Dictionary(uniqueKeysWithValues: ControlState.allValues.enumerated().map { ($1, $0) })
 }
 
-extension Array where Element == ControlState {
-    var name: String {
-        return flatMap { $0.rawValue }.joined(separator: ".")
+public extension Sequence where Element == ControlState {
+    public var name: String {
+
+        return sorted(by: { lhs, rhs in
+            ControlState.allValuesDictionary[lhs, default: 0] < ControlState.allValuesDictionary[rhs, default: 0]
+        }).map { $0.rawValue }.joined(separator: ".")
     }
 }
 

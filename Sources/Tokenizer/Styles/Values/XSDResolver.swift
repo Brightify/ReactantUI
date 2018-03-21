@@ -35,27 +35,23 @@ class XSDResolver {
         xsdElement.attributeGroups.insert(name + "Attributes")
 
         for property in element.availableProperties {
+            let propertyName = property.namespace.resolvedAttributeName(name: property.name)
+            let typeName: String
             switch property.type.xsdType {
             case .builtin(let builtin):
-
-                attributes.attributes.insert(XSDAttribute(name: property.namespace.resolvedAttributeName(name: property.name), typeName: builtin.xsdName))
-                break
+                typeName = builtin.xsdName
             case .enumeration(let enumeration):
-                let typeName = enumeration.name
+                typeName = enumeration.name
                 let type = XSDSimpleType(name: typeName, type: property.type.xsdType)
 
                 file.simpleTypes.insert(type)
-
-                attributes.attributes.insert(XSDAttribute(name: property.namespace.resolvedAttributeName(name: property.name), typeName: typeName))
             case .pattern(let pattern):
-                let typeName = pattern.name
+                typeName = pattern.name
                 let type = XSDSimpleType(name: typeName, type: property.type.xsdType)
 
                 file.simpleTypes.insert(type)
-
-                attributes.attributes.insert(XSDAttribute(name: property.namespace.resolvedAttributeName(name: property.name), typeName: typeName))
             case .union(let union):
-                let typeName = union.name
+                typeName = union.name
                 let type = XSDSimpleType(name: typeName, type: property.type.xsdType)
 
                 for type in union.memberTypes {
@@ -65,9 +61,20 @@ class XSDResolver {
                 }
 
                 file.simpleTypes.insert(type)
-
-                attributes.attributes.insert(XSDAttribute(name: property.namespace.resolvedAttributeName(name: property.name), typeName: typeName))
             }
+
+            if property is ControlStatePropertyDescriptionMarker {
+                var variations: Set<Set<ControlState>> = []
+                for variationClass in 1..<ControlState.allValues.count {
+                    variations.formUnion(ControlState.allValues.variations(class: variationClass).map(Set.init))
+                }
+
+                for variation in variations {
+                    attributes.attributes.insert(XSDAttribute(name: "\(propertyName).\(variation.name)", typeName: typeName))
+                }
+            }
+
+            attributes.attributes.insert(XSDAttribute(name: propertyName, typeName: typeName))
         }
 
         xsdElement.attributeGroups.insert("layout:layoutAttributes")
@@ -78,5 +85,47 @@ class XSDResolver {
         file.attributeGroups.insert(attributes)
 
         return xsdElement
+    }
+
+    
+}
+
+internal func strike(_ array: [Int], from: [Int]) -> [Int] {
+    var result: Array<Int> = []
+
+    for element in from {
+        if array.index(of: element) == nil {
+            result.append(element)
+        }
+    }
+
+    return result
+}
+
+extension Array where Element: Equatable {
+    func variations(class count: Int) -> [[Element]] {
+        let length = ((self.count - count + 1)...self.count).reduce(1, { a, b in a * b })
+        let indexes = Array<Int>(0..<self.count)
+        var repeats = Array<Int>(repeating: length / self.count, count: count)
+        var divisor = self.count
+        for i in 1..<count {
+            divisor -= 1
+            repeats[i] = repeats[i - 1] / divisor
+        }
+        var result = Array<Array<Int>>(repeating: [], count: length)
+        var k = 0
+        for i in 0..<count {
+            k = 0
+            while k < length {
+                for number in strike(result[k], from: indexes) {
+                    for _ in 0..<repeats[i] {
+                        result[k].append(number)
+                        k += 1
+                    }
+                }
+            }
+        }
+
+        return result.map { variation in variation.map { element in self[element] } }
     }
 }
