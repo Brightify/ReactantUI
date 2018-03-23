@@ -106,8 +106,8 @@ public class UIGenerator: Generator {
                 l("static func destroyReactantUI(target: UIView)") {
                     if configuration.isLiveEnabled {
                         l(ifSimulator("""
-                            guard let knownTarget = target as? \(root.type) else { /* FIXME Should we fatalError here? */ return }
-                            ReactantLiveUIManager.shared.unregister(knownTarget)
+                                        guard let knownTarget = target as? \(root.type) else { /* FIXME Should we fatalError here? */ return }
+                                        ReactantLiveUIManager.shared.unregister(knownTarget)
                             """))
                     }
                 }

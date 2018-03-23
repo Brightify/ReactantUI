@@ -5,7 +5,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://schema.reactant.tech/ui http://schema.reactant.tech/ui.xsd
                         http://schema.reactant.tech/layout http://schema.reactant.tech/layout.xsd"
-    extend="all"
+    
     rootView="true">
 
     <styles name="ReactantStyles">
@@ -195,11 +195,4 @@
             </StackView>
         </Container>
     </ScrollView> -->
-
-    <Button
-        title="Testtesttesttest"
-        contentEdgeInsets="20"
-        layout:top="safeAreaLayoutGuide"
-        layout:fillHorizontally="super"
-        backgroundColor="blue"/>
 </Component>

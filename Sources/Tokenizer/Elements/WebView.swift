@@ -21,6 +21,14 @@ public class WebView: View {
         return Properties.webView.allProperties
     }
 
+    public override class var parentModuleImport: String {
+        #if os(tvOS)
+            return "UIKit"
+        #else
+            return "WebKit"
+        #endif
+    }
+
     public override var requiredImports: Set<String> {
         #if os(tvOS)
             return []

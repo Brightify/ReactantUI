@@ -30,7 +30,7 @@ public class StyleGenerator: Generator {
                 l(ifSimulator("import ReactantLiveUI"))
             }
         }
-        let styleImports = Set(group.styles.flatMap { $0.imports })
+        let styleImports = Set(group.styles.map { $0.parentModuleImport })
         for styleImport in styleImports {
             l("import \(styleImport)")
         }

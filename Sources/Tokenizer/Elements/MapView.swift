@@ -19,6 +19,10 @@ public class MapView: View {
         return Properties.mapView.allProperties
     }
 
+    public override class var parentModuleImport: String {
+        return "MapKit"
+    }
+
     public override var requiredImports: Set<String> {
         return ["MapKit"]
     }

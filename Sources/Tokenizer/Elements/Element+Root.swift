@@ -26,6 +26,10 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, StyleC
     public var properties: [Property]
     public var toolingProperties: [String: Property]
 
+    public static var parentModuleImport: String {
+        return "Reactant"
+    }
+
     public var requiredImports: Set<String> {
         return Set(arrayLiteral: "Reactant").union(children.flatMap { $0.requiredImports })
     }

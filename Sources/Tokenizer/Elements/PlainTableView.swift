@@ -37,6 +37,10 @@ public class PlainTableView: View, ComponentDefinitionContainer {
     public var componentDefinitions: [ComponentDefinition] {
         return cellDefinition?.componentDefinitions ?? []
     }
+    
+    public override class var parentModuleImport: String {
+        return "Reactant"
+    }
 
     public class override var runtimeType: String {
         return "UITableView"

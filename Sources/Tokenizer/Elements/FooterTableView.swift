@@ -40,8 +40,12 @@ public class FooterTableView: View, ComponentDefinitionContainer {
         return (cellDefinition?.componentDefinitions ?? []) + (footerDefinition?.componentDefinitions ?? [])
     }
 
+    public override class var parentModuleImport: String {
+        return "Reactant"
+    }
+
     public class override var runtimeType: String {
-        return "UITableView"
+        return "ReactantTableView"
     }
 
     public override var initialization: String {

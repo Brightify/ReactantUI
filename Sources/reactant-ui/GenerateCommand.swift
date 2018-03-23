@@ -113,6 +113,7 @@ class GenerateCommand: Command {
             componentTypes.append(contentsOf: definition.componentTypes)
             componentDefinitions[path] = definition
             imports.formUnion(definition.requiredImports)
+            imports.formUnion(definition.styles.map { $0.parentModuleImport })
         }
 
         output.append("""

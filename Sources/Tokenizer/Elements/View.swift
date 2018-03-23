@@ -21,8 +21,13 @@ public class View: XMLElementDeserializable, UIElement {
         return ToolingProperties.view.allProperties
     }
 
+    // runtime type is used in generator for style parameters
     public class var runtimeType: String {
         return "UIView"
+    }
+
+    public class var parentModuleImport: String {
+        return "UIKit"
     }
 
     public var requiredImports: Set<String> {

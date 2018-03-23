@@ -17,6 +17,10 @@ public class TableView: View {
         return Properties.tableView.allProperties
     }
 
+    public override class var runtimeType: String {
+        return "UITableView"
+    }
+
     public override var initialization: String {
         return "UITableView()"
     }

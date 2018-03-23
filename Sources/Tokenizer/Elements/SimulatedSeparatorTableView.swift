@@ -38,8 +38,12 @@ public class SimulatedSeparatorTableView: View, ComponentDefinitionContainer {
         return cellDefinition?.componentDefinitions ?? []
     }
 
+    public override class var parentModuleImport: String {
+        return "Reactant"
+    }
+
     public class override var runtimeType: String {
-        return "UITableView"
+        return "ReactantTableView"
     }
 
     public override var initialization: String {

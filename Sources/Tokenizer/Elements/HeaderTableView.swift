@@ -40,8 +40,12 @@ public class HeaderTableView: View, ComponentDefinitionContainer {
         return (cellDefinition?.componentDefinitions ?? []) + (headerDefinition?.componentDefinitions ?? [])
     }
 
+    public override class var parentModuleImport: String {
+        return "Reactant"
+    }
+
     public class override var runtimeType: String {
-        return "UITableView"
+        return "ReactantTableView"
     }
 
     public override var initialization: String {

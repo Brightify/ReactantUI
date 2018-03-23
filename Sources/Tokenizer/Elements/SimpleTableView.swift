@@ -49,7 +49,11 @@ public class SimpleTableView: View, ComponentDefinitionContainer {
     }
 
     public class override var runtimeType: String {
-        return "UITableView"
+        return "ReactantTableView"
+    }
+
+    public override class var parentModuleImport: String {
+        return "Reactant"
     }
 
     public override var initialization: String {

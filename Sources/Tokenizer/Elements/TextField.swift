@@ -19,6 +19,10 @@ public class TextField: View {
         return Properties.textField.allProperties
     }
 
+    public override class var parentModuleImport: String {
+        return "Reactant"
+    }
+
     public class override var runtimeType: String {
         return "Reactant.TextField"
     }
