@@ -12,24 +12,6 @@ import Reactant
 import RxSwift
 import RxCocoa
 
-private struct WeakUIBox {
-    weak var ui: ReactantUI?
-    /// Workaround for non-existent class existentials
-    weak var view: UIView?
-
-    init<UI: UIView>(ui: UI) where UI: ReactantUI {
-        self.ui = ui
-        self.view = ui
-    }
-}
-
-extension WeakUIBox: Equatable {
-
-    static func ==(lhs: WeakUIBox, rhs: WeakUIBox) -> Bool {
-        return lhs.ui === rhs.ui
-    }
-}
-
 /**
  * A class to be used as singleton - `ReactantLiveUIManager.shared`.
  *
