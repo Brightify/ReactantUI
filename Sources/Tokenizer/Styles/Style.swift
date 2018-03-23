@@ -24,7 +24,7 @@ public struct Style: XMLElementDeserializable {
         let properties: [Property]
         let type: String
 
-        guard let (elementName, element) = Element.elementMapping.first(where: { node.name == "\($0.key)Style" }) else {
+        guard let (elementName, element) = ElementMapping.mapping.first(where: { node.name == "\($0.key)Style" }) else {
             throw TokenizationError(message: "Unknown style \(node.name). (\(node))")
         }
         type = elementName
@@ -61,7 +61,7 @@ public struct Style: XMLElementDeserializable {
 extension Sequence where Iterator.Element == Style {
     public func resolveStyle(for element: UIElement) throws -> [Property] {
         guard !element.styles.isEmpty else { return element.properties }
-        guard let type = ElementaryDearWatson.elementMapping.first(where: { $0.value == type(of: element) })?.key else {
+        guard let type = ElementMapping.mapping.first(where: { $0.value == type(of: element) })?.key else {
             print("// No type found for \(element)")
             return element.properties
         }

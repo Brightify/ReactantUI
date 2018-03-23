@@ -8,31 +8,34 @@
 import Foundation
 import Tokenizer
 
-struct XSDComponentRootElement: MagicElementSerializable {
-    func serialize() -> MagicElement {
-        let groupRef = MagicElement(name: "xs:group", attributes: [MagicAttribute(name: "ref", value: "viewGroup")], children: [])
-        let styles = MagicElement(name: "xs:element", attributes: [MagicAttribute(name: "name", value: "styles"),
-                                                                   MagicAttribute(name: "maxOccurs", value: "1"),
-                                                                   MagicAttribute(name: "minOccurs", value: "0"),
-                                                                   MagicAttribute(name: "type", value: "stylesType")], children: [])
-        let choice = MagicElement(name: "xs:choice",
-                                  attributes: [MagicAttribute(name: "maxOccurs", value: "unbounded"),
-                                               MagicAttribute(name: "minOccurs", value: "0")],
+struct XSDComponentRootElement: XMLElementSerializable {
+    func serialize() -> XMLSerializableElement {
+        let groupRef = XMLSerializableElement(name: "xs:group", attributes: [XMLSerializableAttribute(name: "ref", value: "viewGroup")], children: [])
+        let styles = XMLSerializableElement(name: "xs:element", attributes: [XMLSerializableAttribute(name: "name", value: "styles"),
+                                                                   XMLSerializableAttribute(name: "maxOccurs", value: "1"),
+                                                                   XMLSerializableAttribute(name: "minOccurs", value: "0"),
+                                                                   XMLSerializableAttribute(name: "type", value: "stylesType")], children: [])
+        let choice = XMLSerializableElement(name: "xs:choice",
+                                  attributes: [XMLSerializableAttribute(name: "maxOccurs", value: "unbounded"),
+                                               XMLSerializableAttribute(name: "minOccurs", value: "0")],
                                   children: [groupRef, styles])
         let attributes = [
-            MagicElement(name: "xs:attribute", attributes: [MagicAttribute(name: "name", value: "type"),
-                                                            MagicAttribute(name: "type", value: "xs:string")], children: []),
-            MagicElement(name: "xs:attribute", attributes: [MagicAttribute(name: "name", value: "rootView"),
-                                                            MagicAttribute(name: "type", value: "xs:boolean"),
-                                                            MagicAttribute(name: "default", value: "false")], children: []),
-            MagicElement(name: "xs:attribute", attributes: [MagicAttribute(name: "name", value: "extend"),
-                                                            MagicAttribute(name: "type", value: "rectEdge")], children: []),
-            MagicElement(name: "xs:attribute", attributes: [MagicAttribute(name: "name", value: "anonymous"),
-                                                            MagicAttribute(name: "type", value: "xs:boolean"),
-                                                            MagicAttribute(name: "default", value: "false")], children: []),
-            MagicElement(name: "xs:attributeGroup", attributes: [MagicAttribute(name: "ref", value: "ViewAttributes")], children: []),
+            XMLSerializableElement(name: "xs:attribute", attributes: [XMLSerializableAttribute(name: "name", value: "type"),
+                                                            XMLSerializableAttribute(name: "type", value: "xs:string")], children: []),
+            XMLSerializableElement(name: "xs:attribute", attributes: [XMLSerializableAttribute(name: "name", value: "rootView"),
+                                                            XMLSerializableAttribute(name: "type", value: "xs:boolean"),
+                                                            XMLSerializableAttribute(name: "default", value: "false")], children: []),
+            XMLSerializableElement(name: "xs:attribute", attributes: [XMLSerializableAttribute(name: "name", value: "extend"),
+                                                            XMLSerializableAttribute(name: "type", value: "rectEdge")], children: []),
+            XMLSerializableElement(name: "xs:attribute", attributes: [XMLSerializableAttribute(name: "name", value: "anonymous"),
+                                                            XMLSerializableAttribute(name: "type", value: "xs:boolean"),
+                                                            XMLSerializableAttribute(name: "default", value: "false")], children: []),
+            XMLSerializableElement(name: "xs:attributeGroup", attributes: [XMLSerializableAttribute(name: "ref", value: "ViewAttributes")], children: []),
         ]
-        let complexType = MagicElement(name: "xs:complexType", attributes: [], children: [choice] + attributes)
-        return MagicElement(name: "xs:element", attributes: [MagicAttribute(name: "name", value: "Component")], children: [complexType])
+        let complexType = XMLSerializableElement(name: "xs:complexType", attributes: [], children: [choice] + attributes)
+
+        return XMLSerializableElement(name: "xs:element",
+                                      attributes: [XMLSerializableAttribute(name: "name", value: "Component")],
+                                      children: [complexType])
     }
 }

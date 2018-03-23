@@ -23,10 +23,11 @@ extension XSDAttribute: Equatable, Hashable {
     }
 }
 
-extension XSDAttribute: MagicElementSerializable {
-    func serialize() -> MagicElement {
-        return MagicElement(name: "xs:attribute",
-                            attributes: [MagicAttribute(name: "name", value: name), MagicAttribute(name: "type", value: typeName)],
+extension XSDAttribute: XMLElementSerializable {
+    func serialize() -> XMLSerializableElement {
+        return XMLSerializableElement(name: "xs:attribute",
+                            attributes: [XMLSerializableAttribute(name: "name", value: name),
+                                         XMLSerializableAttribute(name: "type", value: typeName)],
                             children: [])
     }
 }

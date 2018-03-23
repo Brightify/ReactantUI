@@ -23,11 +23,17 @@ extension XSDComplexChoiceType: Hashable {
     }
 }
 
-extension XSDComplexChoiceType: MagicElementSerializable {
-    func serialize() -> MagicElement {
+extension XSDComplexChoiceType: XMLElementSerializable {
+    func serialize() -> XMLSerializableElement {
         let elements = self.elements.map { $0.serialize() }
-        let choice = MagicElement(name: "xs:choice", attributes: [MagicAttribute(name: "maxOccurs", value: "unbounded"),
-                                                                  MagicAttribute(name: "minOccurs", value: "0")], children: elements)
-        return MagicElement(name: "xs:complexType", attributes: [MagicAttribute(name: "name", value: name)], children: [choice])
+
+        let choice = XMLSerializableElement(name: "xs:choice",
+                                            attributes: [XMLSerializableAttribute(name: "maxOccurs", value: "unbounded"),
+                                                         XMLSerializableAttribute(name: "minOccurs", value: "0")],
+                                            children: elements)
+
+        return XMLSerializableElement(name: "xs:complexType",
+                                      attributes: [XMLSerializableAttribute(name: "name", value: name)],
+                                      children: [choice])
     }
 }

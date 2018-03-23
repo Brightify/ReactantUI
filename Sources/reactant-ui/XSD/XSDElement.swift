@@ -24,32 +24,31 @@ extension XSDElement: Hashable, Equatable {
     }
 }
 
-extension XSDElement: MagicElementSerializable {
-    func serialize() -> MagicElement {
-        var attributeBuilder = MagicAttributeBuilder()
+extension XSDElement: XMLElementSerializable {
+    func serialize() -> XMLSerializableElement {
+        var attributeBuilder = XMLAttributeBuilder()
         attributeBuilder.attribute(name: "name", value: name)
         attributeBuilder.attribute(name: "maxOccurs", value: "unbounded")
         attributeBuilder.attribute(name: "minOccurs", value: "0")
         let attributeGroupRefs = attributeGroups.map {
-            MagicElement(name: "xs:attributeGroup", attributes: [MagicAttribute(name: "ref", value: $0)], children: [])
+            XMLSerializableElement(name: "xs:attributeGroup", attributes: [XMLSerializableAttribute(name: "ref", value: $0)], children: [])
         }
-        let complexTypeChildren: [MagicElement]
+        let complexTypeChildren: [XMLSerializableElement]
 
         if isContainer {
-            let groupRef = MagicElement(name: "xs:group", attributes: [MagicAttribute(name: "ref", value: "viewGroup")], children: [])
-            let choice = MagicElement(name: "xs:choice",
-                                      attributes: [MagicAttribute(name: "maxOccurs", value: "unbounded"),
-                                                   MagicAttribute(name: "minOccurs", value: "0")],
+            let groupRef = XMLSerializableElement(name: "xs:group", attributes: [XMLSerializableAttribute(name: "ref", value: "viewGroup")], children: [])
+            let choice = XMLSerializableElement(name: "xs:choice",
+                                      attributes: [XMLSerializableAttribute(name: "maxOccurs", value: "unbounded"),
+                                                   XMLSerializableAttribute(name: "minOccurs", value: "0")],
                                       children: [groupRef])
             complexTypeChildren = [choice] + attributeGroupRefs
         } else {
             complexTypeChildren = attributeGroupRefs
         }
 
-        //        let complexContent = MagicElement(name: "xs:complexContent", attributes: [], children: attributeGroupRefs)
-        let complexType = MagicElement(name: "xs:complexType", attributes: [], children: complexTypeChildren)//[complexContent])
+        let complexType = XMLSerializableElement(name: "xs:complexType", attributes: [], children: complexTypeChildren)
 
 
-        return MagicElement(name: "xs:element", attributes: attributeBuilder.attributes, children: [complexType])
+        return XMLSerializableElement(name: "xs:element", attributes: attributeBuilder.attributes, children: [complexType])
     }
 }

@@ -37,7 +37,7 @@ public class ReactantLiveUIApplier {
 
     public func apply() throws {
         defer { onApplied?(definition, instance) }
-        for property in try definition.properties {
+        for property in definition.properties {
             try property.apply(on: instance)
         }
         instance.subviews.forEach { $0.removeFromSuperview() }

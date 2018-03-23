@@ -9,13 +9,13 @@ import Foundation
 import Tokenizer
 
 class XSDResolver {
-    var file = XSDFile()
+    private var file = XSDFile()
 
     func resolve() -> XSDFile {
         var viewGroup = XSDGroup(name: "viewGroup", elements: [])
         var stylesType = XSDComplexChoiceType(name: "stylesType", elements: [])
 
-        for (name, element) in Element.elementMapping {
+        for (name, element) in ElementMapping.mapping {
             let xsdElement = resolve(element: element, named: name)
             viewGroup.elements.insert(xsdElement)
             stylesType.elements.insert(XSDElement(name: name + "Style",
@@ -38,7 +38,7 @@ class XSDResolver {
         return file
     }
 
-    func resolve(element: View.Type, named name: String) -> XSDElement {
+    private func resolve(element: View.Type, named name: String) -> XSDElement {
         var xsdElement = XSDElement(name: name, isContainer: element is Container.Type, attributeGroups: [])
         var attributes = XSDAttributeGroup(name: name + "Attributes", attributes: [])
         xsdElement.attributeGroups.insert(name + "Attributes")

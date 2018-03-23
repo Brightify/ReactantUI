@@ -37,7 +37,7 @@ public class StyleGenerator: Generator {
         l()
         l("struct \(group.swiftName)") {
             for style in group.styles {
-                l("static func \(style.styleName)(_ view: \(Element.elementMapping[style.type]?.runtimeType ?? "UIView"))") {
+                l("static func \(style.styleName)(_ view: \(ElementMapping.mapping[style.type]?.runtimeType ?? "UIView"))") {
                     for extendedStyle in style.extend {
                         let components = extendedStyle.components(separatedBy: ":").filter { $0.isEmpty == false }
                         if let styleName = components.last {

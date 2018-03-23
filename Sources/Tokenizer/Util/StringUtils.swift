@@ -6,7 +6,7 @@
 //  Copyright © 2017 Brightify. All rights reserved.
 //
 
-extension String {
+public extension String {
     public func capitalizingFirstLetter() -> String {
         let first = String(self[self.startIndex]).capitalized
         let other = String(self.dropFirst())

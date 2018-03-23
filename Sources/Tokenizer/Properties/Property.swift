@@ -20,7 +20,7 @@ public protocol Property {
     func application(on target: String) -> String
 
     #if SanAndreas
-    func dematerialize() -> MagicAttribute
+    func dematerialize() -> XMLSerializableAttribute
     #endif
     
     #if ReactantRuntime

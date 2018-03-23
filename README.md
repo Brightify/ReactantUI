@@ -7,6 +7,22 @@ Reactant UI is an extension for Reactant for declaration of views and layout usi
 ## Important note
 Reactant UI is currently a preview. However we’ll try to keep the number of API changes to a minimum.
 
+## Installation
+In your `Podfile`:
+```
+pod 'Reactant'
+pod 'ReactantUI'
+pod 'ReactantLiveUI', :configuration => 'Debug'
+```
+Add new Run script phase to  Build phases:
+```bash
+pushd "$PODS_ROOT/ReactantUI"
+env -i HOME="$HOME" PATH="$PATH" swift build
+popd
+
+$PODS_ROOT/ReactantUI/.build/debug/reactant-ui generate --enable-live --inputPath=$SRCROOT/Application/Sources/ --outputFile=$SRCROOT/Application/Generated/GeneratedUI.swift --xcodeprojPath=$PROJECT_DIR/YOURWORKSPACE.xcodeproj
+```
+
 [![CI Status](https://img.shields.io/travis/Brightify/ReactantUI.svg?style=flat)](https://travis-ci.org/Brightify/ReactantUI)
 [![Version](https://img.shields.io/cocoapods/v/ReactantUI.svg?style=flat)][reactant-cocoapods]
 [![License](https://img.shields.io/cocoapods/l/ReactantUI.svg?style=flat)][reactant-cocoapods]

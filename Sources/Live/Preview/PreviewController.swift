@@ -31,7 +31,7 @@ final class PreviewController: ControllerBase<Void, PreviewRootView> {
             .subscribe(onNext: { [weak self] _ in
                 self?.dismiss()
             })
-            .addDisposableTo(lifetimeDisposeBag)
+            .disposed(by: lifetimeDisposeBag)
     }
 
     override func viewWillAppear(_ animated: Bool) {

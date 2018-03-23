@@ -23,12 +23,12 @@ extension XSDGroup: Hashable, Equatable {
     }
 }
 
-extension XSDGroup: MagicElementSerializable {
-    func serialize() -> MagicElement {
-        return MagicElement(name: "xs:group",
+extension XSDGroup: XMLElementSerializable {
+    func serialize() -> XMLSerializableElement {
+        return XMLSerializableElement(name: "xs:group",
                             attributes: [
-                                MagicAttribute(name: "name", value: name)
-            ],
-                            children: [MagicElement(name: "xs:choice", attributes: [], children: elements.map { $0.serialize() })])
+                                XMLSerializableAttribute(name: "name", value: name)
+                            ],
+                            children: [XMLSerializableElement(name: "xs:choice", attributes: [], children: elements.map { $0.serialize() })])
     }
 }

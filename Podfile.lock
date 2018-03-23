@@ -23,12 +23,12 @@ PODS:
     - Reactant/Core
     - RxCocoa (~> 4.0)
     - RxDataSources (~> 3.0)
-  - ReactantLiveUI (0.2.0):
+  - ReactantLiveUI (0.3.0):
     - Reactant (> 1.0)
     - Reactant/FallbackSafeAreaInsets (> 1.0)
     - Reactant/TableView (> 1.0)
     - RxCocoa
-  - ReactantUI (0.2.0)
+  - ReactantUI (0.3.0)
   - Result (3.2.4)
   - RxCocoa (4.0.0):
     - RxSwift (~> 4.0)
@@ -73,8 +73,8 @@ SPEC CHECKSUMS:
   Differentiator: a87be69eba49ec4ab460c7671143ee3a9eececfd
   Kingfisher: 9ee7e788d8ba07c3f21ce0d43f33cec310a4f781
   Reactant: 3ee14c938c8dc0f311cd211c4ff13284e2cfbac4
-  ReactantLiveUI: 4f2b527cd5a6df39aad3ae7590b381d9a006d4ac
-  ReactantUI: d47816c5e9c343b0f1a9221df8d38c65e954ed52
+  ReactantLiveUI: ea44a15cd63b1873c6b51fbb1b24b0d7fc51acee
+  ReactantUI: c5c7a1d68db9d9a73f33aae8092a2f9e0dfeb2e1
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   RxCocoa: d62846ca96495d862fa4c59ea7d87e5031d7340e
   RxDataSources: cb7c31e652a87ebb919da45f716bbb87b3765f6b

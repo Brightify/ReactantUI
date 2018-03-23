@@ -16,13 +16,15 @@ struct XSDFile {
     var elements = Set<XSDElement>()
 }
 
-extension XSDFile: MagicElementSerializable {
-    func serialize() -> MagicElement {
+extension XSDFile: XMLElementSerializable {
+    func serialize() -> XMLSerializableElement {
         let simpleTypes = self.simpleTypes.map { $0.serialize() }
         let complexTypes = self.complexTypes.map { $0.serialize() }
         let attributeGroups = self.attributeGroups.map { $0.serialize() }
         let groups = self.groups.map { $0.serialize() }
         let elements = self.elements.map { $0.serialize() }
-        return MagicElement(name: "xs:schema", attributes: [], children: simpleTypes + complexTypes + attributeGroups + groups + elements)
+        return XMLSerializableElement(name: "xs:schema",
+                                      attributes: [],
+                                      children: simpleTypes + complexTypes + attributeGroups + groups + elements)
     }
 }

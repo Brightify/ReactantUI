@@ -47,7 +47,7 @@ public class Watcher {
             subject.onNext(path)
         }
 
-        source.setCancelHandler { [subject] in
+        source.setCancelHandler {
             close(handle)
         }
 

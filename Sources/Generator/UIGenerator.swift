@@ -93,7 +93,7 @@ public class UIGenerator: Generator {
                         l("#else")
                     }
                     for property in root.properties {
-                        l(property.application(on: "self"))
+                        l(property.application(on: "target"))
                     }
                     root.children.forEach { generate(element: $0, superName: "target", containedIn: root) }
                     tempCounter = 1
@@ -284,7 +284,7 @@ public class UIGenerator: Generator {
     private func generateStyles() {
         l("struct \(root.stylesName)") {
             for style in root.styles {
-                l("static func \(style.name)(_ view: \(Element.elementMapping[style.type]?.runtimeType ?? "UIView"))") {
+                l("static func \(style.name)(_ view: \(ElementMapping.mapping[style.type]?.runtimeType ?? "UIView"))") {
                     for extendedStyle in style.extend {
                         let components = extendedStyle.components(separatedBy: ":").filter { $0.isEmpty == false }
                         if let styleName = components.last {

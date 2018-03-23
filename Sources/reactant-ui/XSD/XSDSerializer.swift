@@ -15,18 +15,18 @@ public class XSDSerializer {
         case none
     }
 
-    public let root: MagicElementSerializable
+    public let root: XMLElementSerializable
     private var nestLevel: Int = 0
     private var result = ""
 
-    public init(root: MagicElementSerializable) {
+    public init(root: XMLElementSerializable) {
         self.root = root
     }
 
     public func serialize() -> String {
         var element = root.serialize()
 
-        var builder = MagicAttributeBuilder()
+        var builder = XMLAttributeBuilder()
 
         l("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>")
 
@@ -40,9 +40,9 @@ public class XSDSerializer {
 
         element.attributes.insert(contentsOf: builder.attributes, at: 0)
 
-        let `import` = MagicElement(name: "xs:import",
-                                    attributes: [MagicAttribute(name: "namespace", value: "http://schema.reactant.tech/layout"),
-                                                 MagicAttribute(name: "schemaLocation", value: "layout.xsd")],
+        let `import` = XMLSerializableElement(name: "xs:import",
+                                    attributes: [XMLSerializableAttribute(name: "namespace", value: "http://schema.reactant.tech/layout"),
+                                                 XMLSerializableAttribute(name: "schemaLocation", value: "layout.xsd")],
                                     children: [])
         element.children.insert(`import`, at: 0)
         element.children.insert(XSDComponentRootElement().serialize(), at: 1)
@@ -52,7 +52,7 @@ public class XSDSerializer {
         return result
     }
 
-    private func serialize(element: MagicElement) {
+    private func serialize(element: XMLSerializableElement) {
         l("<\(element.name)", newLine: .none) {
             if !element.attributes.isEmpty {
                 l()
@@ -74,23 +74,6 @@ public class XSDSerializer {
             l("</\(element.name)>")
         }
     }
-
-    //    private func serialize(element: UIElement) {
-    //        let isContainer = element is UIContainer
-    //        let name = "\(type(of: element))"
-    //        l("<\(name)") {
-    //            for property in element.properties {
-    //                l("\(property.attributeName)=\"\(property.value.generated)\"")
-    //            }
-    //            l(">")
-    //            if let container = element as? UIContainer {
-    //                for child in container.children {
-    //                    serialize(element: child)
-    //                }
-    //            }
-    //        }
-    //        l("</\(name)>")
-    //    }
 
     private func l(_ line: String = "", newLine: NewLinePosition = .after, indent: Bool = true) {
         if newLine == .before {
