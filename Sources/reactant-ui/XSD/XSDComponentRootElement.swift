@@ -29,7 +29,8 @@ struct XSDComponentRootElement: MagicElementSerializable {
                                                             MagicAttribute(name: "type", value: "rectEdge")], children: []),
             MagicElement(name: "xs:attribute", attributes: [MagicAttribute(name: "name", value: "anonymous"),
                                                             MagicAttribute(name: "type", value: "xs:boolean"),
-                                                            MagicAttribute(name: "default", value: "false")], children: [])
+                                                            MagicAttribute(name: "default", value: "false")], children: []),
+            MagicElement(name: "xs:attributeGroup", attributes: [MagicAttribute(name: "ref", value: "ViewAttributes")], children: []),
         ]
         let complexType = MagicElement(name: "xs:complexType", attributes: [], children: [choice] + attributes)
         return MagicElement(name: "xs:element", attributes: [MagicAttribute(name: "name", value: "Component")], children: [complexType])

@@ -38,6 +38,8 @@
                 name="anonymous"
                 type="xs:boolean"
                 default="false"/>
+            <xs:attributeGroup                
+                ref="ViewAttributes"/>
         </xs:complexType>
     </xs:element>
     <xs:simpleType        
