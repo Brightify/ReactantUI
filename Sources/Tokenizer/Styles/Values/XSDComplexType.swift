@@ -8,16 +8,26 @@
 import Foundation
 import Tokenizer
 
-struct XSDComplexType {
+struct XSDComplexChoiceType {
     let name: String
+    var elements: Set<XSDElement>
 }
 
-extension XSDComplexType: Hashable, Equatable {
+extension XSDComplexChoiceType: Hashable {
     var hashValue: Int {
         return name.hashValue
     }
 
-    static func ==(lhs: XSDComplexType, rhs: XSDComplexType) -> Bool {
+    static func ==(lhs: XSDComplexChoiceType, rhs: XSDComplexChoiceType) -> Bool {
         return lhs.name == rhs.name
+    }
+}
+
+extension XSDComplexChoiceType: MagicElementSerializable {
+    func serialize() -> MagicElement {
+        let elements = self.elements.map { $0.serialize() }
+        let choice = MagicElement(name: "xs:choice", attributes: [MagicAttribute(name: "maxOccurs", value: "unbounded"),
+                                                                  MagicAttribute(name: "minOccurs", value: "0")], children: elements)
+        return MagicElement(name: "xs:complexType", attributes: [MagicAttribute(name: "name", value: name)], children: [choice])
     }
 }

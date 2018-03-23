@@ -22,6 +22,14 @@ public enum RectEdge: String {
     public static func toGeneratedString(_ array: [RectEdge]) -> String {
         return "[\(array.map { "UIRectEdge.\($0.rawValue)" }.joined(separator: ", "))]"
     }
+
+    static var allValues: [RectEdge] = [.top, .left, .bottom, .right, .all]
+
+    public static var xsdType: XSDType {
+        let values = Set(RectEdge.allValues.map { $0.rawValue })
+
+        return .enumeration(EnumerationXSDType(name: "UIRectEdge", base: .string, values: values))
+    }
 }
 
 

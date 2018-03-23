@@ -13,18 +13,27 @@ class XSDResolver {
 
     func resolve() -> XSDFile {
         var viewGroup = XSDGroup(name: "viewGroup", elements: [])
+        var stylesType = XSDComplexChoiceType(name: "stylesType", elements: [])
 
         for (name, element) in Element.elementMapping {
-            viewGroup.elements.insert(resolve(element: element, named: name))
+            let xsdElement = resolve(element: element, named: name)
+            viewGroup.elements.insert(xsdElement)
+            stylesType.elements.insert(XSDElement(name: name + "Style",
+                                                  isContainer: false,
+                                                  attributeGroups: attributeGroupsForStyles(attributeGroups: xsdElement.attributeGroups)))
         }
 
         file.groups.insert(viewGroup)
 
-        let rectEdge = XSDSimpleType(name: "rectEdge", type: .enumeration(EnumerationXSDType(name: "rectEdge",
-                                                                                             base: .string,
-                                                                                             values: Set(arrayLiteral: "all", "top", "bottom"))))
+        file.complexTypes.insert(stylesType)
 
-        file.simpleTypes.insert(rectEdge)
+        file.simpleTypes.insert(XSDSimpleType(name: "rectEdge", type: RectEdge.xsdType))
+
+        var styleAttributes = XSDAttributeGroup(name: "styleAttributes", attributes: [])
+        styleAttributes.attributes.insert(XSDAttribute(name: "name", typeName: BuiltinXSDType.string.xsdName))
+        styleAttributes.attributes.insert(XSDAttribute(name: "extend", typeName: BuiltinXSDType.string.xsdName))
+
+        file.attributeGroups.insert(styleAttributes)
 
         return file
     }
@@ -63,6 +72,11 @@ class XSDResolver {
                 file.simpleTypes.insert(type)
             }
 
+            if element is ComponentReference.Type {
+                attributes.attributes.insert(XSDAttribute(name: "type", typeName: BuiltinXSDType.string.xsdName))
+                // FIXME figure out how anonymous components are handled
+            }
+
             if property is ControlStatePropertyDescriptionMarker {
                 var variations: Set<Set<ControlState>> = []
                 for variationClass in 1..<ControlState.allValues.count {
@@ -87,9 +101,15 @@ class XSDResolver {
         return xsdElement
     }
 
+    private func attributeGroupsForStyles(attributeGroups: Set<String>) -> Set<String> {
+        var newAttributeGroups = attributeGroups
+        newAttributeGroups.insert("styleAttributes")
+        newAttributeGroups.remove("layout:layoutAttributes")
+        return newAttributeGroups
+    }
     
 }
-
+// https://github.com/NoHomey/swift-array-variations/blob/master/Sources/swift_array_variations.swift
 internal func strike(_ array: [Int], from: [Int]) -> [Int] {
     var result: Array<Int> = []
 

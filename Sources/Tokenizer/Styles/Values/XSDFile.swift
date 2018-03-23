@@ -10,21 +10,19 @@ import Tokenizer
 
 struct XSDFile {
     var simpleTypes = Set<XSDSimpleType>()
-    var complexTypes = Set<XSDComplexType>()
+    var complexTypes = Set<XSDComplexChoiceType>()
     var attributeGroups = Set<XSDAttributeGroup>()
     var groups = Set<XSDGroup>()
     var elements = Set<XSDElement>()
-
-    var serializedElements: [MagicElement] {
-        return elements.map { $0.serialize() } +
-            groups.map { $0.serialize() } +
-            attributeGroups.map { $0.serialize() } +
-            simpleTypes.map { $0.serialize() }
-    }
 }
 
 extension XSDFile: MagicElementSerializable {
     func serialize() -> MagicElement {
-        return MagicElement(name: "xs:schema", attributes: [], children: serializedElements)
+        let simpleTypes = self.simpleTypes.map { $0.serialize() }
+        let complexTypes = self.complexTypes.map { $0.serialize() }
+        let attributeGroups = self.attributeGroups.map { $0.serialize() }
+        let groups = self.groups.map { $0.serialize() }
+        let elements = self.elements.map { $0.serialize() }
+        return MagicElement(name: "xs:schema", attributes: [], children: simpleTypes + complexTypes + attributeGroups + groups + elements)
     }
 }

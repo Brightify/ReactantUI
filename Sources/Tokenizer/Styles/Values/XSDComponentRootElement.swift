@@ -11,13 +11,14 @@ import Tokenizer
 struct XSDComponentRootElement: MagicElementSerializable {
     func serialize() -> MagicElement {
         let groupRef = MagicElement(name: "xs:group", attributes: [MagicAttribute(name: "ref", value: "viewGroup")], children: [])
-        //        let styles = MagicElement(name: "xs:element", attributes: [MagicAttribute(name: "maxOccurs", value: "1"),
-        //                                                                   MagicAttribute(name: "minOccurs", value: "0"),
-        //                                                                   MagicAttribute(name: "type", value: "stylesType")], children: [])
+        let styles = MagicElement(name: "xs:element", attributes: [MagicAttribute(name: "name", value: "styles"),
+                                                                   MagicAttribute(name: "maxOccurs", value: "1"),
+                                                                   MagicAttribute(name: "minOccurs", value: "0"),
+                                                                   MagicAttribute(name: "type", value: "stylesType")], children: [])
         let choice = MagicElement(name: "xs:choice",
                                   attributes: [MagicAttribute(name: "maxOccurs", value: "unbounded"),
                                                MagicAttribute(name: "minOccurs", value: "0")],
-                                  children: [groupRef])//, styles])
+                                  children: [groupRef, styles])
         let attributes = [
             MagicElement(name: "xs:attribute", attributes: [MagicAttribute(name: "name", value: "type"),
                                                             MagicAttribute(name: "type", value: "xs:string")], children: []),
