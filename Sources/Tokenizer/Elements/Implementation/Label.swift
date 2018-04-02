@@ -17,7 +17,7 @@ public class Label: View {
         return Properties.label.allProperties
     }
 
-    public class override var runtimeType: String {
+    public class override func runtimeType() -> String {
         return "UILabel"
     }
 

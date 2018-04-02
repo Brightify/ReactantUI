@@ -17,7 +17,7 @@ public class Toolbar: View {
         return Properties.toolbar.allProperties
     }
 
-    public class override var runtimeType: String {
+    public class override func runtimeType() -> String {
         #if os(tvOS)
             fatalError("View not available in tvOS")
         #else

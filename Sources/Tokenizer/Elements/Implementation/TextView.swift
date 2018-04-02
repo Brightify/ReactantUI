@@ -16,7 +16,7 @@ public class TextView: View {
         return Properties.textView.allProperties
     }
 
-    public class override var runtimeType: String {
+    public class override func runtimeType() -> String {
         return "UITextView"
     }
 

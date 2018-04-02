@@ -22,7 +22,7 @@ public class View: XMLElementDeserializable, UIElement {
     }
 
     // runtime type is used in generator for style parameters
-    public class var runtimeType: String {
+    public class func runtimeType() throws -> String {
         return "UIView"
     }
 
@@ -40,8 +40,8 @@ public class View: XMLElementDeserializable, UIElement {
     public var properties: [Property]
     public var toolingProperties: [String: Property]
 
-    public var initialization: String {
-        return "\(type(of: self).runtimeType)()"
+    public func initialization() throws -> String {
+        return "\(try type(of: self).runtimeType())()"
     }
 
     #if ReactantRuntime

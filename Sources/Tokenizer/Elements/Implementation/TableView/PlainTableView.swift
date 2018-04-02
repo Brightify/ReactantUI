@@ -42,11 +42,11 @@ public class PlainTableView: View, ComponentDefinitionContainer {
         return "Reactant"
     }
 
-    public class override var runtimeType: String {
+    public class override func runtimeType() -> String {
         return "UITableView"
     }
 
-    public override var initialization: String {
+    public override func initialization() -> String {
         return "PlainTableView<\(cellType)>()"
     }
 

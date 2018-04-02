@@ -37,18 +37,18 @@ public class WebView: View {
         #endif
     }
 
-    public class override var runtimeType: String {
+    public class override func runtimeType() throws -> String {
         #if os(tvOS)
-            return "UIView"
+            throw TokenizationError.unsupportedElementError(element: WebView.self)
         #else
             return "WKWebView"
         #endif
     }
 
     #if ReactantRuntime
-    public override func initialize() -> UIView {
+    public override func initialize() throws -> UIView {
         #if os(tvOS)
-            return UIView()
+            throw TokenizationError.unsupportedElementError(element: WebView.self)
         #else
             return WKWebView()
         #endif

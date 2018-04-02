@@ -48,7 +48,7 @@ public class SimpleTableView: View, ComponentDefinitionContainer {
             + (footerDefinition?.componentDefinitions ?? [])
     }
 
-    public class override var runtimeType: String {
+    public class override func runtimeType() -> String {
         return "ReactantTableView"
     }
 
@@ -56,7 +56,7 @@ public class SimpleTableView: View, ComponentDefinitionContainer {
         return "Reactant"
     }
 
-    public override var initialization: String {
+    public override func initialization() -> String {
         return "SimpleTableView<\(headerType), \(cellType), \(footerType)>()"
     }
 

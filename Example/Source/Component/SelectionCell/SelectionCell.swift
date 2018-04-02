@@ -30,7 +30,7 @@ enum ExampleType {
 final class SelectionCell: ControlBase<ExampleType, ExampleType> {
     override var actions: [Observable<ExampleType>] {
         return [
-            rx.controlEvent(.touchUpOutside).withLatestFrom(observableState)
+            rx.controlEvent(.touchUpInside).withLatestFrom(observableState)
         ]
     }
 

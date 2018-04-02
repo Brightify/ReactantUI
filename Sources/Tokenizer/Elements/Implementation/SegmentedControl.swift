@@ -18,7 +18,7 @@ public class SegmentedControl: View {
         return Properties.segmentedControl.allProperties
     }
 
-    public class override var runtimeType: String {
+    public class override func runtimeType() -> String {
         return "UISegmentedControl"
     }
 

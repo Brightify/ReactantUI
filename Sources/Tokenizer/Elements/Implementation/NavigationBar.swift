@@ -17,7 +17,7 @@ public class NavigationBar: View {
         return Properties.navigationBar.allProperties
     }
 
-    public class override var runtimeType: String {
+    public class override func runtimeType() -> String {
         return "UINavigationBar"
     }
 

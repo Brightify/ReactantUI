@@ -13,6 +13,18 @@ public struct GeneratorConfiguration {
     }
 }
 
+public struct GeneratorError: Error, LocalizedError {
+    public let message: String
+
+    public var errorDescription: String? {
+        return message
+    }
+
+    public var localizedDescription: String {
+        return message
+    }
+}
+
 public class Generator {
 
     let configuration: GeneratorConfiguration
@@ -25,12 +37,22 @@ public class Generator {
     
     var output = ""
 
-    func generate(imports: Bool) -> String {
+    func generate(imports: Bool) throws -> String {
         return output
     }
 
     func l(_ line: String = "") {
         output.append((0..<nestLevel).map { _ in "    " }.joined() + line + "\n")
+    }
+
+    func l(_ line: String = "", _ f: () throws -> Void) throws {
+        output.append((0..<nestLevel).map { _ in "    " }.joined() + line)
+
+        nestLevel += 1
+        output.append(" {" + "\n")
+        try f()
+        nestLevel -= 1
+        l("}")
     }
 
     func l(_ line: String = "", _ f: () -> Void) {

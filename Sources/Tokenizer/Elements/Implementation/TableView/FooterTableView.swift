@@ -44,11 +44,11 @@ public class FooterTableView: View, ComponentDefinitionContainer {
         return "Reactant"
     }
 
-    public class override var runtimeType: String {
+    public class override func runtimeType() throws -> String {
         return "ReactantTableView"
     }
 
-    public override var initialization: String {
+    public override func initialization() -> String {
         return "FooterTableView<\(footerType), \(cellType)>()"
     }
 

@@ -85,13 +85,13 @@ class GenerateCommand: Command {
             let configuration = GeneratorConfiguration(minimumMajorVersion: minimumDeploymentTarget,
                                                        localXmlPath: path,
                                                        isLiveEnabled: enableLive.value)
-            output.append(StyleGenerator(group: group, configuration: configuration).generate(imports: index == 0))
+            output.append(try StyleGenerator(group: group, configuration: configuration).generate(imports: index == 0))
         }
 
         var componentTypes: [String] = []
         var componentDefinitions: [String: ComponentDefinition] = [:]
         var imports: Set<String> = []
-        for (index, path) in uiFiles.enumerated() {
+        for path in uiFiles {
             let data = try Data(contentsOf: URL(fileURLWithPath: path))
 
             let xml = SWXMLHash.parse(data)
@@ -133,7 +133,7 @@ class GenerateCommand: Command {
             output.append("// Generated from \(path)")
             let configuration = GeneratorConfiguration(minimumMajorVersion: minimumDeploymentTarget, localXmlPath: path, isLiveEnabled: enableLive.value)
             for definition in rootDefinition.componentDefinitions {
-                output.append(UIGenerator(definition: definition, configuration: configuration).generate(imports: false))
+                output.append(try UIGenerator(definition: definition, configuration: configuration).generate(imports: false))
             }
         }
 

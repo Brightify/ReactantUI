@@ -18,12 +18,12 @@ public class UIGenerator: Generator {
         super.init(configuration: configuration)
     }
 
-    public override func generate(imports: Bool) -> String {
+    public override func generate(imports: Bool) throws -> String {
         if root.isAnonymous {
             l("final class \(root.type): ViewBase<Void, Void>") { }
         }
         let constraintFields = root.children.flatMap(self.constraintFields)
-        l("extension \(root.type): ReactantUI" + (root.isRootView ? ", RootView" : "")) {
+        try l("extension \(root.type): ReactantUI" + (root.isRootView ? ", RootView" : "")) {
             if root.isRootView {
                 l("var edgesForExtendedLayout: UIRectEdge") {
                     if configuration.isLiveEnabled {
@@ -48,7 +48,7 @@ public class UIGenerator: Generator {
                 l("return rui")
             }
             l()
-            l("final class RUIContainer: Reactant.ReactantUIContainer") {
+            try l("final class RUIContainer: Reactant.ReactantUIContainer") {
                 l("fileprivate static var associatedObjectKey = 0 as UInt8")
                 l()
                 l("var xmlPath: String") {
@@ -67,7 +67,7 @@ public class UIGenerator: Generator {
                     l("self.target = target")
                 }
                 l()
-                l("func setupReactantUI()") {
+                try l("func setupReactantUI()") {
                     l("guard let target = self.target else { /* FIXME Should we fatalError here? */ return }")
                     if configuration.isLiveEnabled {
                         l("#if targetEnvironment(simulator)")
@@ -95,7 +95,7 @@ public class UIGenerator: Generator {
                     for property in root.properties {
                         l(property.application(on: "target"))
                     }
-                    root.children.forEach { generate(element: $0, superName: "target", containedIn: root) }
+                    try root.children.forEach { try generate(element: $0, superName: "target", containedIn: root) }
                     tempCounter = 1
                     root.children.forEach { generateConstraints(element: $0, superName: "target") }
                     if configuration.isLiveEnabled {
@@ -118,23 +118,23 @@ public class UIGenerator: Generator {
                     l("fileprivate(set) var \(constraintField): SnapKit.Constraint?")
                 }
             }
-            generateStyles()
+            try generateStyles()
         }
 
         return output
     }
 
-    private func generate(element: UIElement, superName: String, containedIn: UIContainer) {
+    private func generate(element: UIElement, superName: String, containedIn: UIContainer) throws {
         let name: String
         if let field = element.field {
             name = "target.\(field)"
         } else if let layoutId = element.layout.id {
             name = "named_\(layoutId)"
-            l("let \(name) = \(element.initialization)")
+            l("let \(name) = \(try element.initialization())")
         } else {
             name = "temp_\(type(of: element))_\(tempCounter)"
             tempCounter += 1
-            l("let \(name) = \(element.initialization)")
+            l("let \(name) = \(try element.initialization())")
         }
 
         for style in element.styles {
@@ -158,7 +158,7 @@ public class UIGenerator: Generator {
         l("\(superName).\(containedIn.addSubviewMethod)(\(name))")
         l()
         if let container = element as? UIContainer {
-            container.children.forEach { generate(element: $0, superName: name, containedIn: container) }
+            try container.children.forEach { try generate(element: $0, superName: name, containedIn: container) }
         }
     }
 
@@ -281,10 +281,13 @@ public class UIGenerator: Generator {
         }
     }
 
-    private func generateStyles() {
-        l("struct \(root.stylesName)") {
+    private func generateStyles() throws {
+        try l("struct \(root.stylesName)") {
             for style in root.styles {
-                l("static func \(style.name)(_ view: \(ElementMapping.mapping[style.type]?.runtimeType ?? "UIView"))") {
+                guard let mapping = ElementMapping.mapping[style.type] else {
+                    throw GeneratorError(message: "Mapping for type \(style.type) does not exist")
+                }
+                l("static func \(style.name)(_ view: \(try mapping.runtimeType()))") {
                     for extendedStyle in style.extend {
                         let components = extendedStyle.components(separatedBy: ":").filter { $0.isEmpty == false }
                         if let styleName = components.last {

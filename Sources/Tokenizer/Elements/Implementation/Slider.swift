@@ -17,18 +17,18 @@ public class Slider: View {
         return Properties.slider.allProperties
     }
 
-    public class override var runtimeType: String {
+    public class override func runtimeType() throws -> String {
         #if os(tvOS)
-            return "UIView"
+            throw TokenizationError.unsupportedElementError(element: Slider.self)
         #else
         return "UISlider"
         #endif
     }
 
     #if ReactantRuntime
-    public override func initialize() -> UIView {
+    public override func initialize() throws -> UIView {
         #if os(tvOS)
-            return UIView()
+            throw TokenizationError.unsupportedElementError(element: Slider.self)
         #else
             return UISlider()
         #endif

@@ -455,7 +455,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "pushd $PROJECT_DIR\nenv -i HOME=$HOME PATH=$PATH swift build\npopd\n\npushd $PROJECT_DIR/Example-tvOS\n$PROJECT_DIR/.build/debug/reactant-ui --enable-live > $PROJECT_DIR/Example-tvOS/Generated/GeneratedUI.swift\npopd";
+			shellScript = "pushd $PROJECT_DIR\nenv -i HOME=$HOME PATH=$PATH swift build\npopd\n\n$PROJECT_DIR/.build/debug/reactant-ui generate --enable-live --inputPath=$PROJECT_DIR/Example-tvOS/ --outputFile=$PROJECT_DIR/Example-tvOS/Generated/GeneratedUI.swift --xcodeprojPath=$PROJECT_DIR/ReactantUI.xcodeproj\n\n#pushd $PROJECT_DIR/Example-tvOS\n#$PROJECT_DIR/.build/debug/reactant-ui --enable-live > $PROJECT_DIR/Example-tvOS/Generated/GeneratedUI.swift\n#popd";
 		};
 		2BDA1565040E38BA7634A4BC /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;

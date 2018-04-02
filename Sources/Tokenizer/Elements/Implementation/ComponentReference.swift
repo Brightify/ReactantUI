@@ -32,12 +32,14 @@ public class ComponentReference: View, ComponentDefinitionContainer {
         return definition?.componentDefinitions ?? []
     }
 
-    public class override var runtimeType: String {
+    public class override func runtimeType() throws -> String {
         return "UIView"
     }
 
-    public override var initialization: String {
-        guard let type = type else { fatalError("Should never initialize when type is undefined.") }
+    public override func initialization() throws -> String {
+        guard let type = type else {
+            throw TokenizationError(message: "Should never initialize when type is undefined.")
+        }
         return "\(type)()"
     }
 

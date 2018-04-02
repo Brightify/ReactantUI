@@ -17,13 +17,13 @@ public class TabBar: View {
         return Properties.tabBar.allProperties
     }
 
-    public class override var runtimeType: String {
+    public class override func runtimeType() -> String {
         return "UITabBar"
     }
 
     #if ReactantRuntime
     public override func initialize() -> UIView {
-    return UITabBar()
+        return UITabBar()
     }
     #endif
 }

@@ -26,7 +26,7 @@ public class MapView: View {
         return ["MapKit"]
     }
 
-    public class override var runtimeType: String {
+    public class override func runtimeType() -> String {
         return "MKMapView"
     }
 

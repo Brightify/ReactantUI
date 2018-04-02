@@ -19,3 +19,10 @@ public struct TokenizationError: Error, LocalizedError {
         return message
     }
 }
+
+extension TokenizationError {
+    static func unsupportedElementError(element: View.Type) -> TokenizationError {
+        let name = ElementMapping.mapping.first(where: { $1 == element })?.key ?? "(unknown)"
+        return TokenizationError(message: "Element \(name) is unavailable on this platform.")
+    }
+}

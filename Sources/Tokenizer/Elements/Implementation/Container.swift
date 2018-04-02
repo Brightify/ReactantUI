@@ -41,7 +41,7 @@ public class Container: View, UIContainer {
         return Set(arrayLiteral: "UIKit").union(children.flatMap { $0.requiredImports })
     }
 
-    public class override var runtimeType: String {
+    public class override func runtimeType() throws -> String {
         return "ContainerView"
     }
     

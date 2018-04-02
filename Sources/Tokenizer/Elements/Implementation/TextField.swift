@@ -22,7 +22,7 @@ public class TextField: View {
         return "Reactant"
     }
 
-    public class override var runtimeType: String {
+    public class override func runtimeType() -> String {
         return "Reactant.TextField"
     }
 

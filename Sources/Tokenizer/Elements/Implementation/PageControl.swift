@@ -17,7 +17,7 @@ public class PageControl: View {
         return Properties.pageControl.allProperties
     }
 
-    public class override var runtimeType: String {
+    public class override func runtimeType() -> String {
         return "UIPageControl"
     }
 

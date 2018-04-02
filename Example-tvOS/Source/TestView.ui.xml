@@ -17,6 +17,8 @@
     layout:huggingPriority="low"
     contentMode="scaleAspectFill" />
 
+    <DatePicker/>
+
     <Label text="Test"
         textColor="white"
         font=":medium@15"

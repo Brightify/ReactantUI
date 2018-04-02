@@ -21,7 +21,7 @@ public class ActivityIndicatorElement: View {
         return (.high, .high)
     }
 
-    public class override var runtimeType: String {
+    public class override func runtimeType() throws -> String {
         return "UIActivityIndicatorView"
     }
 

@@ -19,7 +19,7 @@ public class StyleGenerator: Generator {
         super.init(configuration: configuration)
     }
 
-    public override func generate(imports: Bool) -> String {
+    public override func generate(imports: Bool) throws -> String {
         if imports {
             l("""
               import UIKit
@@ -35,9 +35,12 @@ public class StyleGenerator: Generator {
             l("import \(styleImport)")
         }
         l()
-        l("struct \(group.swiftName)") {
+        try l("struct \(group.swiftName)") {
             for style in group.styles {
-                l("static func \(style.styleName)(_ view: \(ElementMapping.mapping[style.type]?.runtimeType ?? "UIView"))") {
+                guard let mapping = ElementMapping.mapping[style.type] else {
+                    throw GeneratorError(message: "Mapping for type \(style.type) does not exist")
+                }
+                l("static func \(style.styleName)(_ view: \(try mapping.runtimeType()))") {
                     for extendedStyle in style.extend {
                         let components = extendedStyle.components(separatedBy: ":").filter { $0.isEmpty == false }
                         if let styleName = components.last {

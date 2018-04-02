@@ -27,7 +27,7 @@ public protocol UIElement: class, XMLElementSerializable {
     // used for generating views - resolves imports of subviews.
     var requiredImports: Set<String> { get }
 
-    var initialization: String { get }
+    func initialization() throws -> String
 
     #if ReactantRuntime
     func initialize() throws -> UIView

@@ -17,17 +17,17 @@ public class TableView: View {
         return Properties.tableView.allProperties
     }
 
-    public override class var runtimeType: String {
+    public override class func runtimeType() -> String {
         return "UITableView"
     }
 
-    public override var initialization: String {
+    public override func initialization() -> String {
         return "UITableView()"
     }
 
     #if ReactantRuntime
     public override func initialize() -> UIView {
-    return UITableView()
+        return UITableView()
     }
     #endif
 }

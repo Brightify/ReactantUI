@@ -17,7 +17,7 @@ public class ScrollView: Container {
         return Properties.scrollView.allProperties
     }
 
-    public class override var runtimeType: String {
+    public class override func runtimeType() -> String {
         return "UIScrollView"
     }
 

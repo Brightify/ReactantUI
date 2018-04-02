@@ -17,18 +17,18 @@ public class DatePicker: View {
         return Properties.datePicker.allProperties
     }
 
-    public class override var runtimeType: String {
+    public class override func runtimeType() throws -> String {
         #if os(tvOS)
-            return "UIView"
+            throw TokenizationError.unsupportedElementError(element: DatePicker.self)
         #else
         return "UIDatePicker"
         #endif
     }
 
     #if ReactantRuntime
-    public override func initialize() -> UIView {
+    public override func initialize() throws -> UIView {
         #if os(tvOS)
-            return UIView()
+            throw TokenizationError.unsupportedElementError(element: DatePicker.self)
         #else
             return UIDatePicker()
         #endif
