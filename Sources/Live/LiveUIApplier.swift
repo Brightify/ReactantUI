@@ -23,6 +23,8 @@ public class ReactantLiveUIApplier {
 
     private var tempCounter: Int = 1
 
+    private var appliedConstraints: [SnapKit.Constraint] = []
+
     public init(definition: ComponentDefinition,
                 commonStyles: [Style],
                 instance: UIView,
@@ -45,6 +47,13 @@ public class ReactantLiveUIApplier {
             try apply(element: $0, superview: instance, containedIn: definition)
         }
         tempCounter = 1
+
+        for constraint in appliedConstraints {
+            constraint.deactivate()
+        }
+
+        appliedConstraints = []
+
         try definition.children.forEach { element in
             try applyConstraints(views: views, element: element, superview: instance)
         }
@@ -136,7 +145,7 @@ public class ReactantLiveUIApplier {
 
         var error: LiveUIError?
 
-        view.snp.remakeConstraints { make in
+        view.snp.makeConstraints { make in
             for constraint in element.layout.constraints {
                 let maker: ConstraintMakerExtendable
                 switch constraint.anchor {
@@ -264,6 +273,8 @@ public class ReactantLiveUIApplier {
                 } else {
                     finalizable = editable
                 }
+
+                appliedConstraints.append(finalizable.constraint)
 
                 if let field = constraint.field {
                     guard setConstraint(field, finalizable.constraint) else {

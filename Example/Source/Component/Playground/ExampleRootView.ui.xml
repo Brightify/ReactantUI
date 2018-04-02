@@ -92,6 +92,7 @@
         <StackView
             axis="vertical"
             backgroundColor="black"
+            spacing="10"
             layout:top="super inset(50)"
             layout:fillHorizontally="super inset(20)">
             <Component field="test" />

@@ -9,4 +9,11 @@
 import Reactant
 import UIKit
 
-final class ExampleView2: ViewBase<Void, Void> { }
+final class ExampleView2: ViewBase<Void, Void> {
+
+    override func setupConstraints() {
+        snp.makeConstraints { make in
+            make.height.equalTo(1 / UIScreen.main.scale)
+        }
+    }
+}
