@@ -37,6 +37,9 @@
 		2284DAE31FAC855E00D231D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2284DAE21FAC855E00D231D3 /* Assets.xcassets */; };
 		2284DAED1FAC96BE00D231D3 /* GeneratedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2284DAEC1FAC96BE00D231D3 /* GeneratedUI.swift */; };
 		2284DAEF1FAC971900D231D3 /* TestView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2284DAEE1FAC971900D231D3 /* TestView.ui.xml */; };
+		22957E38207235C40088C09E /* StackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22957E37207235C40088C09E /* StackViewController.swift */; };
+		22957E3A207235D00088C09E /* StackViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22957E39207235D00088C09E /* StackViewRootView.swift */; };
+		22957E3C207235E20088C09E /* StackViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22957E3B207235E20088C09E /* StackViewRootView.ui.xml */; };
 		5B1333D6A201F8A50D8697D9 /* Pods_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1AAC4CA06239D481C4E7F9D /* Pods_Example.framework */; };
 		BA1D32AF765F430AA225944F /* Pods_Example_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34D6F4260245D9C7942B5C54 /* Pods_Example_tvOS.framework */; };
 /* End PBXBuildFile section */
@@ -77,6 +80,9 @@
 		2284DAE41FAC855E00D231D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2284DAEC1FAC96BE00D231D3 /* GeneratedUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneratedUI.swift; sourceTree = "<group>"; };
 		2284DAEE1FAC971900D231D3 /* TestView.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = TestView.ui.xml; sourceTree = "<group>"; };
+		22957E37207235C40088C09E /* StackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackViewController.swift; sourceTree = "<group>"; };
+		22957E39207235D00088C09E /* StackViewRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackViewRootView.swift; sourceTree = "<group>"; };
+		22957E3B207235E20088C09E /* StackViewRootView.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = StackViewRootView.ui.xml; sourceTree = "<group>"; };
 		34D6F4260245D9C7942B5C54 /* Pods_Example_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Example_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		56598844EFA13DD7B4A3302A /* Pods-Example-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Example-tvOS/Pods-Example-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		5F1124193368C79B42B1596B /* Pods-Example-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Example-tvOS/Pods-Example-tvOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -196,6 +202,7 @@
 		22141C982052B45500205F56 /* Examples */ = {
 			isa = PBXGroup;
 			children = (
+				22957E36207235B30088C09E /* StackView */,
 				22141C992052B45D00205F56 /* PlainTableView */,
 			);
 			path = Examples;
@@ -272,6 +279,16 @@
 				2284DAEC1FAC96BE00D231D3 /* GeneratedUI.swift */,
 			);
 			path = Generated;
+			sourceTree = "<group>";
+		};
+		22957E36207235B30088C09E /* StackView */ = {
+			isa = PBXGroup;
+			children = (
+				22957E37207235C40088C09E /* StackViewController.swift */,
+				22957E39207235D00088C09E /* StackViewRootView.swift */,
+				22957E3B207235E20088C09E /* StackViewRootView.ui.xml */,
+			);
+			path = StackView;
 			sourceTree = "<group>";
 		};
 		7152B12B2D8D6874507C49C6 /* Pods */ = {
@@ -389,6 +406,7 @@
 				182B68961EAF7641007CC668 /* LaunchScreen.storyboard in Resources */,
 				22141CA42052B55E00205F56 /* PlainCell.ui.xml in Resources */,
 				182B68911EAF7641007CC668 /* ExampleRootView.ui.xml in Resources */,
+				22957E3C207235E20088C09E /* StackViewRootView.ui.xml in Resources */,
 				182B688E1EAF7641007CC668 /* CommonStyles.styles.xml in Resources */,
 				182B68951EAF7641007CC668 /* Assets.xcassets in Resources */,
 				182B68931EAF7641007CC668 /* ExampleView2.ui.xml in Resources */,
@@ -590,12 +608,14 @@
 				22141C9D2052B47F00205F56 /* PlainTableViewRootView.swift in Sources */,
 				182B689B1EAF870E007CC668 /* GeneratedUI.swift in Sources */,
 				22141C952052B0ED00205F56 /* SelectionCell.swift in Sources */,
+				22957E3A207235D00088C09E /* StackViewRootView.swift in Sources */,
 				22141C902052B09200205F56 /* ExampleSelectionRootView.swift in Sources */,
 				22141C8E2052B08700205F56 /* ExampleSelectionController.swift in Sources */,
 				182B688C1EAF7641007CC668 /* AppDelegate.swift in Sources */,
 				22141C8B2052B02F00205F56 /* MainWireframe.swift in Sources */,
 				182B68921EAF7641007CC668 /* ExampleView2.swift in Sources */,
 				182B68901EAF7641007CC668 /* ExampleRootView.swift in Sources */,
+				22957E38207235C40088C09E /* StackViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

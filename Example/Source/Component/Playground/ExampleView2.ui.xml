@@ -13,7 +13,7 @@
 <!--        </style>-->
 <!--    </styles>-->
 
-    <!-- <Container
+    <Container
         layout:edges="super"
         backgroundColor="#ffffff">
 
@@ -39,5 +39,5 @@
 
         <ActivityIndicator
             indicatorStyle="gray"/>
-    </Container> -->
+    </Container>
 </Component>

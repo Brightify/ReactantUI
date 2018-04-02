@@ -6,13 +6,17 @@
                         http://schema.reactant.tech/layout http://schema.reactant.tech/layout.xsd"
     rootView="true">
 
-    <PlainTableView
-        cell="PlainCell"
-        tools:exampleCount="10"
-        layout:edges="super"
-        tableView.estimatedRowHeight="50"
-        tableView.separatorColor="red"
-        tableView.separatorInset="horizontal: 20"
-        tableView.rowHeight="-1"/>
+    <StackView
+        field="stackView"
+        axis="vertical"
+        spacing="10"
+        layout:edges="super">
+        <View
+            backgroundColor="blue"
+            layout:height="20"/>
+        <View
+            backgroundColor="green"
+            layout:height="20"/>
+    </StackView>
 
 </Component>

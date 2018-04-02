@@ -22,6 +22,8 @@ final class MainWireframe: Wireframe {
                         provider.navigation?.push(controller: self.playground())
                     case .plainTableView:
                         provider.navigation?.push(controller: self.plainTableViewController())
+                    case .stackView:
+                        provider.navigation?.push(controller: self.stackViewController())
                     }
                 }
             )
@@ -36,5 +38,9 @@ final class MainWireframe: Wireframe {
 
     private func plainTableViewController() -> PlainTableViewController {
         return PlainTableViewController()
+    }
+
+    private func stackViewController() -> StackViewController {
+        return StackViewController()
     }
 }

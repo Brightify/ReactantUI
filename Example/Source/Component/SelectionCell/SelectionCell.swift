@@ -11,6 +11,7 @@ import RxSwift
 enum ExampleType {
     case plainTableView
     case playground
+    case stackView
 
     var name: String {
         switch self {
@@ -18,10 +19,12 @@ enum ExampleType {
             return "Plain table view"
         case .playground:
             return "Playground"
+        case .stackView:
+            return "Stack view"
         }
     }
 
-    static let allValues: [ExampleType] = [.plainTableView, .playground]
+    static let allValues: [ExampleType] = [.plainTableView, .playground, .stackView]
 }
 
 final class SelectionCell: ControlBase<ExampleType, ExampleType> {
