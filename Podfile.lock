@@ -1,25 +1,23 @@
 PODS:
   - Differentiator (3.0.2)
   - Kingfisher (4.2.0)
-  - Reactant (1.1.0):
-    - Reactant/Core (= 1.1.0)
-    - Reactant/Result (= 1.1.0)
-  - Reactant/Configuration (1.1.0):
-    - RxSwift (~> 4.0)
-    - SnapKit (~> 4.0)
-  - Reactant/Core (1.1.0):
+  - Reactant (1.2.0):
+    - Reactant/Core (= 1.2.0)
+    - Reactant/Result (= 1.2.0)
+  - Reactant/Configuration (1.2.0)
+  - Reactant/Core (1.2.0):
     - Reactant/Configuration
     - RxCocoa (~> 4.0)
     - RxOptional (~> 3.0)
     - RxSwift (~> 4.0)
     - SnapKit (~> 4.0)
-  - Reactant/FallbackSafeAreaInsets (1.1.0):
+  - Reactant/FallbackSafeAreaInsets (1.2.0):
     - Reactant/Core
-  - Reactant/Result (1.1.0):
+  - Reactant/Result (1.2.0):
     - Result (~> 3.0)
     - RxOptional (~> 3.0)
     - RxSwift (~> 4.0)
-  - Reactant/TableView (1.1.0):
+  - Reactant/TableView (1.2.0):
     - Reactant/Core
     - RxCocoa (~> 4.0)
     - RxDataSources (~> 3.0)
@@ -44,8 +42,8 @@ PODS:
 
 DEPENDENCIES:
   - Kingfisher (~> 4.0)
-  - Reactant (from `https://github.com/Brightify/Reactant.git`, branch `deselection-fix`)
-  - Reactant/TableView (from `https://github.com/Brightify/Reactant.git`, branch `deselection-fix`)
+  - Reactant (from `https://github.com/Brightify/Reactant.git`, branch `feature/swift-4-1`)
+  - Reactant/TableView (from `https://github.com/Brightify/Reactant.git`, branch `feature/swift-4-1`)
   - ReactantLiveUI (from `./`)
   - ReactantUI (from `./`)
   - Result (~> 3.0)
@@ -57,7 +55,7 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   Reactant:
-    :branch: deselection-fix
+    :branch: feature/swift-4-1
     :git: https://github.com/Brightify/Reactant.git
   ReactantLiveUI:
     :path: ./
@@ -66,13 +64,13 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Reactant:
-    :commit: 2c667eb1dc05f75a6cc44c33f30b81921013143b
+    :commit: 01284d81411ed3a2fee108839ca4a846f36c6db5
     :git: https://github.com/Brightify/Reactant.git
 
 SPEC CHECKSUMS:
   Differentiator: a87be69eba49ec4ab460c7671143ee3a9eececfd
   Kingfisher: 9ee7e788d8ba07c3f21ce0d43f33cec310a4f781
-  Reactant: 3ee14c938c8dc0f311cd211c4ff13284e2cfbac4
+  Reactant: 5e4f19b798a42b46a61db6d86b42b85d70f774d4
   ReactantLiveUI: ea44a15cd63b1873c6b51fbb1b24b0d7fc51acee
   ReactantUI: c5c7a1d68db9d9a73f33aae8092a2f9e0dfeb2e1
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
@@ -82,6 +80,6 @@ SPEC CHECKSUMS:
   RxSwift: fd680d75283beb5e2559486f3c0ff852f0d35334
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
 
-PODFILE CHECKSUM: c481de8dc5bccd660160b1e98506929bb207f3e6
+PODFILE CHECKSUM: a597a19ce463d20661e6b944540fc88b14245e9c
 
 COCOAPODS: 1.4.0
