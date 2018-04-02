@@ -27,7 +27,7 @@ public class UIGenerator: Generator {
             if root.isRootView {
                 l("var edgesForExtendedLayout: UIRectEdge") {
                     if configuration.isLiveEnabled {
-                        l("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
+                        l("#if targetEnvironment(simulator)")
                         l("return ReactantLiveUIManager.shared.extendedEdges(of: self)")
                         l("#else")
                     }
@@ -70,7 +70,7 @@ public class UIGenerator: Generator {
                 l("func setupReactantUI()") {
                     l("guard let target = self.target else { /* FIXME Should we fatalError here? */ return }")
                     if configuration.isLiveEnabled {
-                        l("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
+                        l("#if targetEnvironment(simulator)")
                         // This will register `self` to remove `deinit` from ViewBase
                         l("ReactantLiveUIManager.shared.register(target)") {
 

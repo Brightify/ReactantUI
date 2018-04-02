@@ -45,7 +45,7 @@ public class Generator {
     
     func ifSimulator(_ commands: String) -> String {
         return """
-        #if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))
+        #if targetEnvironment(simulator)
         \(commands)
         #endif
         """

@@ -16,7 +16,7 @@ public enum RectEdge: String {
     case all
 
     static func parse(text: String) -> [RectEdge] {
-        return text.components(separatedBy: CharacterSet.whitespacesAndNewlines).flatMap(RectEdge.init)
+        return text.components(separatedBy: CharacterSet.whitespacesAndNewlines).compactMap(RectEdge.init)
     }
 
     public static func toGeneratedString(_ array: [RectEdge]) -> String {

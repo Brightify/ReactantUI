@@ -74,6 +74,6 @@ public struct ControlStateProperty<T: SupportedPropertyType>: Property {
     #endif
     
     private func parseState(from attributeName: String) -> [ControlState] {
-        return attributeName.components(separatedBy: ".").dropFirst(namespace.count + 1).flatMap(ControlState.init)
+        return attributeName.components(separatedBy: ".").dropFirst(namespace.count + 1).compactMap(ControlState.init)
     }
 }

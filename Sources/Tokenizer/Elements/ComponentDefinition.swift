@@ -55,7 +55,7 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, StyleC
     public init(node: XMLElement, type: String) throws {
         self.type = type
         isRootView = node.value(ofAttribute: "rootView") ?? false
-        styles = try node.singleOrNoElement(named: "styles")?.xmlChildren.flatMap { try $0.value() as Style } ?? []
+        styles = try node.singleOrNoElement(named: "styles")?.xmlChildren.compactMap { try $0.value() as Style } ?? []
         stylesName = try node.singleOrNoElement(named: "styles")?.attribute(by: "name")?.text ?? "Styles"
         children = try View.deserialize(nodes: node.xmlChildren)
         edgesForExtendedLayout = (node.attribute(by: "extend")?.text).map(RectEdge.parse) ?? []

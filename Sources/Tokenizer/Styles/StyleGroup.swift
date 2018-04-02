@@ -17,6 +17,6 @@ public struct StyleGroup: XMLElementDeserializable {
         let groupName = try node.value(ofAttribute: "name") as String
         return try StyleGroup(
             name: groupName,
-            styles: node.xmlChildren.flatMap { try Style(node: $0, groupName: groupName) })
+            styles: node.xmlChildren.compactMap { try Style(node: $0, groupName: groupName) })
     }
 }

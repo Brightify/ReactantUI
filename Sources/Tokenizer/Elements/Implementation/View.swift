@@ -80,7 +80,7 @@ public class View: XMLElementDeserializable, UIElement {
     }
 
     public static func deserialize(nodes: [XMLElement]) throws -> [UIElement] {
-        return try nodes.flatMap { node -> UIElement? in
+        return try nodes.compactMap { node -> UIElement? in
             if let elementType = ElementMapping.mapping[node.name] {
                 return try elementType.init(node: node)
             } else if node.name == "styles" {

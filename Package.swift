@@ -16,7 +16,7 @@ let package = Package(
             targets: ["Generator"])
     ],
     dependencies: [
-        .package(url: "https://github.com/xcodeswift/xcproj.git", .upToNextMajor(from: "2.0.0")),
+        .package(url: "https://github.com/xcodeswift/xcproj.git", .upToNextMajor(from: "4.0.0")),
         .package(url: "https://github.com/jakeheis/SwiftCLI", from: "4.0.0")
     ],
     targets: [

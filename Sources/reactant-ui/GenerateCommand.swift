@@ -67,11 +67,11 @@ class GenerateCommand: Command {
         let minimumDeploymentTarget = try self.minimumDeploymentTarget()
 
         let uiXmlEnumerator = FileManager.default.enumerator(atPath: inputPath)
-        let uiFiles = uiXmlEnumerator?.flatMap { $0 as? String }.filter { $0.hasSuffix(".ui.xml") }
+        let uiFiles = uiXmlEnumerator?.compactMap { $0 as? String }.filter { $0.hasSuffix(".ui.xml") }
             .map { inputPathURL.appendingPathComponent($0).path } ?? []
 
         let styleXmlEnumerator = FileManager.default.enumerator(atPath: inputPath)
-        let styleFiles = styleXmlEnumerator?.flatMap { $0 as? String }.filter { $0.hasSuffix(".styles.xml") }
+        let styleFiles = styleXmlEnumerator?.compactMap { $0 as? String }.filter { $0.hasSuffix(".styles.xml") }
             .map { inputPathURL.appendingPathComponent($0).path } ?? []
 
         var stylePaths = [] as [String]
@@ -140,7 +140,7 @@ class GenerateCommand: Command {
 
         if enableLive.value {
             output.append("""
-                  #if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))
+                  #if targetEnvironment(simulator)
                       struct GeneratedReactantLiveUIConfiguration: ReactantLiveUIConfiguration {
                       let rootDir = \"\(inputPath)\"
                       let commonStylePaths: [String] = [
@@ -185,19 +185,19 @@ class GenerateCommand: Command {
         }
 
         return project.pbxproj.objects.buildConfigurations.values
-            .flatMap { config -> Substring? in
+            .compactMap { config -> Substring? in
                 let value = (config.buildSettings["TVOS_DEPLOYMENT_TARGET"] ?? config.buildSettings["IPHONEOS_DEPLOYMENT_TARGET"]) as? String
 
                 return value?.split(separator: ".").first
             }
-            .flatMap { Int(String($0)) }.reduce(50) { previous, new in
+            .compactMap { Int(String($0)) }.reduce(50) { previous, new in
                 return previous < new ? previous : new
         }
     }
 
     private func ifSimulator(_ commands: String) -> String {
         return """
-               #if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))
+               #if targetEnvironment(simulator)
                \(commands)
                #endif
                """

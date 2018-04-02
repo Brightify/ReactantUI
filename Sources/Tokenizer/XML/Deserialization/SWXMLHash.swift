@@ -494,7 +494,7 @@ public enum XMLIndexer: Sequence {
     /// All child elements from the currently indexed level
     public var children: [XMLIndexer] {
         var list = [XMLIndexer]()
-        for elem in all.map({ $0.element! }).flatMap({ $0 }) {
+        for elem in all.map({ $0.element! }).compactMap({ $0 }) {
             for elem in elem.xmlChildren {
                 list.append(XMLIndexer(elem))
             }
@@ -762,7 +762,7 @@ public class XMLElement: XMLContent {
     public var text: String? {
         return children
             .map({ $0 as? TextElement })
-            .flatMap({ $0 })
+            .compactMap({ $0 })
             .reduce("", { $0 + $1.text })
     }
 
@@ -772,7 +772,7 @@ public class XMLElement: XMLContent {
     var index: Int
 
     var xmlChildren: [XMLElement] {
-        return children.map { $0 as? XMLElement }.flatMap { $0 }
+        return children.map { $0 as? XMLElement }.compactMap { $0 }
     }
 
     /**
