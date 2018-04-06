@@ -64,7 +64,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Reactant:
-    :commit: 01284d81411ed3a2fee108839ca4a846f36c6db5
+    :commit: 664210e689a4825ccce1ca498cc3f21f0b6faec4
     :git: https://github.com/Brightify/Reactant.git
 
 SPEC CHECKSUMS:
