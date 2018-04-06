@@ -140,7 +140,7 @@ class GenerateCommand: Command {
 
         if enableLive.value {
             output.append("""
-                  #if targetEnvironment(simulator)
+                  #if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))
                       struct GeneratedReactantLiveUIConfiguration: ReactantLiveUIConfiguration {
                       let rootDir = \"\(inputPath)\"
                       let commonStylePaths: [String] = [
@@ -197,7 +197,7 @@ class GenerateCommand: Command {
 
     private func ifSimulator(_ commands: String) -> String {
         return """
-               #if targetEnvironment(simulator)
+               #if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))
                \(commands)
                #endif
                """

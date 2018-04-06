@@ -66,8 +66,9 @@ public class Generator {
     }
     
     func ifSimulator(_ commands: String) -> String {
+        // FIXME use targetEnvironment(simulator)
         return """
-        #if targetEnvironment(simulator)
+        #if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))
         \(commands)
         #endif
         """
