@@ -149,35 +149,36 @@ class GenerateCommand: Command {
 
 
         if enableLive.value {
-            var liveOutput: [String] = []
-            liveOutput.append("""
+            output.append("""
+                  #if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))
                       struct GeneratedReactantLiveUIConfiguration: ReactantLiveUIConfiguration {
                       let rootDir = \"\(inputPath)\"
                       let commonStylePaths: [String] = [
                   """)
             for path in stylePaths {
-                liveOutput.append("        \"\(path)\",")
+                output.append("        \"\(path)\",")
             }
-            liveOutput.append("    ]")
+            output.append("    ]")
 
             if componentTypes.isEmpty {
-                liveOutput.append("    let componentTypes: [String: UIView.Type] = [:]")
+                output.append("    let componentTypes: [String: UIView.Type] = [:]")
             } else {
-                liveOutput.append("    let componentTypes: [String: UIView.Type] = [")
+                output.append("    let componentTypes: [String: UIView.Type] = [")
                 // filter out empty component types - these components are initialized in code, so they should already be included if they use RUI
                 for type in Set(componentTypes) {
                     output.append("        \"\(type)\": \(type).self,")
                 }
-                liveOutput.append("    ]")
+                output.append("    ]")
             }
-            liveOutput.append("}")
-
-            output.append(ifSimulator(swiftVersion: swiftVersion, commands: liveOutput.joined(separator: "\n")))
+            output.append("""
+                  }
+                  #endif
+                  """)
         }
 
         output.append("func activateLiveReload(in window: UIWindow) {")
         if enableLive.value {
-            output.append(ifSimulator(swiftVersion: swiftVersion, commands: "     ReactantLiveUIManager.shared.activate(in: window, configuration: GeneratedReactantLiveUIConfiguration())"))
+            output.append(ifSimulator(swiftVersion: swiftVersion, commands:"     ReactantLiveUIManager.shared.activate(in: window, configuration: GeneratedReactantLiveUIConfiguration())"))
         }
         output.append("}")
 
