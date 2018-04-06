@@ -14,7 +14,7 @@ pod 'Reactant'
 pod 'ReactantUI'
 pod 'ReactantLiveUI', :configuration => 'Debug'
 ```
-Add new Run script phase to  Build phases:
+Add new Run script phase to Build phases:
 ```bash
 pushd "$PODS_ROOT/ReactantUI"
 env -i HOME="$HOME" PATH="$PATH" swift build
@@ -22,6 +22,9 @@ popd
 
 $PODS_ROOT/ReactantUI/.build/debug/reactant-ui generate --enable-live --inputPath=$SRCROOT/Application/Sources/ --outputFile=$SRCROOT/Application/Generated/GeneratedUI.swift --xcodeprojPath=$PROJECT_DIR/YOURWORKSPACE.xcodeproj
 ```
+
+### Projects using Swift 4.0
+In order to compile valid code, add `--swift 4.0` flag to the build script. Swift 4.1 works out of the box.
 
 [![CI Status](https://img.shields.io/travis/Brightify/ReactantUI.svg?style=flat)](https://travis-ci.org/Brightify/ReactantUI)
 [![Version](https://img.shields.io/cocoapods/v/ReactantUI.svg?style=flat)][reactant-cocoapods]

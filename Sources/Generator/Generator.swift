@@ -1,15 +1,39 @@
 import Foundation
 import Tokenizer
 
+public enum SwiftVersion: Int {
+    case swift4_0
+    case swift4_1
+
+    public init?(raw: String) {
+        switch raw {
+        case "4.0":
+            self = .swift4_0
+        case "4.1":
+            self = .swift4_1
+        default:
+            return nil
+        }
+    }
+}
+
+extension SwiftVersion: Comparable {
+    public static func <(lhs: SwiftVersion, rhs: SwiftVersion) -> Bool {
+        return lhs.rawValue < rhs.rawValue
+    }
+}
+
 public struct GeneratorConfiguration {
     public let minimumMajorVersion: Int
     public let localXmlPath: String
     public let isLiveEnabled: Bool
+    public let swiftVersion: SwiftVersion
     
-    public init(minimumMajorVersion: Int, localXmlPath: String, isLiveEnabled: Bool) {
+    public init(minimumMajorVersion: Int, localXmlPath: String, isLiveEnabled: Bool, swiftVersion: SwiftVersion) {
         self.minimumMajorVersion = minimumMajorVersion
         self.localXmlPath = localXmlPath
         self.isLiveEnabled = isLiveEnabled
+        self.swiftVersion = swiftVersion
     }
 }
 
@@ -66,11 +90,18 @@ public class Generator {
     }
     
     func ifSimulator(_ commands: String) -> String {
-        // FIXME use targetEnvironment(simulator)
-        return """
-        #if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))
-        \(commands)
-        #endif
-        """
+        if configuration.swiftVersion >= .swift4_1 {
+            return """
+            #if targetEnvironment(simulator)
+                \(commands)
+            #endif
+            """
+        } else {
+            return """
+            #if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))
+                \(commands)
+            #endif
+            """
+        }
     }
 }

@@ -17,6 +17,7 @@ public enum GenerateCommandError: Error, LocalizedError {
     case cannotReadXCodeProj
     case invalidType(String)
     case tokenizationError(path: String, error: Error)
+    case invalidSwiftVersion
 
     public var localizedDescription: String {
         switch self {
@@ -32,6 +33,8 @@ public enum GenerateCommandError: Error, LocalizedError {
             return "Invalid Component type at path: \(path) - do not use keywords.";
         case .tokenizationError(let path, let error):
             return "Tokenization error in file: \(path), error: \(error.localizedDescription)"
+        case .invalidSwiftVersion:
+            return "Invalid Swift version"
         }
     }
 
@@ -52,6 +55,7 @@ class GenerateCommand: Command {
     let xcodeProjectPath = Key<String>("--xcodeprojPath")
     let inputPath = Key<String>("--inputPath")
     let outputFile = Key<String>("--outputFile")
+    let swiftVersionParameter = Key<String>("--swift")
 
     public func execute() throws {
         var output: [String] = []
@@ -62,6 +66,11 @@ class GenerateCommand: Command {
 
         guard let outputFile = outputFile.value, let outputPathURL = URL(string: "file://\(outputFile)") else {
             throw GenerateCommandError.ouputFileInvalid
+        }
+
+        let rawSwiftVersion = swiftVersionParameter.value ?? "4.1" // use 4.1 as default
+        guard let swiftVersion = SwiftVersion(raw: rawSwiftVersion) else {
+            throw GenerateCommandError.invalidSwiftVersion
         }
 
         let minimumDeploymentTarget = try self.minimumDeploymentTarget()
@@ -84,7 +93,8 @@ class GenerateCommand: Command {
             stylePaths.append(path)
             let configuration = GeneratorConfiguration(minimumMajorVersion: minimumDeploymentTarget,
                                                        localXmlPath: path,
-                                                       isLiveEnabled: enableLive.value)
+                                                       isLiveEnabled: enableLive.value,
+                                                       swiftVersion: swiftVersion)
             output.append(try StyleGenerator(group: group, configuration: configuration).generate(imports: index == 0))
         }
 
@@ -123,7 +133,7 @@ class GenerateCommand: Command {
               """)
 
         if enableLive.value {
-            output.append(ifSimulator("import ReactantLiveUI"))
+            output.append(ifSimulator(swiftVersion: swiftVersion, commands: "import ReactantLiveUI"))
         }
         for imp in imports {
             output.append("import \(imp)")
@@ -131,7 +141,7 @@ class GenerateCommand: Command {
 
         for (path, rootDefinition) in componentDefinitions {
             output.append("// Generated from \(path)")
-            let configuration = GeneratorConfiguration(minimumMajorVersion: minimumDeploymentTarget, localXmlPath: path, isLiveEnabled: enableLive.value)
+            let configuration = GeneratorConfiguration(minimumMajorVersion: minimumDeploymentTarget, localXmlPath: path, isLiveEnabled: enableLive.value, swiftVersion: swiftVersion)
             for definition in rootDefinition.componentDefinitions {
                 output.append(try UIGenerator(definition: definition, configuration: configuration).generate(imports: false))
             }
@@ -139,36 +149,35 @@ class GenerateCommand: Command {
 
 
         if enableLive.value {
-            output.append("""
-                  #if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))
+            var liveOutput: [String] = []
+            liveOutput.append("""
                       struct GeneratedReactantLiveUIConfiguration: ReactantLiveUIConfiguration {
                       let rootDir = \"\(inputPath)\"
                       let commonStylePaths: [String] = [
                   """)
             for path in stylePaths {
-                output.append("        \"\(path)\",")
+                liveOutput.append("        \"\(path)\",")
             }
-            output.append("    ]")
+            liveOutput.append("    ]")
 
             if componentTypes.isEmpty {
-                output.append("    let componentTypes: [String: UIView.Type] = [:]")
+                liveOutput.append("    let componentTypes: [String: UIView.Type] = [:]")
             } else {
-                output.append("    let componentTypes: [String: UIView.Type] = [")
+                liveOutput.append("    let componentTypes: [String: UIView.Type] = [")
                 // filter out empty component types - these components are initialized in code, so they should already be included if they use RUI
                 for type in Set(componentTypes) {
                     output.append("        \"\(type)\": \(type).self,")
                 }
-                output.append("    ]")
+                liveOutput.append("    ]")
             }
-            output.append("""
-                  }
-                  #endif
-                  """)
+            liveOutput.append("}")
+
+            output.append(ifSimulator(swiftVersion: swiftVersion, commands: liveOutput.joined(separator: "\n")))
         }
 
         output.append("func activateLiveReload(in window: UIWindow) {")
         if enableLive.value {
-            output.append(ifSimulator("     ReactantLiveUIManager.shared.activate(in: window, configuration: GeneratedReactantLiveUIConfiguration())"))
+            output.append(ifSimulator(swiftVersion: swiftVersion, commands: "     ReactantLiveUIManager.shared.activate(in: window, configuration: GeneratedReactantLiveUIConfiguration())"))
         }
         output.append("}")
 
@@ -195,11 +204,19 @@ class GenerateCommand: Command {
         }
     }
 
-    private func ifSimulator(_ commands: String) -> String {
-        return """
-               #if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))
-               \(commands)
-               #endif
-               """
+    private func ifSimulator(swiftVersion: SwiftVersion, commands: String) -> String {
+        if swiftVersion >= .swift4_1 {
+            return """
+            #if targetEnvironment(simulator)
+            \(commands)
+            #endif
+            """
+        } else {
+            return """
+            #if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))
+            \(commands)
+            #endif
+            """
+        }
     }
 }
