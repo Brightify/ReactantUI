@@ -27,7 +27,11 @@ public class UIGenerator: Generator {
             if root.isRootView {
                 l("var edgesForExtendedLayout: UIRectEdge") {
                     if configuration.isLiveEnabled {
-                        
+                        if configuration.swiftVersion >= .swift4_1 {
+                            l("#if targetEnvironment(simulator)")
+                        } else {
+                            l("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
+                        }
                         l("return ReactantLiveUIManager.shared.extendedEdges(of: self)")
                         l("#else")
                     }
