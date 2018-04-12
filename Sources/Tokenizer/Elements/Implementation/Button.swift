@@ -62,7 +62,7 @@ public class ButtonProperties: ControlProperties {
         titleEdgeInsets = configuration.property(name: "titleEdgeInsets")
         imageEdgeInsets = configuration.property(name: "imageEdgeInsets")
         titleLabel = configuration.namespaced(in: "titleLabel", optional: true, LabelProperties.self)
-        imageView = configuration.namespaced(in: "imageView", ImageViewProperties.self)
+        imageView = configuration.namespaced(in: "imageView", optional: true, ImageViewProperties.self)
         
         super.init(configuration: configuration)
     }
