@@ -23,7 +23,7 @@ Pod::Spec.new do |spec|
     spec.tvos.deployment_target = '9.2'
 
     spec.source_files = []
-    spec.preserve_paths = ['Sources/**/*', 'Package.swift', 'Package.pins']
+    spec.preserve_paths = ['Sources/**/*', 'Package.swift', 'Package.resolved']
     spec.prepare_command = <<-CMD
         swift build
     CMD
