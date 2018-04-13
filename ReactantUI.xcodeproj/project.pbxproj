@@ -324,7 +324,6 @@
 				182B68641EAF7589007CC668 /* Frameworks */,
 				182B68651EAF7589007CC668 /* Resources */,
 				80D15FFAC2FA355FB1F2A212 /* [CP] Embed Pods Frameworks */,
-				F6DB46BC86E2ED35226501D9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -345,7 +344,6 @@
 				2284DAD61FAC855E00D231D3 /* Frameworks */,
 				2284DAD71FAC855E00D231D3 /* Resources */,
 				EF6D4C2B113BA20F2516FE65 /* [CP] Embed Pods Frameworks */,
-				2BDA1565040E38BA7634A4BC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -457,21 +455,6 @@
 			shellPath = /bin/sh;
 			shellScript = "pushd $PROJECT_DIR\nenv -i HOME=$HOME PATH=$PATH swift build\npopd\n\n$PROJECT_DIR/.build/debug/reactant-ui generate --enable-live --inputPath=$PROJECT_DIR/Example-tvOS/ --outputFile=$PROJECT_DIR/Example-tvOS/Generated/GeneratedUI.swift --xcodeprojPath=$PROJECT_DIR/ReactantUI.xcodeproj\n\n#pushd $PROJECT_DIR/Example-tvOS\n#$PROJECT_DIR/.build/debug/reactant-ui --enable-live > $PROJECT_DIR/Example-tvOS/Generated/GeneratedUI.swift\n#popd";
 		};
-		2BDA1565040E38BA7634A4BC /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Example-tvOS/Pods-Example-tvOS-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		80D15FFAC2FA355FB1F2A212 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -578,21 +561,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Example-tvOS/Pods-Example-tvOS-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F6DB46BC86E2ED35226501D9 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Example/Pods-Example-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
