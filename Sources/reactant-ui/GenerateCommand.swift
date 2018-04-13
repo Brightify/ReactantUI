@@ -149,8 +149,12 @@ class GenerateCommand: Command {
 
 
         if enableLive.value {
+            if swiftVersion < .swift4_1 {
+                output.append("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
+            } else {
+                output.append("#if targetEnvironment(simulator)")
+            }
             output.append("""
-                  #if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))
                       struct GeneratedReactantLiveUIConfiguration: ReactantLiveUIConfiguration {
                       let rootDir = \"\(inputPath)\"
                       let commonStylePaths: [String] = [
