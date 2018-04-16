@@ -9,4 +9,7 @@ import Reactant
 
 final class PlainTableViewController: ControllerBase<Void, PlainTableViewRootView> {
 
+    override init() {
+        super.init(title: "Plain table view")
+    }
 }

@@ -24,6 +24,8 @@ final class MainWireframe: Wireframe {
                         provider.navigation?.push(controller: self.plainTableViewController())
                     case .stackView:
                         provider.navigation?.push(controller: self.stackViewController())
+                    case .progressView:
+                        provider.navigation?.push(controller: self.progressViewController())
                     }
                 }
             )
@@ -42,5 +44,9 @@ final class MainWireframe: Wireframe {
 
     private func stackViewController() -> StackViewController {
         return StackViewController()
+    }
+
+    private func progressViewController() -> ProgressViewController {
+        return ProgressViewController()
     }
 }

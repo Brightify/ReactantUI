@@ -8,5 +8,8 @@
 import Reactant
 
 final class StackViewController: ControllerBase<Void, StackViewRootView> {
-    
+
+    override init() {
+        super.init(title: "Stack view")
+    }
 }

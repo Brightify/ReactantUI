@@ -12,6 +12,7 @@ enum ExampleType {
     case plainTableView
     case playground
     case stackView
+    case progressView
 
     var name: String {
         switch self {
@@ -21,10 +22,12 @@ enum ExampleType {
             return "Playground"
         case .stackView:
             return "Stack view"
+        case .progressView:
+            return "Progress view"
         }
     }
 
-    static let allValues: [ExampleType] = [.plainTableView, .playground, .stackView]
+    static let allValues: [ExampleType] = [.plainTableView, .playground, .stackView, .progressView]
 }
 
 final class SelectionCell: ControlBase<ExampleType, ExampleType> {

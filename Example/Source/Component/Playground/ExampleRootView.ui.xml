@@ -98,6 +98,10 @@
             <Component field="test" />
             <Component type="ExampleView2" />
             <TextField text="Test" secure="true" layout:height="50" />
+            <ProgressView
+                progress="0.4"
+                progressTintColor="red"
+                trackTintColor="green"/>
         </StackView>
 
     <!-- <ScrollView layout:edges="super">

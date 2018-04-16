@@ -39,5 +39,6 @@ public struct ElementMapping {
         "VisualEffectView": VisualEffectView.self,
         "WebView": WebView.self,
         "MapView": MapView.self,
+        "ProgressView": ProgressView.self,
     ]
 }

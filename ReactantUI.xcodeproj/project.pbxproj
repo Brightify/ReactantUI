@@ -31,6 +31,9 @@
 		22141C9F2052B49E00205F56 /* PlainTableViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22141C9E2052B49E00205F56 /* PlainTableViewRootView.ui.xml */; };
 		22141CA22052B55000205F56 /* PlainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141CA12052B55000205F56 /* PlainCell.swift */; };
 		22141CA42052B55E00205F56 /* PlainCell.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22141CA32052B55E00205F56 /* PlainCell.ui.xml */; };
+		224F04EB2085134000C48268 /* ProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224F04EA2085134000C48268 /* ProgressViewController.swift */; };
+		224F04ED2085134B00C48268 /* ProgressViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224F04EC2085134B00C48268 /* ProgressViewRootView.swift */; };
+		224F04EF2085136400C48268 /* ProgressViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 224F04EE2085136400C48268 /* ProgressViewRootView.ui.xml */; };
 		2284DADC1FAC855E00D231D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2284DADB1FAC855E00D231D3 /* AppDelegate.swift */; };
 		2284DADE1FAC855E00D231D3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2284DADD1FAC855E00D231D3 /* ViewController.swift */; };
 		2284DAE11FAC855E00D231D3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2284DADF1FAC855E00D231D3 /* Main.storyboard */; };
@@ -72,6 +75,9 @@
 		22141C9E2052B49E00205F56 /* PlainTableViewRootView.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PlainTableViewRootView.ui.xml; sourceTree = "<group>"; };
 		22141CA12052B55000205F56 /* PlainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainCell.swift; sourceTree = "<group>"; };
 		22141CA32052B55E00205F56 /* PlainCell.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PlainCell.ui.xml; sourceTree = "<group>"; };
+		224F04EA2085134000C48268 /* ProgressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewController.swift; sourceTree = "<group>"; };
+		224F04EC2085134B00C48268 /* ProgressViewRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewRootView.swift; sourceTree = "<group>"; };
+		224F04EE2085136400C48268 /* ProgressViewRootView.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ProgressViewRootView.ui.xml; sourceTree = "<group>"; };
 		2284DAD91FAC855E00D231D3 /* Example-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Example-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2284DADB1FAC855E00D231D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2284DADD1FAC855E00D231D3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -202,6 +208,7 @@
 		22141C982052B45500205F56 /* Examples */ = {
 			isa = PBXGroup;
 			children = (
+				224F04E92085132D00C48268 /* ProgressView */,
 				22957E36207235B30088C09E /* StackView */,
 				22141C992052B45D00205F56 /* PlainTableView */,
 			);
@@ -241,6 +248,16 @@
 				182B68841EAF7641007CC668 /* ViewController.swift */,
 			);
 			path = Playground;
+			sourceTree = "<group>";
+		};
+		224F04E92085132D00C48268 /* ProgressView */ = {
+			isa = PBXGroup;
+			children = (
+				224F04EA2085134000C48268 /* ProgressViewController.swift */,
+				224F04EC2085134B00C48268 /* ProgressViewRootView.swift */,
+				224F04EE2085136400C48268 /* ProgressViewRootView.ui.xml */,
+			);
+			path = ProgressView;
 			sourceTree = "<group>";
 		};
 		2284DADA1FAC855E00D231D3 /* Example-tvOS */ = {
@@ -411,6 +428,7 @@
 				22141C922052B0A400205F56 /* ExampleSelectionRootView.ui.xml in Resources */,
 				22141C9F2052B49E00205F56 /* PlainTableViewRootView.ui.xml in Resources */,
 				22141C972052B0FD00205F56 /* SelectionCell.ui.xml in Resources */,
+				224F04EF2085136400C48268 /* ProgressViewRootView.ui.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -570,6 +588,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				224F04ED2085134B00C48268 /* ProgressViewRootView.swift in Sources */,
+				224F04EB2085134000C48268 /* ProgressViewController.swift in Sources */,
 				22141C9B2052B47000205F56 /* PlainTableViewController.swift in Sources */,
 				182B68941EAF7641007CC668 /* ViewController.swift in Sources */,
 				22141CA22052B55000205F56 /* PlainCell.swift in Sources */,
