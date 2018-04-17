@@ -16,3 +16,4 @@
 * Fix in-code-defined constraints being removed on reload
 * Swift 4.1 support
 * Improve usability on tvOS
+* Add support for UIProgressView
