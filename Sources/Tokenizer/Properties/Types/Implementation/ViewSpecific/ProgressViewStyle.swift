@@ -1,6 +1,6 @@
 //
 //  ProgressViewStyle.swift
-//  Pods
+//  ReactantUI
 //
 //  Created by Matouš Hýbl on 16/04/2018.
 //
