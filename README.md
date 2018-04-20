@@ -20,7 +20,7 @@ pushd "$PODS_ROOT/ReactantUI"
 env -i HOME="$HOME" PATH="$PATH" swift build
 popd
 
-$PODS_ROOT/ReactantUI/.build/debug/reactant-ui generate --enable-live --inputPath=$SRCROOT/Application/Sources/ --outputFile=$SRCROOT/Application/Generated/GeneratedUI.swift --xcodeprojPath=$PROJECT_DIR/YOURWORKSPACE.xcodeproj
+"$PODS_ROOT/ReactantUI/.build/debug/reactant-ui" generate --enable-live --inputPath="$SRCROOT/Application/Sources/" --outputFile="$SRCROOT/Application/Generated/GeneratedUI.swift" --xcodeprojPath="$PROJECT_DIR/$PROJECT_NAME.xcodeproj"
 ```
 
 ### Projects using Swift 4.0
