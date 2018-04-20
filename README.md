@@ -2,6 +2,13 @@
 
 ## Reactant extension for UI declaration in XML
 
+[![CI Status](https://img.shields.io/travis/Brightify/ReactantUI.svg?style=flat)](https://travis-ci.org/Brightify/ReactantUI)
+[![Version](https://img.shields.io/cocoapods/v/ReactantUI.svg?style=flat)][reactant-cocoapods]
+[![License](https://img.shields.io/cocoapods/l/ReactantUI.svg?style=flat)][reactant-cocoapods]
+[![Platform](https://img.shields.io/cocoapods/p/ReactantUI.svg?style=flat)][reactant-cocoapods]
+[![Apps](https://img.shields.io/cocoapods/at/ReactantUI.svg?style=flat)][reactant-cocoapods]
+[![Slack Status](https://swiftkit.brightify.org/badge.svg)][slack]
+
 Reactant UI is an extension for Reactant for declaration of views and layout using XML. There is no runtime overhead, as all the XML declarations are precompiled into Swift. Reactant then uses the generated code to create your UI. Reactant Live UI is an optional part responsible for live rendering your XML file in the simulator on every save. Check the [quick-start guide][quick-start] to learn more.
 
 ## Important note
@@ -16,22 +23,13 @@ pod 'ReactantLiveUI', :configuration => 'Debug'
 ```
 Add new Run script phase to Build phases:
 ```bash
-pushd "$PODS_ROOT/ReactantUI"
-env -i HOME="$HOME" PATH="$PATH" swift build
-popd
-
-"$PODS_ROOT/ReactantUI/.build/debug/reactant-ui" generate --enable-live --inputPath="$SRCROOT/Application/Sources/" --outputFile="$SRCROOT/Application/Generated/GeneratedUI.swift" --xcodeprojPath="$PROJECT_DIR/$PROJECT_NAME.xcodeproj"
+"$PODS_ROOT/ReactantUI/run" --download -- generate --enable-live --inputPath="$SRCROOT/Application/Sources/" --outputFile="$SRCROOT/Application/Generated/GeneratedUI.swift" --xcodeprojPath="$PROJECT_DIR/$PROJECT_NAME.xcodeproj"
 ```
+
+To download a specific version using the `run` script, simply add semantic versioning number after the `--download` option. However, if you'd like to build the binary instead of downloading it if it's missing, delete the `--download` option altogether.
 
 ### Projects using Swift 4.0
 In order to compile valid code, add `--swift 4.0` flag to the build script. Swift 4.1 works out of the box.
-
-[![CI Status](https://img.shields.io/travis/Brightify/ReactantUI.svg?style=flat)](https://travis-ci.org/Brightify/ReactantUI)
-[![Version](https://img.shields.io/cocoapods/v/ReactantUI.svg?style=flat)][reactant-cocoapods]
-[![License](https://img.shields.io/cocoapods/l/ReactantUI.svg?style=flat)][reactant-cocoapods]
-[![Platform](https://img.shields.io/cocoapods/p/ReactantUI.svg?style=flat)][reactant-cocoapods]
-[![Apps](https://img.shields.io/cocoapods/at/ReactantUI.svg?style=flat)][reactant-cocoapods]
-[![Slack Status](https://swiftkit.brightify.org/badge.svg)][slack]
 
 ## Requirements
 

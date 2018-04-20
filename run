@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+
+ALL_ARG_COUNT="$#"
+SCRIPT_PATH="$(dirname "$0")"
+FILE_NAME="reactant-ui"
+LIBRARY_NAME="ReactantUI"
+FILE_PATH="$SCRIPT_PATH/$FILE_NAME"
+GREP_OPTIONS=""
+
+function perform_curl {
+  curl -Lo ${FILE_NAME} `curl "$1" | grep -oe '"browser_download_url":\s*"[^" ]*"' | grep -oe 'http[^" ]*' | grep ${FILE_NAME} | head -1`
+}
+
+function download_binary {
+  MATCH=$(echo "$1" | grep -e "\d\d*\.\d\d*\.\d\d*")
+  if [[ ! -z "$MATCH" ]]; then
+    VERSION="$MATCH"
+    DOWNLOAD_SPECIFIC_VER=1
+  fi
+  if [[ -z "$VERSION" ]]; then
+    echo "Downloading latest version..."
+    perform_curl "https://api.github.com/repos/Brightify/$LIBRARY_NAME/releases/latest"
+  else
+    echo "Downloading version $VERSION..."
+    perform_curl "https://api.github.com/repos/Brightify/$LIBRARY_NAME/releases/tags/$VERSION"
+  fi
+  chmod +x ${FILE_NAME}
+}
+
+if [[ ! -e "$FILE_PATH" ]]; then
+  pushd "$SCRIPT_PATH"
+  echo "No $FILE_NAME found."
+  if [[ "$1" = "--download" ]]; then
+    download_binary "$2"
+  else
+    echo "Building..."
+    ./build_reactant-ui
+    if [[ "$?" -ne 0 ]]; then
+      echo "Build seems to have failed for some reason. Please file an issue on GitHub."
+      exit 1
+    fi
+    mv "$SCRIPT_PATH/.build/release/$FILE_NAME" "$FILE_PATH"
+  fi
+  popd
+fi
+
+if [[ "$1" = "--download" ]]; then
+  if [[ ! -z "$DOWNLOAD_SPECIFIC_VER" ]]; then
+    shift
+  fi
+	shift
+fi
+
+# all parameters after this separator belong to the binary
+if [[ "$1" = "--" ]]; then
+  shift
+elif [[ "$ALL_ARG_COUNT" -ne "$#" ]]; then
+  echo "Error while parsing arguments. When using an argument that belongs to the \`run\` script,
+you need to separate the arguments from the binary arguments using a \`--\`.
+  Example: \"run --download 1.0.0 -- generate ...\""
+  exit 1
+fi
+
+# calling the binary with the rest of the arguments
+./"$FILE_NAME" "$@"

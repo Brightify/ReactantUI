@@ -1,0 +1,105 @@
+fastlane_version '2.54.1'
+
+default_platform :mac
+
+fastlane_require 'json'
+
+platform :mac do
+  before_all do
+    ensure_git_status_clean
+    ensure_git_branch
+  end
+
+  desc 'Releases build specified by user.'
+  lane :release do
+    release_type = UI.select('Select release type: ', %w[major minor patch])
+    upload_release release_type
+  end
+
+  desc 'Releases major build. (+1).0.0'
+  lane :major do # fastlane major
+    upload_release 'major'
+  end
+
+  desc 'Releases minor build. X.(+1).0'
+  lane :minor do # fastlane minor
+    upload_release 'minor'
+  end
+
+  desc 'Releases patch build. X.X.(+1)'
+  lane :patch do # fastlane patch
+    upload_release 'patch'
+  end
+
+  def upload_release release_type
+    # Building the binary
+    Dir.chdir('../') do
+      sh('../build_reactant-ui')
+    end
+
+    # Settings
+    binary_path = '../.build/release/reactant-ui'
+    binary_name = 'reactant-ui'
+
+    # GitHub username
+    username_var_name = 'GITHUB_USERNAME'
+    username = ENV[username_var_name]
+
+    # Personal Access Token
+    token_var_name = 'RELEASE_ACCESS_TOKEN'
+    access_token = ENV[token_var_name]
+
+    # Error Raisins
+    unless access_token
+        access_token = UI.input "Please type in your GitHub access token or cancel the release and define enviroment variable \"#{token_var_name}\" with the personal access token to use."
+    end
+    unless username
+        username = UI.input "Please type in your GitHub username or cancel the release and define enviroment variable \"#{username_var_name}\" with your GitHub username."
+    end
+
+    # URL variables
+    repo_path = 'Brightify/ReactantUI'
+    base_url = "github.com/repos/#{repo_path}/releases"
+    api_url = "https://api.#{base_url}"
+    auth_string = "#{username}:#{access_token}"
+    changelog = create_changelog.gsub(/`/, '``').gsub(/'/, '&#39;').gsub(/"/, '&#34;').gsub(/\n/, '\\n')
+    version = version_bump_podspec(path: 'ReactantUI.podspec', bump_type: release_type)
+    version_bump_podspec(path: 'ReactantLiveUI.podspec', bump_type: release_type)
+    git_commit(path: ['./ReactantUI.podspec', './ReactantLiveUI.podspec'], message: "Bump version.")
+    add_git_tag(tag: version)
+    push_to_git_remote
+
+    # https://developer.github.com/v3/repos/releases/#create-a-release
+    creation_body = "'{\"tag_name\":\"#{version}\",\"target_commitish\":\"master\", \"name\":\"New Release – #{version}\", \"body\":\"#{changelog}\", \"draft\":false, \"prerelease\":false}'"
+    creation_response = JSON.parse(`curl -X POST -d #{creation_body} -u #{auth_string} #{api_url} -v`)
+    UI.crash! 'Release draft creation failed!' unless creation_response
+    upload_url = (creation_response['upload_url']).sub(/{.*name.*}/, '')
+
+    # https://developer.github.com/v3/repos/releases/#upload-a-release-asset
+    upload_response = JSON.parse(`curl -X POST --data-binary "@#{binary_path}" -u "#{auth_string}" "#{upload_url}?name=#{binary_name}" -H "Content-Type:application/octet-stream"`)
+    UI.crash! 'Release draft upload failed!' unless upload_response
+
+    pod_lib_lint
+    pod_push(path: 'ReactantUI.podspec')
+    pod_push(path: 'ReactantLiveUI.podspec')
+
+    UI.success "All done!\nYou can now visit #{creation_response['url']} (command+click) and release the thing."
+  end
+
+  def create_changelog
+    changelog = changelog_from_git_commits(pretty: "- %s", merge_commit_filtering: "exclude_merges")
+    if changelog
+      changelog.gsub(/.(?<=[^|\n]).*[B|b]ump.*\n?/, '')
+    else
+      'No new changes, sorry!'
+    end
+  end
+
+  after_all do
+    reset_git_repo
+  end
+
+  error do |_, exception|
+    UI.error "Release failed. This might help: #{exception}"
+  end
+end

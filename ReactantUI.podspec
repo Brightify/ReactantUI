@@ -23,8 +23,10 @@ Pod::Spec.new do |spec|
     spec.tvos.deployment_target = '9.2'
 
     spec.source_files = ['Sources/Common/**/*.swift', 'Sources/Runtime/**/*.swift']
+    generator_name = 'reactant-ui'
     spec.preserve_paths = ['Sources/**/*', 'Package.swift', 'Package.resolved']
     spec.prepare_command = <<-CMD
-        swift build
+        curl -Lo #{generator_name} https://github.com/Brightify/ReactantUI/releases/download/#{s.version}/#{generator_name}
+        chmod +x #{generator_name}
     CMD
 end
