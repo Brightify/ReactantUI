@@ -7,6 +7,9 @@
 //
 
 import Foundation
+#if ReactantRuntime
+    import UIKit
+#endif
 
 public struct AffineTransformation: SupportedPropertyType {
     

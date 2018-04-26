@@ -6,6 +6,9 @@
 //
 
 import Foundation
+#if ReactantRuntime
+    import UIKit
+#endif
 
 public struct CGColorPropertyType: SupportedPropertyType {
     public let color: UIColorPropertyType

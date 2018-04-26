@@ -7,6 +7,9 @@
 //
 
 import Foundation
+#if ReactantRuntime
+    import UIKit
+#endif
 
 public struct Point: SupportedPropertyType {
     public let x: Float

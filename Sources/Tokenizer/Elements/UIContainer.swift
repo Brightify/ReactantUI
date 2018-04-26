@@ -6,6 +6,10 @@
 //  Copyright © 2017 Brightify. All rights reserved.
 //
 
+#if ReactantRuntime
+    import UIKit
+#endif
+
 public protocol UIContainer {
     var children: [UIElement] { get set }
 

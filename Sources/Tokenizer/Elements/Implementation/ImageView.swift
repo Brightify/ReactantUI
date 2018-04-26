@@ -5,6 +5,9 @@
 //  Created by Matous Hybl.
 //  Copyright © 2017 Brightify. All rights reserved.
 //
+#if ReactantRuntime
+    import UIKit
+#endif
 
 public class ImageView: View {
     public override class var availableProperties: [PropertyDescription] {

@@ -13,22 +13,38 @@ def shared
     pod 'Result', '~> 3.0'
 end
 
+abstract_target 'LiveUI' do
+    podspec :path => './ReactantLiveUI.podspec'
+
+    target 'LiveUI-iOS' do
+        platform :ios, '9.0'
+
+        target 'LiveUI-iOSTests' do
+            pod 'Quick', '~> 1.1'
+            pod 'Nimble', '~> 7.0'
+            pod 'RxNimble'
+            pod 'RxTest'
+        end
+    end
+
+end
+
 target 'Example' do
     platform :ios, '9.0'
-    shared
+#    shared
 
-    pod 'Reactant', :git => 'https://github.com/Brightify/Reactant.git', :branch => 'master'
-    pod 'Reactant/TableView', :git => 'https://github.com/Brightify/Reactant.git', :branch => 'master'
-    pod 'ReactantUI', :path => './'
-    pod 'ReactantLiveUI', :path => './', :configuration => 'Debug'
+#    pod 'Reactant', :git => 'https://github.com/Brightify/Reactant.git', :branch => 'master'
+#    pod 'Reactant/TableView', :git => 'https://github.com/Brightify/Reactant.git', :branch => 'master'
+#    pod 'ReactantUI', :path => './'
+#    pod 'ReactantLiveUI', :path => './', :configuration => 'Debug'
 end
 
 target 'Example-tvOS' do
     platform :tvos, '9.2'
-    shared
+#    shared
 
-    pod 'Reactant', :git => 'https://github.com/Brightify/Reactant.git', :branch => 'master'
-    pod 'Reactant/TableView',  :git => 'https://github.com/Brightify/Reactant.git', :branch => 'master'
-    pod 'ReactantUI', :path => './'
-    pod 'ReactantLiveUI', :path => './', :configuration => 'Debug'
+#    pod 'Reactant', :git => 'https://github.com/Brightify/Reactant.git', :branch => 'master'
+#    pod 'Reactant/TableView',  :git => 'https://github.com/Brightify/Reactant.git', :branch => 'master'
+#    pod 'ReactantUI', :path => './'
+#    pod 'ReactantLiveUI', :path => './', :configuration => 'Debug'
 end
