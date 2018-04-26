@@ -36,17 +36,25 @@ public struct AssignableProperty<T: SupportedPropertyType>: TypedProperty {
     #if ReactantRuntime
     public func apply(on object: AnyObject) throws {
         let key = description.key
+        let selector = Selector("set\(key.capitalizingFirstLetter()):")
+
+        let target = try resolveTarget(for: object)
+
+        guard target.responds(to: selector) else {
+            throw LiveUIError(message: "!! Object `\(target)` doesn't respond to selector `\(key)` to set value `\(value)`")
+        }
         guard let resolvedValue = value.runtimeValue else {
             throw LiveUIError(message: "!! Value `\(value)` couldn't be resolved in runtime for key `\(key)`")
         }
 
-        let target = try resolveTarget(for: object)
-    
-        guard target.responds(to: Selector("set\(key.capitalizingFirstLetter()):")) else {
-            throw LiveUIError(message: "!! Object `\(target)` doesn't respond to selector `\(key)` to set value `\(value)`")
+        do {
+            try catchException {
+                _ = target.setValue(resolvedValue, forKey: key)
+            }
+        } catch {
+            target.perform(selector, with: resolvedValue)
         }
-        let mutableObject: AnyObject? = resolvedValue as AnyObject
-        target.setValue(mutableObject, forKey: key)
+
     }
     
     private func resolveTarget(for object: AnyObject) throws -> AnyObject {

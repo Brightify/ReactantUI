@@ -29,7 +29,7 @@ Pod::Spec.new do |spec|
     spec.dependency 'Reactant/FallbackSafeAreaInsets', '> 1.0'
     spec.dependency 'RxCocoa'
     spec.source_files = [
-        'Sources/Live/**/*.swift',
-        'Sources/Tokenizer/**/*.swift'
+        'Sources/Live/**/*.{swift,h,m}',
+        'Sources/Tokenizer/**/*.swift',
     ]
 end
