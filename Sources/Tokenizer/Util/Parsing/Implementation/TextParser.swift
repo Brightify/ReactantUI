@@ -43,8 +43,8 @@ class TextParser: BaseParser<TransformedText> {
                 components.append(")")
             case .assignment:
                 components.append("=")
-            case .operatorToken(let op):
-                components.append(op)
+            case .equals:
+                components.append("==")
             case .colon:
                 components.append(":")
             case .semicolon:
@@ -59,6 +59,16 @@ class TextParser: BaseParser<TransformedText> {
                 components.append(other)
             case .whitespace(let whitespace):
                 components.append(whitespace)
+            case .bracketsOpen:
+                components.append("[")
+            case .bracketsClose:
+                components.append("]")
+            case .logicalAnd:
+                components.append("&&")
+            case .logicalOr:
+                components.append("||")
+            case .exclamation:
+                components.append("!")
             }
         }
         return .text(components.joined())

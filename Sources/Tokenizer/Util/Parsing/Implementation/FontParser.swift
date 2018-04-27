@@ -50,8 +50,8 @@ class FontParser: BaseParser<Font> {
                     components.append(")")
                 case .assignment:
                     components.append("=")
-                case .operatorToken(let op):
-                    components.append(op)
+                case .equals:
+                    components.append("==")
                 case .colon:
                     components.append(":")
                 case .semicolon:
@@ -66,6 +66,16 @@ class FontParser: BaseParser<Font> {
                     components.append(other)
                 case .whitespace(let whitespace):
                     components.append(whitespace)
+                case .bracketsOpen:
+                    components.append("[")
+                case .bracketsClose:
+                    components.append("]")
+                case .logicalAnd:
+                    components.append("&&")
+                case .logicalOr:
+                    components.append("||")
+                case .exclamation:
+                    components.append("!")
                 }
             }
             let size: Float

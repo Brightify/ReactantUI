@@ -19,7 +19,6 @@
 		182B68951EAF7641007CC668 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 182B68861EAF7641007CC668 /* Assets.xcassets */; };
 		182B68961EAF7641007CC668 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 182B68871EAF7641007CC668 /* LaunchScreen.storyboard */; };
 		182B68981EAF7641007CC668 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 182B688A1EAF7641007CC668 /* Localizable.strings */; };
-		182B689B1EAF870E007CC668 /* GeneratedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B689A1EAF870E007CC668 /* GeneratedUI.swift */; };
 		18448FB52092041B0080B743 /* LiveUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18448FAC2092041B0080B743 /* LiveUI.framework */; };
 		18448FC12092041B0080B743 /* LiveUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18448FAC2092041B0080B743 /* LiveUI.framework */; };
 		18448FC22092041B0080B743 /* LiveUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 18448FAC2092041B0080B743 /* LiveUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -213,7 +212,11 @@
 		22957E38207235C40088C09E /* StackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22957E37207235C40088C09E /* StackViewController.swift */; };
 		22957E3A207235D00088C09E /* StackViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22957E39207235D00088C09E /* StackViewRootView.swift */; };
 		22957E3C207235E20088C09E /* StackViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22957E3B207235E20088C09E /* StackViewRootView.ui.xml */; };
+		58836BDBAF0F10A4A5E31625 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7139F67D20934D6E009EA7F4 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */; };
 		5B1333D6A201F8A50D8697D9 /* Pods_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1AAC4CA06239D481C4E7F9D /* Pods_Example.framework */; };
+		7139F67920934BC2009EA7F4 /* ConstraintCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7139F67720934BBB009EA7F4 /* ConstraintCondition.swift */; };
+		7139F67B20934C1D009EA7F4 /* GeneratedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B689A1EAF870E007CC668 /* GeneratedUI.swift */; };
+		71D94EC420935F8E007D83A1 /* ConstraintConditionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D94EC320935F8E007D83A1 /* ConstraintConditionTests.swift */; };
 		7ECD13670B984D98A5FCD87D /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 887500E4E5E1BF9478D7EFFD /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */; };
 		8843F0C7B69C4B4D90D21F24 /* Pods_LiveUI_LiveUI_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 105120706C0623FA651A558C /* Pods_LiveUI_LiveUI_iOS.framework */; };
 		BA1D32AF765F430AA225944F /* Pods_Example_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34D6F4260245D9C7942B5C54 /* Pods_Example_tvOS.framework */; };
@@ -468,6 +471,9 @@
 		5A946519C18AE694A9F16B15 /* Pods-LiveUI-LiveUI-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveUI-LiveUI-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-LiveUI-LiveUI-iOS/Pods-LiveUI-LiveUI-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		5F1124193368C79B42B1596B /* Pods-Example-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Example-tvOS/Pods-Example-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		668836B2629A4DD2DFC1CED6 /* Pods-LiveUI-LiveUI-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveUI-LiveUI-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LiveUI-LiveUI-iOS/Pods-LiveUI-LiveUI-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		7139F67720934BBB009EA7F4 /* ConstraintCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintCondition.swift; sourceTree = "<group>"; };
+		7139F67D20934D6E009EA7F4 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		71D94EC320935F8E007D83A1 /* ConstraintConditionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstraintConditionTests.swift; sourceTree = "<group>"; };
 		887500E4E5E1BF9478D7EFFD /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B091EE37DE710BCF6CF0B49 /* Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests/Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		D1AAC4CA06239D481C4E7F9D /* Pods_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -499,6 +505,7 @@
 			files = (
 				18448FB52092041B0080B743 /* LiveUI.framework in Frameworks */,
 				7ECD13670B984D98A5FCD87D /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework in Frameworks */,
+				58836BDBAF0F10A4A5E31625 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -750,6 +757,7 @@
 				18449174209223A70080B743 /* ConstraintRelation.swift */,
 				18449175209223A70080B743 /* ConstraintTarget.swift */,
 				18449176209223A70080B743 /* ConstraintType.swift */,
+				7139F67720934BBB009EA7F4 /* ConstraintCondition.swift */,
 			);
 			path = Constraints;
 			sourceTree = "<group>";
@@ -989,6 +997,7 @@
 			isa = PBXGroup;
 			children = (
 				1844928020922AE10080B743 /* Tokenizer_iOSTests.swift */,
+				71D94EC320935F8E007D83A1 /* ConstraintConditionTests.swift */,
 			);
 			path = Tokenizer;
 			sourceTree = "<group>";
@@ -1133,6 +1142,7 @@
 		719FEA2A5C7B0DD40285E72B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7139F67D20934D6E009EA7F4 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */,
 				D1AAC4CA06239D481C4E7F9D /* Pods_Example.framework */,
 				34D6F4260245D9C7942B5C54 /* Pods_Example_tvOS.framework */,
 				105120706C0623FA651A558C /* Pods_LiveUI_LiveUI_iOS.framework */,
@@ -1166,7 +1176,6 @@
 				182B68641EAF7589007CC668 /* Frameworks */,
 				182B68651EAF7589007CC668 /* Resources */,
 				80D15FFAC2FA355FB1F2A212 /* [CP] Embed Pods Frameworks */,
-				6AA77B00681ADCDC644B6F07 /* [CP] Copy Pods Resources */,
 				18448FA52091F5350080B743 /* Embed Frameworks */,
 			);
 			buildRules = (
@@ -1188,7 +1197,6 @@
 				18448FA82092041B0080B743 /* Frameworks */,
 				18448FA92092041B0080B743 /* Headers */,
 				18448FAA2092041B0080B743 /* Resources */,
-				324A7A471D4524873C9A93ED /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1208,7 +1216,6 @@
 				18448FB12092041B0080B743 /* Frameworks */,
 				18448FB22092041B0080B743 /* Resources */,
 				F43B5C19F6586BA1C5EA8D15 /* [CP] Embed Pods Frameworks */,
-				AE9A25CF2AED99845EE32E2F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1229,8 +1236,6 @@
 				2284DAD51FAC855E00D231D3 /* Sources */,
 				2284DAD61FAC855E00D231D3 /* Frameworks */,
 				2284DAD71FAC855E00D231D3 /* Resources */,
-				EF6D4C2B113BA20F2516FE65 /* [CP] Embed Pods Frameworks */,
-				8CE9EFBE89D3233F48BBEA46 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1369,21 +1374,6 @@
 			shellPath = /bin/sh;
 			shellScript = "pushd $PROJECT_DIR\nenv -i HOME=$HOME PATH=$PATH swift build\npopd\n\n$PROJECT_DIR/.build/debug/reactant-ui generate --enable-live --inputPath=$PROJECT_DIR/Example-tvOS/ --outputFile=$PROJECT_DIR/Example-tvOS/Generated/GeneratedUI.swift --xcodeprojPath=$PROJECT_DIR/ReactantUI.xcodeproj\n\n#pushd $PROJECT_DIR/Example-tvOS\n#$PROJECT_DIR/.build/debug/reactant-ui --enable-live > $PROJECT_DIR/Example-tvOS/Generated/GeneratedUI.swift\n#popd";
 		};
-		324A7A471D4524873C9A93ED /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LiveUI-LiveUI-iOS/Pods-LiveUI-LiveUI-iOS-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		423FA0CC4E936AFF372262FF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1400,21 +1390,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		6AA77B00681ADCDC644B6F07 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Example/Pods-Example-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		80D15FFAC2FA355FB1F2A212 /* [CP] Embed Pods Frameworks */ = {
@@ -1447,21 +1422,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Example/Pods-Example-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8CE9EFBE89D3233F48BBEA46 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Example-tvOS/Pods-Example-tvOS-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8E2A90AA6E40518D7B753F0A /* [CP] Check Pods Manifest.lock */ = {
@@ -1516,57 +1476,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		AE9A25CF2AED99845EE32E2F /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests/Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		EF6D4C2B113BA20F2516FE65 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Example-tvOS/Pods-Example-tvOS-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Differentiator-tvOS/Differentiator.framework",
-				"${BUILT_PRODUCTS_DIR}/Kingfisher-tvOS/Kingfisher.framework",
-				"${BUILT_PRODUCTS_DIR}/Reactant-tvOS/Reactant.framework",
-				"${BUILT_PRODUCTS_DIR}/ReactantLiveUI-tvOS/ReactantLiveUI.framework",
-				"${BUILT_PRODUCTS_DIR}/Result-tvOS/Result.framework",
-				"${BUILT_PRODUCTS_DIR}/RxCocoa-tvOS/RxCocoa.framework",
-				"${BUILT_PRODUCTS_DIR}/RxDataSources-tvOS/RxDataSources.framework",
-				"${BUILT_PRODUCTS_DIR}/RxOptional-tvOS/RxOptional.framework",
-				"${BUILT_PRODUCTS_DIR}/RxSwift-tvOS/RxSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/SnapKit-tvOS/SnapKit.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differentiator.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reactant.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ReactantLiveUI.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxDataSources.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxOptional.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Example-tvOS/Pods-Example-tvOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F43B5C19F6586BA1C5EA8D15 /* [CP] Embed Pods Frameworks */ = {
@@ -1624,10 +1533,10 @@
 				182B68941EAF7641007CC668 /* ViewController.swift in Sources */,
 				22141CA22052B55000205F56 /* PlainCell.swift in Sources */,
 				22141C9D2052B47F00205F56 /* PlainTableViewRootView.swift in Sources */,
-				182B689B1EAF870E007CC668 /* GeneratedUI.swift in Sources */,
 				22141C952052B0ED00205F56 /* SelectionCell.swift in Sources */,
 				22957E3A207235D00088C09E /* StackViewRootView.swift in Sources */,
 				22141C902052B09200205F56 /* ExampleSelectionRootView.swift in Sources */,
+				7139F67B20934C1D009EA7F4 /* GeneratedUI.swift in Sources */,
 				22141C8E2052B08700205F56 /* ExampleSelectionController.swift in Sources */,
 				182B688C1EAF7641007CC668 /* AppDelegate.swift in Sources */,
 				22141C8B2052B02F00205F56 /* MainWireframe.swift in Sources */,
@@ -1801,6 +1710,7 @@
 				1844920F209223A70080B743 /* ConstraintModifier.swift in Sources */,
 				184491F7209223A70080B743 /* ProgressView.swift in Sources */,
 				1844923F209223A70080B743 /* DatePickerMode.swift in Sources */,
+				7139F67920934BC2009EA7F4 /* ConstraintCondition.swift in Sources */,
 				18449232209223A70080B743 /* Rect.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1810,6 +1720,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1844928220922AE20080B743 /* LiveUI_iOSTests.swift in Sources */,
+				71D94EC420935F8E007D83A1 /* ConstraintConditionTests.swift in Sources */,
 				1844928420922AE20080B743 /* Tokenizer_iOSTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

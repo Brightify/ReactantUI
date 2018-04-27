@@ -15,7 +15,7 @@ struct Lexer {
         case parensOpen
         case parensClose
         case assignment
-        case operatorToken(String)
+        case equals
         case colon
         case semicolon
         case period
@@ -23,6 +23,11 @@ struct Lexer {
         case other(String)
         case whitespace(String)
         case comma
+        case bracketsOpen
+        case bracketsClose
+        case logicalAnd
+        case logicalOr
+        case exclamation
     }
 }
 
@@ -34,10 +39,8 @@ extension Lexer.Token: Equatable {
         case (.number(let lhsNumber, let lhsOriginal), .number(let rhsNumber, let rhsOriginal)):
             return lhsNumber == rhsNumber && lhsOriginal == rhsOriginal
         case (.parensOpen, .parensOpen), (.parensClose, .parensClose), (.colon, .colon), (.semicolon, .semicolon),
-             (.period, .period), (.assignment, .assignment), (.at, .at), (.comma, .comma):
+             (.period, .period), (.assignment, .assignment), (.at, .at), (.comma, .comma), (.equals, .equals):
             return true
-        case (.operatorToken(let lhsOperator), .operatorToken(let rhsOperator)):
-            return lhsOperator == rhsOperator
         case (.other(let lhsOther), .other(let rhsOther)):
             return lhsOther == rhsOther
         case (.whitespace(let lhsWhitespace), .whitespace(let rhsWhitespace)):
@@ -56,14 +59,19 @@ extension Lexer {
         ("-?[0-9]+(\\.[0-9]+)?", { original in Float(original).map { Token.number(value: $0, original: original) } }),
         ("\\(", { _ in .parensOpen }),
         ("\\)", { _ in .parensClose }),
+        ("\\[", { _ in .bracketsOpen }),
+        ("]", { _ in .bracketsClose }),
         (":", { _ in .colon }),
         (";", { _ in .semicolon }),
         ("\\.", { _ in .period }),
         ("@", { _ in .at }),
-        ("[<=>][=]", { .operatorToken($0) }),
+        ("==", { _ in .equals }),
         ("=", { _ in .assignment }),
-        (",", { _ in .comma })
-        ]
+        (",", { _ in .comma }),
+        ("&&", { _ in .logicalAnd }),
+        ("\\|\\|", { _ in .logicalOr }),
+        ("!", { _ in .exclamation })
+    ]
 
     static func tokenize(input: String, keepWhitespace: Bool = false) -> [Token] {
         var tokens = [] as [Token]

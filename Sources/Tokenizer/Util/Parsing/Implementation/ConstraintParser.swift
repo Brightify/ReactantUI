@@ -17,6 +17,8 @@ class ConstraintParser: BaseParser<Constraint> {
     }
     
     override func parseSingle() throws -> Constraint {
+        let condition = try parseCondition()
+
         let field = try parseField()
         
         let relation = try parseRelation() ?? .equal
@@ -58,7 +60,7 @@ class ConstraintParser: BaseParser<Constraint> {
             try popToken()
         }
         
-        return Constraint(field: field, attribute: layoutAttribute, type: type, relation: relation, priority: priority)
+        return Constraint(field: field, condition: condition, attribute: layoutAttribute, type: type, relation: relation, priority: priority)
     }
     
     private func constraintEnd() throws -> Bool {
@@ -68,6 +70,104 @@ class ConstraintParser: BaseParser<Constraint> {
             return true
         } else {
             return false
+        }
+    }
+
+    private func parseCondition() throws -> ConstraintCondition? {
+        guard case .bracketsOpen? = peekToken() else { return nil }
+        try popToken()
+
+        let condition = try parseConditions()
+
+        guard case .bracketsClose? = peekToken() else {
+            throw ParseError.message("Condition couldn't be parsed!")
+        }
+        try popToken()
+
+        return condition
+    }
+
+    private func parseConditions(isNegation: Bool = false, inParenthesis: Bool = false) throws -> ConstraintCondition {
+        var statement: ConditionStatement
+        if case .identifier? = peekToken() {
+            statement = try parseSingleConditionStatement(isNegation: isNegation)
+        } else if case .exclamation? = peekToken() {
+            try popToken()
+            return try parseConditions(isNegation: true)
+        } else if case .parensOpen? = peekToken() {
+            try popToken()
+            return try parseConditions(isNegation: isNegation, inParenthesis: true)
+        } else {
+            throw ParseError.message("Condition couldn't be parsed!")
+        }
+
+        let condition = ConstraintCondition.statement(statement)
+
+        if case .logicalAnd? = peekToken() {
+            try popToken()
+            return ConstraintCondition.conjunction(condition, try parseConditions(inParenthesis: inParenthesis))
+        } else if case .logicalOr? = peekToken() {
+            try popToken()
+            return ConstraintCondition.disjunction(condition, try parseConditions(inParenthesis: inParenthesis))
+        } else if case .parensClose? = peekToken(), inParenthesis {
+            try popToken()
+
+            if case .logicalAnd? = peekToken() {
+                try popToken()
+                return ConstraintCondition.conjunction(condition, try parseConditions())
+            } else if case .logicalOr? = peekToken() {
+                try popToken()
+                return ConstraintCondition.disjunction(condition, try parseConditions())
+            } else {
+                return condition
+            }
+        } else if inParenthesis {
+            throw ParseError.message("Condition couldn't be parsed!")
+        } else {
+            return condition
+        }
+    }
+
+    private func parseSingleConditionStatement(isNegation: Bool = false) throws  -> ConditionStatement {
+        guard case .identifier(let identifier)? = peekToken() else {
+            throw ParseError.message("Condition couldn't be parsed!")
+        }
+        try popToken()
+
+        if case .equals? = peekToken() {
+            try popToken()
+
+            guard case .identifier(let nextValue)? = peekToken() else {
+                throw ParseError.message("Condition couldn't be parsed!")
+            }
+
+            try popToken()
+
+            if let bool = Bool(nextValue) {
+                guard let condition = ConditionStatement(identifier: identifier, conditionValue: isNegation ? !bool : bool) else {
+                    throw ParseError.message("Condition couldn't be parsed!")
+                }
+
+                return condition
+            } else {
+                var conditionValue = !isNegation
+                if case .equals? = peekToken(), case .identifier(let value)? = peekNextToken(), let bool = Bool(value) {
+                    conditionValue = isNegation ? !bool : bool
+                    try popTokens(2)
+                }
+
+                guard let condition = ConditionStatement(identifier: identifier, type: nextValue, conditionValue: conditionValue) else {
+                    throw ParseError.message("Condition couldn't be parsed!")
+                }
+
+                return condition
+            }
+        } else {
+            guard let condition = ConditionStatement(identifier: identifier, conditionValue: !isNegation) else {
+                throw ParseError.message("Condition couldn't be parsed!")
+            }
+
+            return condition
         }
     }
     

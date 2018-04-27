@@ -1,6 +1,6 @@
 PODS:
   - Differentiator (3.0.2)
-  - Nimble (7.1.0)
+  - Nimble (7.0.3)
   - Quick (1.2.0)
   - Reactant (1.1.0):
     - Reactant/Core (= 1.1.0)
@@ -55,9 +55,25 @@ DEPENDENCIES:
   - RxNimble
   - RxTest
 
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Differentiator
+    - Nimble
+    - Quick
+    - Reactant
+    - Result
+    - RxBlocking
+    - RxCocoa
+    - RxDataSources
+    - RxNimble
+    - RxOptional
+    - RxSwift
+    - RxTest
+    - SnapKit
+
 SPEC CHECKSUMS:
   Differentiator: a87be69eba49ec4ab460c7671143ee3a9eececfd
-  Nimble: 9c6651c3021af6de54c3ed90a4a0a87d548f7359
+  Nimble: 7f5a9c447a33002645a071bddafbfb24ea70e0ac
   Quick: 58d203b1c5e27fff7229c4c1ae445ad7069a7a08
   Reactant: 1910427bc0b05afeeb4e959e24bdd768dedb5258
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
@@ -72,4 +88,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: ca6922064eabf015deeb9cff760c48312e494322
 
-COCOAPODS: 1.4.0
+COCOAPODS: 1.5.0
