@@ -5,7 +5,21 @@
 //  Created by Robin Krenecky on 27/04/2018.
 //
 
-import UIKit
+import Foundation
+
+public struct InterfaceState {
+    public let interfaceIdiom: InterfaceIdiom
+    public let horizontalSizeClass: InterfaceSizeClass
+    public let verticalSizeClass: InterfaceSizeClass
+    public let deviceOrientation: DeviceOrientation
+
+    public init(interfaceIdiom: InterfaceIdiom, horizontalSizeClass: InterfaceSizeClass, verticalSizeClass: InterfaceSizeClass, deviceOrientation: DeviceOrientation) {
+        self.interfaceIdiom = interfaceIdiom
+        self.horizontalSizeClass = horizontalSizeClass
+        self.verticalSizeClass = verticalSizeClass
+        self.deviceOrientation = deviceOrientation
+    }
+}
 
 public indirect enum ConstraintCondition {
     case statement(ConditionStatement)
@@ -22,30 +36,22 @@ public indirect enum ConstraintCondition {
             return .conjunction(firstCondition.negation, secondCondition.negation)
         }
     }
-}
 
-extension ConstraintCondition: Equatable {
-    public static func == (lhs: ConstraintCondition, rhs: ConstraintCondition) -> Bool {
-        switch (lhs, rhs) {
-        case (.statement(let lhsStatement), .statement(let rhsStatement)):
-            return lhsStatement == rhsStatement
-        case (.conjunction(let lhsCondition), .conjunction(let rhsCondition)):
-            return lhsCondition == rhsCondition
-        case (.disjunction(let lhsCondidtion), .disjunction(let rhsCondition)):
-            return lhsCondidtion == rhsCondition
-        case (.conjunction(let lhsCondition), .disjunction(let rhsCondition)):
-            return lhsCondition.0 == rhsCondition.0.negation && lhsCondition.1 == rhsCondition.1.negation
-        case (.disjunction(let lhsCondition), .conjunction(let rhsCondition)):
-            return lhsCondition.0.negation == rhsCondition.0 && lhsCondition.1.negation == rhsCondition.1
-        case (.disjunction, .statement), (.conjunction, .statement):
-            return false
+    func evaluate(from interfaceState: InterfaceState) -> Bool {
+        switch self {
+        case .statement(let statement):
+            return statement.evaluate(from: interfaceState)
+        case .conjunction(let firstCondition, let secondCondition):
+            return firstCondition.evaluate(from: interfaceState) && secondCondition.evaluate(from: interfaceState)
+        case .disjunction(let firstCondition, let secondCondition):
+            return firstCondition.evaluate(from: interfaceState) || secondCondition.evaluate(from: interfaceState)
         }
     }
 }
 
-public enum ConditionStatement: Equatable {
-    case interfaceIdiom(UIUserInterfaceIdiom, conditionValue: Bool)
-    case sizeClass(SizeClassType, type: UIUserInterfaceSizeClass, conditionValue: Bool)
+public enum ConditionStatement {
+    case interfaceIdiom(InterfaceIdiom, conditionValue: Bool)
+    case sizeClass(SizeClassType, type: InterfaceSizeClass, conditionValue: Bool)
     case orientation(DeviceOrientation, conditionValue: Bool)
 
     var opposite: ConditionStatement {
@@ -60,7 +66,7 @@ public enum ConditionStatement: Equatable {
     }
 
     init?(identifier: String, type: String? = nil, conditionValue: Bool = true) {
-        let sizeClass: UIUserInterfaceSizeClass?
+        let sizeClass: InterfaceSizeClass?
         switch type?.lowercased() {
         case "compact"?:
             sizeClass = .compact
@@ -94,9 +100,32 @@ public enum ConditionStatement: Equatable {
         }
     }
 
-    private func sizeClassType(type: String?) -> SizeClassType? {
-        return .horizontal
+    func evaluate(from interfaceState: InterfaceState) -> Bool {
+        switch self {
+        case .interfaceIdiom(let idiom, conditionValue: let value):
+            return (idiom == interfaceState.interfaceIdiom) == value
+        case .sizeClass(let sizeClass, type: let type, conditionValue: let value):
+            if sizeClass == .horizontal {
+                return (type == interfaceState.horizontalSizeClass) == value
+            } else {
+                return (type == interfaceState.verticalSizeClass) == value
+            }
+        case .orientation(let orientation, conditionValue: let value):
+            return (orientation == interfaceState.deviceOrientation) == value
+        }
     }
+}
+
+public enum InterfaceIdiom {
+    case pad
+    case phone
+    case tv
+    case carPlay
+}
+
+public enum InterfaceSizeClass {
+    case compact
+    case regular
 }
 
 public enum SizeClassType {

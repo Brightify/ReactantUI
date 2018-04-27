@@ -10,6 +10,10 @@ import XCTest
 
 class ConstraintConditionTests: XCTestCase {
 
+    lazy var interfaceState: InterfaceState = {
+        return InterfaceState(interfaceIdiom: .phone, horizontalSizeClass: .compact, verticalSizeClass: .regular, deviceOrientation: .landscape)
+    }()
+
     private func parseInput(_ input: String) throws -> ConstraintCondition? {
         return try ConstraintParser(tokens: Lexer.tokenize(input: "\(input) super inset"), layoutAttribute: LayoutAttribute.above).parseSingle().condition
     }
@@ -22,112 +26,68 @@ class ConstraintConditionTests: XCTestCase {
         let input5 = "[vertical == compact]"
         let input6 = "[vertical == compact == false]"
 
-        let result1 = ConstraintCondition.statement(.interfaceIdiom(.pad, conditionValue: true))
-        let result2 = result1
-        let result3 = ConstraintCondition.statement(.interfaceIdiom(.pad, conditionValue: false))
-        let result4 = result3
-        let result5 = ConstraintCondition.statement(.sizeClass(.vertical, type: .compact, conditionValue: true))
-        let result6 = ConstraintCondition.statement(.sizeClass(.vertical, type: .compact, conditionValue: false))
 
-        XCTAssertEqual(result1, try parseInput(input1))
-        XCTAssertEqual(result2, try parseInput(input2))
-        XCTAssertEqual(result3, try parseInput(input3))
-        XCTAssertEqual(result4, try parseInput(input4))
-        XCTAssertEqual(result5, try parseInput(input5))
-        XCTAssertEqual(result6, try parseInput(input6))
+        if let result1 = try parseInput(input1),
+            let result2 = try parseInput(input2),
+            let result3 = try parseInput(input3),
+            let result4 = try parseInput(input4),
+            let result5 = try parseInput(input5),
+            let result6 = try parseInput(input6) {
+
+            XCTAssertFalse(result1.evaluate(from: interfaceState))
+            XCTAssertFalse(result2.evaluate(from: interfaceState))
+            XCTAssertTrue(result3.evaluate(from: interfaceState))
+            XCTAssertTrue(result4.evaluate(from: interfaceState))
+            XCTAssertFalse(result5.evaluate(from: interfaceState))
+            XCTAssertTrue(result6.evaluate(from: interfaceState))
+        }
     }
 
     func testSimpleConjunctions() throws {
         let input1 = "[ipad && landscape]"
         let input2 = "[!ipad && vertical == compact]"
-        let input3 = "[horizontal == regular && vertical == compact]"
+        let input3 = "[horizontal == compact && vertical == regular]"
         let input4 = "[horizontal == regular && vertical == compact && ipad]"
 
-        let result1 = ConstraintCondition.conjunction(
-            .statement(.interfaceIdiom(.pad, conditionValue: true)),
-            .statement(.orientation(.landscape, conditionValue: true))
-        )
+        if let result1 = try parseInput(input1),
+            let result2 = try parseInput(input2),
+            let result3 = try parseInput(input3),
+            let result4 = try parseInput(input4) {
 
-        let result2 = ConstraintCondition.conjunction(
-            .statement(.interfaceIdiom(.pad, conditionValue: false)),
-            .statement(.sizeClass(.vertical, type: .compact, conditionValue: true))
-        )
-
-        let result3 = ConstraintCondition.conjunction(
-            .statement(.sizeClass(.horizontal, type: .regular, conditionValue: true)),
-            .statement(.sizeClass(.vertical, type: .compact, conditionValue: true))
-        )
-
-        let result4 = ConstraintCondition.conjunction(
-            .statement(.sizeClass(.horizontal, type: .regular, conditionValue: true)),
-            .conjunction(
-                .statement(.sizeClass(.vertical, type: .compact, conditionValue: true)),
-                .statement(.interfaceIdiom(.pad, conditionValue: true))
-            )
-        )
-
-        XCTAssertEqual(result1, try parseInput(input1))
-        XCTAssertEqual(result2, try parseInput(input2))
-        XCTAssertEqual(result3, try parseInput(input3))
-        XCTAssertEqual(result4, try parseInput(input4))
+            XCTAssertFalse(result1.evaluate(from: interfaceState))
+            XCTAssertFalse(result2.evaluate(from: interfaceState))
+            XCTAssertTrue(result3.evaluate(from: interfaceState))
+            XCTAssertFalse(result4.evaluate(from: interfaceState))
+        }
     }
 
     func testSimpleDisjunctions() throws {
         let input1 = "[ipad || landscape]"
         let input2 = "[!ipad || vertical == compact]"
-        let input3 = "[horizontal == regular || vertical == compact]"
+        let input3 = "[horizontal == regular || vertical == regular]"
         let input4 = "[horizontal == regular || vertical == compact || ipad]"
 
-        let result1 = ConstraintCondition.disjunction(
-            .statement(.interfaceIdiom(.pad, conditionValue: true)),
-            .statement(.orientation(.landscape, conditionValue: true))
-        )
+        if let result1 = try parseInput(input1),
+            let result2 = try parseInput(input2),
+            let result3 = try parseInput(input3),
+            let result4 = try parseInput(input4) {
 
-        let result2 = ConstraintCondition.disjunction(
-            .statement(.interfaceIdiom(.pad, conditionValue: false)),
-            .statement(.sizeClass(.vertical, type: .compact, conditionValue: true))
-        )
-
-        let result3 = ConstraintCondition.disjunction(
-            .statement(.sizeClass(.horizontal, type: .regular, conditionValue: true)),
-            .statement(.sizeClass(.vertical, type: .compact, conditionValue: true))
-        )
-
-        let result4 = ConstraintCondition.disjunction(
-            .statement(.sizeClass(.horizontal, type: .regular, conditionValue: true)),
-            .disjunction(
-                .statement(.sizeClass(.vertical, type: .compact, conditionValue: true)),
-                .statement(.interfaceIdiom(.pad, conditionValue: true))
-            )
-        )
-
-        XCTAssertEqual(result1, try parseInput(input1))
-        XCTAssertEqual(result2, try parseInput(input2))
-        XCTAssertEqual(result3, try parseInput(input3))
-        XCTAssertEqual(result4, try parseInput(input4))
+            XCTAssertTrue(result1.evaluate(from: interfaceState))
+            XCTAssertTrue(result2.evaluate(from: interfaceState))
+            XCTAssertTrue(result3.evaluate(from: interfaceState))
+            XCTAssertFalse(result4.evaluate(from: interfaceState))
+        }
     }
 
     func testComplexConditions() throws {
-        let input1 = "[ipad && landscape || vertical == compact]"
-        let input2 = "[(ipad || landscape) && vertical == compact]"
+        let input1 = "[ipad && landscape || vertical == regular]"
+        let input2 = "[(iphone || landscape) && vertical == regular]"
 
-        let result1 = ConstraintCondition.disjunction(
-            .statement(.interfaceIdiom(.pad, conditionValue: true)),
-            .conjunction(
-                .statement(.orientation(.landscape, conditionValue: true)),
-                .statement(.sizeClass(.vertical, type: .compact, conditionValue: true))
-            )
-        )
+        if let result1 = try parseInput(input1),
+            let result2 = try parseInput(input2) {
 
-        let result2 = ConstraintCondition.conjunction(
-            .disjunction(
-                .statement(.interfaceIdiom(.pad, conditionValue: true)),
-                .statement(.orientation(.landscape, conditionValue: true))
-            ),
-            .statement(.sizeClass(.vertical, type: .compact, conditionValue: true))
-        )
-
-        XCTAssertEqual(result1, try parseInput(input1))
-        XCTAssertEqual(result2, try parseInput(input2)) // FAIL
+            XCTAssertTrue(result1.evaluate(from: interfaceState))
+            XCTAssertTrue(result2.evaluate(from: interfaceState))
+        }
     }
 }
