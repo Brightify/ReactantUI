@@ -43,8 +43,8 @@ class TextParser: BaseParser<TransformedText> {
                 components.append(")")
             case .assignment:
                 components.append("=")
-            case .equals:
-                components.append("==")
+            case .equals(_, let original):
+                components.append(original)
             case .colon:
                 components.append(":")
             case .semicolon:

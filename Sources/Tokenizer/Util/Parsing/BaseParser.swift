@@ -9,7 +9,11 @@ import Foundation
 
 class BaseParser<ITEM> {
     private var tokens: [Lexer.Token]
-    private var position: Int = 0
+    private var position = 0
+
+    var tokensLeft: [Lexer.Token] {
+        return Array(tokens[position...])
+    }
 
     init(tokens: [Lexer.Token]) {
         self.tokens = tokens
@@ -37,33 +41,49 @@ class BaseParser<ITEM> {
         return items
     }
 
+    func hasEnded(tokens: [Lexer.Token]) -> Bool {
+        return peekToken(tokens: tokens, position: position) == nil
+    }
+
     func hasEnded() -> Bool {
-        return peekToken() == nil
+        return hasEnded(tokens: tokens)
     }
 
     func parseSingle() throws -> ITEM {
         fatalError("Abstract!")
     }
 
-    func peekToken() -> Lexer.Token? {
+    func peekToken(tokens: [Lexer.Token], position: Int) -> Lexer.Token? {
         guard position < tokens.count else { return nil }
         return tokens[position]
     }
 
-    func peekNextToken() -> Lexer.Token? {
+    func peekToken() -> Lexer.Token? {
+        return peekToken(tokens: tokens, position: position)
+    }
+
+    func peekNextToken(tokens: [Lexer.Token], position: Int) -> Lexer.Token? {
         guard position < tokens.count - 1 else { return nil }
         return tokens[position + 1]
     }
 
-    func peekNext<T>(_ f: (Lexer.Token) throws -> T?) rethrows -> T? {
-        guard let nextToken = peekNextToken() else { return nil }
+    func peekNextToken() -> Lexer.Token? {
+        return peekNextToken(tokens: tokens, position: position)
+    }
+
+    func peekNext<T>(tokens: [Lexer.Token], position: inout Int, _ f: (Lexer.Token) throws -> T?) rethrows -> T? {
+        guard let nextToken = peekNextToken(tokens: tokens, position: position) else { return nil }
         position += 1
         defer { position -= 1 }
         return try f(nextToken)
     }
 
+    func peekNext<T>(_ f: (Lexer.Token) throws -> T?) rethrows -> T? {
+        return try peekNext(tokens: tokens, position: &position, f)
+    }
+
     @discardableResult
-    func popTokens(_ count: Int) throws -> [Lexer.Token] {
+    func popTokens(tokens: [Lexer.Token], position: inout Int, _ count: Int) throws -> [Lexer.Token] {
         guard position < tokens.count - count + 1 else {
             throw ParseError.message("Cannot advance token. Current: \(String(describing: peekToken())).")
         }
@@ -73,7 +93,12 @@ class BaseParser<ITEM> {
     }
 
     @discardableResult
-    func popToken() throws -> Lexer.Token {
+    func popTokens(_ count: Int) throws -> [Lexer.Token] {
+        return try popTokens(tokens: tokens, position: &position, count)
+    }
+
+    @discardableResult
+    func popToken(tokens: [Lexer.Token], position: inout Int) throws -> Lexer.Token {
         guard position < tokens.count else {
             throw ParseError.message("Cannot advance token. Current: \(String(describing: peekToken())).")
         }
@@ -83,10 +108,20 @@ class BaseParser<ITEM> {
     }
 
     @discardableResult
-    func popLastToken() throws -> Lexer.Token {
+    func popToken() throws -> Lexer.Token {
+        return try popToken(tokens: tokens, position: &position)
+    }
+
+    @discardableResult
+    func popLastToken(tokens: inout [Lexer.Token]) throws -> Lexer.Token {
         guard !tokens.isEmpty else {
             throw ParseError.message("Cannot pop last token")
         }
         return tokens.removeLast()
+    }
+
+    @discardableResult
+    func popLastToken() throws -> Lexer.Token {
+        return try popLastToken(tokens: &tokens)
     }
 }

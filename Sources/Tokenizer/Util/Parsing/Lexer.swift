@@ -15,7 +15,7 @@ struct Lexer {
         case parensOpen
         case parensClose
         case assignment
-        case equals
+        case equals(value: Bool, original: String)
         case colon
         case semicolon
         case period
@@ -39,8 +39,10 @@ extension Lexer.Token: Equatable {
         case (.number(let lhsNumber, let lhsOriginal), .number(let rhsNumber, let rhsOriginal)):
             return lhsNumber == rhsNumber && lhsOriginal == rhsOriginal
         case (.parensOpen, .parensOpen), (.parensClose, .parensClose), (.colon, .colon), (.semicolon, .semicolon),
-             (.period, .period), (.assignment, .assignment), (.at, .at), (.comma, .comma), (.equals, .equals):
+             (.period, .period), (.assignment, .assignment), (.at, .at), (.comma, .comma):
             return true
+        case (.equals(let lhsBool), .equals(let rhsBool)):
+            return lhsBool == rhsBool
         case (.other(let lhsOther), .other(let rhsOther)):
             return lhsOther == rhsOther
         case (.whitespace(let lhsWhitespace), .whitespace(let rhsWhitespace)):
@@ -65,7 +67,7 @@ extension Lexer {
         (";", { _ in .semicolon }),
         ("\\.", { _ in .period }),
         ("@", { _ in .at }),
-        ("==", { _ in .equals }),
+        ("[!=][=]", { .equals(value: Bool(equalityOperator: $0), original: $0) }),
         ("=", { _ in .assignment }),
         (",", { _ in .comma }),
         ("&&", { _ in .logicalAnd }),
@@ -121,5 +123,15 @@ fileprivate extension String {
             return (self as NSString).substring(with: range)
         }
         return nil
+    }
+}
+
+private extension Bool {
+    init(equalityOperator: String) {
+        guard equalityOperator == "==" || equalityOperator == "!=" else {
+            fatalError("Wrong equality operator!")
+        }
+
+        self = equalityOperator == "=="
     }
 }

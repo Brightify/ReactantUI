@@ -13,7 +13,9 @@ public struct InterfaceState {
     public let verticalSizeClass: InterfaceSizeClass
     public let deviceOrientation: DeviceOrientation
 
-    public init(interfaceIdiom: InterfaceIdiom, horizontalSizeClass: InterfaceSizeClass, verticalSizeClass: InterfaceSizeClass, deviceOrientation: DeviceOrientation) {
+    public init(interfaceIdiom: InterfaceIdiom, horizontalSizeClass: InterfaceSizeClass,
+                verticalSizeClass: InterfaceSizeClass, deviceOrientation: DeviceOrientation) {
+
         self.interfaceIdiom = interfaceIdiom
         self.horizontalSizeClass = horizontalSizeClass
         self.verticalSizeClass = verticalSizeClass
