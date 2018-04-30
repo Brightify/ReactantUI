@@ -42,7 +42,7 @@ public class StyleGenerator: Generator {
                 }
                 l("static func \(style.styleName)(_ view: \(try mapping.runtimeType()))") {
                     for extendedStyle in style.extend {
-                        let components = extendedStyle.components(separatedBy: ":").filter { $0.isEmpty == false }
+                        let components = extendedStyle.components(separatedBy: ":").filter { !$0.isEmpty }
                         if let styleName = components.last {
                             if let groupName = components.first, components.count > 1 {
                                 l("\(groupName.capitalizingFirstLetter() + "Styles").\(styleName)(view)")

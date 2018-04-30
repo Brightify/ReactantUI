@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import LiveUI
+@testable import ReactantLiveUI
 
 class ConstraintConditionTests: XCTestCase {
 
@@ -22,7 +22,7 @@ class ConstraintConditionTests: XCTestCase {
         return InterfaceState(interfaceIdiom: .phone, horizontalSizeClass: .compact, verticalSizeClass: .compact, deviceOrientation: .portrait)
     }()
 
-    private func parseInput(_ input: String) throws -> ConstraintCondition? {
+    private func parseInput(_ input: String) throws -> Condition? {
         return try ConstraintParser(tokens: Lexer.tokenize(input: "\(input) super inset"), layoutAttribute: LayoutAttribute.above).parseSingle().condition
     }
     

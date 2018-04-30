@@ -5,5 +5,5 @@
 //  Created by Tadeas Kriz on 26/04/2018.
 //
 
-#import <LiveUI/RUIExceptionCatcher.h>
+#import <ReactantLiveUI/RUIExceptionCatcher.h>
 

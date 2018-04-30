@@ -251,7 +251,7 @@ public struct PreferredSize: SupportedPropertyType {
     #endif
 
     public static func materialize(from value: String) throws -> PreferredSize {
-        if value.contains(",") == false {
+        if !value.contains(",") {
             let size = try PreferredDimension(value)
             return PreferredSize(width: size, height: size)
         } else {

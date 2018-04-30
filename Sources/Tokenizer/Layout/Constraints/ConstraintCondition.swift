@@ -23,12 +23,12 @@ public struct InterfaceState {
     }
 }
 
-public indirect enum ConstraintCondition {
+public indirect enum Condition {
     case statement(ConditionStatement)
-    case conjunction(ConstraintCondition, ConstraintCondition)
-    case disjunction(ConstraintCondition, ConstraintCondition)
+    case conjunction(Condition, Condition)
+    case disjunction(Condition, Condition)
 
-    var negation: ConstraintCondition {
+    var negation: Condition {
         switch self {
         case .statement(let statement):
             return .statement(statement.opposite)
@@ -49,12 +49,22 @@ public indirect enum ConstraintCondition {
             return firstCondition.evaluate(from: interfaceState) || secondCondition.evaluate(from: interfaceState)
         }
     }
+
+    static var alwaysTrue: Condition {
+        return .statement(.trueStatement)
+    }
+
+    static var alwaysFalse: Condition {
+        return alwaysTrue.negation
+    }
 }
 
 public enum ConditionStatement {
     case interfaceIdiom(InterfaceIdiom, conditionValue: Bool)
     case sizeClass(SizeClassType, type: InterfaceSizeClass, conditionValue: Bool)
     case orientation(DeviceOrientation, conditionValue: Bool)
+    case trueStatement
+    case falseStatement
 
     var opposite: ConditionStatement {
         switch self {
@@ -64,6 +74,10 @@ public enum ConditionStatement {
             return .sizeClass(sizeClass, type: type, conditionValue: !value)
         case .orientation(let orientation, conditionValue: let value):
             return .orientation(orientation, conditionValue: !value)
+        case .trueStatement:
+            return .falseStatement
+        case .falseStatement:
+            return .trueStatement
         }
     }
 
@@ -114,6 +128,10 @@ public enum ConditionStatement {
             }
         case .orientation(let orientation, conditionValue: let value):
             return (orientation == interfaceState.deviceOrientation) == value
+        case .trueStatement:
+            return true
+        case .falseStatement:
+            return false
         }
     }
 }
@@ -123,11 +141,13 @@ public enum InterfaceIdiom {
     case phone
     case tv
     case carPlay
+    case unspecified
 }
 
 public enum InterfaceSizeClass {
     case compact
     case regular
+    case unspecified
 }
 
 public enum SizeClassType {
@@ -138,4 +158,7 @@ public enum SizeClassType {
 public enum DeviceOrientation {
     case landscape
     case portrait
+    case faceDown
+    case faceUp
+    case unknown
 }

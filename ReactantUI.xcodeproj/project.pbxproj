@@ -19,9 +19,9 @@
 		182B68951EAF7641007CC668 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 182B68861EAF7641007CC668 /* Assets.xcassets */; };
 		182B68961EAF7641007CC668 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 182B68871EAF7641007CC668 /* LaunchScreen.storyboard */; };
 		182B68981EAF7641007CC668 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 182B688A1EAF7641007CC668 /* Localizable.strings */; };
-		18448FB52092041B0080B743 /* LiveUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18448FAC2092041B0080B743 /* LiveUI.framework */; };
-		18448FC12092041B0080B743 /* LiveUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18448FAC2092041B0080B743 /* LiveUI.framework */; };
-		18448FC22092041B0080B743 /* LiveUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 18448FAC2092041B0080B743 /* LiveUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		18448FB52092041B0080B743 /* ReactantLiveUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18448FAC2092041B0080B743 /* ReactantLiveUI.framework */; };
+		18448FC12092041B0080B743 /* ReactantLiveUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18448FAC2092041B0080B743 /* ReactantLiveUI.framework */; };
+		18448FC22092041B0080B743 /* ReactantLiveUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 18448FAC2092041B0080B743 /* ReactantLiveUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1844913220921F150080B743 /* AnonymousComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1844911920921F150080B743 /* AnonymousComponent.swift */; };
 		1844913320921F150080B743 /* DebugAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1844911B20921F150080B743 /* DebugAlertController.swift */; };
 		1844913420921F150080B743 /* UIWindow+Debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1844911C20921F150080B743 /* UIWindow+Debug.swift */; };
@@ -184,7 +184,7 @@
 		18449275209223A70080B743 /* XMLSerializableElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184491E7209223A70080B743 /* XMLSerializableElement.swift */; };
 		18449276209223A70080B743 /* XMLSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184491E8209223A70080B743 /* XMLSerializer.swift */; };
 		18449277209223A70080B743 /* XMLElement+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184491E9209223A70080B743 /* XMLElement+Utils.swift */; };
-		18449279209225BE0080B743 /* LiveUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 184492782092255A0080B743 /* LiveUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		18449279209225BE0080B743 /* ReactantLiveUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 184492782092255A0080B743 /* ReactantLiveUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1844928120922AE20080B743 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1844927C20922AE10080B743 /* Info.plist */; };
 		1844928220922AE20080B743 /* LiveUI_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1844927D20922AE10080B743 /* LiveUI_iOSTests.swift */; };
 		1844928320922AE20080B743 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1844927F20922AE10080B743 /* Info.plist */; };
@@ -216,6 +216,7 @@
 		5B1333D6A201F8A50D8697D9 /* Pods_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1AAC4CA06239D481C4E7F9D /* Pods_Example.framework */; };
 		7139F67920934BC2009EA7F4 /* ConstraintCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7139F67720934BBB009EA7F4 /* ConstraintCondition.swift */; };
 		7139F67B20934C1D009EA7F4 /* GeneratedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B689A1EAF870E007CC668 /* GeneratedUI.swift */; };
+		71BAEAB720972E1600D56639 /* ConditionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BAEAB520972DFD00D56639 /* ConditionParser.swift */; };
 		71D94EC420935F8E007D83A1 /* ConstraintConditionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D94EC320935F8E007D83A1 /* ConstraintConditionTests.swift */; };
 		7ECD13670B984D98A5FCD87D /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 887500E4E5E1BF9478D7EFFD /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */; };
 		8843F0C7B69C4B4D90D21F24 /* Pods_LiveUI_LiveUI_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 105120706C0623FA651A558C /* Pods_LiveUI_LiveUI_iOS.framework */; };
@@ -246,7 +247,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				18448FC22092041B0080B743 /* LiveUI.framework in Embed Frameworks */,
+				18448FC22092041B0080B743 /* ReactantLiveUI.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -271,7 +272,7 @@
 		182B68891EAF7641007CC668 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		182B688A1EAF7641007CC668 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		182B689A1EAF870E007CC668 /* GeneratedUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneratedUI.swift; sourceTree = "<group>"; };
-		18448FAC2092041B0080B743 /* LiveUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LiveUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		18448FAC2092041B0080B743 /* ReactantLiveUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReactantLiveUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		18448FB42092041B0080B743 /* LiveUI-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "LiveUI-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1844911920921F150080B743 /* AnonymousComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnonymousComponent.swift; sourceTree = "<group>"; };
 		1844911B20921F150080B743 /* DebugAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugAlertController.swift; sourceTree = "<group>"; };
@@ -436,7 +437,7 @@
 		184491E7209223A70080B743 /* XMLSerializableElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLSerializableElement.swift; sourceTree = "<group>"; };
 		184491E8209223A70080B743 /* XMLSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLSerializer.swift; sourceTree = "<group>"; };
 		184491E9209223A70080B743 /* XMLElement+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XMLElement+Utils.swift"; sourceTree = "<group>"; };
-		184492782092255A0080B743 /* LiveUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LiveUI.h; sourceTree = "<group>"; };
+		184492782092255A0080B743 /* ReactantLiveUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReactantLiveUI.h; sourceTree = "<group>"; };
 		1844927C20922AE10080B743 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1844927D20922AE10080B743 /* LiveUI_iOSTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveUI_iOSTests.swift; sourceTree = "<group>"; };
 		1844927F20922AE10080B743 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -473,6 +474,7 @@
 		668836B2629A4DD2DFC1CED6 /* Pods-LiveUI-LiveUI-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveUI-LiveUI-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LiveUI-LiveUI-iOS/Pods-LiveUI-LiveUI-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		7139F67720934BBB009EA7F4 /* ConstraintCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintCondition.swift; sourceTree = "<group>"; };
 		7139F67D20934D6E009EA7F4 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		71BAEAB520972DFD00D56639 /* ConditionParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionParser.swift; sourceTree = "<group>"; };
 		71D94EC320935F8E007D83A1 /* ConstraintConditionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstraintConditionTests.swift; sourceTree = "<group>"; };
 		887500E4E5E1BF9478D7EFFD /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B091EE37DE710BCF6CF0B49 /* Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests/Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -486,7 +488,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				18448FC12092041B0080B743 /* LiveUI.framework in Frameworks */,
+				18448FC12092041B0080B743 /* ReactantLiveUI.framework in Frameworks */,
 				5B1333D6A201F8A50D8697D9 /* Pods_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -503,7 +505,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				18448FB52092041B0080B743 /* LiveUI.framework in Frameworks */,
+				18448FB52092041B0080B743 /* ReactantLiveUI.framework in Frameworks */,
 				7ECD13670B984D98A5FCD87D /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework in Frameworks */,
 				58836BDBAF0F10A4A5E31625 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework in Frameworks */,
 			);
@@ -538,7 +540,7 @@
 			children = (
 				182B68671EAF7589007CC668 /* Example.app */,
 				2284DAD91FAC855E00D231D3 /* Example-tvOS.app */,
-				18448FAC2092041B0080B743 /* LiveUI.framework */,
+				18448FAC2092041B0080B743 /* ReactantLiveUI.framework */,
 				18448FB42092041B0080B743 /* LiveUI-iOSTests.xctest */,
 			);
 			name = Products;
@@ -597,7 +599,7 @@
 		18448FCA2092053F0080B743 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				184492782092255A0080B743 /* LiveUI.h */,
+				184492782092255A0080B743 /* ReactantLiveUI.h */,
 				18449147209223A70080B743 /* Tokenizer */,
 				1844911820921F150080B743 /* Live */,
 			);
@@ -925,6 +927,7 @@
 			isa = PBXGroup;
 			children = (
 				184491D1209223A70080B743 /* ConstraintParser.swift */,
+				71BAEAB520972DFD00D56639 /* ConditionParser.swift */,
 				184491D2209223A70080B743 /* DimensionParser.swift */,
 				184491D3209223A70080B743 /* FontParser.swift */,
 				184491D4209223A70080B743 /* TextParser.swift */,
@@ -1158,7 +1161,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				18449279209225BE0080B743 /* LiveUI.h in Headers */,
+				18449279209225BE0080B743 /* ReactantLiveUI.h in Headers */,
 				1844914320921F150080B743 /* RUIExceptionCatcher.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1204,7 +1207,7 @@
 			);
 			name = "LiveUI-iOS";
 			productName = "LiveUI-iOS";
-			productReference = 18448FAC2092041B0080B743 /* LiveUI.framework */;
+			productReference = 18448FAC2092041B0080B743 /* ReactantLiveUI.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		18448FB32092041B0080B743 /* LiveUI-iOSTests */ = {
@@ -1645,6 +1648,7 @@
 				1844913920921F150080B743 /* LiveUIErrorMessageItem.swift in Sources */,
 				18449243209223A70080B743 /* LayoutAxis.swift in Sources */,
 				18449218209223A70080B743 /* ControlStateProperty.swift in Sources */,
+				71BAEAB720972E1600D56639 /* ConditionParser.swift in Sources */,
 				18449240209223A70080B743 /* KeyboardAppearance.swift in Sources */,
 				18449251209223A70080B743 /* VisualEffect.swift in Sources */,
 				18449201209223A70080B743 /* HeaderTableView.swift in Sources */,
@@ -1992,11 +1996,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/Live/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.brightify.LiveUI-iOS";
-				PRODUCT_NAME = LiveUI;
+				PRODUCT_NAME = ReactantLiveUI;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG ReactantRuntime";
@@ -2042,11 +2046,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/Live/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.brightify.LiveUI-iOS";
-				PRODUCT_NAME = LiveUI;
+				PRODUCT_NAME = ReactantLiveUI;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = ReactantRuntime;

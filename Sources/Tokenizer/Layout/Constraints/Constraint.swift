@@ -14,7 +14,7 @@ private func +=(lhs: inout [String], rhs: String) {
 
 public struct Constraint {
     public var field: String?
-    public var condition: ConstraintCondition?
+    public var condition: Condition
     public var attribute: LayoutAttribute
     public var type: ConstraintType
     public var relation: ConstraintRelation
@@ -25,7 +25,7 @@ public struct Constraint {
     }
     
     public init(field: String?,
-                condition: ConstraintCondition?,
+                condition: Condition,
                 attribute: LayoutAttribute,
                 type: ConstraintType,
                 relation: ConstraintRelation,

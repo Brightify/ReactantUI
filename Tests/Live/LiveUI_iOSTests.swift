@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import LiveUI
+@testable import ReactantLiveUI
 
 class LiveUI_iOSTests: XCTestCase {
     

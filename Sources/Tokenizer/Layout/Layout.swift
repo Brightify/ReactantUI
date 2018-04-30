@@ -41,7 +41,7 @@ public struct Layout: XMLElementDeserializable {
 
     public static func deserialize(_ node: XMLElement) throws -> Layout {
         let layoutAttributes = node.allAttributes
-            .filter { $0.key.hasPrefix("layout:") && nonConstraintables.contains($0.key) == false }
+            .filter { $0.key.hasPrefix("layout:") && !nonConstraintables.contains($0.key) }
             .map { ($0.replacingOccurrences(of: "layout:", with: ""), $1) }
 
         var contentCompressionPriorityHorizontal: ConstraintPriority?

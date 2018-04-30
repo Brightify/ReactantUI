@@ -30,7 +30,7 @@ enum ExampleType {
     static let allValues: [ExampleType] = [.plainTableView, .playground, .stackView, .progressView]
 }
 
-final class SelectionCell: ControlBase<ExampleType, ExampleType> {
+final class SelectionCell: ButtonBase<ExampleType, ExampleType> {
     override var actions: [Observable<ExampleType>] {
         return [
             rx.controlEvent(.touchUpInside).withLatestFrom(observableState)
