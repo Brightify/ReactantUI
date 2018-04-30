@@ -39,7 +39,8 @@ extension Lexer.Token: Equatable {
         case (.number(let lhsNumber, let lhsOriginal), .number(let rhsNumber, let rhsOriginal)):
             return lhsNumber == rhsNumber && lhsOriginal == rhsOriginal
         case (.parensOpen, .parensOpen), (.parensClose, .parensClose), (.colon, .colon), (.semicolon, .semicolon),
-             (.period, .period), (.assignment, .assignment), (.at, .at), (.comma, .comma):
+             (.period, .period), (.assignment, .assignment), (.at, .at), (.comma, .comma), (.logicalAnd, .logicalAnd),
+             (.logicalOr, .logicalOr), (.exclamation, .exclamation), (.bracketsOpen, .bracketsOpen), (.bracketsClose, .bracketsClose):
             return true
         case (.equals(let lhsBool), .equals(let rhsBool)):
             return lhsBool == rhsBool

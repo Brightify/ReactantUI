@@ -11,7 +11,7 @@ class BaseParser<ITEM> {
     private var tokens: [Lexer.Token]
     private var position = 0
 
-    var tokensLeft: [Lexer.Token] {
+    var remainingTokens: [Lexer.Token] {
         return Array(tokens[position...])
     }
 

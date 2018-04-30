@@ -77,7 +77,7 @@ class ConstraintParser: BaseParser<Constraint> {
         guard case .bracketsOpen? = peekToken() else { return nil }
         try popToken()
 
-        let (tokens, numberOfAddedBrackets) = try conditionWithBrackets(tokens: tokensLeft)
+        let (tokens, numberOfAddedBrackets) = try conditionWithBrackets(tokens: remainingTokens)
         var position = 0
         let condition = try parseConditions(tokens: tokens, position: &position)
 
@@ -86,105 +86,6 @@ class ConstraintParser: BaseParser<Constraint> {
         try popToken()
 
         return condition
-    }
-
-    private func conditionWithBrackets(tokens: [Lexer.Token]) throws -> ([Lexer.Token], Int) {
-        var condition: [Lexer.Token] = []
-        var numberOfAddedBrackets = 0
-        var position = 0
-
-        while true {
-            let token = try popToken(tokens: tokens, position: &position)
-
-            if case .bracketsClose = token {
-                break
-            }
-
-            switch token {
-            case .logicalAnd, .logicalOr, .exclamation, .parensOpen, .parensClose, .equals:
-                condition.append(token)
-            case .identifier:
-                condition += [.parensOpen, token]
-                numberOfAddedBrackets += 1
-                if case .equals? = peekToken(tokens: tokens, position: position) {
-                    condition.append(try popToken(tokens: tokens, position: &position))
-
-                    let token = try popToken(tokens: tokens, position: &position)
-                    guard case .identifier = token else {
-                        throw ParseError.message("Condition couldn't be parsed!")
-                    }
-                    condition.append(token)
-
-                    if case .equals? = peekToken(tokens: tokens, position: position) {
-                        condition.append(try popToken(tokens: tokens, position: &position))
-
-                        let token = try popToken(tokens: tokens, position: &position)
-                        guard case .identifier = token else {
-                            throw ParseError.message("Condition couldn't be parsed!")
-                        }
-                        condition.append(token)
-                    }
-                }
-                condition.append(.parensClose)
-                numberOfAddedBrackets += 1
-            default:
-                throw ParseError.message("Condition couldn't be parsed!")
-            }
-        }
-
-        numberOfAddedBrackets += try addBracketsForOperatorPrecedence(tokens: &condition)
-
-        return (condition, numberOfAddedBrackets)
-    }
-
-    private func addBracketsForOperatorPrecedence(tokens: inout [Lexer.Token]) throws -> Int {
-        var numberOfAddedBrackets = 0
-
-        for (index, token) in tokens.enumerated() {
-            if case .logicalAnd = token {
-                var foo = 0
-                for i in 1..<tokens.count {
-                    var idx = index - i + numberOfAddedBrackets
-                    if case .parensClose = tokens[idx] {
-                        foo += 1
-                    }
-
-                    if case .parensOpen = tokens[idx] {
-                        foo -= 1
-
-                        if foo <= 0 {
-                            if idx > 0, case .exclamation = tokens[idx - 1] {
-                                idx -= 1
-                            }
-                            tokens.insert(.parensOpen, at: idx)
-                            numberOfAddedBrackets += 1
-                            break
-                        }
-                    }
-                }
-
-                foo = 0
-
-                for i in 1..<tokens.count {
-                    let idx = index + i + numberOfAddedBrackets
-                    if case .parensOpen = tokens[idx] {
-                        foo += 1
-                    }
-
-                    if case .parensClose = tokens[idx] {
-                        foo -= 1
-
-                        if foo <= 0 {
-                            tokens.insert(.parensClose, at: idx)
-                            numberOfAddedBrackets += 1
-                            break
-                        }
-                    }
-                }
-            }
-        }
-
-        return numberOfAddedBrackets
     }
 
     private func parseConditions(tokens: [Lexer.Token], position: inout Int, negateNext: Bool = false) throws -> ConstraintCondition {
@@ -359,6 +260,104 @@ class ConstraintParser: BaseParser<Constraint> {
             return try ConstraintPriority(identifier)
         } else {
             throw ParseError.message("Missing priority value! `@` token followed by \(peekNextToken().map(String.init(describing:)) ?? "none")")
+        }
+    }
+
+    private func conditionWithBrackets(tokens: [Lexer.Token]) throws -> ([Lexer.Token], Int) {
+        var condition: [Lexer.Token] = []
+        var numberOfAddedBrackets = 0
+        var position = 0
+
+        var token = try popToken(tokens: tokens, position: &position)
+        while token != .bracketsClose {
+            switch token {
+            case .logicalAnd, .logicalOr, .exclamation, .parensOpen, .parensClose, .equals:
+                condition.append(token)
+            case .identifier:
+                condition += [.parensOpen, token]
+                numberOfAddedBrackets += 1
+
+                try addRemainingExpressionIfNeeded(tokens: tokens, position: &position, condition: &condition)
+
+                condition.append(.parensClose)
+                numberOfAddedBrackets += 1
+            default:
+                throw ParseError.message("Condition couldn't be parsed!")
+            }
+
+            token = try popToken(tokens: tokens, position: &position)
+        }
+
+        numberOfAddedBrackets += try addBracketsForOperatorPrecedence(condition: &condition)
+
+        return (condition, numberOfAddedBrackets)
+    }
+
+    private func addRemainingExpressionIfNeeded(tokens: [Lexer.Token], position: inout Int, condition: inout [Lexer.Token]) throws {
+        if case .equals? = peekToken(tokens: tokens, position: position) {
+            condition.append(try popToken(tokens: tokens, position: &position))
+
+            let token = try popToken(tokens: tokens, position: &position)
+
+            guard case .identifier = token else {
+                throw ParseError.message("Condition couldn't be parsed!")
+            }
+            condition.append(token)
+
+            try addRemainingExpressionIfNeeded(tokens: tokens, position: &position, condition: &condition)
+        }
+    }
+
+    private func addBracketsForOperatorPrecedence(condition: inout [Lexer.Token]) throws -> Int {
+        var numberOfAddedBrackets = 0
+
+        for (index, token) in condition.enumerated() where token == .logicalAnd {
+            addBracketsAroundExpression(condition: &condition, numberOfAddedBrackets: &numberOfAddedBrackets, position: index)
+        }
+
+        return numberOfAddedBrackets
+    }
+
+    private func addBracketsAroundExpression(condition: inout [Lexer.Token], numberOfAddedBrackets: inout Int, position: Int) {
+        var numberOfParensLeftToSkip = 0
+
+        for i in 1..<condition.count {
+            var idx = position - i + numberOfAddedBrackets
+            if case .parensClose = condition[idx] {
+                numberOfParensLeftToSkip += 1
+            }
+
+            if case .parensOpen = condition[idx] {
+                numberOfParensLeftToSkip -= 1
+
+                if numberOfParensLeftToSkip <= 0 {
+                    if idx > 0, case .exclamation = condition[idx - 1] {
+                        idx -= 1
+                    }
+                    condition.insert(.parensOpen, at: idx)
+                    numberOfAddedBrackets += 1
+                    break
+                }
+            }
+        }
+
+        numberOfParensLeftToSkip = 0
+
+        for i in 1..<condition.count {
+            let idx = position + i + numberOfAddedBrackets
+            if case .parensOpen = condition[idx] {
+                numberOfParensLeftToSkip += 1
+            }
+
+            if case .parensClose = condition[idx] {
+                numberOfParensLeftToSkip -= 1
+
+                if numberOfParensLeftToSkip <= 0 {
+                    condition.insert(.parensClose, at: idx)
+                    numberOfAddedBrackets += 1
+                    break
+                }
+            }
         }
     }
 }
