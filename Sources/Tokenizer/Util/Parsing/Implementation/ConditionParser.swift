@@ -26,9 +26,10 @@ extension ConditionBinaryOperation {
 // `parseFactor` on the other hand parses the indivisible condition parts
 // EBNF as of making this parser:
 // CONDITION := '[' EXPRESSION ']'
-// EXPRESSION := TERM [ || TERM ]
-// TERM := COMPARISON [ ( == | != ) COMPARISON ]
-// COMPARISON := [ '!' ] ( '(' EXPRESSION ')' | IDENTIFIER )
+// EXPRESSION := TERM [ or TERM ]
+// TERM := COMPARISON [ and COMPARISON ]
+// COMPARISON := FACTOR [ ( == | != ) FACTOR ]
+// FACTOR := [ '!' ] ( '(' EXPRESSION ')' | IDENTIFIER )
 // IDENTIFIER := { all cases in the ConditionStatement enum }
 class ConditionParser: BaseParser<Condition> {
     override func parseSingle() throws -> Condition {
