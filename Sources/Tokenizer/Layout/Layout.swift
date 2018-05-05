@@ -24,6 +24,7 @@ public struct Layout: XMLElementDeserializable {
     public var contentHuggingPriorityHorizontal: ConstraintPriority?
     public var contentHuggingPriorityVertical: ConstraintPriority?
     public var constraints: [Constraint]
+    public var hasConditions: Bool
     
     init(id: String? = nil,
          contentCompressionPriorityHorizontal: ConstraintPriority?,
@@ -37,6 +38,7 @@ public struct Layout: XMLElementDeserializable {
         self.contentCompressionPriorityVertical = contentCompressionPriorityVertical
         self.contentHuggingPriorityHorizontal = contentHuggingPriorityHorizontal
         self.contentHuggingPriorityVertical = contentHuggingPriorityVertical
+        self.hasConditions = constraints.index(where: { $0.condition != nil }) != nil
     }
 
     public static func deserialize(_ node: XMLElement) throws -> Layout {

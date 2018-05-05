@@ -129,6 +129,7 @@ class GenerateCommand: Command {
         output.append("""
               import UIKit
               import Reactant
+              import ReactantUI
               import SnapKit
               """)
 

@@ -1,5 +1,5 @@
 //
-//  ConstraintCondition.swift
+//  Condition.swift
 //  Differentiator-iOS
 //
 //  Created by Robin Krenecky on 27/04/2018.
@@ -31,7 +31,7 @@ public indirect enum Condition {
     var negation: Condition {
         switch self {
         case .statement(let statement):
-            return .statement(statement.opposite)
+            return .statement(statement.negation)
         case .conjunction(let firstCondition, let secondCondition):
             return .disjunction(firstCondition.negation, secondCondition.negation)
         case .disjunction(let firstCondition, let secondCondition):
@@ -60,24 +60,27 @@ public indirect enum Condition {
 }
 
 public enum ConditionStatement {
-    case interfaceIdiom(InterfaceIdiom, conditionValue: Bool)
-    case sizeClass(SizeClassType, type: InterfaceSizeClass, conditionValue: Bool)
-    case orientation(DeviceOrientation, conditionValue: Bool)
+    indirect case negated(ConditionStatement)
+    case interfaceIdiom(InterfaceIdiom)
+    case sizeClass(SizeClassType, type: InterfaceSizeClass)
+    case orientation(DeviceOrientation)
     case trueStatement
     case falseStatement
 
-    var opposite: ConditionStatement {
+    var negation: ConditionStatement {
         switch self {
-        case .interfaceIdiom(let idiom, conditionValue: let value):
-            return .interfaceIdiom(idiom, conditionValue: !value)
-        case .sizeClass(let sizeClass, type: let type, conditionValue: let value):
-            return .sizeClass(sizeClass, type: type, conditionValue: !value)
-        case .orientation(let orientation, conditionValue: let value):
-            return .orientation(orientation, conditionValue: !value)
+        case .interfaceIdiom(let idiom):
+            return .negated(.interfaceIdiom(idiom))
+        case .sizeClass(let sizeClass, let type):
+            return .negated(.sizeClass(sizeClass, type: type))
+        case .orientation(let orientation):
+            return .negated(.orientation(orientation))
         case .trueStatement:
-            return .falseStatement
+            return .negated(.falseStatement)
         case .falseStatement:
-            return .trueStatement
+            return .negated(.trueStatement)
+        case .negated(let statement):
+            return statement
         }
     }
 
@@ -94,44 +97,50 @@ public enum ConditionStatement {
 
         switch identifier.lowercased() {
         case "phone", "iphone":
-            self = ConditionStatement.interfaceIdiom(.phone, conditionValue: conditionValue)
+            self = ConditionStatement.interfaceIdiom(.phone)
         case "pad", "ipad":
-            self = ConditionStatement.interfaceIdiom(.pad, conditionValue: conditionValue)
+            self = ConditionStatement.interfaceIdiom(.pad)
         case "tv", "appletv":
-            self = ConditionStatement.interfaceIdiom(.tv, conditionValue: conditionValue)
+            self = ConditionStatement.interfaceIdiom(.tv)
         case "carplay":
-            self = ConditionStatement.interfaceIdiom(.carPlay, conditionValue: conditionValue)
+            self = ConditionStatement.interfaceIdiom(.carPlay)
         case "horizontal":
             guard let sizeClass = sizeClass else { return nil }
-            self = ConditionStatement.sizeClass(.horizontal, type: sizeClass, conditionValue: conditionValue)
+            self = ConditionStatement.sizeClass(.horizontal, type: sizeClass)
         case "vertical":
             guard let sizeClass = sizeClass else { return nil }
-            self = ConditionStatement.sizeClass(.vertical, type: sizeClass, conditionValue: conditionValue)
+            self = ConditionStatement.sizeClass(.vertical, type: sizeClass)
         case "landscape":
-            self = ConditionStatement.orientation(.landscape, conditionValue: conditionValue)
+            self = ConditionStatement.orientation(.landscape)
         case "portrait":
-            self = ConditionStatement.orientation(.portrait, conditionValue: conditionValue)
+            self = ConditionStatement.orientation(.portrait)
         default:
             return nil
+        }
+
+        if(!conditionValue) {
+            self = .negated(self)
         }
     }
 
     func evaluate(from interfaceState: InterfaceState) -> Bool {
         switch self {
-        case .interfaceIdiom(let idiom, conditionValue: let value):
-            return (idiom == interfaceState.interfaceIdiom) == value
-        case .sizeClass(let sizeClass, type: let type, conditionValue: let value):
+        case .interfaceIdiom(let idiom):
+            return idiom == interfaceState.interfaceIdiom
+        case .sizeClass(let sizeClass, type: let type):
             if sizeClass == .horizontal {
-                return (type == interfaceState.horizontalSizeClass) == value
+                return type == interfaceState.horizontalSizeClass
             } else {
-                return (type == interfaceState.verticalSizeClass) == value
+                return type == interfaceState.verticalSizeClass
             }
-        case .orientation(let orientation, conditionValue: let value):
-            return (orientation == interfaceState.deviceOrientation) == value
+        case .orientation(let orientation):
+            return orientation == interfaceState.deviceOrientation
         case .trueStatement:
             return true
         case .falseStatement:
             return false
+        case .negated(let statement):
+            return !statement.evaluate(from: interfaceState)
         }
     }
 }

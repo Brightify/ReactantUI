@@ -67,6 +67,30 @@ public class UIGenerator: Generator {
                 l()
                 l("private weak var target: \(root.type)?")
                 l()
+                func generateChildProperties(children: [UIElement]) {
+
+                    for child in children {
+                        defer {
+                            if let container = child as? UIContainer {
+                                generateChildProperties(children: container.children)
+                            }
+                        }
+
+                        let name: String
+                        if child.field != nil {
+                            continue
+                        } else if let layoutId = child.layout.id {
+                            name = "named_\(layoutId)"
+                        } else {
+                            name = "temp_\(type(of: child))_\(tempCounter)"
+                            tempCounter += 1
+                        }
+                        l("private weak var \(name): UIView?")
+                    }
+                }
+                generateChildProperties(children: root.children)
+                tempCounter = 1
+                l()
                 l("fileprivate init(target: \(root.type))") {
                     l("self.target = target")
                 }
@@ -105,7 +129,65 @@ public class UIGenerator: Generator {
                     }
                     try root.children.forEach { try generate(element: $0, superName: "target", containedIn: root) }
                     tempCounter = 1
-                    root.children.forEach { generateConstraints(element: $0, superName: "target") }
+                    root.children.forEach { generateConstraints(element: $0, superName: "target", forUpdate: false) }
+                    if configuration.isLiveEnabled {
+                        l("#endif")
+                    }
+                }
+                l()
+                l("func updateReactantUI()") {
+                    tempCounter = 1
+                    func generateChildVariables(children: [UIElement], guardNames: inout [String]) {
+                        for child in children {
+                            defer {
+                                if let container = child as? UIContainer {
+                                    generateChildVariables(children: container.children, guardNames: &guardNames)
+                                }
+                            }
+
+                            let name: String
+                            if child.field != nil {
+                                continue
+                            } else if let layoutId = child.layout.id {
+                                name = "named_\(layoutId)"
+                            } else {
+                                name = "temp_\(type(of: child))_\(tempCounter)"
+                                tempCounter += 1
+                            }
+
+                            guardNames.append(name)
+                        }
+                    }
+                    var guardNames = ["target"] as [String]
+                    generateChildVariables(children: root.children, guardNames: &guardNames)
+                    if !guardNames.isEmpty {
+                        l("guard ")
+                        for guardName in guardNames {
+                            l("  let \(guardName) = self.\(guardName)\(guardName == guardNames.last ? "" : ",")")
+                        }
+                        l("else { /* FIXME Should we fatalError here? */ return }")
+                    }
+
+                    if configuration.isLiveEnabled {
+                        if configuration.swiftVersion >= .swift4_1 {
+                            l("#if targetEnvironment(simulator)")
+                        } else {
+                            l("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
+                        }
+                        // This will register `self` to remove `deinit` from ViewBase
+                        //l("ReactantLiveUIManager.shared.update(target)")
+                        l("#else")
+                    }
+
+                    // TODO: Add conditional properties?
+//                    for property in root.properties {
+//                        l(property.application(on: "target"))
+//                    }
+//                    try root.children.forEach { try generate(element: $0, superName: "target", containedIn: root) }
+
+                    tempCounter = 1
+                    root.children.forEach { generateConstraints(element: $0, superName: "target", forUpdate: true) }
+
                     if configuration.isLiveEnabled {
                         l("#endif")
                     }
@@ -139,10 +221,12 @@ public class UIGenerator: Generator {
         } else if let layoutId = element.layout.id {
             name = "named_\(layoutId)"
             l("let \(name) = \(try element.initialization())")
+            l("self.\(name) = \(name)")
         } else {
             name = "temp_\(type(of: element))_\(tempCounter)"
             tempCounter += 1
             l("let \(name) = \(try element.initialization())")
+            l("self.\(name) = \(name)")
         }
 
         for style in element.styles {
@@ -170,7 +254,7 @@ public class UIGenerator: Generator {
         }
     }
 
-    private func generateConstraints(element: UIElement, superName: String) {
+    private func generateConstraints(element: UIElement, superName: String, forUpdate: Bool) {
         let name: String
         if let field = element.field {
             name = "target.\(field)"
@@ -180,6 +264,16 @@ public class UIGenerator: Generator {
             name = "temp_\(type(of: element))_\(tempCounter)"
             tempCounter += 1
         }
+
+        defer {
+            if let container = element as? UIContainer {
+                container.children.forEach { generateConstraints(element: $0, superName: name, forUpdate: forUpdate) }
+            }
+        }
+        // we want to continue only if we are generating constraints for update AND the layout has conditions
+        // on the other hand, if it's the first time this method is called (not from update), we don't want to
+        // generate the constraints if the layout has any conditions in it (they will be handled in update later)
+        guard forUpdate == element.layout.hasConditions else { return }
 
         if let horizontalCompressionPriority = element.layout.contentCompressionPriorityHorizontal {
             l("\(name).setContentCompressionResistancePriority(UILayoutPriority(rawValue: \(horizontalCompressionPriority.numeric)), for: .horizontal)")
@@ -196,34 +290,32 @@ public class UIGenerator: Generator {
         if let verticalHuggingPriority = element.layout.contentHuggingPriorityVertical {
             l("\(name).setContentHuggingPriority(UILayoutPriority(rawValue: \(verticalHuggingPriority.numeric)), for: .vertical)")
         }
-
-        l("\(name).snp.makeConstraints") {
+        l()
+        // we're calling `remakeConstraints` if we're called from update
+        l("\(name).snp.\(forUpdate ? "re" : "")makeConstraints") {
             l("make in")
             for constraint in element.layout.constraints {
                 if configuration.minimumMajorVersion < 11 {
                     if case .targeted(target: .safeAreaLayoutGuide, targetAnchor: _, multiplier: _, constant: _) = constraint.type {
                         l("if #available(iOS 11.0, tvOS 11.0, *)") {
-                            l(constraintLine(constraint: constraint, superName: superName, name: name, fallback: false))
+                            generateConstraintLine(constraint: constraint, superName: superName, name: name, fallback: false)
                         }
                         l("else") {
                             // If xcode says that there is no such thing as fallback_safeAreaLayoutGuide,
                             // add Reactant/FallbackSafeAreaInsets to your podfile
-                            l(constraintLine(constraint: constraint, superName: superName, name: name, fallback: true))
+                            generateConstraintLine(constraint: constraint, superName: superName, name: name, fallback: true)
                         }
                     } else {
-                        l(constraintLine(constraint: constraint, superName: superName, name: name, fallback: false))
+                        generateConstraintLine(constraint: constraint, superName: superName, name: name, fallback: false)
                     }
                 } else {
-                    l(constraintLine(constraint: constraint, superName: superName, name: name, fallback: false))
+                    generateConstraintLine(constraint: constraint, superName: superName, name: name, fallback: false)
                 }
             }
         }
-        if let container = element as? UIContainer {
-            container.children.forEach { generateConstraints(element: $0, superName: name) }
-        }
     }
 
-    private func constraintLine(constraint: Constraint, superName: String, name: String, fallback: Bool) -> String {
+    private func generateConstraintLine(constraint: Constraint, superName: String, name: String, fallback: Bool) {
         var constraintLine = "make.\(constraint.anchor).\(constraint.relation)("
 
         switch constraint.type {
@@ -271,7 +363,14 @@ public class UIGenerator: Generator {
         if let field = constraint.field {
             constraintLine = "constraints.\(field) = \(constraintLine).constraint"
         }
-        return constraintLine
+
+        if let condition = constraint.condition {
+            l("if \(constraint.generateCondition(condition: condition, viewName: name))") {
+                l(constraintLine)
+            }
+        } else {
+            l(constraintLine)
+        }
     }
 
     private func constraintFields(element: UIElement) -> [String] {

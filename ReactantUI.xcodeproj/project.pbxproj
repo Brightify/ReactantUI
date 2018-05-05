@@ -214,7 +214,12 @@
 		22957E3C207235E20088C09E /* StackViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22957E3B207235E20088C09E /* StackViewRootView.ui.xml */; };
 		58836BDBAF0F10A4A5E31625 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7139F67D20934D6E009EA7F4 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */; };
 		5B1333D6A201F8A50D8697D9 /* Pods_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1AAC4CA06239D481C4E7F9D /* Pods_Example.framework */; };
-		7139F67920934BC2009EA7F4 /* ConstraintCondition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7139F67720934BBB009EA7F4 /* ConstraintCondition.swift */; };
+		689FA0B9209CB2A700B39225 /* UIView+traits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689FA0B7209CB2A200B39225 /* UIView+traits.swift */; };
+		689FA0D0209CD7B000B39225 /* ReactantUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 689FA0CE209CD7B000B39225 /* ReactantUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		689FA0D3209CD7B000B39225 /* ReactantUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689FA0CC209CD7B000B39225 /* ReactantUI.framework */; };
+		689FA0D4209CD7B000B39225 /* ReactantUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 689FA0CC209CD7B000B39225 /* ReactantUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		689FA0D8209CD7B700B39225 /* UIView+traits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689FA0B7209CB2A200B39225 /* UIView+traits.swift */; };
+		7139F67920934BC2009EA7F4 /* Condition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7139F67720934BBB009EA7F4 /* Condition.swift */; };
 		7139F67B20934C1D009EA7F4 /* GeneratedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B689A1EAF870E007CC668 /* GeneratedUI.swift */; };
 		71BAEAB720972E1600D56639 /* ConditionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BAEAB520972DFD00D56639 /* ConditionParser.swift */; };
 		71D94EC420935F8E007D83A1 /* ConstraintConditionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D94EC320935F8E007D83A1 /* ConstraintConditionTests.swift */; };
@@ -238,6 +243,13 @@
 			remoteGlobalIDString = 18448FAB2092041B0080B743;
 			remoteInfo = "LiveUI-iOS";
 		};
+		689FA0D1209CD7B000B39225 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 182B685D1EAF7530007CC668 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 689FA0CB209CD7B000B39225;
+			remoteInfo = ReactantUI;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -247,6 +259,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				689FA0D4209CD7B000B39225 /* ReactantUI.framework in Embed Frameworks */,
 				18448FC22092041B0080B743 /* ReactantLiveUI.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -472,7 +485,11 @@
 		5A946519C18AE694A9F16B15 /* Pods-LiveUI-LiveUI-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveUI-LiveUI-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-LiveUI-LiveUI-iOS/Pods-LiveUI-LiveUI-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		5F1124193368C79B42B1596B /* Pods-Example-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Example-tvOS/Pods-Example-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		668836B2629A4DD2DFC1CED6 /* Pods-LiveUI-LiveUI-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveUI-LiveUI-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LiveUI-LiveUI-iOS/Pods-LiveUI-LiveUI-iOS.debug.xcconfig"; sourceTree = "<group>"; };
-		7139F67720934BBB009EA7F4 /* ConstraintCondition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstraintCondition.swift; sourceTree = "<group>"; };
+		689FA0B7209CB2A200B39225 /* UIView+traits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+traits.swift"; sourceTree = "<group>"; };
+		689FA0CC209CD7B000B39225 /* ReactantUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReactantUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		689FA0CE209CD7B000B39225 /* ReactantUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReactantUI.h; sourceTree = "<group>"; };
+		689FA0CF209CD7B000B39225 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7139F67720934BBB009EA7F4 /* Condition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Condition.swift; sourceTree = "<group>"; };
 		7139F67D20934D6E009EA7F4 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		71BAEAB520972DFD00D56639 /* ConditionParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionParser.swift; sourceTree = "<group>"; };
 		71D94EC320935F8E007D83A1 /* ConstraintConditionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstraintConditionTests.swift; sourceTree = "<group>"; };
@@ -490,6 +507,7 @@
 			files = (
 				18448FC12092041B0080B743 /* ReactantLiveUI.framework in Frameworks */,
 				5B1333D6A201F8A50D8697D9 /* Pods_Example.framework in Frameworks */,
+				689FA0D3209CD7B000B39225 /* ReactantUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -519,6 +537,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		689FA0C8209CD7B000B39225 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -529,6 +554,7 @@
 				1844927A20922AE10080B743 /* Tests */,
 				182B68691EAF7589007CC668 /* Example */,
 				2284DADA1FAC855E00D231D3 /* Example-tvOS */,
+				689FA0CD209CD7B000B39225 /* ReactantUI */,
 				182B68681EAF7589007CC668 /* Products */,
 				7152B12B2D8D6874507C49C6 /* Pods */,
 				719FEA2A5C7B0DD40285E72B /* Frameworks */,
@@ -542,6 +568,7 @@
 				2284DAD91FAC855E00D231D3 /* Example-tvOS.app */,
 				18448FAC2092041B0080B743 /* ReactantLiveUI.framework */,
 				18448FB42092041B0080B743 /* LiveUI-iOSTests.xctest */,
+				689FA0CC209CD7B000B39225 /* ReactantUI.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -599,6 +626,7 @@
 		18448FCA2092053F0080B743 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				689FA0B6209CB29000B39225 /* Common */,
 				184492782092255A0080B743 /* ReactantLiveUI.h */,
 				18449147209223A70080B743 /* Tokenizer */,
 				1844911820921F150080B743 /* Live */,
@@ -759,7 +787,7 @@
 				18449174209223A70080B743 /* ConstraintRelation.swift */,
 				18449175209223A70080B743 /* ConstraintTarget.swift */,
 				18449176209223A70080B743 /* ConstraintType.swift */,
-				7139F67720934BBB009EA7F4 /* ConstraintCondition.swift */,
+				7139F67720934BBB009EA7F4 /* Condition.swift */,
 			);
 			path = Constraints;
 			sourceTree = "<group>";
@@ -1127,6 +1155,23 @@
 			path = StackView;
 			sourceTree = "<group>";
 		};
+		689FA0B6209CB29000B39225 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				689FA0B7209CB2A200B39225 /* UIView+traits.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		689FA0CD209CD7B000B39225 /* ReactantUI */ = {
+			isa = PBXGroup;
+			children = (
+				689FA0CE209CD7B000B39225 /* ReactantUI.h */,
+				689FA0CF209CD7B000B39225 /* Info.plist */,
+			);
+			path = ReactantUI;
+			sourceTree = "<group>";
+		};
 		7152B12B2D8D6874507C49C6 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -1166,6 +1211,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		689FA0C9209CD7B000B39225 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				689FA0D0209CD7B000B39225 /* ReactantUI.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -1185,6 +1238,7 @@
 			);
 			dependencies = (
 				18448FC02092041B0080B743 /* PBXTargetDependency */,
+				689FA0D2209CD7B000B39225 /* PBXTargetDependency */,
 			);
 			name = Example;
 			productName = Example;
@@ -1249,6 +1303,24 @@
 			productReference = 2284DAD91FAC855E00D231D3 /* Example-tvOS.app */;
 			productType = "com.apple.product-type.application";
 		};
+		689FA0CB209CD7B000B39225 /* ReactantUI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 689FA0D5209CD7B000B39225 /* Build configuration list for PBXNativeTarget "ReactantUI" */;
+			buildPhases = (
+				689FA0C7209CD7B000B39225 /* Sources */,
+				689FA0C8209CD7B000B39225 /* Frameworks */,
+				689FA0C9209CD7B000B39225 /* Headers */,
+				689FA0CA209CD7B000B39225 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ReactantUI;
+			productName = ReactantUI;
+			productReference = 689FA0CC209CD7B000B39225 /* ReactantUI.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1275,6 +1347,10 @@
 						DevelopmentTeam = Z4J75M6GAC;
 						ProvisioningStyle = Automatic;
 					};
+					689FA0CB209CD7B000B39225 = {
+						CreatedOnToolsVersion = 9.3;
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = 182B68601EAF7530007CC668 /* Build configuration list for PBXProject "ReactantUI" */;
@@ -1294,6 +1370,7 @@
 				2284DAD81FAC855E00D231D3 /* Example-tvOS */,
 				18448FAB2092041B0080B743 /* LiveUI-iOS */,
 				18448FB32092041B0080B743 /* LiveUI-iOSTests */,
+				689FA0CB209CD7B000B39225 /* ReactantUI */,
 			);
 		};
 /* End PBXProject section */
@@ -1346,6 +1423,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		689FA0CA209CD7B000B39225 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
@@ -1361,7 +1445,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "pushd $PROJECT_DIR\nenv -i HOME=$HOME PATH=$PATH swift build\npopd\n\n$PROJECT_DIR/.build/debug/reactant-ui generate --enable-live --inputPath=$PROJECT_DIR/Example/ --outputFile=$PROJECT_DIR/Example/Generated/GeneratedUI.swift --xcodeprojPath=$PROJECT_DIR/ReactantUI.xcodeproj\n#pushd $PROJECT_DIR/Example\n#$PROJECT_DIR/.build/debug/reactant-ui --enable-live > $PROJECT_DIR/Example/Generated/GeneratedUI.swift\n#popd";
+			shellScript = "pushd $PROJECT_DIR\nenv -i HOME=$HOME PATH=$PATH swift build\npopd\n# --enable-live\n$PROJECT_DIR/.build/debug/reactant-ui generate --inputPath=$PROJECT_DIR/Example/ --outputFile=$PROJECT_DIR/Example/Generated/GeneratedUI.swift --xcodeprojPath=$PROJECT_DIR/ReactantUI.xcodeproj\n#pushd $PROJECT_DIR/Example\n#$PROJECT_DIR/.build/debug/reactant-ui --enable-live > $PROJECT_DIR/Example/Generated/GeneratedUI.swift\n#popd";
 		};
 		2284DAE81FAC95B900D231D3 /* Generate Reactant UI */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1686,6 +1770,7 @@
 				1844914020921F150080B743 /* ReactantLiveUIConfiguration.swift in Sources */,
 				18449215209223A70080B743 /* LayoutAnchor.swift in Sources */,
 				1844913E20921F150080B743 /* PreviewListRootView.swift in Sources */,
+				689FA0B9209CB2A700B39225 /* UIView+traits.swift in Sources */,
 				18449219209223A70080B743 /* AssignablePropertyDesciption.swift in Sources */,
 				184491FF209223A70080B743 /* TabBar.swift in Sources */,
 				184491F1209223A70080B743 /* ImageView.swift in Sources */,
@@ -1714,7 +1799,7 @@
 				1844920F209223A70080B743 /* ConstraintModifier.swift in Sources */,
 				184491F7209223A70080B743 /* ProgressView.swift in Sources */,
 				1844923F209223A70080B743 /* DatePickerMode.swift in Sources */,
-				7139F67920934BC2009EA7F4 /* ConstraintCondition.swift in Sources */,
+				7139F67920934BC2009EA7F4 /* Condition.swift in Sources */,
 				18449232209223A70080B743 /* Rect.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1739,6 +1824,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		689FA0C7209CD7B000B39225 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				689FA0D8209CD7B700B39225 /* UIView+traits.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1751,6 +1844,11 @@
 			isa = PBXTargetDependency;
 			target = 18448FAB2092041B0080B743 /* LiveUI-iOS */;
 			targetProxy = 18448FBF2092041B0080B743 /* PBXContainerItemProxy */;
+		};
+		689FA0D2209CD7B000B39225 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 689FA0CB209CD7B000B39225 /* ReactantUI */;
+			targetProxy = 689FA0D1209CD7B000B39225 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2273,6 +2371,107 @@
 			};
 			name = Release;
 		};
+		689FA0D6209CD7B000B39225 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = ReactantUI/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = org.brightify.ReactantUI;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		689FA0D7209CD7B000B39225 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = ReactantUI/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = org.brightify.ReactantUI;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2317,6 +2516,15 @@
 			buildConfigurations = (
 				2284DAE51FAC855E00D231D3 /* Debug */,
 				2284DAE61FAC855E00D231D3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		689FA0D5209CD7B000B39225 /* Build configuration list for PBXNativeTarget "ReactantUI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				689FA0D6209CD7B000B39225 /* Debug */,
+				689FA0D7209CD7B000B39225 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

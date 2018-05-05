@@ -17,11 +17,11 @@ class ConstraintParser: BaseParser<Constraint> {
     }
     
     override func parseSingle() throws -> Constraint {
-        var condition: Condition = .alwaysTrue
+        var condition: Condition? = nil
         if case .bracketsOpen? = peekToken() {
             try popToken()
 
-            let (parsedCondition, tokensToPop) = try ConditionParser.init(tokens: remainingTokens).parseSingle()
+            let (parsedCondition, tokensToPop) = try ConditionParser(tokens: remainingTokens).parseSingle()
             condition = parsedCondition
             try popTokens(tokensToPop)
         }

@@ -14,7 +14,7 @@ private func +=(lhs: inout [String], rhs: String) {
 
 public struct Constraint {
     public var field: String?
-    public var condition: Condition
+    public var condition: Condition?
     public var attribute: LayoutAttribute
     public var type: ConstraintType
     public var relation: ConstraintRelation
@@ -25,7 +25,7 @@ public struct Constraint {
     }
     
     public init(field: String?,
-                condition: Condition,
+                condition: Condition?,
                 attribute: LayoutAttribute,
                 type: ConstraintType,
                 relation: ConstraintRelation,
@@ -46,6 +46,8 @@ public struct Constraint {
     
     func serialize() -> XMLSerializableAttribute {
         var value = [] as [String]
+
+        // TODO: Add condition serialization
         
         if let field = field {
             value += "\(field) ="
@@ -103,6 +105,92 @@ public struct Constraint {
         }
         
         return XMLSerializableAttribute(name: anchor.description, value: value.joined(separator: " "))
+    }
+
+    public func generateCondition(condition: Condition, viewName: String) -> String {
+        switch condition {
+        case .statement(let statement):
+            return generateCondition(statement: statement, viewName: viewName)
+        case .conjunction(let lhsCondition, let rhsCondition):
+            return "(\(generateCondition(condition: lhsCondition, viewName: viewName)) && \(generateCondition(condition: rhsCondition, viewName: viewName)))"
+        case .disjunction(let lhsCondition, let rhsCondition):
+            return "(\(generateCondition(condition: lhsCondition, viewName: viewName)) || \(generateCondition(condition: rhsCondition, viewName: viewName)))"
+        }
+    }
+
+    public func generateCondition(statement: ConditionStatement, viewName: String) -> String {
+        switch statement {
+        case .trueStatement:
+            return "true"
+        case .falseStatement:
+            return "false"
+        case .sizeClass(let sizeClassType, let viewInterfaceSize):
+            return "\(viewName).traits.size(\(sizeClassType.traitsParameter): \(viewInterfaceSize.traitsParameter))"
+        case .interfaceIdiom(let interfaceIdiom):
+            return "\(viewName).traits.device(\(interfaceIdiom.traitsParameter))"
+        case .orientation(let orientation):
+            return "\(viewName).traits.orientation(\(orientation.traitsParameter))"
+        case .negated(let statement):
+            return "!(\(generateCondition(statement: statement, viewName: viewName)))"
+        }
+    }
+}
+
+extension SizeClassType {
+    fileprivate var traitsParameter: String {
+        switch self {
+        case .horizontal:
+            return "horizontal"
+        case .vertical:
+            return "vertical"
+        }
+    }
+}
+
+extension InterfaceSizeClass {
+    fileprivate var traitsParameter: String {
+        switch self {
+        case .regular:
+            return "UIUserInterfaceSizeClass.regular"
+        case .compact:
+            return "UIUserInterfaceSizeClass.compact"
+        case .unspecified:
+            return "UIUserInterfaceSizeClass.unspecified"
+        }
+    }
+}
+
+extension InterfaceIdiom {
+    fileprivate var traitsParameter: String {
+        switch self {
+        case .phone:
+            return ".phone"
+        case .pad:
+            return ".pad"
+        case .tv:
+            return ".tv"
+        case .carPlay:
+            return ".carPlay"
+        case .unspecified:
+            return ".unspecified"
+        }
+    }
+}
+
+extension DeviceOrientation {
+    fileprivate var traitsParameter: String {
+        switch self {
+        case .faceDown:
+            return ".faceDown"
+        case .faceUp:
+            return ".faceUp"
+        case .portrait:
+            return ".portrait"
+        case .landscape:
+            return ".landscape"
+        case .unknown:
+            return ".unknown"
+        }
     }
 }
 

@@ -22,6 +22,10 @@ class ConstraintConditionTests: XCTestCase {
         return InterfaceState(interfaceIdiom: .phone, horizontalSizeClass: .compact, verticalSizeClass: .compact, deviceOrientation: .portrait)
     }()
 
+    var allInterfaceStates: [InterfaceState] {
+        return [interfaceState1, interfaceState2, interfaceState3]
+    }
+
     private func parseInput(_ input: String) throws -> Condition? {
         return try ConstraintParser(tokens: Lexer.tokenize(input: "\(input) super inset"), layoutAttribute: LayoutAttribute.above).parseSingle().condition
     }
@@ -224,6 +228,30 @@ class ConstraintConditionTests: XCTestCase {
             XCTAssertTrue(result9.evaluate(from: interfaceState1))
             XCTAssertFalse(result9.evaluate(from: interfaceState2))
             XCTAssertFalse(result9.evaluate(from: interfaceState3))
+        }
+    }
+
+    func testMoreConditions() throws {
+        let input = [
+            "[vertical == regular || (horizontal == compact || vertical == compact && pad)]",
+            "[vertical == regular || (horizontal == compact && vertical == compact && pad)]",
+            "[vertical == regular && (horizontal == compact && vertical == compact || phone)]",
+        ]
+
+        let verifiers = [
+            [true, true, true],
+            [true, false, false],
+            [false, false, true],
+        ]
+
+        let results = try input.flatMap { try parseInput($0) }.map { parsedInput in
+            allInterfaceStates.map { parsedInput.evaluate(from: $0) }
+        }
+
+        for (outerIndex, (result, verifier)) in zip(results, verifiers).enumerated() {
+            for innerIndex in 0..<result.count {
+                XCTAssertEqual(result[innerIndex], verifier[innerIndex], "element at indices [\(outerIndex)][\(innerIndex)]")
+            }
         }
     }
 }
