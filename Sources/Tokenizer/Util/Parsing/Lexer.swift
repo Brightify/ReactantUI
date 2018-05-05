@@ -71,8 +71,8 @@ extension Lexer {
         ("[!=][=]", { .equals(value: Bool(equalityOperator: $0), original: $0) }),
         ("=", { _ in .assignment }),
         (",", { _ in .comma }),
-        ("&&", { _ in .logicalAnd }),
-        ("\\|\\|", { _ in .logicalOr }),
+        ("and", { _ in .logicalAnd }),
+        ("or", { _ in .logicalOr }),
         ("!", { _ in .exclamation })
     ]
 

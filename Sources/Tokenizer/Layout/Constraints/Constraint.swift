@@ -46,17 +46,19 @@ public struct Constraint {
     
     func serialize() -> XMLSerializableAttribute {
         var value = [] as [String]
-
-        // TODO: Add condition serialization
         
         if let field = field {
             value += "\(field) ="
+        }
+
+        if let condition = self.condition {
+            value += "[\(try! generateXMLCondition(condition: condition))]"
         }
         
         if relation != .equal {
             value += ":\(relation.serialized)"
         }
-        
+
         switch type {
         case .constant(let constant):
             value += "\(constant)"
@@ -107,18 +109,23 @@ public struct Constraint {
         return XMLSerializableAttribute(name: anchor.description, value: value.joined(separator: " "))
     }
 
-    public func generateCondition(condition: Condition, viewName: String) throws -> String {
+    // MARK: Swift condition generators
+    public func generateSwiftCondition(condition: Condition, viewName: String) throws -> String {
         switch condition {
         case .statement(let statement):
-            return try generateCondition(statement: statement, viewName: viewName)
+            return try generateSwiftCondition(statement: statement, viewName: viewName)
         case .unary(let operation, let condition):
-            return "\(operation.textRepresentation)\(try generateCondition(condition: condition, viewName: viewName))"
+            return "\(operation.swiftRepresentation)\(try generateSwiftCondition(condition: condition, viewName: viewName))"
         case .binary(let operation, let lhsCondition, let rhsCondition):
-            return "\(try generateCondition(condition: lhsCondition, viewName: viewName)) \(operation.textRepresentation) \(try generateCondition(condition: rhsCondition, viewName: viewName))"
+            return [
+                try generateSwiftCondition(condition: lhsCondition, viewName: viewName),
+                operation.swiftRepresentation,
+                try generateSwiftCondition(condition: rhsCondition, viewName: viewName),
+            ].joined(separator: " ")
         }
     }
 
-    public func generateCondition(statement: ConditionStatement, viewName: String) throws -> String {
+    public func generateSwiftCondition(statement: ConditionStatement, viewName: String) throws -> String {
         switch statement {
         case .trueStatement:
             return "true"
@@ -134,6 +141,39 @@ public struct Constraint {
             throw ConditionError("Unmatched interface size class.")
         }
     }
+
+    // MARK: - XML condition generators
+    public func generateXMLCondition(condition: Condition) throws -> String {
+        switch condition {
+        case .statement(let statement):
+            return try generateXMLCondition(statement: statement)
+        case .unary(let operation, let condition):
+            return "\(operation.xmlRepresentation)\(try generateXMLCondition(condition: condition))"
+        case .binary(let operation, let lhsCondition, let rhsCondition):
+            return [
+                try generateXMLCondition(condition: lhsCondition),
+                operation.xmlRepresentation,
+                try generateXMLCondition(condition: rhsCondition),
+            ].joined(separator: " ")
+        }
+    }
+
+    public func generateXMLCondition(statement: ConditionStatement) throws -> String {
+        switch statement {
+        case .trueStatement:
+            return "true"
+        case .falseStatement:
+            return "false"
+        case .sizeClass(let sizeClassType, let viewInterfaceSize):
+            return "\(sizeClassType.description) == \(viewInterfaceSize.description)"
+        case .interfaceIdiom(let interfaceIdiom):
+            return interfaceIdiom.description
+        case .orientation(let orientation):
+            return orientation.description
+        case .interfaceSizeClass:
+            throw ConditionError("Unmatched interface size class.")
+        }
+    }
 }
 
 struct ConditionError: Error {
@@ -145,7 +185,7 @@ struct ConditionError: Error {
 }
 
 extension ConditionBinaryOperation {
-    var textRepresentation: String {
+    var swiftRepresentation: String {
         switch self {
         case .equal:
             return "=="
@@ -155,15 +195,35 @@ extension ConditionBinaryOperation {
             return "||"
         }
     }
+
+    var xmlRepresentation: String {
+        switch self {
+        case .equal:
+            return swiftRepresentation
+        case .and:
+            return "and"
+        case .or:
+            return "or"
+        }
+    }
 }
 
 extension ConditionUnaryOperation {
-    var textRepresentation: String {
+    var swiftRepresentation: String {
         switch self {
         case .none:
             return ""
         case .negation:
             return "!"
+        }
+    }
+
+    var xmlRepresentation: String {
+        switch self {
+        case .none:
+            return swiftRepresentation
+        case .negation:
+            return swiftRepresentation
         }
     }
 }

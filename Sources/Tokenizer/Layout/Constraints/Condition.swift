@@ -156,17 +156,52 @@ public enum InterfaceIdiom {
     case tv
     case carPlay
     case unspecified
+
+    var description: String {
+        switch self {
+        case .pad:
+            return "pad"
+        case .phone:
+            return "phone"
+        case .tv:
+            return "tv"
+        case .carPlay:
+            return "carPlay"
+        case .unspecified:
+            return "unspecified"
+        }
+    }
 }
 
 public enum InterfaceSizeClass {
     case compact
     case regular
     case unspecified
+
+    var description: String {
+        switch self {
+        case .compact:
+            return "compact"
+        case .regular:
+            return "regular"
+        case .unspecified:
+            return "unspecified"
+        }
+    }
 }
 
 public enum SizeClassType {
     case horizontal
     case vertical
+
+    var description: String {
+        switch self {
+        case .horizontal:
+            return "horizontal"
+        case .vertical:
+            return "vertical"
+        }
+    }
 }
 
 public enum DeviceOrientation {
@@ -175,4 +210,19 @@ public enum DeviceOrientation {
     case faceDown
     case faceUp
     case unknown
+
+    var description: String {
+        switch self {
+        case .landscape:
+            return "landscape"
+        case .portrait:
+            return "portrait"
+        case .faceDown:
+            return "faceDown"
+        case .faceUp:
+            return "faceUp"
+        case .unknown:
+            return "unknown"
+        }
+    }
 }
