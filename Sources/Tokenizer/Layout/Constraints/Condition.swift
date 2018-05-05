@@ -23,19 +23,30 @@ public struct InterfaceState {
     }
 }
 
+public enum ConditionBinaryOperation {
+    case and
+    case or
+    case equal
+}
+
+public enum ConditionUnaryOperation {
+    case none
+    case negation
+}
+
 public indirect enum Condition {
     case statement(ConditionStatement)
-    case conjunction(Condition, Condition)
-    case disjunction(Condition, Condition)
+    case unary(ConditionUnaryOperation, Condition)
+    case binary(ConditionBinaryOperation, Condition, Condition)
 
     var negation: Condition {
         switch self {
         case .statement(let statement):
-            return .statement(statement.negation)
-        case .conjunction(let firstCondition, let secondCondition):
-            return .disjunction(firstCondition.negation, secondCondition.negation)
-        case .disjunction(let firstCondition, let secondCondition):
-            return .conjunction(firstCondition.negation, secondCondition.negation)
+            return .unary(.negation, .statement(statement))
+        case .unary(let operation, let condition):
+            return .unary(operation == .none ? .negation : .none, condition)
+        case .binary:
+            return .unary(.negation, self)
         }
     }
 
@@ -43,10 +54,17 @@ public indirect enum Condition {
         switch self {
         case .statement(let statement):
             return statement.evaluate(from: interfaceState)
-        case .conjunction(let firstCondition, let secondCondition):
-            return firstCondition.evaluate(from: interfaceState) && secondCondition.evaluate(from: interfaceState)
-        case .disjunction(let firstCondition, let secondCondition):
-            return firstCondition.evaluate(from: interfaceState) || secondCondition.evaluate(from: interfaceState)
+        case .unary(let operation, let condition):
+            return condition.evaluate(from: interfaceState) == (operation != .negation)
+        case .binary(let operation, let firstCondition, let secondCondition):
+            switch operation {
+            case .and:
+                return firstCondition.evaluate(from: interfaceState) && secondCondition.evaluate(from: interfaceState)
+            case .or:
+                return firstCondition.evaluate(from: interfaceState) || secondCondition.evaluate(from: interfaceState)
+            case .equal:
+                return firstCondition.evaluate(from: interfaceState) == secondCondition.evaluate(from: interfaceState)
+            }
         }
     }
 
@@ -60,66 +78,53 @@ public indirect enum Condition {
 }
 
 public enum ConditionStatement {
-    indirect case negated(ConditionStatement)
     case interfaceIdiom(InterfaceIdiom)
-    case sizeClass(SizeClassType, type: InterfaceSizeClass)
+    case sizeClass(SizeClassType, InterfaceSizeClass)
+    case interfaceSizeClass(InterfaceSizeClass)
     case orientation(DeviceOrientation)
     case trueStatement
     case falseStatement
 
-    var negation: ConditionStatement {
-        switch self {
-        case .interfaceIdiom(let idiom):
-            return .negated(.interfaceIdiom(idiom))
-        case .sizeClass(let sizeClass, let type):
-            return .negated(.sizeClass(sizeClass, type: type))
-        case .orientation(let orientation):
-            return .negated(.orientation(orientation))
-        case .trueStatement:
-            return .negated(.falseStatement)
-        case .falseStatement:
-            return .negated(.trueStatement)
-        case .negated(let statement):
-            return statement
-        }
-    }
-
-    init?(identifier: String, type: String? = nil, conditionValue: Bool = true) {
-        let sizeClass: InterfaceSizeClass?
-        switch type?.lowercased() {
-        case "compact"?:
-            sizeClass = .compact
-        case "regular"?:
-            sizeClass = .regular
-        default:
-            sizeClass = nil
-        }
-
+    init?(identifier: String) {
         switch identifier.lowercased() {
         case "phone", "iphone":
-            self = ConditionStatement.interfaceIdiom(.phone)
+            self = .interfaceIdiom(.phone)
         case "pad", "ipad":
-            self = ConditionStatement.interfaceIdiom(.pad)
+            self = .interfaceIdiom(.pad)
         case "tv", "appletv":
-            self = ConditionStatement.interfaceIdiom(.tv)
+            self = .interfaceIdiom(.tv)
         case "carplay":
-            self = ConditionStatement.interfaceIdiom(.carPlay)
+            self = .interfaceIdiom(.carPlay)
         case "horizontal":
-            guard let sizeClass = sizeClass else { return nil }
-            self = ConditionStatement.sizeClass(.horizontal, type: sizeClass)
+            self = .sizeClass(.horizontal, .unspecified)
         case "vertical":
-            guard let sizeClass = sizeClass else { return nil }
-            self = ConditionStatement.sizeClass(.vertical, type: sizeClass)
+            self = .sizeClass(.vertical, .unspecified)
         case "landscape":
-            self = ConditionStatement.orientation(.landscape)
+            self = .orientation(.landscape)
         case "portrait":
-            self = ConditionStatement.orientation(.portrait)
+            self = .orientation(.portrait)
+        case "compact":
+            self = .interfaceSizeClass(.compact)
+        case "regular":
+            self = .interfaceSizeClass(.regular)
+        case "false":
+            self = .falseStatement
+        case "true":
+            self = .trueStatement
         default:
             return nil
         }
+    }
 
-        if(!conditionValue) {
-            self = .negated(self)
+    func mergeWithSizeClass(statement: ConditionStatement) -> ConditionStatement? {
+        if case .sizeClass(let sizeClass, _) = self,
+            case .interfaceSizeClass(let interfaceSizeClass) = statement {
+            return .sizeClass(sizeClass, interfaceSizeClass)
+        } else if case .interfaceSizeClass(let interfaceSizeClass) = self,
+            case .sizeClass(let sizeClass, _) = statement {
+            return .sizeClass(sizeClass, interfaceSizeClass)
+        } else {
+            return nil
         }
     }
 
@@ -127,7 +132,7 @@ public enum ConditionStatement {
         switch self {
         case .interfaceIdiom(let idiom):
             return idiom == interfaceState.interfaceIdiom
-        case .sizeClass(let sizeClass, type: let type):
+        case .sizeClass(let sizeClass, let type):
             if sizeClass == .horizontal {
                 return type == interfaceState.horizontalSizeClass
             } else {
@@ -139,8 +144,8 @@ public enum ConditionStatement {
             return true
         case .falseStatement:
             return false
-        case .negated(let statement):
-            return !statement.evaluate(from: interfaceState)
+        case .interfaceSizeClass:
+            fatalError("Can't evaluate interfaceSizeClass only.")
         }
     }
 }

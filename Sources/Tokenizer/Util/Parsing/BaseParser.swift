@@ -124,4 +124,12 @@ class BaseParser<ITEM> {
     func popLastToken() throws -> Lexer.Token {
         return try popLastToken(tokens: &tokens)
     }
+
+    func matchToken(_ token: Lexer.Token?) throws -> Bool {
+        let areEqual = peekToken() == token
+        if areEqual {
+            try popToken()
+        }
+        return areEqual
+    }
 }

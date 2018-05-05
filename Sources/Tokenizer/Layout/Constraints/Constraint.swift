@@ -107,18 +107,18 @@ public struct Constraint {
         return XMLSerializableAttribute(name: anchor.description, value: value.joined(separator: " "))
     }
 
-    public func generateCondition(condition: Condition, viewName: String) -> String {
+    public func generateCondition(condition: Condition, viewName: String) throws -> String {
         switch condition {
         case .statement(let statement):
-            return generateCondition(statement: statement, viewName: viewName)
-        case .conjunction(let lhsCondition, let rhsCondition):
-            return "(\(generateCondition(condition: lhsCondition, viewName: viewName)) && \(generateCondition(condition: rhsCondition, viewName: viewName)))"
-        case .disjunction(let lhsCondition, let rhsCondition):
-            return "(\(generateCondition(condition: lhsCondition, viewName: viewName)) || \(generateCondition(condition: rhsCondition, viewName: viewName)))"
+            return try generateCondition(statement: statement, viewName: viewName)
+        case .unary(let operation, let condition):
+            return "\(operation.textRepresentation)\(try generateCondition(condition: condition, viewName: viewName))"
+        case .binary(let operation, let lhsCondition, let rhsCondition):
+            return "\(try generateCondition(condition: lhsCondition, viewName: viewName)) \(operation.textRepresentation) \(try generateCondition(condition: rhsCondition, viewName: viewName))"
         }
     }
 
-    public func generateCondition(statement: ConditionStatement, viewName: String) -> String {
+    public func generateCondition(statement: ConditionStatement, viewName: String) throws -> String {
         switch statement {
         case .trueStatement:
             return "true"
@@ -130,8 +130,40 @@ public struct Constraint {
             return "\(viewName).traits.device(\(interfaceIdiom.traitsParameter))"
         case .orientation(let orientation):
             return "\(viewName).traits.orientation(\(orientation.traitsParameter))"
-        case .negated(let statement):
-            return "!(\(generateCondition(statement: statement, viewName: viewName)))"
+        case .interfaceSizeClass:
+            throw ConditionError("Unmatched interface size class.")
+        }
+    }
+}
+
+struct ConditionError: Error {
+    let message: String
+
+    init(_ message: String) {
+        self.message = message
+    }
+}
+
+extension ConditionBinaryOperation {
+    var textRepresentation: String {
+        switch self {
+        case .equal:
+            return "=="
+        case .and:
+            return "&&"
+        case .or:
+            return "||"
+        }
+    }
+}
+
+extension ConditionUnaryOperation {
+    var textRepresentation: String {
+        switch self {
+        case .none:
+            return ""
+        case .negation:
+            return "!"
         }
     }
 }

@@ -17,13 +17,22 @@ class ConstraintParser: BaseParser<Constraint> {
     }
     
     override func parseSingle() throws -> Constraint {
+        // condition parsing
         var condition: Condition? = nil
-        if case .bracketsOpen? = peekToken() {
-            try popToken()
+        if try matchToken(.bracketsOpen) {
+            var conditionTokens = [] as [Lexer.Token]
+            // we're going on until `.bracketsClose` token is matched
+            while !(try matchToken(.bracketsClose)) {
+                let token = try popToken()
+                switch token {
+                case .logicalAnd, .logicalOr, .exclamation, .parensOpen, .parensClose, .equals, .identifier:
+                    conditionTokens.append(token)
+                default:
+                    throw ParseError.message("Unknown token \(token) in condition.")
+                }
+            }
 
-            let (parsedCondition, tokensToPop) = try ConditionParser(tokens: remainingTokens).parseSingle()
-            condition = parsedCondition
-            try popTokens(tokensToPop)
+            condition = try ConditionParser(tokens: conditionTokens).parseSingle()
         }
 
         let field = try parseField()
