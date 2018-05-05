@@ -97,12 +97,12 @@ class ConstraintConditionTests: XCTestCase {
     }
 
     func testSimpleConjunctions() throws {
-        let input1 = "[ipad && landscape]"
-        let input2 = "[iphone && portrait]"
-        let input3 = "[!ipad && vertical == compact]"
-        let input4 = "[horizontal == compact && vertical == regular]"
-        let input5 = "[horizontal == regular && vertical == compact && ipad && !landscape]"
-        let input6 = "[horizontal != regular && vertical == compact && !ipad && !landscape]"
+        let input1 = "[ipad and landscape]"
+        let input2 = "[iphone and portrait]"
+        let input3 = "[!ipad and vertical == compact]"
+        let input4 = "[horizontal == compact and vertical == regular]"
+        let input5 = "[horizontal == regular and vertical == compact and ipad and !landscape]"
+        let input6 = "[horizontal != regular and vertical == compact and !ipad and !landscape]"
 
         if let result1 = try parseInput(input1),
             let result2 = try parseInput(input2),
@@ -138,11 +138,11 @@ class ConstraintConditionTests: XCTestCase {
     }
 
     func testSimpleDisjunctions() throws {
-        let input1 = "[ipad || landscape]"
-        let input2 = "[!ipad || vertical == compact]"
-        let input3 = "[horizontal == regular || vertical == regular]"
-        let input4 = "[horizontal == regular || vertical == compact || ipad]"
-        let input5 = "[horizontal != regular || vertical == compact || !ipad]"
+        let input1 = "[ipad or landscape]"
+        let input2 = "[!ipad or vertical == compact]"
+        let input3 = "[horizontal == regular or vertical == regular]"
+        let input4 = "[horizontal == regular or vertical == compact or ipad]"
+        let input5 = "[horizontal != regular or vertical == compact or !ipad]"
 
         if let result1 = try parseInput(input1),
             let result2 = try parseInput(input2),
@@ -173,15 +173,15 @@ class ConstraintConditionTests: XCTestCase {
     }
 
     func testComplexConditions() throws {
-        let input1 = "[ipad && landscape || vertical == regular]"
-        let input2 = "[iphone && portrait || ipad && landscape || vertical == regular]"
-        let input3 = "[ipad || landscape && vertical == regular || !ipad && portrait != false]"
-        let input4 = "[vertical != regular || portrait && !iphone && horizontal == regular]"
-        let input5 = "[(iphone || landscape) && vertical == regular]"
-        let input6 = "[(vertical == regular && horizontal == compact) || (ipad && portrait)]"
-        let input7 = "[!(ipad && portrait) && !(horizontal == regular)]"
-        let input8 = "[(!(vertical == regular) || !(horizontal == compact && landscape)) && iphone]"
-        let input9 = "[(!(iphone == false && landscape) && horizontal == compact) && vertical != compact]"
+        let input1 = "[ipad and landscape or vertical == regular]"
+        let input2 = "[iphone and portrait or ipad and landscape or vertical == regular]"
+        let input3 = "[ipad or landscape and vertical == regular or !ipad and portrait != false]"
+        let input4 = "[vertical != regular or portrait and !iphone and horizontal == regular]"
+        let input5 = "[(iphone or landscape) and vertical == regular]"
+        let input6 = "[(vertical == regular and horizontal == compact) or (ipad and portrait)]"
+        let input7 = "[!(ipad and portrait) and !(horizontal == regular)]"
+        let input8 = "[(!(vertical == regular) or !(horizontal == compact and landscape)) and iphone]"
+        let input9 = "[(!(iphone == false and landscape) and horizontal == compact) and vertical != compact]"
 
         if let result1 = try parseInput(input1),
             let result2 = try parseInput(input2),
@@ -233,9 +233,9 @@ class ConstraintConditionTests: XCTestCase {
 
     func testMoreConditions() throws {
         let input = [
-            "[vertical == regular || (horizontal == compact || vertical == compact && pad)]",
-            "[vertical == regular || (horizontal == compact && vertical == compact && pad)]",
-            "[vertical == regular && (horizontal == compact && vertical == compact || phone)]",
+            "[vertical == regular or (horizontal == compact or vertical == compact and pad)]",
+            "[vertical == regular or (horizontal == compact and vertical == compact and pad)]",
+            "[vertical == regular and (horizontal == compact and vertical == compact or phone)]",
         ]
 
         let verifiers = [
