@@ -244,6 +244,11 @@ class ConstraintConditionTests: XCTestCase {
             [false, false, true],
         ]
 
+        guard verifiers.index(where: { $0.count != allInterfaceStates.count }) == nil else {
+            XCTFail("Some verifiers don't match the interface state count.")
+            return
+        }
+
         let results = try input.flatMap { try parseInput($0) }.map { parsedInput in
             allInterfaceStates.map { parsedInput.evaluate(from: $0) }
         }
