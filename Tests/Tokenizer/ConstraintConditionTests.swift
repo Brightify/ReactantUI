@@ -241,7 +241,7 @@ class ConstraintConditionTests: XCTestCase {
         let verifiers = [
             [true, true, true],
             [true, false, false],
-            [false, false, true],
+            [true, false, false],
         ]
 
         guard verifiers.index(where: { $0.count != allInterfaceStates.count }) == nil else {
