@@ -22,8 +22,8 @@
     <View
         backgroundColor="blue"
         layout:id="test"
-        layout:leading="[!(horizontal == compact) &amp;&amp; (vertical == regular)] super;
-                        [(horizontal == compact || vertical == compact || pad)] self;
+        layout:leading="[!(horizontal == compact) and (vertical == regular)] super;
+                        [(horizontal == compact or vertical == compact or pad)] self;
                         :gt 10"
         layout:top="safeAreaLayoutGuide.top"
         layout:width="100"
