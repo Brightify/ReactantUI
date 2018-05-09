@@ -38,16 +38,18 @@ public struct Constraint {
     public static func constraints(name: String, attribute: XMLAttribute) throws -> [Constraint] {
         let layoutAttributes = try LayoutAttribute.deserialize(name)
         let tokens = Lexer.tokenize(input: attribute.text)
-        var constraints = try layoutAttributes.flatMap { try ConstraintParser(tokens: tokens, layoutAttribute: $0).parse() }
-        if constraints.count > 1 {
-            for (index, constraint) in constraints.enumerated() {
-                guard let field = constraint.field else { break }
-                var indexedConstraint = constraint
-                indexedConstraint.field = field + "\(index)"
-                constraints[index] = indexedConstraint
-            }
+        let constraints = try layoutAttributes.flatMap { try ConstraintParser(tokens: tokens, layoutAttribute: $0).parse() }
+
+        guard
+            constraints.count > 1,
+            let field = constraints.first?.field
+        else { return constraints }
+
+        return constraints.map { currentConstraint in
+            var constraint = currentConstraint
+            constraint.field = field + "\(currentConstraint.attribute)"
+            return constraint
         }
-        return constraints
     }
     
     func serialize() -> XMLSerializableAttribute {
