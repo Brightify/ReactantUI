@@ -60,7 +60,7 @@ public struct Constraint {
 
         return constraints.map { currentConstraint in
             var constraint = currentConstraint
-            constraint.field = field + "\(currentConstraint.attribute)"
+            constraint.field = field + "\(currentConstraint.attribute)".capitalizingFirstLetter()
             return constraint
         }
     }
