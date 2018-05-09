@@ -10,7 +10,7 @@
         progress="0.8"
         progressTintColor="red"
         trackTintColor="green"
-        layout:fillHorizontally="super inset(20)"
+        layout:fillHorizontally="progressFill = super inset(20)"
         layout:centerY="super" />
 
 </Component>
