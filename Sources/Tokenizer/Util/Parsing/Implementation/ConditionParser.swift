@@ -39,8 +39,8 @@ extension ConditionParser {
 // EXPRESSION := TERM [ or TERM ]
 // TERM := COMPARISON [ and COMPARISON ]
 // COMPARISON := FACTOR [ ( == | != ) FACTOR ]
-// FACTOR := [ '!' ] ( '(' EXPRESSION ')' | IDENTIFIER | NUMBER )
-// NUMBER := { all digits from 0 to 9 } [ NUMBER ]
+// FACTOR := [ '!' ] ( '(' EXPRESSION ')' | IDENTIFIER | FLOAT_NUMBER )
+// FLOAT_NUMBER := { same as Swift's `Float` }
 // IDENTIFIER := { all cases in the ConditionStatement enum }
 class ConditionParser: BaseParser<Condition> {
     override func parseSingle() throws -> Condition {
