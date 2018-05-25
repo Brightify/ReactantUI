@@ -62,18 +62,18 @@ public struct UITraitHelper {
     public func viewRootSize(_ dimensionType: DimensionType) -> Float {
         switch dimensionType {
         case .width:
-            return Float(getTopView().frame.width)
+            return Float(getRootView().frame.width)
         case .height:
-            return Float(getTopView().frame.height)
+            return Float(getRootView().frame.height)
         }
     }
 
-    private func getTopView() -> UIView {
-        var supersuperview = view
-        while let supererview = view.superview {
-            supersuperview = supererview
+    private func getRootView() -> UIView {
+        var rootView = view
+        while let superview = view.superview {
+            rootView = superview
         }
 
-        return supersuperview
+        return rootView
     }
 }

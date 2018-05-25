@@ -214,11 +214,11 @@
 		22957E3C207235E20088C09E /* StackViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22957E3B207235E20088C09E /* StackViewRootView.ui.xml */; };
 		58836BDBAF0F10A4A5E31625 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7139F67D20934D6E009EA7F4 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */; };
 		5B1333D6A201F8A50D8697D9 /* Pods_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1AAC4CA06239D481C4E7F9D /* Pods_Example.framework */; };
+		6836D5F920B8404F00FD2DF8 /* UIView+traits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689FA0B7209CB2A200B39225 /* UIView+traits.swift */; };
 		689FA0B9209CB2A700B39225 /* UIView+traits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689FA0B7209CB2A200B39225 /* UIView+traits.swift */; };
 		689FA0D0209CD7B000B39225 /* ReactantUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 689FA0CE209CD7B000B39225 /* ReactantUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		689FA0D3209CD7B000B39225 /* ReactantUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689FA0CC209CD7B000B39225 /* ReactantUI.framework */; };
 		689FA0D4209CD7B000B39225 /* ReactantUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 689FA0CC209CD7B000B39225 /* ReactantUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		689FA0D8209CD7B700B39225 /* UIView+traits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689FA0B7209CB2A200B39225 /* UIView+traits.swift */; };
 		7139F67920934BC2009EA7F4 /* Condition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7139F67720934BBB009EA7F4 /* Condition.swift */; };
 		7139F67B20934C1D009EA7F4 /* GeneratedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B689A1EAF870E007CC668 /* GeneratedUI.swift */; };
 		71BAEAB720972E1600D56639 /* ConditionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BAEAB520972DFD00D56639 /* ConditionParser.swift */; };
@@ -1828,7 +1828,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				689FA0D8209CD7B700B39225 /* UIView+traits.swift in Sources */,
+				6836D5F920B8404F00FD2DF8 /* UIView+traits.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
