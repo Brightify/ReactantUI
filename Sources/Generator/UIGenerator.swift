@@ -67,28 +67,9 @@ public class UIGenerator: Generator {
                 l()
                 l("private weak var target: \(root.type)?")
                 l()
-                func generateChildProperties(children: [UIElement]) {
-
-                    for child in children {
-                        defer {
-                            if let container = child as? UIContainer {
-                                generateChildProperties(children: container.children)
-                            }
-                        }
-
-                        let name: String
-                        if child.field != nil {
-                            continue
-                        } else if let layoutId = child.layout.id {
-                            name = "named_\(layoutId)"
-                        } else {
-                            name = "temp_\(type(of: child))_\(tempCounter)"
-                            tempCounter += 1
-                        }
-                        l("private weak var \(name): UIView?")
-                    }
+                for name in root.children.generatedNames(tempCounter: &tempCounter) {
+                    l("private weak var \(name): UIView?")
                 }
-                generateChildProperties(children: root.children)
                 tempCounter = 1
                 l()
                 l("fileprivate init(target: \(root.type))") {
@@ -137,29 +118,7 @@ public class UIGenerator: Generator {
                 l()
                 l("func updateReactantUI()") {
                     tempCounter = 1
-                    func generateChildVariables(children: [UIElement], guardNames: inout [String]) {
-                        for child in children {
-                            defer {
-                                if let container = child as? UIContainer {
-                                    generateChildVariables(children: container.children, guardNames: &guardNames)
-                                }
-                            }
-
-                            let name: String
-                            if child.field != nil {
-                                continue
-                            } else if let layoutId = child.layout.id {
-                                name = "named_\(layoutId)"
-                            } else {
-                                name = "temp_\(type(of: child))_\(tempCounter)"
-                                tempCounter += 1
-                            }
-
-                            guardNames.append(name)
-                        }
-                    }
-                    var guardNames = ["target"] as [String]
-                    generateChildVariables(children: root.children, guardNames: &guardNames)
+                    let guardNames = ["target"] + root.children.generatedNames(tempCounter: &tempCounter)
                     if !guardNames.isEmpty {
                         l("guard ")
                         for guardName in guardNames {
@@ -413,5 +372,32 @@ public class UIGenerator: Generator {
                 }
             }
         }
+    }
+}
+
+extension Array where Iterator.Element == UIElement {
+    func generatedNames(tempCounter: inout Int) -> [String] {
+        var names = [] as [String]
+        for child in self {
+            defer {
+                if let container = child as? UIContainer {
+                    names.append(contentsOf: container.children.generatedNames(tempCounter: &tempCounter))
+                }
+            }
+
+            let name: String
+            if child.field != nil {
+                continue
+            } else if let layoutId = child.layout.id {
+                name = "named_\(layoutId)"
+            } else {
+                name = "temp_\(type(of: child))_\(tempCounter)"
+                tempCounter += 1
+            }
+
+            names.append(name)
+        }
+
+        return names
     }
 }
