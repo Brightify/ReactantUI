@@ -28,7 +28,9 @@ public enum ConditionBinaryOperation {
     case or
     case equal
     case less
+    case lessEqual
     case greater
+    case greaterEqual
 }
 
 public enum ConditionUnaryOperation {

@@ -365,7 +365,7 @@ public class UIGenerator: Generator {
         }
 
         if let condition = constraint.condition {
-            l("if \(try! constraint.generateSwiftCondition(condition: condition, viewName: name))") {
+            l("if \(constraint.generateSwiftCondition(condition: condition, viewName: name))") {
                 l(constraintLine)
             }
         } else {

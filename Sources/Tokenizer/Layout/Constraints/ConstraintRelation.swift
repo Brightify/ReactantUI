@@ -28,9 +28,9 @@ public enum ConstraintRelation: CustomStringConvertible {
         switch string {
         case "equal", "eq":
             self = .equal
-        case "lessOrEqual", "lt":
+        case "lessOrEqual", "lte", "lt":
             self = .lessThanOrEqual
-        case "greaterOrEqual", "gt":
+        case "greaterOrEqual", "gte", "gt":
             self = .greaterThanOrEqual
         default:
             throw TokenizationError(message: "Unknown relation \(string)")

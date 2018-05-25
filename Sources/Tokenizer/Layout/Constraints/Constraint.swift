@@ -140,7 +140,7 @@ public struct Constraint {
         case .number(let number):
             return String(number)
         case .dimensionType(let dimensionType):
-            return "\(viewName).traits.topViewSize(\(dimensionType.traitsParameter))"
+            return "\(viewName).traits.viewRootSize(\(dimensionType.traitsParameter))"
         default:
             return ""
         }
@@ -203,8 +203,12 @@ extension ConditionBinaryOperation {
             return "||"
         case .less:
             return "<"
+        case .lessEqual:
+            return "<="
         case .greater:
             return ">"
+        case .greaterEqual:
+            return ">="
         }
     }
 
@@ -218,8 +222,12 @@ extension ConditionBinaryOperation {
             return "or"
         case .less:
             return ":lt"
+        case .lessEqual:
+            return ":lte"
         case .greater:
             return ":gt"
+        case .greaterEqual:
+            return ":gte"
         }
     }
 }
@@ -235,12 +243,7 @@ extension ConditionUnaryOperation {
     }
 
     var xmlRepresentation: String {
-        switch self {
-        case .none:
-            return swiftRepresentation
-        case .negation:
-            return swiftRepresentation
-        }
+        return swiftRepresentation
     }
 }
 

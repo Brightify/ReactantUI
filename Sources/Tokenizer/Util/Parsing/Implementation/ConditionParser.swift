@@ -21,6 +21,10 @@ extension ConditionParser {
                 return .less
             case .identifier("gt"):
                 return .greater
+            case .identifier("lte"):
+                return .lessEqual
+            case .identifier("gte"):
+                return .greaterEqual
             default:
                 return nil
             }
@@ -38,7 +42,7 @@ extension ConditionParser {
 // CONDITION := '[' EXPRESSION ']'
 // EXPRESSION := TERM [ or TERM ]
 // TERM := COMPARISON [ and COMPARISON ]
-// COMPARISON := FACTOR [ ( == | != | ':gt' | ':lt' ) FACTOR ]
+// COMPARISON := FACTOR [ ( == | != | ':gt' | ':gte' | ':lt' | 'lte' ) FACTOR ]
 // FACTOR := [ '!' ] ( '(' EXPRESSION ')' | IDENTIFIER | FLOAT_NUMBER )
 // FLOAT_NUMBER := { same as Swift's `Float` }
 // IDENTIFIER := { all cases in the ConditionStatement enum }
@@ -83,7 +87,7 @@ class ConditionParser: BaseParser<Condition> {
                 resultCondition = equals ? mergedCondition : .unary(.negation, mergedCondition)
             } else if let binaryOperation = toBinaryOperation(token: token) {
                 switch binaryOperation {
-                case .greater, .less:
+                case .less, .lessEqual, .greater, .greaterEqual:
                     break
                 default:
                     return resultCondition

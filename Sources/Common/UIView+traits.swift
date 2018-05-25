@@ -59,7 +59,7 @@ public struct UITraitHelper {
         case height
     }
 
-    public func topViewSize(_ dimensionType: DimensionType) -> Float {
+    public func viewRootSize(_ dimensionType: DimensionType) -> Float {
         switch dimensionType {
         case .width:
             return Float(getTopView().frame.width)
