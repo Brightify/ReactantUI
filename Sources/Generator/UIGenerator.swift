@@ -119,13 +119,11 @@ public class UIGenerator: Generator {
                 l("func updateReactantUI()") {
                     tempCounter = 1
                     let guardNames = ["target"] + root.children.generatedNames(tempCounter: &tempCounter)
-                    if !guardNames.isEmpty {
-                        l("guard ")
-                        for guardName in guardNames {
-                            l("  let \(guardName) = self.\(guardName)\(guardName == guardNames.last ? "" : ",")")
-                        }
-                        l("else { /* FIXME Should we fatalError here? */ return }")
+                    l("guard ")
+                    for guardName in guardNames {
+                        l("  let \(guardName) = self.\(guardName)\(guardName == guardNames.last ? "" : ",")")
                     }
+                    l("else { /* FIXME Should we fatalError here? */ return }")
 
                     if configuration.isLiveEnabled {
                         if configuration.swiftVersion >= .swift4_1 {
