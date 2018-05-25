@@ -7,13 +7,23 @@
 
 import Foundation
 
-extension ConditionBinaryOperation {
-    fileprivate static func parse(token: Lexer.Token) -> ConditionBinaryOperation? {
+extension ConditionParser {
+    fileprivate func toBinaryOperation(token: Lexer.Token) -> ConditionBinaryOperation? {
         switch token {
         case .logicalAnd:
             return .and
         case .logicalOr:
             return .or
+        case .colon:
+            guard let nextToken = peekNextToken() else { return nil }
+            switch nextToken {
+            case .identifier("lt"):
+                return .less
+            case .identifier("gt"):
+                return .greater
+            default:
+                return nil
+            }
         default:
             return nil
         }
@@ -29,7 +39,8 @@ extension ConditionBinaryOperation {
 // EXPRESSION := TERM [ or TERM ]
 // TERM := COMPARISON [ and COMPARISON ]
 // COMPARISON := FACTOR [ ( == | != ) FACTOR ]
-// FACTOR := [ '!' ] ( '(' EXPRESSION ')' | IDENTIFIER )
+// FACTOR := [ '!' ] ( '(' EXPRESSION ')' | IDENTIFIER | NUMBER )
+// NUMBER := { all digits from 0 to 9 } [ NUMBER ]
 // IDENTIFIER := { all cases in the ConditionStatement enum }
 class ConditionParser: BaseParser<Condition> {
     override func parseSingle() throws -> Condition {
@@ -39,7 +50,7 @@ class ConditionParser: BaseParser<Condition> {
     private func parseExpression() throws -> Condition {
         var resultCondition = try parseTerm()
         while let token = peekToken(),
-            let operation = ConditionBinaryOperation.parse(token: token),
+            let operation = toBinaryOperation(token: token),
             case .or = operation {
 
             try popToken()
@@ -52,7 +63,7 @@ class ConditionParser: BaseParser<Condition> {
     private func parseTerm() throws -> Condition {
         var resultCondition = try parseComparison()
         while let token = peekToken(),
-            let operation = ConditionBinaryOperation.parse(token: token),
+            let operation = toBinaryOperation(token: token),
             case .and = operation {
 
             try popToken()
@@ -64,25 +75,42 @@ class ConditionParser: BaseParser<Condition> {
 
     private func parseComparison() throws -> Condition {
         var resultCondition = try parseFactor()
-        while let token = peekToken(),
-            case .equals(let equals, _) = token {
-                
-            try popToken()
-            let rhsCondition = try parseFactor()
-            let mergedCondition: Condition
-            if case .statement(let lhsStatement) = resultCondition,
-                case .statement(let rhsStatement) = rhsCondition,
-                let mergedStatement = lhsStatement.mergeWithSizeClass(statement: rhsStatement) {
-
-                mergedCondition = .statement(mergedStatement)
+        while let token = peekToken() {
+            if case .equals(let equals, _) = token {
+                try popToken()
+                let rhsCondition = try parseFactor()
+                let mergedCondition = try mergeComparison(lhsCondition: resultCondition, rhsCondition: rhsCondition)
+                resultCondition = equals ? mergedCondition : .unary(.negation, mergedCondition)
+            } else if let binaryOperation = toBinaryOperation(token: token) {
+                switch binaryOperation {
+                case .greater, .less:
+                    break
+                default:
+                    return resultCondition
+                }
+                try popTokens(2) // because of the colon and the identifier after the colon (e.g. :gt)
+                let rhsCondition = try parseFactor()
+                resultCondition = .binary(binaryOperation, resultCondition, rhsCondition)
             } else {
-                mergedCondition = .binary(.equal, resultCondition, rhsCondition)
+                return resultCondition
             }
-
-            resultCondition = equals ? mergedCondition : .unary(.negation, mergedCondition)
         }
 
         return resultCondition
+    }
+
+    private func mergeComparison(lhsCondition: Condition, rhsCondition: Condition) throws -> Condition {
+        let mergedCondition: Condition
+        if case .statement(let lhsStatement) = lhsCondition,
+            case .statement(let rhsStatement) = rhsCondition,
+            let mergedStatement = lhsStatement.mergeWithSizeClass(statement: rhsStatement) {
+
+            mergedCondition = .statement(mergedStatement)
+        } else {
+            mergedCondition = .binary(.equal, lhsCondition, rhsCondition)
+        }
+
+        return mergedCondition
     }
 
     private func parseFactor() throws -> Condition {
@@ -99,6 +127,9 @@ class ConditionParser: BaseParser<Condition> {
         case .identifier(let identifier):
             try popToken()
             return .statement(ConditionStatement(identifier: identifier)!)
+        case .number(let number, _):
+            try popToken()
+            return .statement(.number(number))
         default:
             throw ConditionError("Unknown factor: \(token)")
         }

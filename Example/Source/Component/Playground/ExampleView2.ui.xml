@@ -26,7 +26,6 @@
             layout:top="super inset(10)"
             layout:fillHorizontally="super inset(20)"/>
 
-
             <Button
                 title="Forgotten password?"
                 backgroundColor="#FFddaa"

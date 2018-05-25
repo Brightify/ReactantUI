@@ -25,7 +25,7 @@ class ConstraintParser: BaseParser<Constraint> {
             while !(try matchToken(.bracketsClose)) {
                 let token = try popToken()
                 switch token {
-                case .logicalAnd, .logicalOr, .exclamation, .parensOpen, .parensClose, .equals, .identifier:
+                case .logicalAnd, .logicalOr, .exclamation, .parensOpen, .parensClose, .equals, .identifier, .colon, .number:
                     conditionTokens.append(token)
                 default:
                     throw ParseError.message("Unknown token \(token) in condition.")

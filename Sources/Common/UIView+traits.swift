@@ -53,4 +53,27 @@ public struct UITraitHelper {
     public func orientation(_ orientation: UIDeviceOrientation) -> Bool {
         return UIDevice.current.orientation == orientation
     }
+
+    public enum DimensionType {
+        case width
+        case height
+    }
+
+    public func topViewSize(_ dimensionType: DimensionType) -> Float {
+        switch dimensionType {
+        case .width:
+            return Float(getTopView().frame.width)
+        case .height:
+            return Float(getTopView().frame.height)
+        }
+    }
+
+    private func getTopView() -> UIView {
+        var supersuperview = view
+        while let supererview = view.superview {
+            supersuperview = supererview
+        }
+
+        return supersuperview
+    }
 }

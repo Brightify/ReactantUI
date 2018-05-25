@@ -27,6 +27,8 @@ public enum ConditionBinaryOperation {
     case and
     case or
     case equal
+    case less
+    case greater
 }
 
 public enum ConditionUnaryOperation {
@@ -50,23 +52,35 @@ public indirect enum Condition {
         }
     }
 
-    func evaluate(from interfaceState: InterfaceState) -> Bool {
-        switch self {
-        case .statement(let statement):
-            return statement.evaluate(from: interfaceState)
-        case .unary(let operation, let condition):
-            return condition.evaluate(from: interfaceState) == (operation != .negation)
-        case .binary(let operation, let firstCondition, let secondCondition):
-            switch operation {
-            case .and:
-                return firstCondition.evaluate(from: interfaceState) && secondCondition.evaluate(from: interfaceState)
-            case .or:
-                return firstCondition.evaluate(from: interfaceState) || secondCondition.evaluate(from: interfaceState)
-            case .equal:
-                return firstCondition.evaluate(from: interfaceState) == secondCondition.evaluate(from: interfaceState)
-            }
-        }
-    }
+//    func evaluate(from interfaceState: InterfaceState) -> Bool {
+//        switch self {
+//        case .statement(let statement):
+//            return statement.evaluate(from: interfaceState)
+//        case .unary(let operation, let condition):
+//            return condition.evaluate(from: interfaceState) == (operation != .negation)
+//        case .binary(let operation, let lhsCondition, let rhsCondition):
+//            switch operation {
+//            case .and:
+//                return lhsCondition.evaluate(from: interfaceState) && rhsCondition.evaluate(from: interfaceState)
+//            case .or:
+//                return lhsCondition.evaluate(from: interfaceState) || rhsCondition.evaluate(from: interfaceState)
+//            case .equal:
+//                return lhsCondition.evaluate(from: interfaceState) == rhsCondition.evaluate(from: interfaceState)
+//            case .less, .greater:
+//                return compare(from: interfaceState)
+//            }
+//        }
+//    }
+//
+//    func compare(from interfaceState: InterfaceState) -> Bool {
+//        switch self {
+//        case .binary(let operation, let lhsCondition, let rhsCondition):
+//            let isLess = operation == .less
+//
+//        default:
+//            return false
+//        }
+//    }
 
     static var alwaysTrue: Condition {
         return .statement(.trueStatement)
@@ -84,9 +98,12 @@ public enum ConditionStatement {
     case orientation(DeviceOrientation)
     case trueStatement
     case falseStatement
+    case number(Float)
+    case dimensionType(DimensionType)
 
     init?(identifier: String) {
-        switch identifier.lowercased() {
+        let lowerIdentifier = identifier.lowercased()
+        switch lowerIdentifier {
         case "phone", "iphone":
             self = .interfaceIdiom(.phone)
         case "pad", "ipad":
@@ -111,6 +128,10 @@ public enum ConditionStatement {
             self = .falseStatement
         case "true":
             self = .trueStatement
+        case "width":
+            self = .dimensionType(.width)
+        case "height":
+            self = .dimensionType(.height)
         default:
             return nil
         }
@@ -128,26 +149,28 @@ public enum ConditionStatement {
         }
     }
 
-    func evaluate(from interfaceState: InterfaceState) -> Bool {
-        switch self {
-        case .interfaceIdiom(let idiom):
-            return idiom == interfaceState.interfaceIdiom
-        case .sizeClass(let sizeClass, let type):
-            if sizeClass == .horizontal {
-                return type == interfaceState.horizontalSizeClass
-            } else {
-                return type == interfaceState.verticalSizeClass
-            }
-        case .orientation(let orientation):
-            return orientation == interfaceState.deviceOrientation
-        case .trueStatement:
-            return true
-        case .falseStatement:
-            return false
-        case .interfaceSizeClass:
-            fatalError("Can't evaluate interfaceSizeClass only.")
-        }
-    }
+//    func evaluate(from interfaceState: InterfaceState) -> Bool {
+//        switch self {
+//        case .interfaceIdiom(let idiom):
+//            return idiom == interfaceState.interfaceIdiom
+//        case .sizeClass(let sizeClass, let type):
+//            if sizeClass == .horizontal {
+//                return type == interfaceState.horizontalSizeClass
+//            } else {
+//                return type == interfaceState.verticalSizeClass
+//            }
+//        case .orientation(let orientation):
+//            return orientation == interfaceState.deviceOrientation
+//        case .trueStatement:
+//            return true
+//        case .falseStatement:
+//            return false
+//        case .number:
+//            fatalError("Can't evaluate number only.")
+//        case .interfaceSizeClass:
+//            fatalError("Can't evaluate interfaceSizeClass only.")
+//        }
+//    }
 }
 
 public enum InterfaceIdiom {
@@ -223,6 +246,20 @@ public enum DeviceOrientation {
             return "faceUp"
         case .unknown:
             return "unknown"
+        }
+    }
+}
+
+public enum DimensionType {
+    case width
+    case height
+
+    var description: String {
+        switch self {
+        case .width:
+            return "width"
+        case .height:
+            return "height"
         }
     }
 }
