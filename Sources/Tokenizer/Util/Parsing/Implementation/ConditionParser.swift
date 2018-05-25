@@ -38,7 +38,7 @@ extension ConditionParser {
 // CONDITION := '[' EXPRESSION ']'
 // EXPRESSION := TERM [ or TERM ]
 // TERM := COMPARISON [ and COMPARISON ]
-// COMPARISON := FACTOR [ ( == | != ) FACTOR ]
+// COMPARISON := FACTOR [ ( == | != | ':gt' | ':lt' ) FACTOR ]
 // FACTOR := [ '!' ] ( '(' EXPRESSION ')' | IDENTIFIER | FLOAT_NUMBER )
 // FLOAT_NUMBER := { same as Swift's `Float` }
 // IDENTIFIER := { all cases in the ConditionStatement enum }
