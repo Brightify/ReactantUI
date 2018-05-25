@@ -7,8 +7,7 @@
                         http://schema.reactant.tech/layout http://schema.reactant.tech/layout.xsd"
 
     rootView="true"
-    backgroundColor="black"
-    >
+    backgroundColor="black">
 
     <styles name="ReactantStyles">
         <LabelStyle name="base" backgroundColor="white" />
@@ -17,6 +16,9 @@
         <ButtonStyle name="buttona"
             backgroundColor.highlighted="white"
             isUserInteractionEnabled="true" />
+        <attributedTextStyle name="attributko">
+            <b fontSize="14" foregroundColor="#f5f5f5" backgroundColor="#dddddd" />
+        <attributedTextStyle/>
     </styles>
 
     <View

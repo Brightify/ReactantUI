@@ -49,6 +49,7 @@ public struct Properties: PropertiesContainer {
     public static let footerTableView = prepare(FooterTableViewProperites.self)
     public static let simpleTableView = prepare(SimpleTableViewProperites.self)
     public static let progressView = prepare(ProgressViewProperties.self)
+    public static let attributedText = prepare(AttributedTextProperties.self)
 }
 
 public struct ToolingProperties: PropertiesContainer {
