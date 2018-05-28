@@ -6,7 +6,9 @@
 //  Copyright © 2017 Brightify. All rights reserved.
 //
 
-public enum ControlState: String {
+public enum ControlState: String, EnumPropertyType {
+    public static let enumName = "UIControlState"
+
     case normal
     case highlighted
     case disabled
@@ -31,9 +33,38 @@ public enum ControlState: String {
     }
 
     public static let allValues: [ControlState] = [.normal, .highlighted, .disabled, .selected, .focused]
+
     fileprivate static let allValuesDictionary: [ControlState: Int] =
         Dictionary(uniqueKeysWithValues: ControlState.allValues.enumerated().map { ($1, $0) })
+
+    public static var xsdType: XSDType {
+        let values = Set(ControlState.allValues.map { $0.rawValue })
+
+        return .enumeration(EnumerationXSDType(name: ControlState.enumName, base: .string, values: values))
+    }
 }
+
+#if ReactantRuntime
+import UIKit
+
+extension ControlState {
+
+    public var runtimeValue: Any? {
+        switch self {
+        case .normal:
+            return UIControlState.normal.rawValue
+        case .highlighted:
+            return UIControlState.highlighted.rawValue
+        case .disabled:
+            return UIControlState.disabled.rawValue
+        case .selected:
+            return UIControlState.selected.rawValue
+        case .focused:
+            return UIControlState.focused.rawValue
+        }
+    }
+}
+#endif
 
 public extension Sequence where Element == ControlState {
     public var name: String {
