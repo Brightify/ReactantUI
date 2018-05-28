@@ -11,7 +11,7 @@ import UIKit
 #endif
 
 public enum UnderlineStyle: String, EnumPropertyType {
-    public static var enumName = "NSUnderlineStyle"
+    public static let enumName = "NSUnderlineStyle"
 
     case styleNone
     case styleSingle

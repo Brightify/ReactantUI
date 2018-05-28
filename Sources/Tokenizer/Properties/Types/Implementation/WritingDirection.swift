@@ -8,7 +8,7 @@
 import Foundation
 
 public enum WritingDirection: String, EnumPropertyType {
-    public static var enumName = "NSWritingDirection"
+    public static let enumName = "NSWritingDirection"
 
     case natural
     case leftToRight
