@@ -28,11 +28,10 @@ public enum BarStyle: String, EnumPropertyType {
 import UIKit
 
 extension BarStyle {
-
-        public var runtimeValue: Any? {
-            #if os(tvOS)
-                return nil
-            #else
+    public var runtimeValue: Any? {
+        #if os(tvOS)
+            return nil
+        #else
             switch self {
             case .`default`:
                 return UIBarStyle.default.rawValue
@@ -41,7 +40,7 @@ extension BarStyle {
             case .blackTranslucent:
                 return UIBarStyle.blackTranslucent.rawValue
             }
-            #endif
-        }
+        #endif
     }
+}
 #endif

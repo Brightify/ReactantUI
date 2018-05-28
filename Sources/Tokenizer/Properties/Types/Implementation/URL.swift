@@ -1,16 +1,16 @@
 //
-//  Float+SupportedPropertyType.swift
+//  URL.swift
 //  Tokenizer
 //
-//  Created by Matouš Hýbl on 09/03/2018.
+//  Created by Matyáš Kříž on 28/05/2018.
 //
 
 import Foundation
 
-extension Float: SupportedPropertyType {
+extension URL: SupportedPropertyType {
 
     public var generated: String {
-        return "\(self)"
+        return "\(self.absoluteString)"
     }
 
     #if ReactantRuntime
@@ -25,14 +25,15 @@ extension Float: SupportedPropertyType {
     }
     #endif
 
-    public static func materialize(from value: String) throws -> Float {
-        guard let materialized = Float(value) else {
+    public static func materialize(from value: String) throws -> URL {
+        guard let materialized = URL(string: value) else {
             throw PropertyMaterializationError.unknownValue(value)
         }
         return materialized
     }
 
     public static var xsdType: XSDType {
-        return .builtin(.decimal)
+        // PR: is it, really?
+        return .builtin(.string)
     }
 }

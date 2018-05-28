@@ -19,6 +19,6 @@ extension Style: XMLElementSerializable {
             properties.map { $0.dematerialize() }.forEach { builder.add(attribute: $0) }
         #endif
 
-        return XMLSerializableElement(name: "\(type)Style", attributes: builder.attributes, children: [])
+        return XMLSerializableElement(name: "\(styleType)Style", attributes: builder.attributes, children: [])
     }
 }

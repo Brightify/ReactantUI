@@ -23,7 +23,7 @@ public class PageControl: View {
 
     #if ReactantRuntime
     public override func initialize() -> UIView {
-    return UIPageControl()
+        return UIPageControl()
     }
     #endif
 }

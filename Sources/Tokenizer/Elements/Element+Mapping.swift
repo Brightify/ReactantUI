@@ -40,6 +40,5 @@ public struct ElementMapping {
         "WebView": WebView.self,
         "MapView": MapView.self,
         "ProgressView": ProgressView.self,
-        "attributedText": AttributedText.self
     ]
 }

@@ -216,6 +216,9 @@
 		5B1333D6A201F8A50D8697D9 /* Pods_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1AAC4CA06239D481C4E7F9D /* Pods_Example.framework */; };
 		6836D5F920B8404F00FD2DF8 /* UIView+traits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689FA0B7209CB2A200B39225 /* UIView+traits.swift */; };
 		6836D5FB20B86C3500FD2DF8 /* AttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6836D5FA20B86C3500FD2DF8 /* AttributedText.swift */; };
+		6893A6B520BBF30E004802E4 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6893A6B320BBF0DA004802E4 /* URL.swift */; };
+		6893A6B720BBF48C004802E4 /* UnderlineStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6893A6B620BBF48C004802E4 /* UnderlineStyle.swift */; };
+		6893A6B920BBFA77004802E4 /* WritingDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6893A6B820BBFA77004802E4 /* WritingDirection.swift */; };
 		689FA0B9209CB2A700B39225 /* UIView+traits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689FA0B7209CB2A200B39225 /* UIView+traits.swift */; };
 		689FA0D0209CD7B000B39225 /* ReactantUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 689FA0CE209CD7B000B39225 /* ReactantUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		689FA0D3209CD7B000B39225 /* ReactantUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689FA0CC209CD7B000B39225 /* ReactantUI.framework */; };
@@ -487,6 +490,9 @@
 		5F1124193368C79B42B1596B /* Pods-Example-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Example-tvOS/Pods-Example-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		668836B2629A4DD2DFC1CED6 /* Pods-LiveUI-LiveUI-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveUI-LiveUI-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LiveUI-LiveUI-iOS/Pods-LiveUI-LiveUI-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		6836D5FA20B86C3500FD2DF8 /* AttributedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedText.swift; sourceTree = "<group>"; };
+		6893A6B320BBF0DA004802E4 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
+		6893A6B620BBF48C004802E4 /* UnderlineStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlineStyle.swift; sourceTree = "<group>"; };
+		6893A6B820BBFA77004802E4 /* WritingDirection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingDirection.swift; sourceTree = "<group>"; };
 		689FA0B7209CB2A200B39225 /* UIView+traits.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+traits.swift"; sourceTree = "<group>"; };
 		689FA0CC209CD7B000B39225 /* ReactantUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReactantUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		689FA0CE209CD7B000B39225 /* ReactantUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReactantUI.h; sourceTree = "<group>"; };
@@ -847,6 +853,7 @@
 				18449191209223A70080B743 /* Double.swift */,
 				18449192209223A70080B743 /* EdgeInsets.swift */,
 				18449193209223A70080B743 /* Float.swift */,
+				6893A6B320BBF0DA004802E4 /* URL.swift */,
 				18449194209223A70080B743 /* Font.swift */,
 				18449195209223A70080B743 /* Image.swift */,
 				18449196209223A70080B743 /* Int.swift */,
@@ -861,6 +868,8 @@
 				184491A2209223A70080B743 /* UIColorPropertyType.swift */,
 				184491A3209223A70080B743 /* ViewSpecific */,
 				184491BB209223A70080B743 /* ViewVisibility.swift */,
+				6893A6B620BBF48C004802E4 /* UnderlineStyle.swift */,
+				6893A6B820BBFA77004802E4 /* WritingDirection.swift */,
 			);
 			path = Implementation;
 			sourceTree = "<group>";
@@ -1697,6 +1706,7 @@
 				184491FE209223A70080B743 /* Switch.swift in Sources */,
 				1844925A209223A70080B743 /* Style.swift in Sources */,
 				1844924C209223A70080B743 /* TableViewCellSeparatorStyle.swift in Sources */,
+				6893A6B720BBF48C004802E4 /* UnderlineStyle.swift in Sources */,
 				18449230209223A70080B743 /* OptionSetValue.swift in Sources */,
 				184491EE209223A70080B743 /* ComponentReference.swift in Sources */,
 				18449276209223A70080B743 /* XMLSerializer.swift in Sources */,
@@ -1715,6 +1725,7 @@
 				1844922A209223A70080B743 /* Double.swift in Sources */,
 				1844914420921F150080B743 /* RUIExceptionCatcher.m in Sources */,
 				1844913620921F150080B743 /* LiveUIApplier.swift in Sources */,
+				6893A6B520BBF30E004802E4 /* URL.swift in Sources */,
 				184491EF209223A70080B743 /* Container.swift in Sources */,
 				1844923B209223A70080B743 /* ActivityIndicatorStyle.swift in Sources */,
 				18449237209223A70080B743 /* TransformationModifier.swift in Sources */,
@@ -1796,6 +1807,7 @@
 				18449226209223A70080B743 /* Color+Names.swift in Sources */,
 				18449255209223A70080B743 /* EnumerationXSDType.swift in Sources */,
 				18449207209223A70080B743 /* TextView.swift in Sources */,
+				6893A6B920BBFA77004802E4 /* WritingDirection.swift in Sources */,
 				184491F2209223A70080B743 /* Label.swift in Sources */,
 				1844913A20921F150080B743 /* LiveUIManager.swift in Sources */,
 				1844926A209223A70080B743 /* Swift+Compatibility.swift in Sources */,

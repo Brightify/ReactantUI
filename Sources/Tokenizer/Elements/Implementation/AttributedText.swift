@@ -16,31 +16,34 @@ public class AttributedText: XMLElementDeserializable {
 }
 
 public class AttributedTextProperties: PropertyContainer {
-    public let font: AssignablePropertyDescription<UIFont>
-    public let paragraphStyle: AssignablePropertyDescription<NSParagraphStyle>
+    public let font: AssignablePropertyDescription<Font>
+//    public let paragraphStyle: AssignablePropertyDescription<NSParagraphStyle>
     public let backgroundColor: AssignablePropertyDescription<UIColorPropertyType>
     public let ligature: AssignablePropertyDescription<Int>
     public let kern: AssignablePropertyDescription<Float>
-    public let striketroughStyle: AssignablePropertyDescription<NSUnderlineStyle>
-    public let underlineStyle: AssignablePropertyDescription<NSUnderlineStyle>
-    public let strokeColor: AssignablePropertyDescription<UIColor>
+    public let underlineStyle: AssignablePropertyDescription<UnderlineStyle>
+    public let striketroughStyle: AssignablePropertyDescription<UnderlineStyle>
+    public let strokeColor: AssignablePropertyDescription<UIColorPropertyType>
     public let strokeWidth: AssignablePropertyDescription<Float>
-    public let shadow: AssignablePropertyDescription<NSShadow>
-    public let textEffect: AssignablePropertyDescription<String>
-    public let attachment: AssignablePropertyDescription<NSTextAttachment>
+    public let shadowColor: AssignablePropertyDescription<UIColorPropertyType>
+    public let shadowOffset: AssignablePropertyDescription<Float>
+    public let shadowRadius: AssignablePropertyDescription<Float>
+//    public let textEffect: AssignablePropertyDescription<String>
+    public let attachmentImage: AssignablePropertyDescription<Image>
+    // TODO: there are more missing attachment possibilities IIRC, need to decide if they're to be added
     public let linkURL: AssignablePropertyDescription<URL>
-    public let link: AssignablePropertyDescription<String>
+    public let link: AssignablePropertyDescription<TransformedText>
     public let baselineOffset: AssignablePropertyDescription<Float>
-    public let underlineColor: AssignablePropertyDescription<UIColor>
-    public let strikethroughColor: AssignablePropertyDescription<UIColor>
+    public let underlineColor: AssignablePropertyDescription<UIColorPropertyType>
+    public let strikethroughColor: AssignablePropertyDescription<UIColorPropertyType>
     public let obliqueness: AssignablePropertyDescription<Float>
     public let expansion: AssignablePropertyDescription<Float>
-    public let writingDirection: AssignablePropertyDescription<NSWritingDirection>
+    public let writingDirection: AssignablePropertyDescription<WritingDirection>
     public let verticalGlyphForm: AssignablePropertyDescription<Int>
 
     public required init(configuration: Configuration) {
         font = configuration.property(name: "font")
-        paragraphStyle = configuration.property(name: "paragraphStyle")
+//        paragraphStyle = configuration.property(name: "paragraphStyle")
         backgroundColor = configuration.property(name: "backgroundColor")
         ligature = configuration.property(name: "ligature")
         kern = configuration.property(name: "kern")
@@ -48,9 +51,11 @@ public class AttributedTextProperties: PropertyContainer {
         underlineStyle = configuration.property(name: "underlineStyle")
         strokeColor = configuration.property(name: "strokeColor")
         strokeWidth = configuration.property(name: "strokeWidth")
-        shadow = configuration.property(name: "shadow")
-        textEffect = configuration.property(name: "textEffect")
-        attachment = configuration.property(name: "attachment")
+        shadowColor = configuration.property(name: "shadowColor")
+        shadowOffset = configuration.property(name: "shadowOffset")
+        shadowRadius = configuration.property(name: "shadowRadius")
+//        textEffect = configuration.property(name: "textEffect")
+        attachmentImage = configuration.property(name: "attachment")
         linkURL = configuration.property(name: "linkURL")
         link = configuration.property(name: "link")
         baselineOffset = configuration.property(name: "baselineOffset")
