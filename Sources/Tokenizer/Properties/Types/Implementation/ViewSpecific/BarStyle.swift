@@ -15,13 +15,7 @@ public enum BarStyle: String, EnumPropertyType, AttributeSupportedPropertyType {
     case black
     case blackTranslucent
 
-    static var allValues: [BarStyle] = [.`default`, .black, .blackTranslucent]
-
-    public static var xsdType: XSDType {
-        let values = Set(BarStyle.allValues.map { $0.rawValue })
-
-        return .enumeration(EnumerationXSDType(name: BarStyle.enumName, base: .string, values: values))
-    }
+    public static let allValues: [BarStyle] = [.`default`, .black, .blackTranslucent]
 }
 
 #if canImport(UIKit)

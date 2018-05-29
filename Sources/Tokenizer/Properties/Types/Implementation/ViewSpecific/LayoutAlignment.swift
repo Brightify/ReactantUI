@@ -18,13 +18,7 @@ public enum LayoutAlignment: String, EnumPropertyType, AttributeSupportedPropert
     case trailing
     case center
 
-    static var allValues: [LayoutAlignment] = [.fill, .firstBaseline, .lastBaseline, .leading, .trailing, .center]
-
-    public static var xsdType: XSDType {
-        let values = Set(LayoutAlignment.allValues.map { $0.rawValue })
-
-        return .enumeration(EnumerationXSDType(name: LayoutAlignment.enumName, base: .string, values: values))
-    }
+    public static let allValues: [LayoutAlignment] = [.fill, .firstBaseline, .lastBaseline, .leading, .trailing, .center]
 }
 
 #if canImport(UIKit)

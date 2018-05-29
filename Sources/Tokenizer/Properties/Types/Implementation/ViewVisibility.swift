@@ -15,29 +15,50 @@ public enum ViewVisibility: String, EnumPropertyType, AttributeSupportedProperty
     case hidden
     case collapsed
 
-    public static var allValues: [ViewVisibility] = [.visible, .hidden, .collapsed]
-
-    public static var runtimeType: String = "Reactant.Visibility"
-
-    public static var xsdType: XSDType {
-        let values = Set(ViewVisibility.allValues.map { $0.rawValue })
-
-        return .enumeration(EnumerationXSDType(name: ViewVisibility.enumName, base: .string, values: values))
-    }
+    public static let allValues: [ViewVisibility] = [.visible, .hidden, .collapsed]
 }
 
-#if canImport(UIKit)
-import Reactant
+public enum ViewCollapseAxis: String, EnumPropertyType {
+    public static let enumName = "CollapseAxis"
 
-extension ViewVisibility {
-    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
-        switch self {
-        case .visible:
-            return Visibility.visible.rawValue
-        case .collapsed:
-            return Visibility.collapsed.rawValue
-        case .hidden:
-            return Visibility.hidden.rawValue
+    case horizontal
+    case vertical
+    case both
+
+    public static let allValues: [ViewCollapseAxis] = [.horizontal, .vertical, .both]
+}
+
+#if ReactantRuntime
+    import Reactant
+
+    extension ViewVisibility {
+
+        public var runtimeValue: Any? {
+            switch self {
+            case .visible:
+                return Visibility.visible.rawValue
+            case .collapsed:
+                return Visibility.collapsed.rawValue
+            case .hidden:
+                return Visibility.hidden.rawValue
+            }
+        }
+    }
+#endif
+
+#if ReactantRuntime
+
+    extension ViewCollapseAxis {
+
+        public var runtimeValue: Any? {
+            switch self {
+            case .both:
+                return CollapseAxis.both.rawValue
+            case .horizontal:
+                return CollapseAxis.horizontal.rawValue
+            case .vertical:
+                return CollapseAxis.vertical.rawValue
+            }
         }
     }
 }

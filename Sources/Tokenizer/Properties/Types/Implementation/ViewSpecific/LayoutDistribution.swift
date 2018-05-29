@@ -17,15 +17,7 @@ public enum LayoutDistribution: String, EnumPropertyType, AttributeSupportedProp
     case equalCentering
     case equalSpacing
 
-    static var allValues: [LayoutDistribution] = [.fill, .fillEqually, .fillProportionaly, .equalCentering, .equalSpacing]
-
-    public static var runtimeType: String = "UIStackViewDistribution"
-
-    public static var xsdType: XSDType {
-        let values = Set(LayoutDistribution.allValues.map { $0.rawValue })
-
-        return .enumeration(EnumerationXSDType(name: LayoutDistribution.enumName, base: .string, values: values))
-    }
+    public static let allValues: [LayoutDistribution] = [.fill, .fillEqually, .fillProportionaly, .equalCentering, .equalSpacing]
 }
 
 #if canImport(UIKit)

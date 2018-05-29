@@ -13,13 +13,7 @@ public enum ProgressViewStyle: String, EnumPropertyType, AttributeSupportedPrope
     case `default`
     case bar
 
-    static var allValues: [ProgressViewStyle] = [.default, .bar]
-
-    public static var xsdType: XSDType {
-        let values = Set(ProgressViewStyle.allValues.map { $0.rawValue })
-
-        return .enumeration(EnumerationXSDType(name: ProgressViewStyle.enumName, base: .string, values: values))
-    }
+    public static let allValues: [ProgressViewStyle] = [.default, .bar]
 }
 
 #if canImport(UIKit)

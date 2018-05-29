@@ -18,14 +18,8 @@ public enum LineBreakMode: String, EnumPropertyType, AttributeSupportedPropertyT
     case byTruncatingTail
     case byTruncatingMiddle
 
-    static var allValues: [LineBreakMode] = [.byWordWrapping, .byCharWrapping, .byClipping,
-                                             .byTruncatingHead, .byTruncatingTail, .byTruncatingMiddle]
-
-    public static var xsdType: XSDType {
-        let values = Set(LineBreakMode.allValues.map { $0.rawValue })
-
-        return .enumeration(EnumerationXSDType(name: LineBreakMode.enumName, base: .string, values: values))
-    }
+    public static let allValues: [LineBreakMode] = [.byWordWrapping, .byCharWrapping, .byClipping,
+                                                    .byTruncatingHead, .byTruncatingTail, .byTruncatingMiddle]
 }
 
 #if canImport(UIKit)
