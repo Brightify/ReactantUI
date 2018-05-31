@@ -14,7 +14,7 @@ public enum WritingDirection: String, EnumPropertyType {
     case leftToRight
     case rightToLeft
 
-    static var allValues: [WritingDirection] = [.natural, .leftToRight, .rightToLeft]
+    static let allValues: [WritingDirection] = [.natural, .leftToRight, .rightToLeft]
 
     public static var xsdType: XSDType {
         let values = Set(WritingDirection.allValues.map { $0.rawValue })

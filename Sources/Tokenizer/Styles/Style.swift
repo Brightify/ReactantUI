@@ -7,6 +7,9 @@
 //
 
 import Foundation
+#if ReactantRuntime
+import Reactant
+#endif
 
 public enum Style: XMLElementDeserializable {
     case view(ViewStyle)
@@ -100,13 +103,14 @@ public struct AttributedTextStyle {
     public var properties: [Property]
     public var groupName: String?
 
-    public var parentModuleImport: String
+    public var parentModuleImport: String {
+        return "Reactant"
+    }
 
     init(node: XMLElement, groupName: String? = nil) throws {
         let properties: [Property]
 
         properties = try PropertyHelper.deserializeSupportedProperties(properties: Properties.attributedText.allProperties, in: node)
-        parentModuleImport = "Reactant" // for `String.attributed(...)`
 
         // FIXME The name has to be done some other way
         let name = try node.value(ofAttribute: "name") as String

@@ -26,7 +26,7 @@ public struct ValueProperty<T: SupportedPropertyType>: TypedProperty {
 
     #if SanAndreas
     public func dematerialize() -> XMLSerializableAttribute {
-    return XMLSerializableAttribute(name: attributeName, value: value.dematerialize())
+        return XMLSerializableAttribute(name: attributeName, value: value.dematerialize())
     }
     #endif
 

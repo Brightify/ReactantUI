@@ -1,14 +1,14 @@
 //
 //  AttributedText.swift
-//  LiveUI-iOS
+//  ReactantUI
 //
 //  Created by Matyáš Kříž on 25/05/2018.
 //
 
 import Foundation
-
 #if ReactantRuntime
 import UIKit
+import Reactant
 #endif
 
 public class AttributedText: XMLElementDeserializable {

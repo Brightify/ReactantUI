@@ -23,7 +23,7 @@ public enum UnderlineStyle: String, EnumPropertyType {
     case patternDashDotDot
     case byWord
 
-    static var allValues: [UnderlineStyle] = [.styleNone, .styleSingle, .styleThick, .styleDouble,
+    static let allValues: [UnderlineStyle] = [.styleNone, .styleSingle, .styleThick, .styleDouble,
                                            .patternDot, .patternDash, .patternDashDot, .patternDashDotDot,
                                            .byWord]
 
