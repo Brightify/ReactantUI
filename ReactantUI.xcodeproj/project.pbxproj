@@ -216,6 +216,8 @@
 		5B1333D6A201F8A50D8697D9 /* Pods_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1AAC4CA06239D481C4E7F9D /* Pods_Example.framework */; };
 		6836D5F920B8404F00FD2DF8 /* UIView+traits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689FA0B7209CB2A200B39225 /* UIView+traits.swift */; };
 		6836D5FB20B86C3500FD2DF8 /* AttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6836D5FA20B86C3500FD2DF8 /* AttributedText.swift */; };
+		687D4D5F20C02D1800F890CB /* ParagraphStyleProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687D4D5E20C02D1800F890CB /* ParagraphStyleProperties.swift */; };
+		687D4D6120C0360C00F890CB /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687D4D6020C0360C00F890CB /* Array.swift */; };
 		6893A6B520BBF30E004802E4 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6893A6B320BBF0DA004802E4 /* URL.swift */; };
 		6893A6B720BBF48C004802E4 /* UnderlineStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6893A6B620BBF48C004802E4 /* UnderlineStyle.swift */; };
 		6893A6B920BBFA77004802E4 /* WritingDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6893A6B820BBFA77004802E4 /* WritingDirection.swift */; };
@@ -490,6 +492,8 @@
 		5F1124193368C79B42B1596B /* Pods-Example-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Example-tvOS/Pods-Example-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		668836B2629A4DD2DFC1CED6 /* Pods-LiveUI-LiveUI-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveUI-LiveUI-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LiveUI-LiveUI-iOS/Pods-LiveUI-LiveUI-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		6836D5FA20B86C3500FD2DF8 /* AttributedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedText.swift; sourceTree = "<group>"; };
+		687D4D5E20C02D1800F890CB /* ParagraphStyleProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParagraphStyleProperties.swift; sourceTree = "<group>"; };
+		687D4D6020C0360C00F890CB /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		6893A6B320BBF0DA004802E4 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		6893A6B620BBF48C004802E4 /* UnderlineStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlineStyle.swift; sourceTree = "<group>"; };
 		6893A6B820BBFA77004802E4 /* WritingDirection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingDirection.swift; sourceTree = "<group>"; };
@@ -815,6 +819,7 @@
 				18449187209223A70080B743 /* PropertyMaterializationError.swift */,
 				18449188209223A70080B743 /* Types */,
 				184491C3209223A70080B743 /* ValueProperty.swift */,
+				687D4D5E20C02D1800F890CB /* ParagraphStyleProperties.swift */,
 			);
 			path = Properties;
 			sourceTree = "<group>";
@@ -844,6 +849,7 @@
 		1844918A209223A70080B743 /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
+				687D4D6020C0360C00F890CB /* Array.swift */,
 				1844918B209223A70080B743 /* Bool.swift */,
 				1844918C209223A70080B743 /* CGColorPropertyType.swift */,
 				1844918D209223A70080B743 /* Color+Names.swift */,
@@ -1672,6 +1678,7 @@
 				18449253209223A70080B743 /* SupportedPropertyType.swift in Sources */,
 				1844922E209223A70080B743 /* Image.swift in Sources */,
 				18449274209223A70080B743 /* XMLSerializableAttribute.swift in Sources */,
+				687D4D5F20C02D1800F890CB /* ParagraphStyleProperties.swift in Sources */,
 				18449271209223A70080B743 /* XMLAttributeBuilder.swift in Sources */,
 				1844925E209223A70080B743 /* Collection+groupBy.swift in Sources */,
 				18449211209223A70080B743 /* ConstraintRelation.swift in Sources */,
@@ -1719,6 +1726,7 @@
 				184491F0209223A70080B743 /* DatePicker.swift in Sources */,
 				1844913820921F150080B743 /* LiveUIErrorMessage.swift in Sources */,
 				1844913420921F150080B743 /* UIWindow+Debug.swift in Sources */,
+				687D4D6120C0360C00F890CB /* Array.swift in Sources */,
 				1844921B209223A70080B743 /* PropertyDescription.swift in Sources */,
 				18449202209223A70080B743 /* PlainTableView.swift in Sources */,
 				184491EC209223A70080B743 /* ActivityIndicatorElement.swift in Sources */,
