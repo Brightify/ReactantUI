@@ -35,3 +35,5 @@ extension Int: SupportedPropertyType {
         return .builtin(.integer)
     }
 }
+
+extension Int: AttributeSupportedPropertyType {}

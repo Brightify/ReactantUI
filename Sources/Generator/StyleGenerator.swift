@@ -11,11 +11,13 @@ import Tokenizer
 
 public class StyleGenerator: Generator {
 
+    private let context: StyleGroupContext
     private let group: StyleGroup
     private var tempCounter: Int = 1
 
-    public init(group: StyleGroup, configuration: GeneratorConfiguration) {
-        self.group = group
+    public init(context: StyleGroupContext, configuration: GeneratorConfiguration) {
+        self.group = context.group
+        self.context = context
         super.init(configuration: configuration)
     }
 
@@ -37,10 +39,10 @@ public class StyleGenerator: Generator {
         l()
         try l("struct \(group.swiftName)") {
             for style in group.styles {
-                guard let mapping = ElementMapping.mapping[style.type] else {
-                    throw GeneratorError(message: "Mapping for type \(style.type) does not exist")
+                guard let mapping = ElementMapping.mapping[style.styleType] else {
+                    throw GeneratorError(message: "Mapping for type \(style.styleType) does not exist")
                 }
-                l("static func \(style.styleName)(_ view: \(try mapping.runtimeType()))") {
+                l("static func \(style.name)(_ view: \(try mapping.runtimeType()))") {
                     for extendedStyle in style.extend {
                         let components = extendedStyle.components(separatedBy: ":").filter { !$0.isEmpty }
                         if let styleName = components.last {
@@ -54,7 +56,8 @@ public class StyleGenerator: Generator {
                         }
                     }
                     for property in style.properties {
-                        l(property.application(on: "view"))
+                        let propertyContext = PropertyContext(parentContext: context, property: property)
+                        l(property.application(on: "view", context: propertyContext))
                     }
                 }
             }

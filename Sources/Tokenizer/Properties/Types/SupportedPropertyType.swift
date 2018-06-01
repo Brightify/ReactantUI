@@ -30,3 +30,10 @@ public protocol AttributeSupportedPropertyType: SupportedPropertyType {
 public protocol XMLContentSupportedPropertyType: SupportedPropertyType {
     static func materialize(from content: XMLContent) throws -> Self
 }
+
+extension XMLContentSupportedPropertyType where Self: AttributeSupportedPropertyType {
+    static func materialize(from content: XMLContent) throws -> Self {
+        let text = (content as? TextElement)?.text ?? ""
+        return try materialize(from: text)
+    }
+}

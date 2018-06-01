@@ -32,7 +32,7 @@ public enum GenerateCommandError: Error, LocalizedError {
         case .invalidType(let path):
             return "Invalid Component type at path: \(path) - do not use keywords.";
         case .tokenizationError(let path, let error):
-            return "Tokenization error in file: \(path), error: \(error.localizedDescription)"
+            return "Tokenization error in file: \(path), error: \(error)"
         case .invalidSwiftVersion:
             return "Invalid Swift version"
         }
@@ -83,6 +83,9 @@ class GenerateCommand: Command {
         let styleFiles = styleXmlEnumerator?.compactMap { $0 as? String }.filter { $0.hasSuffix(".styles.xml") }
             .map { inputPathURL.appendingPathComponent($0).path } ?? []
 
+        // TODO: get this from somewhere
+        let globalContext = GlobalContext(styleSheets: [])
+
         var stylePaths = [] as [String]
         for (index, path) in styleFiles.enumerated() {
             output.append("// Generated from \(path)")
@@ -95,7 +98,8 @@ class GenerateCommand: Command {
                                                        localXmlPath: path,
                                                        isLiveEnabled: enableLive.value,
                                                        swiftVersion: swiftVersion)
-            output.append(try StyleGenerator(group: group, configuration: configuration).generate(imports: index == 0))
+            let styleContext = StyleGroupContext(globalContext: globalContext, group: group)
+            output.append(try StyleGenerator(context: styleContext, configuration: configuration).generate(imports: index == 0))
         }
 
         var componentTypes: [String] = []
@@ -144,7 +148,8 @@ class GenerateCommand: Command {
             output.append("// Generated from \(path)")
             let configuration = GeneratorConfiguration(minimumMajorVersion: minimumDeploymentTarget, localXmlPath: path, isLiveEnabled: enableLive.value, swiftVersion: swiftVersion)
             for definition in rootDefinition.componentDefinitions {
-                output.append(try UIGenerator(definition: definition, configuration: configuration).generate(imports: false))
+                let componentContext = ComponentContext(globalContext: globalContext, component: definition)
+                output.append(try UIGenerator(componentContext: componentContext, configuration: configuration).generate(imports: false))
             }
         }
 

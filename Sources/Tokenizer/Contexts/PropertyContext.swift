@@ -1,13 +1,18 @@
 //
 //  PropertyContext.swift
-//  LiveUI-iOS
+//  Tokenizer
 //
 //  Created by Tadeas Kriz on 01/06/2018.
 //
 
 import Foundation
 
-public struct PropertyContext {
-    public let elementContext: ElementContext
+public struct PropertyContext: DataContext {
+    public let parentContext: DataContext
     public let property: Property
+
+    public init(parentContext: DataContext, property: Property) {
+        self.parentContext = parentContext
+        self.property = property
+    }
 }

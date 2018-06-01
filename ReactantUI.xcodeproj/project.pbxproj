@@ -218,6 +218,14 @@
 		6836D5FB20B86C3500FD2DF8 /* AttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6836D5FA20B86C3500FD2DF8 /* AttributedText.swift */; };
 		687D4D5F20C02D1800F890CB /* ParagraphStyleProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687D4D5E20C02D1800F890CB /* ParagraphStyleProperties.swift */; };
 		687D4D6120C0360C00F890CB /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687D4D6020C0360C00F890CB /* Array.swift */; };
+		687D4D6320C16E0000F890CB /* AttributedTextPropertyDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687D4D6220C16E0000F890CB /* AttributedTextPropertyDescription.swift */; };
+		687D4D9B20C1B25B00F890CB /* ComponentContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687D4D9520C1B25B00F890CB /* ComponentContext.swift */; };
+		687D4D9C20C1B25B00F890CB /* DataContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687D4D9620C1B25B00F890CB /* DataContext.swift */; };
+		687D4D9D20C1B25B00F890CB /* ElementContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687D4D9720C1B25B00F890CB /* ElementContext.swift */; };
+		687D4D9E20C1B25B00F890CB /* GlobalContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687D4D9820C1B25B00F890CB /* GlobalContext.swift */; };
+		687D4D9F20C1B25B00F890CB /* PropertyContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687D4D9920C1B25B00F890CB /* PropertyContext.swift */; };
+		687D4DA020C1B25B00F890CB /* StyleGroupContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687D4D9A20C1B25B00F890CB /* StyleGroupContext.swift */; };
+		687D4DA220C1B27200F890CB /* SupportedPropertyTypeContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687D4DA120C1B27200F890CB /* SupportedPropertyTypeContext.swift */; };
 		6893A6B520BBF30E004802E4 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6893A6B320BBF0DA004802E4 /* URL.swift */; };
 		6893A6B720BBF48C004802E4 /* UnderlineStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6893A6B620BBF48C004802E4 /* UnderlineStyle.swift */; };
 		6893A6B920BBFA77004802E4 /* WritingDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6893A6B820BBFA77004802E4 /* WritingDirection.swift */; };
@@ -494,6 +502,14 @@
 		6836D5FA20B86C3500FD2DF8 /* AttributedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedText.swift; sourceTree = "<group>"; };
 		687D4D5E20C02D1800F890CB /* ParagraphStyleProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParagraphStyleProperties.swift; sourceTree = "<group>"; };
 		687D4D6020C0360C00F890CB /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
+		687D4D6220C16E0000F890CB /* AttributedTextPropertyDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedTextPropertyDescription.swift; sourceTree = "<group>"; };
+		687D4D9520C1B25B00F890CB /* ComponentContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentContext.swift; sourceTree = "<group>"; };
+		687D4D9620C1B25B00F890CB /* DataContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataContext.swift; sourceTree = "<group>"; };
+		687D4D9720C1B25B00F890CB /* ElementContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ElementContext.swift; sourceTree = "<group>"; };
+		687D4D9820C1B25B00F890CB /* GlobalContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalContext.swift; sourceTree = "<group>"; };
+		687D4D9920C1B25B00F890CB /* PropertyContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertyContext.swift; sourceTree = "<group>"; };
+		687D4D9A20C1B25B00F890CB /* StyleGroupContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleGroupContext.swift; sourceTree = "<group>"; };
+		687D4DA120C1B27200F890CB /* SupportedPropertyTypeContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportedPropertyTypeContext.swift; sourceTree = "<group>"; };
 		6893A6B320BBF0DA004802E4 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		6893A6B620BBF48C004802E4 /* UnderlineStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlineStyle.swift; sourceTree = "<group>"; };
 		6893A6B820BBFA77004802E4 /* WritingDirection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingDirection.swift; sourceTree = "<group>"; };
@@ -709,6 +725,7 @@
 		18449147209223A70080B743 /* Tokenizer */ = {
 			isa = PBXGroup;
 			children = (
+				687D4D9420C1B25B00F890CB /* Contexts */,
 				18449148209223A70080B743 /* Elements */,
 				1844916F209223A70080B743 /* Layout */,
 				1844917A209223A70080B743 /* Properties */,
@@ -831,6 +848,7 @@
 				1844917F209223A70080B743 /* ControlStatePropertyDescription.swift */,
 				18449180209223A70080B743 /* PropertyDescription.swift */,
 				18449181209223A70080B743 /* ValuePropertyDescription.swift */,
+				687D4D6220C16E0000F890CB /* AttributedTextPropertyDescription.swift */,
 			);
 			path = Descriptions;
 			sourceTree = "<group>";
@@ -1171,6 +1189,20 @@
 				22957E3B207235E20088C09E /* StackViewRootView.ui.xml */,
 			);
 			path = StackView;
+			sourceTree = "<group>";
+		};
+		687D4D9420C1B25B00F890CB /* Contexts */ = {
+			isa = PBXGroup;
+			children = (
+				687D4D9520C1B25B00F890CB /* ComponentContext.swift */,
+				687D4D9620C1B25B00F890CB /* DataContext.swift */,
+				687D4D9720C1B25B00F890CB /* ElementContext.swift */,
+				687D4D9820C1B25B00F890CB /* GlobalContext.swift */,
+				687D4D9920C1B25B00F890CB /* PropertyContext.swift */,
+				687D4D9A20C1B25B00F890CB /* StyleGroupContext.swift */,
+				687D4DA120C1B27200F890CB /* SupportedPropertyTypeContext.swift */,
+			);
+			path = Contexts;
 			sourceTree = "<group>";
 		};
 		689FA0B6209CB29000B39225 /* Common */ = {
@@ -1688,6 +1720,7 @@
 				184491FB209223A70080B743 /* Slider.swift in Sources */,
 				1844913B20921F150080B743 /* PreviewController.swift in Sources */,
 				184491F4209223A70080B743 /* NavigationBar.swift in Sources */,
+				687D4DA020C1B25B00F890CB /* StyleGroupContext.swift in Sources */,
 				18449250209223A70080B743 /* TextFieldViewMode.swift in Sources */,
 				6836D5FB20B86C3500FD2DF8 /* AttributedText.swift in Sources */,
 				18449257209223A70080B743 /* UnionXSDType.swift in Sources */,
@@ -1709,6 +1742,7 @@
 				184491F9209223A70080B743 /* SearchBar.swift in Sources */,
 				18449227209223A70080B743 /* Color.swift in Sources */,
 				18449235209223A70080B743 /* SystemFontWeight.swift in Sources */,
+				687D4DA220C1B27200F890CB /* SupportedPropertyTypeContext.swift in Sources */,
 				18449210209223A70080B743 /* ConstraintPriority.swift in Sources */,
 				184491FE209223A70080B743 /* Switch.swift in Sources */,
 				1844925A209223A70080B743 /* Style.swift in Sources */,
@@ -1719,6 +1753,7 @@
 				18449276209223A70080B743 /* XMLSerializer.swift in Sources */,
 				184491FD209223A70080B743 /* Stepper.swift in Sources */,
 				1844914120921F150080B743 /* UIWindow+TopViewController.swift in Sources */,
+				687D4D9D20C1B25B00F890CB /* ElementContext.swift in Sources */,
 				1844920E209223A70080B743 /* Constraint.swift in Sources */,
 				184491FA209223A70080B743 /* SegmentedControl.swift in Sources */,
 				1844920D209223A70080B743 /* UIElement.swift in Sources */,
@@ -1742,6 +1777,7 @@
 				1844913C20921F150080B743 /* PreviewListCell.swift in Sources */,
 				18449222209223A70080B743 /* PropertyMaterializationError.swift in Sources */,
 				18449233209223A70080B743 /* RectEdge.swift in Sources */,
+				687D4D6320C16E0000F890CB /* AttributedTextPropertyDescription.swift in Sources */,
 				18449208209223A70080B743 /* Toolbar.swift in Sources */,
 				1844926B209223A70080B743 /* TokenizationError.swift in Sources */,
 				1844924B209223A70080B743 /* TableViewCellSeparatorInsetReference.swift in Sources */,
@@ -1767,6 +1803,7 @@
 				1844926F209223A70080B743 /* Layout+Serialization.swift in Sources */,
 				1844920B209223A70080B743 /* WebView.swift in Sources */,
 				1844914220921F150080B743 /* ExceptionCatcher.swift in Sources */,
+				687D4D9B20C1B25B00F890CB /* ComponentContext.swift in Sources */,
 				18449246209223A70080B743 /* MapType.swift in Sources */,
 				1844914620921F150080B743 /* WeakUIBox.swift in Sources */,
 				1844925F209223A70080B743 /* ComponentPath.swift in Sources */,
@@ -1790,6 +1827,7 @@
 				18449209209223A70080B743 /* View.swift in Sources */,
 				184491F8209223A70080B743 /* ScrollView.swift in Sources */,
 				1844925B209223A70080B743 /* StyleContainer.swift in Sources */,
+				687D4D9F20C1B25B00F890CB /* PropertyContext.swift in Sources */,
 				1844914020921F150080B743 /* ReactantLiveUIConfiguration.swift in Sources */,
 				18449215209223A70080B743 /* LayoutAnchor.swift in Sources */,
 				1844913E20921F150080B743 /* PreviewListRootView.swift in Sources */,
@@ -1806,6 +1844,7 @@
 				18449221209223A70080B743 /* PropertyHelper.swift in Sources */,
 				18449242209223A70080B743 /* LayoutAlignment.swift in Sources */,
 				1844925D209223A70080B743 /* CellWrapper.swift in Sources */,
+				687D4D9C20C1B25B00F890CB /* DataContext.swift in Sources */,
 				18449236209223A70080B743 /* AffineTransformation.swift in Sources */,
 				18449264209223A70080B743 /* DimensionParser.swift in Sources */,
 				1844923E209223A70080B743 /* ControlContentVerticalAlignment.swift in Sources */,
@@ -1822,6 +1861,7 @@
 				1844922B209223A70080B743 /* EdgeInsets.swift in Sources */,
 				1844920F209223A70080B743 /* ConstraintModifier.swift in Sources */,
 				184491F7209223A70080B743 /* ProgressView.swift in Sources */,
+				687D4D9E20C1B25B00F890CB /* GlobalContext.swift in Sources */,
 				1844923F209223A70080B743 /* DatePickerMode.swift in Sources */,
 				7139F67920934BC2009EA7F4 /* Condition.swift in Sources */,
 				18449232209223A70080B743 /* Rect.swift in Sources */,

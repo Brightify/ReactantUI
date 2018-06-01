@@ -104,6 +104,29 @@ extension Set {
 //    }
 //}
 
+extension Array {
+
+    fileprivate func arrayByAppending(_ elements: Element...) -> Array<Element> {
+        return arrayByAppending(elements)
+    }
+
+    fileprivate func arrayByAppending(_ elements: [Element]) -> Array<Element> {
+        var mutableCopy = self
+        mutableCopy.append(contentsOf: elements)
+        return mutableCopy
+    }
+}
+
+extension Sequence {
+    fileprivate func distinct(where comparator: (_ lhs: Iterator.Element, _ rhs: Iterator.Element) -> Bool) -> [Iterator.Element] {
+        var result: [Iterator.Element] = []
+        for item in self where result.contains(where: { comparator(item, $0) }) == false {
+            result.append(item)
+        }
+        return result
+    }
+}
+
 // "lolek <b>lolkaro <i>oto</i> megre<s><u>IMPO</u></s></b> lolker"
 // var string = MutableAttrString("")
 // string.append("lolek")
@@ -112,12 +135,12 @@ extension Set {
 // string.append("megre".attributed(.font(1)))
 // string.append("IMPO".attributed(.strikethroughStyle(yes), .underlineStyle(yes)))
 // string.append("lolker")
-public enum AttributedText {
+public enum AttributedText: XMLContentSupportedPropertyType, SupportedPropertyType {
     case transform(TransformedText)
     indirect case attributed(AttributedTextStyle, [AttributedText])
 }
 
-extension AttributedText: SupportedPropertyType {
+extension AttributedText {
     public var generated: String {
         func resolveAttributes(text: AttributedText, attributes: [Property]) -> String {
             switch text {
@@ -182,6 +205,10 @@ extension AttributedText: SupportedPropertyType {
         return resolveAttributes(text: self, attributes: [])
     }
     #endif
+
+    public static func materialize(from content: XMLContent) throws -> AttributedText {
+        return .transform(TransformedText.text(""))
+    }
 
     public static var xsdType: XSDType {
         return .builtin(.string)

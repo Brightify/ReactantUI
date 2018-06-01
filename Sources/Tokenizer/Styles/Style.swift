@@ -15,6 +15,24 @@ public enum Style: XMLElementDeserializable {
     case view(ViewStyle)
     case attributedText(AttributedTextStyle)
 
+    public var properties: [Property] {
+        switch self {
+        case .view(let viewStyle):
+            return viewStyle.properties
+        case .attributedText(let attributedStyle):
+            return attributedStyle.properties
+        }
+    }
+
+    public var parentModuleImport: String {
+        switch self {
+        case .view(let viewStyle):
+            return viewStyle.parentModuleImport
+        case .attributedText(let attributedStyle):
+            return attributedStyle.parentModuleImport
+        }
+    }
+
     public var styleType: String {
         switch self {
         case .view(let viewStyle):
@@ -50,6 +68,10 @@ public enum Style: XMLElementDeserializable {
         } else {
             throw TokenizationError(message: "Unknown style \(node.name). (\(node))")
         }
+    }
+
+    public static func deserialize(_ element: XMLElement) throws -> Style {
+        return try Style(node: element, groupName: nil)
     }
 }
 

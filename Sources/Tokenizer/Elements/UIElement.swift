@@ -11,21 +11,24 @@ import Foundation
 import UIKit
 #endif
 
-public protocol UIElement: class, XMLElementSerializable {
-    var field: String? { get }
-    var layout: Layout { get set }
+public protocol UIElementBase {
     var properties: [Property] { get set }
     var toolingProperties: [String: Property] { get set }
-    var styles: [String] { get set }
-
-    static var defaultContentCompression: (horizontal: ConstraintPriority, vertical: ConstraintPriority) { get }
-    static var defaultContentHugging: (horizontal: ConstraintPriority, vertical: ConstraintPriority) { get }
 
     // used for generating styles - does not care about children imports
     static var parentModuleImport: String { get }
 
     // used for generating views - resolves imports of subviews.
     var requiredImports: Set<String> { get }
+}
+
+public protocol UIElement: class, UIElementBase, XMLElementSerializable {
+    var field: String? { get }
+    var layout: Layout { get set }
+    var styles: [String] { get set }
+
+    static var defaultContentCompression: (horizontal: ConstraintPriority, vertical: ConstraintPriority) { get }
+    static var defaultContentHugging: (horizontal: ConstraintPriority, vertical: ConstraintPriority) { get }
 
     func initialization() throws -> String
 

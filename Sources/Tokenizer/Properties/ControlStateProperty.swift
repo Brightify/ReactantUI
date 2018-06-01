@@ -27,7 +27,7 @@ public struct ControlStateProperty<T: SupportedPropertyType>: Property {
         }
     }
 
-    public func application(on target: String, context: ElementContext) -> String {
+    public func application(on target: String, context: PropertyContext) -> String {
         let state = parseState(from: attributeName) as [ControlState]
         let stringState = state.map { "UIControlState.\($0.rawValue)" }.joined(separator: ", ")
         let namespacedTarget = namespace.resolvedSwiftName(target: target)
@@ -35,13 +35,13 @@ public struct ControlStateProperty<T: SupportedPropertyType>: Property {
     }
     
     #if SanAndreas
-    public func dematerialize(context: ElementContext) -> XMLSerializableAttribute {
+    public func dematerialize(context: PropertyContext) -> XMLSerializableAttribute {
         return XMLSerializableAttribute(name: attributeName, value: value.dematerialize())
     }
     #endif
 
     #if ReactantRuntime
-    public func apply(on object: AnyObject, context: ElementContext) throws {
+    public func apply(on object: AnyObject, context: PropertyContext) throws {
         let key = description.key
         let selector = Selector("set\(key.capitalizingFirstLetter()):forState:")
         

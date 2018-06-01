@@ -10,11 +10,13 @@ import Tokenizer
 
 public class UIGenerator: Generator {
     public let root: ComponentDefinition
+    public let componentContext: ComponentContext
 
     private var tempCounter: Int = 1
 
-    public init(definition: ComponentDefinition, configuration: GeneratorConfiguration) {
-        self.root = definition
+    public init(componentContext: ComponentContext, configuration: GeneratorConfiguration) {
+        self.root = componentContext.component
+        self.componentContext = componentContext
         super.init(configuration: configuration)
     }
 
@@ -106,7 +108,8 @@ public class UIGenerator: Generator {
                         l("#else")
                     }
                     for property in root.properties {
-                        l(property.application(on: "target"))
+                        let propertyContext = PropertyContext(parentContext: componentContext, property: property)
+                        l(property.application(on: "target", context: propertyContext))
                     }
                     try root.children.forEach { try generate(element: $0, superName: "target", containedIn: root) }
                     tempCounter = 1
@@ -202,7 +205,8 @@ public class UIGenerator: Generator {
         }
 
         for property in element.properties {
-            l(property.application(on: name))
+            let propertyContext = PropertyContext(parentContext: componentContext, property: property)
+            l(property.application(on: name, context: propertyContext))
         }
         l("\(superName).\(containedIn.addSubviewMethod)(\(name))")
         l()
@@ -348,8 +352,8 @@ public class UIGenerator: Generator {
     private func generateStyles() throws {
         try l("struct \(root.stylesName)") {
             for style in root.styles {
-                guard let mapping = ElementMapping.mapping[style.type] else {
-                    throw GeneratorError(message: "Mapping for type \(style.type) does not exist")
+                guard let mapping = ElementMapping.mapping[style.styleType] else {
+                    throw GeneratorError(message: "Mapping for type \(style.styleType) does not exist")
                 }
                 l("static func \(style.name)(_ view: \(try mapping.runtimeType()))") {
                     for extendedStyle in style.extend {
@@ -365,7 +369,8 @@ public class UIGenerator: Generator {
                         }
                     }
                     for property in style.properties {
-                        l(property.application(on: "view"))
+                        let propertyContext = PropertyContext(parentContext: componentContext, property: property)
+                        l(property.application(on: "view", context: propertyContext))
                     }
                 }
             }

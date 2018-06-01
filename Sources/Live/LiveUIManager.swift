@@ -36,6 +36,10 @@ public class ReactantLiveUIManager {
     /// Closure to be called right after applying new constraints to Live UI.
     public var onApplied: ((ComponentDefinition, UIView) -> Void)?
 
+    private var globalContext: GlobalContext {
+        return GlobalContext(styleSheets: [])
+    }
+
     private var styles: [String: StyleGroup] = [:] {
         didSet {
             resetErrors()
@@ -368,7 +372,8 @@ public class ReactantLiveUIManager {
     }
 
     private func apply(definition: ComponentDefinition, view: UIView, setConstraint: @escaping (String, SnapKit.Constraint) -> Bool) throws {
-        try ReactantLiveUIApplier(definition: definition, commonStyles: commonStyles, instance: view, setConstraint: setConstraint, onApplied: onApplied).apply()
+        let componentContext = ComponentContext(globalContext: globalContext, component: definition)
+        try ReactantLiveUIApplier(context: componentContext, commonStyles: commonStyles, instance: view, setConstraint: setConstraint, onApplied: onApplied).apply()
         if let invalidable = view as? Invalidable {
             invalidable.invalidate()
         }

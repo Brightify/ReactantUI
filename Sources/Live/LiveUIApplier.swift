@@ -15,6 +15,7 @@ private func findView(named name: String, in array: [(name: String, element: UIE
 }
 
 public class ReactantLiveUIApplier {
+    private let componentContext: ComponentContext
     let definition: ComponentDefinition
     let instance: UIView
     let commonStyles: [Style]
@@ -23,22 +24,24 @@ public class ReactantLiveUIApplier {
 
     private var appliedConstraints: [SnapKit.Constraint] = []
 
-    public init(definition: ComponentDefinition,
+    public init(context: ComponentContext,
                 commonStyles: [Style],
                 instance: UIView,
                 setConstraint: @escaping (String, SnapKit.Constraint) -> Bool,
                 onApplied: ((ComponentDefinition, UIView) -> Void)?) {
-        self.definition = definition
+        self.definition = context.component
         self.commonStyles = commonStyles
         self.instance = instance
         self.setConstraint = setConstraint
         self.onApplied = onApplied
+        self.componentContext = context
     }
 
     public func apply() throws {
         defer { onApplied?(definition, instance) }
         for property in definition.properties {
-            try property.apply(on: instance)
+            let propertyContext = PropertyContext(parentContext: componentContext, property: property)
+            try property.apply(on: instance, context: propertyContext)
         }
         instance.subviews.forEach { $0.removeFromSuperview() }
         let views = try definition.children.flatMap {
@@ -83,7 +86,8 @@ public class ReactantLiveUIApplier {
         }
 
         for property in try (commonStyles + definition.styles).resolveStyle(for: element) {
-            try property.apply(on: view)
+            let propertyContext = PropertyContext(parentContext: componentContext, property: property)
+            try property.apply(on: view, context: propertyContext)
         }
 
         // tag views that are added automatically

@@ -451,6 +451,10 @@ public enum XMLDeserializationError: Error, CustomStringConvertible {
             return "Can't convert attribute \(attribute) to value of type \(type)"
         }
     }
+
+    public var localizedDescription: String {
+        return description
+    }
 }
 
 // MARK: - Common types deserialization

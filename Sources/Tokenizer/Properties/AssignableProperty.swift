@@ -22,19 +22,19 @@ public struct AssignableProperty<T: SupportedPropertyType>: TypedProperty {
         return namespace.resolvedAttributeName(name: name)
     }
 
-    public func application(on target: String, context: ElementContext) -> String {
+    public func application(on target: String, context: PropertyContext) -> String {
         let namespacedTarget = namespace.resolvedSwiftName(target: target)
         return "\(namespacedTarget).\(description.swiftName) = \(value.generated)"
     }
     
     #if SanAndreas
-    public func dematerialize(context: ElementContext) -> XMLSerializableAttribute {
+    public func dematerialize(context: PropertyContext) -> XMLSerializableAttribute {
         return XMLSerializableAttribute(name: attributeName, value: value.dematerialize())
     }
     #endif
 
     #if ReactantRuntime
-    public func apply(on object: AnyObject, context: ElementContext) throws {
+    public func apply(on object: AnyObject, context: PropertyContext) throws {
         let key = description.key
         let selector = Selector("set\(key.capitalizingFirstLetter()):")
 
@@ -52,7 +52,7 @@ public struct AssignableProperty<T: SupportedPropertyType>: TypedProperty {
                 _ = target.setValue(resolvedValue, forKey: key)
             }
         } catch {
-            target.perform(selector, with: resolvedValue)
+            _ = target.perform(selector, with: resolvedValue)
         }
 
     }

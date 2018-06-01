@@ -250,6 +250,12 @@ public struct PreferredSize: SupportedPropertyType {
     }
     #endif
 
+    public static var xsdType: XSDType {
+        return .builtin(.string)
+    }
+}
+
+extension PreferredSize: AttributeSupportedPropertyType {
     public static func materialize(from value: String) throws -> PreferredSize {
         if !value.contains(",") {
             let size = try PreferredDimension(value)
@@ -261,9 +267,5 @@ public struct PreferredSize: SupportedPropertyType {
             }
             return PreferredSize(width: width, height: height)
         }
-    }
-
-    public static var xsdType: XSDType {
-        return .builtin(.string)
     }
 }

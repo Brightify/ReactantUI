@@ -17,7 +17,7 @@ public protocol ComponentDefinitionContainer {
     var componentDefinitions: [ComponentDefinition] { get }
 }
 
-public struct ComponentDefinition: XMLElementDeserializable, UIContainer, StyleContainer, ComponentDefinitionContainer {
+public struct ComponentDefinition: XMLElementDeserializable, UIContainer, UIElementBase, StyleContainer, ComponentDefinitionContainer {
     public var type: String
     public var isRootView: Bool
     public var styles: [Style]

@@ -12,7 +12,7 @@ import Foundation
 import UIKit
 #endif
 
-public struct ValuePropertyDescription<T: SupportedPropertyType>: TypedPropertyDescription {
+public struct ValuePropertyDescription<T: AttributeSupportedPropertyType>: TypedPropertyDescription {
     public typealias ValueType = T
 
     public let namespace: [PropertyContainer.Namespace]
@@ -47,7 +47,7 @@ public struct ValuePropertyDescription<T: SupportedPropertyType>: TypedPropertyD
     }
 }
 
-extension ValuePropertyDescription: AttributePropertyDescription where T: AttributeSupportedPropertyType {
+extension ValuePropertyDescription: AttributePropertyDescription /*where T: AttributeSupportedPropertyType*/ {
     public func materialize(attributeName: String, value: String) throws -> Property {
         let materializedValue = try T.materialize(from: value)
 
