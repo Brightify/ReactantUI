@@ -117,86 +117,76 @@ public enum AttributedText {
     indirect case attributed(AttributedTextStyle, [AttributedText])
 }
 
-// jen si nejsem jisty, jestli udrzovat informace o Attribute nebo co, protoze nevim jak potom udelat to generovani’”
-// AttributedText asi nebude SupportedPropertyType, protoze vesmes nejde pouzit jako attribute. Pokud musi byt aby se dal pouzit,
-// mozna budeme muset se k tomu stavet trochu jinak, a udelat to konkretnejsi pro ty properties aby mely moznost rozhotnout jak se materializuji
-// z attribute a jak z elementu, pripadne implementovat jen jedno z toho
-// jj, taky mi to zacina dochazet, toho jsem se tak trochu bal, ze doted se resily jen attributes a je to postavene kolem toho, jedine containery byly UIContainer a UIButton
-
-// No
-//extension AttributedText: SupportedPropertyType {
-//    public var generated: String {
-//        func resolveAttributes(text: AttributedText, attributes: [Property]) -> String {
-//            switch text {
-//            case .transform(let transformedText):
-//                let attributesString = attributes.map { ".\($0.name)" }.joined(separator: ", ")
-//                return "\(transformedText.generated).attributed(\(attributesString))"
+extension AttributedText: SupportedPropertyType {
+    public var generated: String {
+        func resolveAttributes(text: AttributedText, attributes: [Property]) -> String {
+            switch text {
+            case .transform(let transformedText):
+                let attributesString = attributes.map { ".\($0.name)" }.joined(separator: ", ")
+                return "\(transformedText.generated).attributed(\(attributesString))"
 //            case .text(let attributedText):
 //                return resolveAttributes(text: attributedText, attributes: attributes)
-//            case .attributed(let attributedStyle, let attributedTexts):
-//                // the order of appending is important because the `distinct(where:)` keeps the first element of the duplicates
-//                let lowerAttributes = attributedStyle.properties
-//                    .arrayByAppending(attributes)
-//                    .distinct(where: { $0.name == $1.name })
-//                return attributedTexts.map { resolveAttributes(text: $0, attributes: lowerAttributes) }.joined()
-//            }
-//        }
-//        return resolveAttributes(text: self, attributes: [])
-//    }
-//
-//    #if SanAndreas
-//    public func dematerialize() -> String {
-//        func resolveTransformations(text: AttributedText) -> String {
-//            switch text {
-//            case .transform(.uppercased, let inner):
-//                return ":uppercased(\(resolveTransformations(text: inner)))"
-//            case .transform(.lowercased, let inner):
-//                return ":lowercased(\(resolveTransformations(text: inner)))"
-//            case .transform(.localized, let inner):
-//                return ":localized(\(resolveTransformations(text: inner)))"
-//            case .transform(.capitalized, let inner):
-//                return ":capitalized(\(resolveTransformations(text: inner)))"
-//            case .text(let value):
-//                return value.replacingOccurrences(of: "\"", with: "&quot;")
-//                    .replacingOccurrences(of: "\n", with: "\\n")
-//                    .replacingOccurrences(of: "\r", with: "\\r")
-//            }
-//        }
-//        return resolveTransformations(text: self)
-//    }
-//    #endif
-//
-//    #if ReactantRuntime
-//    public var runtimeValue: Any? {
-//        func resolveAttributes(text: AttributedText, attributes: [Property]) -> String {
-//            switch text {
-//            case .text(let transformedText):
-//                let attributesString = attributes.map { ".\($0.name)" }.joined(separator: ", ")
-//                return "\(transformedText.generated)".attributed(\(attributesString))
-//            case .attributed(let attributedStyle, let attributedTexts):
-//                // the order of appending is important because the `distinct(where:)` keeps the first element of the duplicates
-//                let lowerAttributes = attributedStyle.properties
-//                    .arrayByAppending(attributes)
-//                    .distinct(where: { $0.name == $1.name })
-//                return attributedTexts.map { resolveAttributes(text: $0, attributes: lowerAttributes) }.joined()
-//            }
-//        }
-//        return resolveAttributes(text: self, attributes: [])
-//    }
-//    #endif
-//
-//    //tomuhle, protoze mi dava smysl, ze ten nejvyssi bude pole tech `AttributedText`
-//    // Tohle je volane odkud? to bych prave taky rad vedel, nevim moc jak vypada pipeline RUI
-//    public static func materialize(from value: String) throws -> AttributedText {
-//        let tokens = Lexer.tokenize(input: value, keepWhitespace: true)
-//        // TODO: parse the attributes used
-//        return .transform(try TextParser(tokens: tokens).parseSingle())
-//    }
-//
-//    public static var xsdType: XSDType {
-//        return .builtin(.string)
-//    }
-//}
+            case .attributed(let attributedStyle, let attributedTexts):
+                // the order of appending is important because the `distinct(where:)` keeps the first element of the duplicates
+                let lowerAttributes = attributedStyle.properties
+                    .arrayByAppending(attributes)
+                    .distinct(where: { $0.name == $1.name })
+                return attributedTexts.map { resolveAttributes(text: $0, attributes: lowerAttributes) }.joined()
+            }
+        }
+        return resolveAttributes(text: self, attributes: [])
+    }
+
+    #if SanAndreas
+    public func dematerialize() -> String {
+        func resolveTransformations(text: AttributedText) -> String {
+            switch text {
+            case .transform(.uppercased, let inner):
+                return ":uppercased(\(resolveTransformations(text: inner)))"
+            case .transform(.lowercased, let inner):
+                return ":lowercased(\(resolveTransformations(text: inner)))"
+            case .transform(.localized, let inner):
+                return ":localized(\(resolveTransformations(text: inner)))"
+            case .transform(.capitalized, let inner):
+                return ":capitalized(\(resolveTransformations(text: inner)))"
+            case .text(let value):
+                return value.replacingOccurrences(of: "\"", with: "&quot;")
+                    .replacingOccurrences(of: "\n", with: "\\n")
+                    .replacingOccurrences(of: "\r", with: "\\r")
+            }
+        }
+        return resolveTransformations(text: self)
+    }
+    #endif
+
+    #if ReactantRuntime
+    public var runtimeValue: Any? {
+        func resolveAttributes(text: AttributedText, attributes: [Property]) -> NSAttributedString {
+            switch text {
+            case .transform(let transformedText):
+                let attributesString = attributes.map { ".\($0.name)" }.joined(separator: ", ")
+                return transformedText.generated.attributed() //.attributed(\(attributesString))
+            case .attributed(let attributedStyle, let attributedTexts):
+                // the order of appending is important because the `distinct(where:)` keeps the first element of the duplicates
+                let lowerAttributes = attributedStyle.properties
+                    .arrayByAppending(attributes)
+                    .distinct(where: { $0.name == $1.name })
+                let mutableAttributedString = NSMutableAttributedString()
+                for attributedText in attributedTexts {
+                    let attributedString = resolveAttributes(text: attributedText, attributes: lowerAttributes)
+                    mutableAttributedString.append(attributedString)
+                }
+                return mutableAttributedString
+            }
+        }
+        return resolveAttributes(text: self, attributes: [])
+    }
+    #endif
+
+    public static var xsdType: XSDType {
+        return .builtin(.string)
+    }
+}
 
 public class AttributedTextProperties: PropertyContainer {
     public let font: AssignablePropertyDescription<Font>

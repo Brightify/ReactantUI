@@ -19,19 +19,19 @@ public struct ValueProperty<T: SupportedPropertyType>: TypedProperty {
         return namespace.resolvedAttributeName(name: name)
     }
 
-    public func application(on target: String) -> String {
+    public func application(on target: String, context: ElementContext) -> String {
         let namespacedTarget = namespace.resolvedSwiftName(target: target)
         return "\(namespacedTarget).\(description.name) = \(value.generated)"
     }
 
     #if SanAndreas
-    public func dematerialize() -> XMLSerializableAttribute {
+    public func dematerialize(context: ElementContext) -> XMLSerializableAttribute {
         return XMLSerializableAttribute(name: attributeName, value: value.dematerialize())
     }
     #endif
 
     #if ReactantRuntime
-    public func apply(on object: AnyObject) throws {
+    public func apply(on object: AnyObject, context: ElementContext) throws {
 
     }
     #endif

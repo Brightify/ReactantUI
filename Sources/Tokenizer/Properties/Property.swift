@@ -17,14 +17,14 @@ public protocol Property {
     
     var namespace: [PropertyContainer.Namespace] { get }
     
-    func application(on target: String) -> String
+    func application(on target: String, context: ElementContext) -> String
 
     #if SanAndreas
-    func dematerialize() -> XMLSerializableAttribute
+    func dematerialize(context: ElementContext) -> XMLSerializableAttribute
     #endif
     
     #if ReactantRuntime
-    func apply(on object: AnyObject) throws -> Void
+    func apply(on object: AnyObject, context: ElementContext) throws -> Void
     #endif
 }
 

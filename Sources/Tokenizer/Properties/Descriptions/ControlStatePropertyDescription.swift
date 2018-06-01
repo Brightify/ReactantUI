@@ -41,11 +41,6 @@ public struct ControlStatePropertyDescription<T: SupportedPropertyType>: TypedPr
         setProperty(property, to: &properties, for: state)
     }
 
-    public func materialize(attributeName: String, value: String) throws -> Property {
-        let materializedValue = try T.materialize(from: value)
-        return ControlStateProperty(namespace: namespace, name: name, state: parseState(from: attributeName), description: self, value: materializedValue)
-    }
-
     private func getProperty(from dictionary: [String: Property], for state: [ControlState]) -> ControlStateProperty<T>? {
         return dictionary[dictionaryKey(for: state)] as? ControlStateProperty<T>
     }
@@ -64,5 +59,14 @@ public struct ControlStatePropertyDescription<T: SupportedPropertyType>: TypedPr
 
     private func parseState(from attributeName: String) -> [ControlState] {
         return attributeName.components(separatedBy: ".").dropFirst(namespace.count + 1).compactMap(ControlState.init)
+    }
+}
+
+extension ControlStatePropertyDescription: AttributePropertyDescription where T: AttributeSupportedPropertyType {
+
+
+    public func materialize(attributeName: String, value: String) throws -> Property {
+        let materializedValue = try T.materialize(from: value)
+        return ControlStateProperty(namespace: namespace, name: name, state: parseState(from: attributeName), description: self, value: materializedValue)
     }
 }

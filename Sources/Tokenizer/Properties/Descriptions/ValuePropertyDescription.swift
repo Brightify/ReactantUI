@@ -34,12 +34,6 @@ public struct ValuePropertyDescription<T: SupportedPropertyType>: TypedPropertyD
         setProperty(property, to: &properties)
     }
 
-    public func materialize(attributeName: String, value: String) throws -> Property {
-        let materializedValue = try T.materialize(from: value)
-
-        return ValueProperty(namespace: namespace, name: name, description: self, value: materializedValue)
-    }
-
     private func getProperty(from dictionary: [String: Property]) -> ValueProperty<T>? {
         return dictionary[dictionaryKey()] as? ValueProperty<T>
     }
@@ -50,6 +44,14 @@ public struct ValuePropertyDescription<T: SupportedPropertyType>: TypedPropertyD
 
     private func dictionaryKey() -> String {
         return namespace.resolvedAttributeName(name: name)
+    }
+}
+
+extension ValuePropertyDescription: AttributePropertyDescription where T: AttributeSupportedPropertyType {
+    public func materialize(attributeName: String, value: String) throws -> Property {
+        let materializedValue = try T.materialize(from: value)
+
+        return ValueProperty(namespace: namespace, name: name, description: self, value: materializedValue)
     }
 }
 

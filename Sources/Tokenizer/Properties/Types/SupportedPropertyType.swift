@@ -19,7 +19,14 @@ public protocol SupportedPropertyType {
     var runtimeValue: Any? { get }
     #endif
 
+    // FIXME Has to be put into `AttributeSupportedPropertyType
     static var xsdType: XSDType { get }
+}
 
+public protocol AttributeSupportedPropertyType: SupportedPropertyType {
     static func materialize(from value: String) throws -> Self
+}
+
+public protocol XMLContentSupportedPropertyType: SupportedPropertyType {
+    static func materialize(from content: XMLContent) throws -> Self
 }
