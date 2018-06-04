@@ -11,60 +11,103 @@ import Foundation
 import Reactant
 #endif
 
-public enum Style: XMLElementDeserializable {
-    case view(ViewStyle)
-    case attributedText(AttributedTextStyle)
-
-    public var properties: [Property] {
-        switch self {
-        case .view(let viewStyle):
-            return viewStyle.properties
-        case .attributedText(let attributedStyle):
-            return attributedStyle.properties
-        }
-    }
-
-    public var parentModuleImport: String {
-        switch self {
-        case .view(let viewStyle):
-            return viewStyle.parentModuleImport
-        case .attributedText(let attributedStyle):
-            return attributedStyle.parentModuleImport
-        }
-    }
-
-    public var styleType: String {
-        switch self {
-        case .view(let viewStyle):
-            return viewStyle.type
-        case .attributedText:
-            return "attributedText"
-        }
-    }
+public enum StyleName: XMLAttributeDeserializable {
+    case local(name: String)
+    case global(group: String, name: String)
 
     public var name: String {
         switch self {
-        case .view(let viewStyle):
-            return viewStyle.name
-        case .attributedText(let attributedStyle):
-            return attributedStyle.name
+        case .local(let name):
+            return name
+        case .global(_, let name):
+            return name
         }
     }
 
-    public var extend: [String] {
-        switch self {
-        case .view(let viewStyle):
-            return viewStyle.extend
-        case .attributedText(let attributedStyle):
-            return attributedStyle.extend
+    public init(from value: String) throws {
+        let components = value.components(separatedBy: ":").filter { !$0.isEmpty }
+        if components.count == 2 {
+            self = .global(group: components[0], name: components[1])
+        } else if components.count == 1 {
+            self = .local(name: components[0])
+        } else {
+            throw TokenizationError.invalidStyleName(text: value)
         }
     }
+
+    public func serialize() -> String {
+        switch self {
+        case .local(let name):
+            return name
+        case .global(let group, let name):
+            return ":\(group):\(name)"
+        }
+    }
+
+    public static func deserialize(_ attribute: XMLAttribute) throws -> StyleName {
+        return try StyleName(from: attribute.text)
+    }
+}
+
+extension StyleName: Equatable {
+    public static func ==(lhs: StyleName, rhs: StyleName) -> Bool {
+        switch (lhs, rhs) {
+        case (.local(let lName), .local(let rName)):
+            return lName == rName
+        case (.global(let lGroup, let lName), .global(let rGroup, let rName)):
+            return lGroup == rGroup && lName == rName
+        default:
+            return false
+        }
+    }
+}
+
+extension Array: XMLAttributeDeserializable where Iterator.Element == StyleName {
+    public static func deserialize(_ attribute: XMLAttribute) throws -> [StyleName] {
+        let styleNames = attribute.text.components(separatedBy: CharacterSet.whitespacesAndNewlines).filter {
+            !$0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty
+        }
+
+        return try styleNames.map {
+            try StyleName(from: $0)
+        }
+    }
+}
+
+public struct Style: XMLElementDeserializable {
+    public var name: StyleName
+    public var extend: [StyleName]
+    public var parentModuleImport: String
+    public var properties: [Property]
+    public var type: StyleType
 
     init(node: XMLElement, groupName: String?) throws {
+        let name = try node.value(ofAttribute: "name") as String
+        let extendedStyles = try node.value(ofAttribute: "extend", defaultValue: []) as [StyleName]
+        if let groupName = groupName {
+            self.name = .global(group: groupName, name: name)
+            self.extend = extendedStyles.map {
+                if case .local(let name) = $0 {
+                    return .global(group: groupName, name: name)
+                } else {
+                    return $0
+                }
+            }
+        } else {
+            self.name = .local(name: name)
+            self.extend = extendedStyles
+        }
+
         if node.name == "attributedTextStyle" {
-            self = try .attributedText(AttributedTextStyle(node: node, groupName: groupName))
+            parentModuleImport = "Reactant"
+            properties = try PropertyHelper.deserializeSupportedProperties(properties: Properties.attributedText.allProperties, in: node) as [Property]
+
+            type = try .attributedText(styles: node.xmlChildren.map(AttributedTextStyle.deserialize))
+
         } else if let (elementName, element) = ElementMapping.mapping.first(where: { node.name == "\($0.key)Style" }) {
-            self = try .view(ViewStyle(node: node, elementName: elementName, element: element, groupName: groupName))
+            parentModuleImport = element.parentModuleImport
+            properties = try PropertyHelper.deserializeSupportedProperties(properties: element.availableProperties, in: node) as [Property]
+            type = .view(type: elementName)
         } else {
             throw TokenizationError(message: "Unknown style \(node.name). (\(node))")
         }
@@ -75,84 +118,41 @@ public enum Style: XMLElementDeserializable {
     }
 }
 
-public struct ViewStyle {
-    public var type: String
-    // name within group
-    public var name: String
-    // name of the style without group name
-    public var styleName: String
-    public var extend: [String]
-    public var properties: [Property]
-    public var groupName: String?
+public enum StyleType {
+    case view(type: String)
+    case attributedText(styles: [AttributedTextStyle])
 
-    public var parentModuleImport: String
-
-    init(node: XMLElement, elementName: String, element: View.Type, groupName: String? = nil) throws {
-        let properties: [Property]
-
-        properties = try PropertyHelper.deserializeSupportedProperties(properties: element.availableProperties, in: node)
-        parentModuleImport = element.parentModuleImport
-
-        type = elementName
-        // FIXME The name has to be done some other way
-        let name = try node.value(ofAttribute: "name") as String
-        self.styleName = name
-        let extendedStyles = (node.value(ofAttribute: "extend") as String?)?.components(separatedBy: " ") ?? []
-        self.groupName = groupName
-        if let groupName = groupName {
-            self.name = ":\(groupName):\(name)"
-            self.extend = extendedStyles.map {
-                if $0.contains(":") {
-                    return $0
-                } else {
-                    return ":\(groupName):\($0)"
-                }
-            }
-        } else {
-            self.name = name
-            self.extend = extendedStyles
+    public var styleType: String {
+        switch self {
+        case .view(let type):
+            return type
+        case .attributedText:
+            return "attributedText"
         }
-        self.properties = properties
     }
 }
 
-public struct AttributedTextStyle {
-    // name within group
+public struct AttributedTextStyle: XMLElementDeserializable {
     public var name: String
-    // name of the style without group name
-    public var styleName: String
-    public var extend: [String]
     public var properties: [Property]
-    public var groupName: String?
 
-    public var parentModuleImport: String {
-        return "Reactant"
+    init(node: XMLElement) throws {
+        name = node.name
+        properties = try PropertyHelper.deserializeSupportedProperties(properties: Properties.attributedText.allProperties, in: node) as [Property]
     }
 
-    init(node: XMLElement, groupName: String? = nil) throws {
-        let properties: [Property]
+    public static func deserialize(_ element: XMLElement) throws -> AttributedTextStyle {
+        return try AttributedTextStyle(node: element)
+    }
+}
 
-        properties = try PropertyHelper.deserializeSupportedProperties(properties: Properties.attributedText.allProperties, in: node)
-
-        // FIXME The name has to be done some other way
-        let name = try node.value(ofAttribute: "name") as String
-        self.styleName = name
-        let extendedStyles = (node.value(ofAttribute: "extend") as String?)?.components(separatedBy: " ") ?? []
-        self.groupName = groupName
-        if let groupName = groupName {
-            self.name = ":\(groupName):\(name)"
-            self.extend = extendedStyles.map {
-                if $0.contains(":") {
-                    return $0
-                } else {
-                    return ":\(groupName):\($0)"
-                }
-            }
+extension XMLElement {
+    public func value<T: XMLAttributeDeserializable>(ofAttribute attr: String, defaultValue: T) throws -> T {
+        if let attr = self.attribute(by: attr) {
+            return try T.deserialize(attr)
         } else {
-            self.name = name
-            self.extend = extendedStyles
+            return defaultValue
         }
-        self.properties = properties
     }
 }
 
@@ -163,9 +163,9 @@ extension Sequence where Iterator.Element == Style {
             print("// No type found for \(element)")
             return element.properties
         }
-        let viewStyles = compactMap { style -> ViewStyle? in
-            if case .view(let viewStyle) = style {
-                return viewStyle
+        let viewStyles = compactMap { style -> Style? in
+            if case .view(let styledType) = style.type, styledType == type {
+                return style
             } else {
                 return nil
             }
@@ -173,7 +173,7 @@ extension Sequence where Iterator.Element == Style {
         // FIXME This will be slow
         var result = Dictionary<String, Property>(minimumCapacity: element.properties.count)
         for name in element.styles {
-            for property in try viewStyles.resolveStyle(for: type, named: name) {
+            for property in try viewStyles.resolveViewStyle(for: type, named: name) {
                 result[property.attributeName] = property
             }
         }
@@ -182,17 +182,15 @@ extension Sequence where Iterator.Element == Style {
         }
         return Array(result.values)
     }
-}
 
-extension Sequence where Iterator.Element == ViewStyle {
-    public func resolveStyle(for type: String, named name: String) throws -> [Property] {
-        guard let style = first(where: { $0.type == type && $0.name == name }) else {
+    private func resolveViewStyle(for type: String, named name: StyleName) throws -> [Property] {
+        guard let style = first(where: { $0.name == name }) else {
             // FIXME wrong type of error
             throw TokenizationError(message: "Style \(name) for type \(type) doesn't exist!")
         }
 
         let baseProperties = try style.extend.flatMap { base in
-            try resolveStyle(for: type, named: base)
+            try resolveViewStyle(for: type, named: base)
         }
         // FIXME This will be slow
         var result = Dictionary<String, Property>(minimumCapacity: style.properties.count)

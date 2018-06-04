@@ -14,7 +14,7 @@ import UIKit
 public protocol PropertyDescription {
     var name: String { get }
     var namespace: [PropertyContainer.Namespace] { get }
-    var type: AttributeSupportedPropertyType.Type { get }
+    var type: SupportedPropertyType.Type { get }
 }
 
 public protocol AttributePropertyDescription: PropertyDescription {
@@ -30,11 +30,11 @@ public protocol ElementPropertyDescription: PropertyDescription {
 }
 
 public protocol TypedPropertyDescription: PropertyDescription {
-    associatedtype ValueType: AttributeSupportedPropertyType
+    associatedtype ValueType: SupportedPropertyType
 }
 
 extension TypedPropertyDescription {
-    public var type: AttributeSupportedPropertyType.Type {
+    public var type: SupportedPropertyType.Type {
         return ValueType.self
     }
 }

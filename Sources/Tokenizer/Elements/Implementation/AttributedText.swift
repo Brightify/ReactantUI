@@ -11,23 +11,92 @@ import UIKit
 import Reactant
 #endif
 
-extension Set {
-    fileprivate func inserting(_ elements: [Element]) -> Set<Element> {
-        var set = self
-        for element in elements {
-            set.insert(element)
-        }
-        return set
-    }
+/// Enum which represents NS attributes for NSAttributedString (like NSStrokeColorAttributeName). Each case has value and assigned name.
+public enum AttributedTextAttribute {
+    case font(Font)
+//    case paragraphStyle(NSParagraphStyle)
+    case foregroundColor(UIColorPropertyType)
+    case backgroundColor(UIColorPropertyType)
+    case ligature(Int)
+    case kern(Float)
+    case striketroughStyle(UnderlineStyle)
+    case underlineStyle(UnderlineStyle)
+    case strokeColor(UIColorPropertyType)
+    case strokeWidth(Float)
+//    case shadow(NSShadow)
+    case textEffect(String)
+//    case attachment(TextAttachment)
+    case linkURL(URL)
+    case link(String)
+    case baselineOffset(Float)
+    case underlineColor(UIColorPropertyType)
+    case strikethroughColor(UIColorPropertyType)
+    case obliqueness(Float)
+    case expansion(Float)
+    case writingDirection(WritingDirection)
+    case verticalGlyphForm(Int)
+}
 
-    fileprivate func inserting(_ elements: Element...) -> Set<Element> {
-        return self.inserting(elements)
+extension AttributedTextAttribute {
+    var description: String {
+        switch self {
+        case .font:
+            return "font"
+//        case .paragraphStyle:
+//            return "paragraphStyle"
+        case .foregroundColor:
+            return "foregroundColor"
+        case .backgroundColor:
+            return "backgroundColor"
+        case .ligature:
+            return "ligature"
+        case .kern:
+            return "kern"
+        case .striketroughStyle:
+            return "strikethroughStyle"
+        case .underlineStyle:
+            return "underlineStyle"
+        case .strokeColor:
+            return "strokeColor"
+        case .strokeWidth:
+            return "strokeWidth"
+//        case .shadow:
+//            return "shadow"
+        case .textEffect:
+            return "textEffect"
+//        case .attachment:
+//            return "attachment"
+        case .linkURL:
+            return "link"
+        case .link:
+            return "link"
+        case .baselineOffset:
+            return "baselineOffset"
+        case .underlineColor:
+            return "underlineColor"
+        case .strikethroughColor:
+            return "strikethroughColor"
+        case .obliqueness:
+            return "obliqueness"
+        case .expansion:
+            return "expansion"
+        case .writingDirection:
+            return "writingDirection"
+        case .verticalGlyphForm:
+            return "verticalGlyphForm"
+        }
     }
 }
 
 //extension Attribute {
 //    fileprivate static var comparison: (Attribute, Attribute) -> Bool {
 //        return { (lhsAttribute, rhsAttribute) -> Bool in
+//            switch (lhsAttribute, rhsAttribute) {
+//            case (.font, .font), (.paragraphStyle, .paragraphStyle), (.foregroundColor, .foregroundColor):
+//                return true
+//            default:
+//                return false
+//            }
 //            if case .font = lhsAttribute, case .font = rhsAttribute {}
 //            else if case .paragraphStyle = lhsAttribute, case .paragraphStyle = rhsAttribute {}
 //            else if case .foregroundColor = lhsAttribute, case .foregroundColor = rhsAttribute {}
@@ -53,55 +122,7 @@ extension Set {
 //        }
 //    }
 //
-//    // TODO: fileprivate when implementation is done?
-//    var description: String {
-//        switch self {
-//        case .font:
-//            return "font"
-//        case .paragraphStyle:
-//            return "paragraphStyle"
-//        case .foregroundColor:
-//            return "foregroundColor"
-//        case .backgroundColor:
-//            return "backgroundColor"
-//        case .ligature:
-//            return "ligature"
-//        case .kern:
-//            return "kern"
-//        case .striketroughStyle:
-//            return "strikethroughStyle"
-//        case .underlineStyle:
-//            return "underlineStyle"
-//        case .strokeColor:
-//            return "strokeColor"
-//        case .strokeWidth:
-//            return "strokeWidth"
-//        case .shadow:
-//            return "shadow"
-//        case .textEffect:
-//            return "textEffect"
-//        case .attachment:
-//            return "attachment"
-//        case .linkURL:
-//            return "link"
-//        case .link:
-//            return "link"
-//        case .baselineOffset:
-//            return "baselineOffset"
-//        case .underlineColor:
-//            return "underlineColor"
-//        case .strikethroughColor:
-//            return "strikethroughColor"
-//        case .obliqueness:
-//            return "obliqueness"
-//        case .expansion:
-//            return "expansion"
-//        case .writingDirection:
-//            return "writingDirection"
-//        case .verticalGlyphForm:
-//            return "verticalGlyphForm"
-//        }
-//    }
+
 //}
 
 extension Array {
@@ -135,7 +156,7 @@ extension Sequence {
 // string.append("megre".attributed(.font(1)))
 // string.append("IMPO".attributed(.strikethroughStyle(yes), .underlineStyle(yes)))
 // string.append("lolker")
-public enum AttributedText: XMLContentSupportedPropertyType, SupportedPropertyType {
+public enum AttributedText: ElementSupportedPropertyType {
     case transform(TransformedText)
     indirect case attributed(AttributedTextStyle, [AttributedText])
 }
@@ -145,16 +166,16 @@ extension AttributedText {
         func resolveAttributes(text: AttributedText, attributes: [Property]) -> String {
             switch text {
             case .transform(let transformedText):
-                let attributesString = attributes.map { ".\($0.name)" }.joined(separator: ", ")
+                let attributesString = attributes.map { ".\($0.name)(\($0.anyValue.generated))" }.joined(separator: ", ")
                 return "\(transformedText.generated).attributed(\(attributesString))"
-//            case .text(let attributedText):
-//                return resolveAttributes(text: attributedText, attributes: attributes)
             case .attributed(let attributedStyle, let attributedTexts):
                 // the order of appending is important because the `distinct(where:)` keeps the first element of the duplicates
                 let lowerAttributes = attributedStyle.properties
                     .arrayByAppending(attributes)
                     .distinct(where: { $0.name == $1.name })
-                return attributedTexts.map { resolveAttributes(text: $0, attributes: lowerAttributes) }.joined()
+                return attributedTexts.map {
+                    resolveAttributes(text: $0, attributes: lowerAttributes)
+                }.joined(separator: " + \n")
             }
         }
         return resolveAttributes(text: self, attributes: [])
@@ -188,7 +209,7 @@ extension AttributedText {
             switch text {
             case .transform(let transformedText):
                 let attributesString = attributes.map { ".\($0.name)" }.joined(separator: ", ")
-                return transformedText.generated.attributed() //.attributed(\(attributesString))
+                return transformedText.generated.attributed()
             case .attributed(let attributedStyle, let attributedTexts):
                 // the order of appending is important because the `distinct(where:)` keeps the first element of the duplicates
                 let lowerAttributes = attributedStyle.properties
@@ -206,8 +227,74 @@ extension AttributedText {
     }
     #endif
 
-    public static func materialize(from content: XMLContent) throws -> AttributedText {
-        return .transform(TransformedText.text(""))
+    public static func materialize(from element: XMLElement) throws -> AttributedText {
+        let styleName = element.value(ofAttribute: "style") as StyleName?
+
+        func parseTextElement(contents: [XMLContent]) throws -> [AttributedText] {
+            return try contents.flatMap { content in
+                switch content {
+                case let textChild as TextElement:
+                    return .transform(try TransformedText.materialize(from: textChild.text))
+                case let elementChild as XMLElement:
+                    let textStyle = try AttributedTextStyle(node: elementChild)
+                    return .attributed(textStyle, try parseTextElement(contents: elementChild.children))
+                default:
+                    throw PropertyMaterializationError.unknownValue("Content is neither TextElement nor XMLElement - \(content)")
+                }
+            }
+        }
+
+        func trimmingWhitespace(content: XMLContent, leading: Bool, indentationLevel: inout Int) throws -> XMLContent? {
+            switch content {
+            case let textChild as TextElement:
+                let trimmedText = textChild.text.replacingOccurrences(of: leading ? "^\\s+" : "\\s+$",
+                                                              with: "",
+                                                              options: .regularExpression)
+                if leading {
+                    indentationLevel = textChild.text.count - trimmedText.count
+                }
+                guard !trimmedText.isEmpty else { return nil }
+                return TextElement(text: trimmedText)
+            case let elementChild as XMLElement:
+                guard let nextChild = leading ? elementChild.children.first : elementChild.children.last else { return elementChild }
+                return try trimmingWhitespace(content: nextChild, leading: leading, indentationLevel: &indentationLevel)
+            default:
+                throw PropertyMaterializationError.unknownValue("Content is neither TextElement nor XMLElement - \(content)")
+            }
+        }
+
+        func fixingContentIndentation(content: XMLContent, indentationLevel: Int) throws -> XMLContent {
+            switch content {
+            case let textChild as TextElement:
+                let fixedText = textChild.text.replacingOccurrences(of: "\\n[ ]{0,\(indentationLevel)}",
+                                                                      with: "\\\n",
+                                                                      options: .regularExpression)
+                return TextElement(text: fixedText)
+            case let elementChild as XMLElement:
+                guard let nextChild = elementChild.children.first else { return elementChild }
+                return try fixingContentIndentation(content: nextChild, indentationLevel: indentationLevel)
+            default:
+                throw PropertyMaterializationError.unknownValue("Content is neither TextElement nor XMLElement - \(content)")
+            }
+        }
+
+        var indentationLevel = 0
+        let trimmedContents: [XMLContent] = try element.children.enumerated().compactMap { (index, content) in
+                switch index {
+                case 0:
+                    return try trimmingWhitespace(content: content, leading: true, indentationLevel: &indentationLevel)
+                case element.children.count - 1:
+                    let indentedContent = try fixingContentIndentation(content: content, indentationLevel: indentationLevel)
+                    return try trimmingWhitespace(content: indentedContent, leading: false, indentationLevel: &indentationLevel)
+                default:
+                    return try fixingContentIndentation(content: content, indentationLevel: indentationLevel)
+                }
+            }
+
+        let parsedText = try parseTextElement(contents: trimmedContents)
+        let style = try AttributedTextStyle(node: element)
+
+        return .attributed(style, parsedText)
     }
 
     public static var xsdType: XSDType {
@@ -217,6 +304,7 @@ extension AttributedText {
 
 public class AttributedTextProperties: PropertyContainer {
     public let font: AssignablePropertyDescription<Font>
+    public let foregroundColor: AssignablePropertyDescription<UIColorPropertyType>
     public let backgroundColor: AssignablePropertyDescription<UIColorPropertyType>
     public let ligature: AssignablePropertyDescription<Int>
     public let kern: AssignablePropertyDescription<Float>
@@ -243,6 +331,7 @@ public class AttributedTextProperties: PropertyContainer {
 
     public required init(configuration: Configuration) {
         font = configuration.property(name: "font")
+        foregroundColor = configuration.property(name: "foregroundColor")
         backgroundColor = configuration.property(name: "backgroundColor")
         ligature = configuration.property(name: "ligature")
         kern = configuration.property(name: "kern")

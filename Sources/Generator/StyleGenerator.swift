@@ -39,20 +39,16 @@ public class StyleGenerator: Generator {
         l()
         try l("struct \(group.swiftName)") {
             for style in group.styles {
-                guard let mapping = ElementMapping.mapping[style.styleType] else {
-                    throw GeneratorError(message: "Mapping for type \(style.styleType) does not exist")
+                guard let mapping = ElementMapping.mapping[style.type.styleType] else {
+                    throw GeneratorError(message: "Mapping for type \(style.type.styleType) does not exist")
                 }
-                l("static func \(style.name)(_ view: \(try mapping.runtimeType()))") {
+                l("static func \(style.name.name)(_ view: \(try mapping.runtimeType()))") {
                     for extendedStyle in style.extend {
-                        let components = extendedStyle.components(separatedBy: ":").filter { !$0.isEmpty }
-                        if let styleName = components.last {
-                            if let groupName = components.first, components.count > 1 {
-                                l("\(groupName.capitalizingFirstLetter() + "Styles").\(styleName)(view)")
-                            } else {
-                                l("\(group.swiftName).\(styleName)(view)")
-                            }
-                        } else {
-                            continue
+                        switch extendedStyle {
+                        case .local(let name):
+                            l("\(group.swiftName).\(name)(view)")
+                        case .global(let group, let name):
+                            l("\(group.capitalizingFirstLetter() + "Styles").\(name)(view)")
                         }
                     }
                     for property in style.properties {

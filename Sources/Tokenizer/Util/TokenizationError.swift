@@ -9,7 +9,7 @@
 import Foundation
 
 public struct TokenizationError: Error, LocalizedError {
-    let message: String
+    public let message: String
 
     public var localizedDescription: String {
         return message
@@ -21,8 +21,12 @@ public struct TokenizationError: Error, LocalizedError {
 }
 
 extension TokenizationError {
-    static func unsupportedElementError(element: View.Type) -> TokenizationError {
-        let name = ElementMapping.mapping.first(where: { $1 == element })?.key ?? "(unknown)"
+    public static func unsupportedElementError(element: View.Type) -> TokenizationError {
+        let name = ElementMapping.mapping.first(where: { $1 == element })?.key ?? "(unknown - \(element)"
         return TokenizationError(message: "Element \(name) is unavailable on this platform.")
+    }
+
+    public static func invalidStyleName(text: String) -> TokenizationError {
+        return TokenizationError(message: "Entered value: <\(text)> isn't valid style name.")
     }
 }

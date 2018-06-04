@@ -10,7 +10,7 @@
 import UIKit
 #endif
 
-public struct ControlStateProperty<T: AttributeSupportedPropertyType>: Property {
+public struct ControlStateProperty<T: AttributeSupportedPropertyType>: TypedProperty {
     public let namespace: [PropertyContainer.Namespace]
     public let name: String
     public let state: [ControlState]

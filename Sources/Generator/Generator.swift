@@ -66,27 +66,30 @@ public class Generator {
     }
 
     func l(_ line: String = "") {
-        output.append((0..<nestLevel).map { _ in "    " }.joined() + line + "\n")
+        l(fakeLine: line)
     }
 
     func l(_ line: String = "", _ f: () throws -> Void) throws {
-        output.append((0..<nestLevel).map { _ in "    " }.joined() + line)
-
+        l(fakeLine: line + " {")
         nestLevel += 1
-        output.append(" {" + "\n")
         try f()
         nestLevel -= 1
         l("}")
     }
 
     func l(_ line: String = "", _ f: () -> Void) {
-        output.append((0..<nestLevel).map { _ in "    " }.joined() + line)
-
+        l(fakeLine: line + " {")
         nestLevel += 1
-        output.append(" {" + "\n")
         f()
         nestLevel -= 1
         l("}")
+    }
+
+    private func l(fakeLine: String) {
+        let lines = fakeLine.components(separatedBy: CharacterSet.newlines)
+        for line in lines {
+            output.append((0..<nestLevel).map { _ in "    " }.joined() + line + "\n")
+        }
     }
     
     func ifSimulator(_ commands: String) -> String {

@@ -16,6 +16,8 @@ public protocol Property {
     var attributeName: String { get }
     
     var namespace: [PropertyContainer.Namespace] { get }
+
+    var anyValue: SupportedPropertyType { get }
     
     func application(on target: String, context: PropertyContext) -> String
 
@@ -32,4 +34,10 @@ public protocol TypedProperty: Property {
     associatedtype ValueType: SupportedPropertyType
 
     var value: ValueType { get set }
+}
+
+extension Property where Self: TypedProperty {
+    public var anyValue: SupportedPropertyType {
+        return value
+    }
 }

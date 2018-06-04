@@ -25,7 +25,7 @@ public protocol UIElementBase {
 public protocol UIElement: class, UIElementBase, XMLElementSerializable {
     var field: String? { get }
     var layout: Layout { get set }
-    var styles: [String] { get set }
+    var styles: [StyleName] { get set }
 
     static var defaultContentCompression: (horizontal: ConstraintPriority, vertical: ConstraintPriority) { get }
     static var defaultContentHugging: (horizontal: ConstraintPriority, vertical: ConstraintPriority) { get }

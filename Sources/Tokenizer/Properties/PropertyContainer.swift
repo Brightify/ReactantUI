@@ -57,6 +57,13 @@ public class PropertyContainer {
         public func property<T>(name: String) -> AssignablePropertyDescription<T> {
             return assignable(name: name, swiftName: name, key: name)
         }
+
+        // TODO Remove with Swift 4.2
+        public func property<T>(name: String) -> ElementAssignablePropertyDescription<T> {
+            let property = ElementAssignablePropertyDescription<T>(namespace: namespace, name: name, swiftName: name, key: name)
+            properties.append(property)
+            return property
+        }
         
         public func property<T>(name: String, swiftName: String) -> AssignablePropertyDescription<T> {
             return assignable(name: name, swiftName: swiftName, key: name)

@@ -226,6 +226,8 @@
 		687D4D9F20C1B25B00F890CB /* PropertyContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687D4D9920C1B25B00F890CB /* PropertyContext.swift */; };
 		687D4DA020C1B25B00F890CB /* StyleGroupContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687D4D9A20C1B25B00F890CB /* StyleGroupContext.swift */; };
 		687D4DA220C1B27200F890CB /* SupportedPropertyTypeContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687D4DA120C1B27200F890CB /* SupportedPropertyTypeContext.swift */; };
+		687D4DA820C5582000F890CB /* ElementAssignablePropertyDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687D4DA720C5582000F890CB /* ElementAssignablePropertyDescription.swift */; };
+		687D4DAA20C5582800F890CB /* ElementAssignableProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687D4DA920C5582800F890CB /* ElementAssignableProperty.swift */; };
 		6893A6B520BBF30E004802E4 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6893A6B320BBF0DA004802E4 /* URL.swift */; };
 		6893A6B720BBF48C004802E4 /* UnderlineStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6893A6B620BBF48C004802E4 /* UnderlineStyle.swift */; };
 		6893A6B920BBFA77004802E4 /* WritingDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6893A6B820BBFA77004802E4 /* WritingDirection.swift */; };
@@ -510,6 +512,8 @@
 		687D4D9920C1B25B00F890CB /* PropertyContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertyContext.swift; sourceTree = "<group>"; };
 		687D4D9A20C1B25B00F890CB /* StyleGroupContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StyleGroupContext.swift; sourceTree = "<group>"; };
 		687D4DA120C1B27200F890CB /* SupportedPropertyTypeContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportedPropertyTypeContext.swift; sourceTree = "<group>"; };
+		687D4DA720C5582000F890CB /* ElementAssignablePropertyDescription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ElementAssignablePropertyDescription.swift; sourceTree = "<group>"; };
+		687D4DA920C5582800F890CB /* ElementAssignableProperty.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ElementAssignableProperty.swift; sourceTree = "<group>"; };
 		6893A6B320BBF0DA004802E4 /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		6893A6B620BBF48C004802E4 /* UnderlineStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlineStyle.swift; sourceTree = "<group>"; };
 		6893A6B820BBFA77004802E4 /* WritingDirection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WritingDirection.swift; sourceTree = "<group>"; };
@@ -825,6 +829,7 @@
 		1844917A209223A70080B743 /* Properties */ = {
 			isa = PBXGroup;
 			children = (
+				687D4DA920C5582800F890CB /* ElementAssignableProperty.swift */,
 				1844917B209223A70080B743 /* AssignableProperty.swift */,
 				1844917C209223A70080B743 /* ControlStateProperty.swift */,
 				1844917D209223A70080B743 /* Descriptions */,
@@ -844,6 +849,7 @@
 		1844917D209223A70080B743 /* Descriptions */ = {
 			isa = PBXGroup;
 			children = (
+				687D4DA720C5582000F890CB /* ElementAssignablePropertyDescription.swift */,
 				1844917E209223A70080B743 /* AssignablePropertyDesciption.swift */,
 				1844917F209223A70080B743 /* ControlStatePropertyDescription.swift */,
 				18449180209223A70080B743 /* PropertyDescription.swift */,
@@ -1718,6 +1724,7 @@
 				184491F6209223A70080B743 /* PickerView.swift in Sources */,
 				1844922C209223A70080B743 /* Float.swift in Sources */,
 				184491FB209223A70080B743 /* Slider.swift in Sources */,
+				687D4DA820C5582000F890CB /* ElementAssignablePropertyDescription.swift in Sources */,
 				1844913B20921F150080B743 /* PreviewController.swift in Sources */,
 				184491F4209223A70080B743 /* NavigationBar.swift in Sources */,
 				687D4DA020C1B25B00F890CB /* StyleGroupContext.swift in Sources */,
@@ -1808,6 +1815,7 @@
 				1844914620921F150080B743 /* WeakUIBox.swift in Sources */,
 				1844925F209223A70080B743 /* ComponentPath.swift in Sources */,
 				18449217209223A70080B743 /* AssignableProperty.swift in Sources */,
+				687D4DAA20C5582800F890CB /* ElementAssignableProperty.swift in Sources */,
 				18449204209223A70080B743 /* SimulatedSeparatorTableView.swift in Sources */,
 				18449212209223A70080B743 /* ConstraintTarget.swift in Sources */,
 				1844923C209223A70080B743 /* BarStyle.swift in Sources */,

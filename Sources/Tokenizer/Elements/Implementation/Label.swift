@@ -15,31 +15,31 @@ import UIKit
 public class Label: View {
     public required init(node: XMLElement) throws {
         try super.init(node: node)
-
-        let textChildren = node.xmlChildren.filter { $0.name == "text" }
-        guard !textChildren.isEmpty else { return }
-        guard let textElement = textChildren.first, textChildren.count == 1 else {
-            throw TokenizationError(message: "Label can contain only one text element.")
-        }
-
-        func parseTextElement(element: XMLElement) throws -> [AttributedText] {
-            var result = [] as [AttributedText]
-            for child in element.children {
-                switch child {
-                case let textChild as TextElement:
-                    result.append(AttributedText.transform(try TransformedText.materialize(from: textChild.text)))
-                case let elementChild as XMLElement:
-                    let textStyle = try AttributedTextStyle(node: elementChild)
-                    result.append(.attributed(textStyle, try parseTextElement(element: elementChild)))
-                default:
-                    fatalError("Label parsing reached an undefined point inside `text` element.")
-                }
-            }
-            return result
-        }
-
-        // TODO: DEBUG ONLY!! REMOVE
-        print(try parseTextElement(element: textElement))
+//
+//        let textChildren = node.xmlChildren.filter { $0.name == "text" }
+//        guard !textChildren.isEmpty else { return }
+//        guard let textElement = textChildren.first, textChildren.count == 1 else {
+//            throw TokenizationError(message: "Label can contain only one text element.")
+//        }
+//
+//        func parseTextElement(element: XMLElement) throws -> [AttributedText] {
+//            var result = [] as [AttributedText]
+//            for child in element.children {
+//                switch child {
+//                case let textChild as TextElement:
+//                    result.append(AttributedText.transform(try TransformedText.materialize(from: textChild.text)))
+//                case let elementChild as XMLElement:
+//                    let textStyle = try Style.deserialize(elementChild)
+//                    result.append(.attributed(textStyle, try parseTextElement(element: elementChild)))
+//                default:
+//                    fatalError("Label parsing reached an undefined point inside `text` element.")
+//                }
+//            }
+//            return result
+//        }
+//
+//        // TODO: DEBUG ONLY!! REMOVE
+//        print(try parseTextElement(element: textElement))
     }
 
     public override class var availableProperties: [PropertyDescription] {
@@ -73,6 +73,7 @@ public class LabelProperties: ViewProperties {
     public let shadowColor: AssignablePropertyDescription<UIColorPropertyType>
     public let preferredMaxLayoutWidth: AssignablePropertyDescription<Float>
     public let lineBreakMode: AssignablePropertyDescription<LineBreakMode>
+    public let attributedText: ElementAssignablePropertyDescription<AttributedText>
     
     public required init(configuration: Configuration) {
         text = configuration.property(name: "text")
@@ -90,6 +91,7 @@ public class LabelProperties: ViewProperties {
         shadowColor = configuration.property(name: "shadowColor")
         preferredMaxLayoutWidth = configuration.property(name: "preferredMaxLayoutWidth")
         lineBreakMode = configuration.property(name: "lineBreakMode")
+        attributedText = configuration.property(name: "attributedText")
         
         super.init(configuration: configuration)
     }

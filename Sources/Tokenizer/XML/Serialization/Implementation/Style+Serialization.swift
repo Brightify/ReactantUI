@@ -10,8 +10,8 @@ import Foundation
 extension Style: XMLElementSerializable {
     public func serialize() -> XMLSerializableElement {
         var builder = XMLAttributeBuilder()
-        builder.attribute(name: "name", value: name)
-        let extendedStyles = extend.joined(separator: " ")
+        builder.attribute(name: "name", value: name.name)
+        let extendedStyles = extend.map { $0.serialize() }.joined(separator: " ")
         if !extendedStyles.isEmpty {
             builder.attribute(name: "extend", value: extendedStyles)
         }
@@ -19,6 +19,6 @@ extension Style: XMLElementSerializable {
             properties.map { $0.dematerialize() }.forEach { builder.add(attribute: $0) }
         #endif
 
-        return XMLSerializableElement(name: "\(styleType)Style", attributes: builder.attributes, children: [])
+        return XMLSerializableElement(name: "\(type.styleType)Style", attributes: builder.attributes, children: [])
     }
 }

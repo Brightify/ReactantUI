@@ -16,9 +16,13 @@
         <ButtonStyle name="buttona"
             backgroundColor.highlighted="white"
             isUserInteractionEnabled="true" />
+        <attributedTextStyle name="bandaska">
+            <i fontSize="100" />
+            <base foregroundColor="white" />
+        </attributedTextStyle>
         <attributedTextStyle name="attributko">
             <b fontSize="14" foregroundColor="#f5f5f5" backgroundColor="#dddddd" />
-        <attributedTextStyle/>
+        </attributedTextStyle>
     </styles>
 
     <View
@@ -206,4 +210,15 @@
             </StackView>
         </Container>
     </ScrollView> -->
+
+    <Label
+        layout:center="super"
+        numberOfLines="0">
+
+        <attributedText
+            style="attributko"
+            foregroundColor="black">
+            <b foregroundColor="red">Hello</b> world! <i>Great</i> day! <b>NOT!</b>
+        </attributedText>
+    </Label>
 </Component>

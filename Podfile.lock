@@ -56,7 +56,7 @@ DEPENDENCIES:
   - RxTest
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - Differentiator
     - Nimble
     - Quick
@@ -88,4 +88,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: ca6922064eabf015deeb9cff760c48312e494322
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.5.3

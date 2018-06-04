@@ -35,7 +35,7 @@ public class View: XMLElementDeserializable, UIElement {
     }
 
     public var field: String?
-    public var styles: [String]
+    public var styles: [StyleName]
     public var layout: Layout
     public var properties: [Property]
     public var toolingProperties: [String: Property]
@@ -53,8 +53,7 @@ public class View: XMLElementDeserializable, UIElement {
     public required init(node: XMLElement) throws {
         field = node.value(ofAttribute: "field")
         layout = try node.value()
-        styles = (node.value(ofAttribute: "style") as String?)?
-            .components(separatedBy: CharacterSet.whitespacesAndNewlines) ?? []
+        styles = try node.value(ofAttribute: "style", defaultValue: []) as [StyleName]
 
         if node.name == "View" && node.count != 0 {
             throw TokenizationError(message: "View must not have any children, use Container instead.")
@@ -97,7 +96,7 @@ public class View: XMLElementDeserializable, UIElement {
         if let field = field {
             builder.attribute(name: "field", value: field)
         }
-        let styleNames = styles.joined(separator: " ")
+        let styleNames = styles.map { $0.serialize() }.joined(separator: " ")
         if !styleNames.isEmpty {
             builder.attribute(name: "style", value: styleNames)
         }

@@ -11,6 +11,7 @@ import Foundation
 import UIKit
 #endif
 
+// TODO: supportedcosi?
 public struct AssignablePropertyDescription<T: AttributeSupportedPropertyType>: TypedPropertyDescription {
     public typealias ValueType = T
 

@@ -190,17 +190,12 @@ public class UIGenerator: Generator {
         }
 
         for style in element.styles {
-            if style.hasPrefix(":") {
-                let components = style[style.index(after: style.startIndex)...].components(separatedBy: ":")
-                if components.count != 2 {
-                    print("// Global style \(style) assignment has wrong format.")
-                }
-                let stylesName = components[0].capitalizingFirstLetter() + "Styles"
-                let style = components[1]
-
-                l("\(name).apply(style: \(stylesName).\(style))")
-            } else {
-                l("\(name).apply(style: \(root.stylesName).\(style))")
+            switch style {
+            case .local(let styleName):
+                l("\(name).apply(style: \(root.stylesName).\(styleName))")
+            case .global(let group, let styleName):
+                let stylesGroupName = group.capitalizingFirstLetter() + "Styles"
+                l("\(name).apply(style: \(stylesGroupName).\(styleName))")
             }
         }
 
@@ -352,27 +347,63 @@ public class UIGenerator: Generator {
     private func generateStyles() throws {
         try l("struct \(root.stylesName)") {
             for style in root.styles {
-                guard let mapping = ElementMapping.mapping[style.styleType] else {
-                    throw GeneratorError(message: "Mapping for type \(style.styleType) does not exist")
+                switch style.type {
+                case .attributedText(let styles):
+                    try generate(attributeTextStyle: style, styles: styles)
+                case .view(let type):
+                    try generate(viewStyle: style, type: type)
                 }
-                l("static func \(style.name)(_ view: \(try mapping.runtimeType()))") {
-                    for extendedStyle in style.extend {
-                        let components = extendedStyle.components(separatedBy: ":").filter { !$0.isEmpty }
-                        if let styleName = components.last {
-                            if let groupName = components.first, components.count > 1 {
-                                l("\(groupName.capitalizingFirstLetter() + "Styles").\(styleName)(view)")
-                            } else {
-                                l("\(root.stylesName).\(styleName)(view)")
-                            }
-                        } else {
-                            continue
-                        }
-                    }
-                    for property in style.properties {
-                        let propertyContext = PropertyContext(parentContext: componentContext, property: property)
-                        l(property.application(on: "view", context: propertyContext))
-                    }
+            }
+        }
+    }
+
+    private func generate(attributeTextStyle style: Style, styles: [AttributedTextStyle]) throws {
+        l("struct \(style.name.name)") {
+            l("private static let ___sharedProperties___: [Reactant.Attribute] = [")
+            for property in style.properties {
+                l("    Attribute.\(property.name)(\(property.anyValue.generated)),")
+            }
+            l("]")
+
+            for childStyle in styles {
+                l("static let \(childStyle.name): [Reactant.Attribute] = ")
+                // TODO: Extending
+    //            for extendedStyle in style.extend {
+    //                switch extendedStyle {
+    //                case .local(let name):
+    //                    l("\(root.stylesName).\(name)")
+    //                case .global(let group, let name):
+    //                    l("\(group.capitalizingFirstLetter() + "Styles").\(name)")
+    //                }
+    //
+    //                l("+")
+    //            }
+
+                l("___sharedProperties___ + [")
+                for property in childStyle.properties {
+                    l("    Attribute.\(property.name)(\(property.anyValue.generated)),")
                 }
+                l("]")
+            }
+        }
+    }
+
+    private func generate(viewStyle style: Style, type: String) throws {
+        guard let mapping = ElementMapping.mapping[type] else {
+            throw GeneratorError(message: "Mapping for type \(type) does not exist")
+        }
+        l("static func \(style.name.name)(_ view: \(try mapping.runtimeType()))") {
+            for extendedStyle in style.extend {
+                switch extendedStyle {
+                case .local(let name):
+                    l("\(root.stylesName).\(name)(view)")
+                case .global(let group, let name):
+                    l("\(group.capitalizingFirstLetter() + "Styles").\(name)(view)")
+                }
+            }
+            for property in style.properties {
+                let propertyContext = PropertyContext(parentContext: componentContext, property: property)
+                l(property.application(on: "view", context: propertyContext))
             }
         }
     }

@@ -19,12 +19,16 @@
 
         <Label
             layout:id="label"
-            text="And your droneship \n too 888.56 &quot;!"
             font=":regular@20"
             numberOfLines="0"
-            textAlignment="center"
+            textAlignment="left"
             layout:top="super inset(10)"
-            layout:fillHorizontally="super inset(20)"/>
+            layout:fillHorizontally="super inset(20)">
+            <attributedText>
+                "And your 2 <b font=":bold @17">droneships</b>
+            too 888.56 &quot;!"
+            </attributedText>
+        </Label>
 
             <Button
                 title="Forgotten password?"

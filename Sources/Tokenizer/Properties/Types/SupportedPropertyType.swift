@@ -27,13 +27,13 @@ public protocol AttributeSupportedPropertyType: SupportedPropertyType {
     static func materialize(from value: String) throws -> Self
 }
 
-public protocol XMLContentSupportedPropertyType: SupportedPropertyType {
-    static func materialize(from content: XMLContent) throws -> Self
+public protocol ElementSupportedPropertyType: SupportedPropertyType {
+    static func materialize(from element: XMLElement) throws -> Self
 }
 
-extension XMLContentSupportedPropertyType where Self: AttributeSupportedPropertyType {
-    static func materialize(from content: XMLContent) throws -> Self {
-        let text = (content as? TextElement)?.text ?? ""
+extension ElementSupportedPropertyType where Self: AttributeSupportedPropertyType {
+    static func materialize(from element: XMLElement) throws -> Self {
+        let text = element.text ?? ""
         return try materialize(from: text)
     }
 }
