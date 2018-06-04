@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum LineBreakMode: String, EnumPropertyType {
+public enum LineBreakMode: String, EnumPropertyType, AttributeSupportedPropertyType {
     public static let enumName = "NSLineBreakMode"
 
     case byWordWrapping

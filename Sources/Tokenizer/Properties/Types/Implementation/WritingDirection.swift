@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum WritingDirection: String, EnumPropertyType {
+public enum WritingDirection: String, EnumPropertyType, AttributeSupportedPropertyType {
     public static let enumName = "NSWritingDirection"
 
     case natural

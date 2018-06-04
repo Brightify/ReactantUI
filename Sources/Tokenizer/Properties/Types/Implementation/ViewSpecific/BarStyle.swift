@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum BarStyle: String, EnumPropertyType {
+public enum BarStyle: String, EnumPropertyType, AttributeSupportedPropertyType {
     public static let enumName = "UIBarStyle"
 
     case `default`

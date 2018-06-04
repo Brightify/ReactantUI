@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Int: SupportedPropertyType {
+extension Int: AttributeSupportedPropertyType {
     public var generated: String {
         return "\(self)"
     }
@@ -35,5 +35,3 @@ extension Int: SupportedPropertyType {
         return .builtin(.integer)
     }
 }
-
-extension Int: AttributeSupportedPropertyType {}

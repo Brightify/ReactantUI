@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum ScrollViewIndicatorStyle: String, EnumPropertyType {
+public enum ScrollViewIndicatorStyle: String, EnumPropertyType, AttributeSupportedPropertyType {
     public static let enumName = "UIScrollViewIndicatorStyle"
 
     case `default`

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum MapType: String, EnumPropertyType {
+public enum MapType: String, EnumPropertyType, AttributeSupportedPropertyType {
     public static let enumName = "MKMapType"
 
     case standard

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum VisualEffect: SupportedPropertyType {
+public enum VisualEffect: AttributeSupportedPropertyType {
     case blur(BlurEffect)
     case vibrancy(BlurEffect)
 

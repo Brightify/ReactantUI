@@ -13,7 +13,7 @@ import UIKit
 
 public protocol ControlStatePropertyDescriptionMarker { }
 
-public struct ControlStatePropertyDescription<T: SupportedPropertyType>: TypedPropertyDescription, ControlStatePropertyDescriptionMarker {
+public struct ControlStatePropertyDescription<T: AttributeSupportedPropertyType>: TypedPropertyDescription, ControlStatePropertyDescriptionMarker {
     public typealias ValueType = T
 
     public let namespace: [PropertyContainer.Namespace]

@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Bool: SupportedPropertyType {
+extension Bool: AttributeSupportedPropertyType {
     public var generated: String {
         return self ? "true" : "false"
     }

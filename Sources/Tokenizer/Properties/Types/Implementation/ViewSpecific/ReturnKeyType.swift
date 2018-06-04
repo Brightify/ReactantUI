@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum ReturnKeyType: String, EnumPropertyType {
+public enum ReturnKeyType: String, EnumPropertyType, AttributeSupportedPropertyType {
     public static let enumName = "UIReturnKeyType"
 
     case `default`

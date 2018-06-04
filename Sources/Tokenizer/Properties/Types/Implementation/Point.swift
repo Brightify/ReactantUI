@@ -11,7 +11,7 @@ import Foundation
     import UIKit
 #endif
 
-public struct Point: SupportedPropertyType {
+public struct Point: AttributeSupportedPropertyType {
     public let x: Float
     public let y: Float
     

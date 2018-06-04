@@ -11,7 +11,7 @@ import Foundation
 import UIKit
 #endif
 
-public struct AssignablePropertyDescription<T: SupportedPropertyType>: TypedPropertyDescription {
+public struct AssignablePropertyDescription<T: AttributeSupportedPropertyType>: TypedPropertyDescription {
     public typealias ValueType = T
 
     public let namespace: [PropertyContainer.Namespace]

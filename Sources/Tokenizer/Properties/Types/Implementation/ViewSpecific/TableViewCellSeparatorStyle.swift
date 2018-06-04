@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum TableViewCellSeparatorStyle: String, EnumPropertyType {
+public enum TableViewCellSeparatorStyle: String, EnumPropertyType, AttributeSupportedPropertyType {
     public static let enumName = "UITableViewCellSeparatorStyle"
 
     case none

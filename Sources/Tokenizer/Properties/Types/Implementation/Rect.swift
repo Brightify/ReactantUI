@@ -11,7 +11,7 @@ import Foundation
     import UIKit
 #endif
 
-public struct Rect: SupportedPropertyType {
+public struct Rect: AttributeSupportedPropertyType {
     public let origin: Point
     public let size: Size
 

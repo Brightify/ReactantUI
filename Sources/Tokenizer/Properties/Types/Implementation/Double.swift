@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Double: SupportedPropertyType {
+extension Double: AttributeSupportedPropertyType {
     public var generated: String {
         return "\(self)"
     }

@@ -11,7 +11,7 @@ import Foundation
     import UIKit
 #endif
 
-public struct AffineTransformation: SupportedPropertyType {
+public struct AffineTransformation: AttributeSupportedPropertyType {
     
     public let transformations: [TransformationModifier]
     

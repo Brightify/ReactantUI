@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum TextContentType: String, EnumPropertyType {
+public enum TextContentType: String, EnumPropertyType, AttributeSupportedPropertyType {
     public static let enumName = "UITextContentType"
 
     case none

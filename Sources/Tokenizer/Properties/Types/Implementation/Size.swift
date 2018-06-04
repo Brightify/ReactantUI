@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Size: SupportedPropertyType {
+public struct Size: AttributeSupportedPropertyType {
     public let width: Float
     public let height: Float
     

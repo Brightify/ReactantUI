@@ -12,7 +12,7 @@ import Foundation
 import UIKit
 #endif
 
-public struct AssignableProperty<T: SupportedPropertyType>: TypedProperty {
+public struct AssignableProperty<T: AttributeSupportedPropertyType>: TypedProperty {
     public let namespace: [PropertyContainer.Namespace]
     public let name: String
     public let description: AssignablePropertyDescription<T>

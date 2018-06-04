@@ -11,7 +11,7 @@ import Foundation
 import UIKit
 #endif
 
-public struct Image: SupportedPropertyType {
+public struct Image: AttributeSupportedPropertyType {
     public let name: String
 
     public var generated: String {

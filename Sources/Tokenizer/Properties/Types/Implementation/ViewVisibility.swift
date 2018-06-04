@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum ViewVisibility: String, EnumPropertyType {
+public enum ViewVisibility: String, EnumPropertyType, AttributeSupportedPropertyType {
     public static let enumName = "Visibility"
 
     case visible

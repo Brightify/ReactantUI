@@ -11,7 +11,7 @@ import Foundation
     import UIKit
 #endif
 
-public enum LayoutAxis: String, SupportedPropertyType {
+public enum LayoutAxis: String, AttributeSupportedPropertyType {
     case vertical
     case horizontal
 

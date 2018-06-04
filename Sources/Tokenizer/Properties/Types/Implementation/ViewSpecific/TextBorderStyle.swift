@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum TextBorderStyle: String, EnumPropertyType {
+public enum TextBorderStyle: String, EnumPropertyType, AttributeSupportedPropertyType {
     public static let enumName = "UITextBorderStyle"
 
     case none

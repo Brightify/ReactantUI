@@ -10,7 +10,7 @@ import Foundation
     import UIKit
 #endif
 
-public struct CGColorPropertyType: SupportedPropertyType {
+public struct CGColorPropertyType: AttributeSupportedPropertyType {
     public let color: UIColorPropertyType
 
     public var generated: String {

@@ -19,7 +19,7 @@ public enum TransformedText {
     }
 }
 
-extension TransformedText: SupportedPropertyType {
+extension TransformedText: AttributeSupportedPropertyType {
     public var generated: String {
         func resolveTransformations(text: TransformedText) -> String {
             switch text {

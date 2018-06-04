@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum ActivityIndicatorStyle: String, EnumPropertyType {
+public enum ActivityIndicatorStyle: String, EnumPropertyType, AttributeSupportedPropertyType {
     public static let enumName = "UIActivityIndicatorViewStyle"
 
     case whiteLarge

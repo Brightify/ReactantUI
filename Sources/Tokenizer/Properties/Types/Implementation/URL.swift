@@ -7,8 +7,7 @@
 
 import Foundation
 
-extension URL: SupportedPropertyType {
-
+extension URL: AttributeSupportedPropertyType {
     public var generated: String {
         return "\(self.absoluteString)"
     }

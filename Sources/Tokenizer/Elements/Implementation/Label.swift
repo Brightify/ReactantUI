@@ -94,4 +94,3 @@ public class LabelProperties: ViewProperties {
         super.init(configuration: configuration)
     }
 }
-    

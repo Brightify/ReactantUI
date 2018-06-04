@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Float: SupportedPropertyType {
+extension Float: AttributeSupportedPropertyType {
 
     public var generated: String {
         return "\(self)"

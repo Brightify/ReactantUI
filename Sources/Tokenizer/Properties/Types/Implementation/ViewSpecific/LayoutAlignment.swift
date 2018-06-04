@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum LayoutAlignment: String, EnumPropertyType {
+public enum LayoutAlignment: String, EnumPropertyType, AttributeSupportedPropertyType {
     public static let enumName = "UIStackViewAlignment"
 
     case fill

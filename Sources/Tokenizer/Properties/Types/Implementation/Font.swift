@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum Font: SupportedPropertyType {
+public enum Font: AttributeSupportedPropertyType {
     case system(weight: SystemFontWeight, size: Float)
     case named(String, size: Float)
 

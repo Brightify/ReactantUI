@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum ControlContentHorizontalAlignment: Int, EnumPropertyType {
+public enum ControlContentHorizontalAlignment: Int, EnumPropertyType, AttributeSupportedPropertyType {
 
     public static let enumName = "UIControlContentHorizontalAlignment"
     

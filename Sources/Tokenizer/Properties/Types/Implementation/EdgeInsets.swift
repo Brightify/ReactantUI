@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct EdgeInsets: SupportedPropertyType {
+public struct EdgeInsets: AttributeSupportedPropertyType {
     public let top: Float
     public let left: Float
     public let bottom: Float
