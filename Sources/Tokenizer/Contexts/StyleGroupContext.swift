@@ -15,4 +15,10 @@ public struct StyleGroupContext: DataContext {
         self.globalContext = globalContext
         self.group = group
     }
+
+    public func localStyle(named name: String) -> String {
+        return group.swiftName + "." + name
+    }
 }
+
+extension StyleGroupContext: HasGlobalContext { }

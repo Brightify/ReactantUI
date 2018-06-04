@@ -8,11 +8,11 @@
 import Foundation
 
 extension Array: SupportedPropertyType where Iterator.Element: SupportedPropertyType {
-    public var generated: String {
-        return "[" + map { $0.generated }.joined(separator: ", ") + "]"
+    public func generate(context: SupportedPropertyTypeContext) -> String {
+        return "[" + map { $0.generate(context: context.sibling(for: $0)) }.joined(separator: ", ") + "]"
     }
 
-    public var runtimeValue: Any? {
+    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         return [] as [Element]
     }
 

@@ -16,7 +16,7 @@ public enum ControlContentVerticalAlignment: Int, EnumPropertyType, AttributeSup
     case bottom
     case fill
     
-    public var generated: String {
+    public func generate(context: SupportedPropertyTypeContext) -> String {
         switch self {
         case .center:
             return "UIControlContentVerticalAlignment.center"
@@ -74,7 +74,7 @@ public enum ControlContentVerticalAlignment: Int, EnumPropertyType, AttributeSup
     
     extension ControlContentVerticalAlignment {
         
-        public var runtimeValue: Any? {
+        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .center:
                 return UIControlContentVerticalAlignment.center.rawValue

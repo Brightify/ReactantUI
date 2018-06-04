@@ -15,4 +15,8 @@ public struct GlobalContext: DataContext {
     public init(styleSheets: [String]) {
         self.styleSheets = styleSheets
     }
+
+    public func localStyle(named name: String) -> String {
+        return name
+    }
 }

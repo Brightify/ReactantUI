@@ -31,7 +31,7 @@ public enum MapType: String, EnumPropertyType, AttributeSupportedPropertyType {
 
     extension MapType {
 
-        public var runtimeValue: Any? {
+        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .standard:
                 return MKMapType.standard.rawValue

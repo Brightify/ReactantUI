@@ -39,7 +39,7 @@ public enum KeyboardType: String, EnumPropertyType, AttributeSupportedPropertyTy
 
     extension KeyboardType {
 
-        public var runtimeValue: Any? {
+        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .`default`:
                 return UIKeyboardType.default.rawValue

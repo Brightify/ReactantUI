@@ -33,7 +33,7 @@ import UIKit
 
 extension LineBreakMode {
 
-    public var runtimeValue: Any? {
+    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         switch self {
         case .byWordWrapping:
             return NSLineBreakMode.byWordWrapping.rawValue

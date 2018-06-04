@@ -8,12 +8,12 @@
 import Foundation
 
 extension URL: AttributeSupportedPropertyType {
-    public var generated: String {
+    public func generate(context: SupportedPropertyTypeContext) -> String {
         return "\(self.absoluteString)"
     }
 
     #if ReactantRuntime
-    public var runtimeValue: Any? {
+    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         return self
     }
     #endif

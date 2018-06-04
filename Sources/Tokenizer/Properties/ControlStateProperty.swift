@@ -31,7 +31,7 @@ public struct ControlStateProperty<T: AttributeSupportedPropertyType>: TypedProp
         let state = parseState(from: attributeName) as [ControlState]
         let stringState = state.map { "UIControlState.\($0.rawValue)" }.joined(separator: ", ")
         let namespacedTarget = namespace.resolvedSwiftName(target: target)
-        return "\(namespacedTarget).set\(description.key.capitalizingFirstLetter())(\(value.generated), for: [\(stringState)])"
+        return "\(namespacedTarget).set\(description.key.capitalizingFirstLetter())(\(value.generate(context: context.child(for: value))), for: [\(stringState)])"
     }
     
     #if SanAndreas
@@ -50,7 +50,7 @@ public struct ControlStateProperty<T: AttributeSupportedPropertyType>: TypedProp
         guard target.responds(to: selector) else {
             throw LiveUIError(message: "!! Object \(target) doesn't respond to \(selector) (property: \(self))")
         }
-        guard let resolvedValue = value.runtimeValue else {
+        guard let resolvedValue = value.runtimeValue(context: context.child(for: value)) else {
             throw LiveUIError(message: "!! Value `\(value)` couldn't be resolved in runtime for key `\(key)`")
         }
         let signature = target.method(for: selector)

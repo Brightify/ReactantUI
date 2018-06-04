@@ -13,8 +13,8 @@ import Foundation
 public struct CGColorPropertyType: AttributeSupportedPropertyType {
     public let color: UIColorPropertyType
 
-    public var generated: String {
-        return "\(color.generated).cgColor"
+    public func generate(context: SupportedPropertyTypeContext) -> String {
+        return try "\(color.generate(context: context.sibling(for: color))).cgColor"
     }
 
     #if SanAndreas
@@ -24,7 +24,7 @@ public struct CGColorPropertyType: AttributeSupportedPropertyType {
     #endif
 
     #if ReactantRuntime
-    public var runtimeValue: Any? {
+    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         return (color.runtimeValue as? UIColor)?.cgColor
     }
     #endif

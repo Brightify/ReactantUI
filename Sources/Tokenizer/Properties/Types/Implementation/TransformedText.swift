@@ -20,7 +20,7 @@ public enum TransformedText {
 }
 
 extension TransformedText: AttributeSupportedPropertyType {
-    public var generated: String {
+    public func generate(context: SupportedPropertyTypeContext) -> String {
         func resolveTransformations(text: TransformedText) -> String {
             switch text {
             case .transform(.uppercased, let inner):
@@ -66,7 +66,7 @@ extension TransformedText: AttributeSupportedPropertyType {
     #endif
 
     #if ReactantRuntime
-    public var runtimeValue: Any? {
+    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         func resolveTransformations(text: TransformedText) -> String {
             switch text {
             case .transform(.uppercased, let inner):

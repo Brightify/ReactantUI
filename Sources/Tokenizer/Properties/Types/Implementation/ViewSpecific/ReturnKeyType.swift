@@ -38,7 +38,7 @@ public enum ReturnKeyType: String, EnumPropertyType, AttributeSupportedPropertyT
 
     extension ReturnKeyType {
 
-        public var runtimeValue: Any? {
+        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .`default`:
                 return UIReturnKeyType.default.rawValue

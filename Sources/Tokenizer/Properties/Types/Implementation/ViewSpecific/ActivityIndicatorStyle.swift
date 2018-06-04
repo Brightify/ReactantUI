@@ -28,7 +28,7 @@ public enum ActivityIndicatorStyle: String, EnumPropertyType, AttributeSupported
     import UIKit
 
     extension ActivityIndicatorStyle {
-        public var runtimeValue: Any? {
+        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             #if os(tvOS)
             switch self {
             case .whiteLarge:

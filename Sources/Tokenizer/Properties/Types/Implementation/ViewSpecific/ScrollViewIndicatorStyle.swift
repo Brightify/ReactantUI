@@ -29,7 +29,7 @@ public enum ScrollViewIndicatorStyle: String, EnumPropertyType, AttributeSupport
 
     extension ScrollViewIndicatorStyle {
 
-        public var runtimeValue: Any? {
+        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .default:
                 return UIScrollViewIndicatorStyle.default.rawValue

@@ -32,7 +32,7 @@ public enum LayoutAlignment: String, EnumPropertyType, AttributeSupportedPropert
 
     extension LayoutAlignment {
 
-        public var runtimeValue: Any? {
+        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .center:
                 return UIStackViewAlignment.center.rawValue

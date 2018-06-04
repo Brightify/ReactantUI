@@ -30,7 +30,7 @@ public enum TextBorderStyle: String, EnumPropertyType, AttributeSupportedPropert
 
     extension TextBorderStyle {
 
-        public var runtimeValue: Any? {
+        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .none:
                 return UITextBorderStyle.none.rawValue

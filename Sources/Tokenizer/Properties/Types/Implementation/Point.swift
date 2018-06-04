@@ -25,7 +25,7 @@ public struct Point: AttributeSupportedPropertyType {
         self.y = Float(y)
     }
 
-    public var generated: String {
+    public func generate(context: SupportedPropertyTypeContext) -> String {
         return "CGPoint(x: \(x.cgFloat), y: \(y.cgFloat))"
     }
     
@@ -56,7 +56,7 @@ public struct Point: AttributeSupportedPropertyType {
 #if ReactantRuntime
     extension Point {
 
-        public var runtimeValue: Any? {
+        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             return CGPoint(x: x.cgFloat, y: y.cgFloat)
         }
     }

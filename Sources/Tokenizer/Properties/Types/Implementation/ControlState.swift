@@ -49,7 +49,7 @@ import UIKit
 
 extension ControlState {
 
-    public var runtimeValue: Any? {
+    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         switch self {
         case .normal:
             return UIControlState.normal.rawValue

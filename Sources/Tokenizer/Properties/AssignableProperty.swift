@@ -24,7 +24,7 @@ public struct AssignableProperty<T: AttributeSupportedPropertyType>: TypedProper
 
     public func application(on target: String, context: PropertyContext) -> String {
         let namespacedTarget = namespace.resolvedSwiftName(target: target)
-        return "\(namespacedTarget).\(description.swiftName) = \(value.generated)"
+        return "\(namespacedTarget).\(description.swiftName) = \(value.generate(context: context.child(for: value)))"
     }
     
     #if SanAndreas
@@ -43,7 +43,7 @@ public struct AssignableProperty<T: AttributeSupportedPropertyType>: TypedProper
         guard target.responds(to: selector) else {
             throw LiveUIError(message: "!! Object `\(target)` doesn't respond to selector `\(key)` to set value `\(value)`")
         }
-        guard let resolvedValue = value.runtimeValue else {
+        guard let resolvedValue = value.runtimeValue(context: context.child(for: value)) else {
             throw LiveUIError(message: "!! Value `\(value)` couldn't be resolved in runtime for key `\(key)`")
         }
 

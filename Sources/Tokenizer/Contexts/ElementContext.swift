@@ -17,3 +17,9 @@ public struct ElementContext: DataContext {
         self.element = element
     }
 }
+
+extension ElementContext: HasParentContext {
+    public var parentContext: ComponentContext {
+        return componentContext
+    }
+}

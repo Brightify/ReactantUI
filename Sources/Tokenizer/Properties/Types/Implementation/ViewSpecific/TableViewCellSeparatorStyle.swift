@@ -26,7 +26,7 @@ public enum TableViewCellSeparatorStyle: String, EnumPropertyType, AttributeSupp
     import UIKit
 
     extension TableViewCellSeparatorStyle {
-        public var runtimeValue: Any? {
+        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             #if os(iOS)
             switch self {
             case .none:

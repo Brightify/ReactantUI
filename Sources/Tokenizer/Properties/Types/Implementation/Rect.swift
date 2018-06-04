@@ -15,7 +15,7 @@ public struct Rect: AttributeSupportedPropertyType {
     public let origin: Point
     public let size: Size
 
-    public var generated: String {
+    public func generate(context: SupportedPropertyTypeContext) -> String {
         return "CGRect(origin: CGPoint(x: \(origin.x.cgFloat), y: \(origin.y.cgFloat)), size: CGSize(width: \(size.width.cgFloat), height: \(size.height.cgFloat)))"
     }
 
@@ -54,7 +54,7 @@ public struct Rect: AttributeSupportedPropertyType {
 #if ReactantRuntime
 
     extension Rect {
-        public var runtimeValue: Any? {
+        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             let origin = CGPoint(x: self.origin.x.cgFloat, y: self.origin.y.cgFloat)
             let size = CGSize(width: self.size.width.cgFloat, height: self.size.height.cgFloat)
             return CGRect(origin: origin, size: size)

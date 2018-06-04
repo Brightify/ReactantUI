@@ -8,7 +8,7 @@
 import Foundation
 
 extension Bool: AttributeSupportedPropertyType {
-    public var generated: String {
+    public func generate(context: SupportedPropertyTypeContext) -> String {
         return self ? "true" : "false"
     }
 
@@ -19,7 +19,7 @@ extension Bool: AttributeSupportedPropertyType {
     #endif
 
     #if ReactantRuntime
-    public var runtimeValue: Any? {
+    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         return self
     }
     #endif

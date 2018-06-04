@@ -29,7 +29,7 @@ public struct EdgeInsets: AttributeSupportedPropertyType {
         self.init(top: vertical, left: horizontal, bottom: vertical, right: horizontal)
     }
 
-    public var generated: String {
+    public func generate(context: SupportedPropertyTypeContext) -> String {
         return "UIEdgeInsetsMake(\(top.cgFloat), \(left.cgFloat), \(bottom.cgFloat), \(right.cgFloat))"
     }
     
@@ -97,7 +97,7 @@ import UIKit
 
 extension EdgeInsets {
 
-    public var runtimeValue: Any? {
+    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         return UIEdgeInsetsMake(top.cgFloat, left.cgFloat, bottom.cgFloat, right.cgFloat)
     }
 }

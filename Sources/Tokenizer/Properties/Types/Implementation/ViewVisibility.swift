@@ -45,7 +45,7 @@ public enum ViewCollapseAxis: String, EnumPropertyType {
 
     extension ViewVisibility {
 
-        public var runtimeValue: Any? {
+        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .visible:
                 return Visibility.visible.rawValue
@@ -62,7 +62,7 @@ public enum ViewCollapseAxis: String, EnumPropertyType {
 
     extension ViewCollapseAxis {
 
-        public var runtimeValue: Any? {
+        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .both:
                 return CollapseAxis.both.rawValue

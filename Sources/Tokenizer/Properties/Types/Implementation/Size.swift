@@ -22,7 +22,7 @@ public struct Size: AttributeSupportedPropertyType {
         self.height = Float(height)
     }
 
-    public var generated: String {
+    public func generate(context: SupportedPropertyTypeContext) -> String {
         return "CGSize(width: \(width.cgFloat), height: \(height.cgFloat))"
     }
     
@@ -55,7 +55,7 @@ public struct Size: AttributeSupportedPropertyType {
 
     extension Size {
 
-        public var runtimeValue: Any? {
+        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             return CGSize(width: width.cgFloat, height: height.cgFloat)
         }
     }

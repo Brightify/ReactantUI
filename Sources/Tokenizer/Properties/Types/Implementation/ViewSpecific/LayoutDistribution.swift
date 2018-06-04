@@ -31,7 +31,7 @@ public enum LayoutDistribution: String, EnumPropertyType, AttributeSupportedProp
 
     extension LayoutDistribution {
 
-        public var runtimeValue: Any? {
+        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .equalCentering:
                 return UIStackViewDistribution.equalCentering.rawValue

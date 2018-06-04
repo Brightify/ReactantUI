@@ -230,7 +230,7 @@ public struct PreferredSize: SupportedPropertyType {
     }
 
     // FIXME what happens in generated code
-    public var generated: String {
+    public func generate(context: SupportedPropertyTypeContext) -> String {
         return ""
     }
 
@@ -244,7 +244,7 @@ public struct PreferredSize: SupportedPropertyType {
     #endif
 
     #if ReactantRuntime
-    public var runtimeValue: Any? {
+    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         return nil
     }
     #endif

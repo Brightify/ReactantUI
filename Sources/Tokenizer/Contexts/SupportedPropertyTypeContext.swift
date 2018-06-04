@@ -16,3 +16,21 @@ public struct SupportedPropertyTypeContext: DataContext {
         self.value = value
     }
 }
+
+extension SupportedPropertyTypeContext: HasParentContext {
+    public var parentContext: PropertyContext {
+        return propertyContext
+    }
+}
+
+extension PropertyContext {
+    public func child(for value: SupportedPropertyType) -> SupportedPropertyTypeContext {
+        return SupportedPropertyTypeContext(propertyContext: self, value: value)
+    }
+}
+
+extension SupportedPropertyTypeContext {
+    public func sibling(for value: SupportedPropertyType) -> SupportedPropertyTypeContext {
+        return SupportedPropertyTypeContext(propertyContext: propertyContext, value: value)
+    }
+}

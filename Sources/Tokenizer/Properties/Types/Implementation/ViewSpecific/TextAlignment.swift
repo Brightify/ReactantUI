@@ -29,7 +29,7 @@ public enum TextAlignment: String, EnumPropertyType, AttributeSupportedPropertyT
 
     extension TextAlignment {
 
-        public var runtimeValue: Any? {
+        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .center:
                 return NSTextAlignment.center.rawValue

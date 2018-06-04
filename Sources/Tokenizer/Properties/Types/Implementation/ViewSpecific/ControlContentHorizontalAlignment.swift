@@ -18,7 +18,7 @@ public enum ControlContentHorizontalAlignment: Int, EnumPropertyType, AttributeS
     case leading
     case trailing
     
-    public var generated: String {
+    public func generate(context: SupportedPropertyTypeContext) -> String {
         switch self {
         case .center:
             return "UIControlContentHorizontalAlignment.center"
@@ -96,7 +96,7 @@ public enum ControlContentHorizontalAlignment: Int, EnumPropertyType, AttributeS
     import UIKit
     
     extension ControlContentHorizontalAlignment {
-        public var runtimeValue: Any? {
+        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .center:
                 return UIControlContentHorizontalAlignment.center.rawValue

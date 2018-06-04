@@ -12,7 +12,7 @@ public enum VisualEffect: AttributeSupportedPropertyType {
     case blur(BlurEffect)
     case vibrancy(BlurEffect)
 
-    public var generated: String {
+    public func generate(context: SupportedPropertyTypeContext) -> String {
         switch self {
         case .blur(let effect):
             return "UIBlurEffect(style: .\(effect.rawValue))"
@@ -33,7 +33,7 @@ public enum VisualEffect: AttributeSupportedPropertyType {
     #endif
 
     #if ReactantRuntime
-    public var runtimeValue: Any? {
+    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         switch self {
         case .blur(let effect):
             return effect.runtimeValue
@@ -86,7 +86,7 @@ public enum BlurEffect: String {
 
     extension BlurEffect {
 
-        public var runtimeValue: Any? {
+        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .extraLight:
                 return UIBlurEffect(style: .extraLight)

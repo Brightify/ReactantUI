@@ -15,7 +15,7 @@ public struct AffineTransformation: AttributeSupportedPropertyType {
     
     public let transformations: [TransformationModifier]
     
-    public var generated: String {
+    public func generate(context: SupportedPropertyTypeContext) -> String {
         return transformations.map { $0.generated }.joined(separator: " + ")
     }
     
@@ -32,7 +32,7 @@ public struct AffineTransformation: AttributeSupportedPropertyType {
     #endif
     
     #if ReactantRuntime
-    public var runtimeValue: Any? {
+    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         var cgTransform = CGAffineTransform.identity
         for transformation in transformations {
             switch transformation {

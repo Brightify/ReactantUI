@@ -27,7 +27,7 @@ public enum TableViewCellSeparatorInsetReference: String, EnumPropertyType, Attr
 
     extension TableViewCellSeparatorInsetReference {
 
-        public var runtimeValue: Any? {
+        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .fromCellEdges:
                 if #available(iOS 11.0, tvOS 11.0, *) {

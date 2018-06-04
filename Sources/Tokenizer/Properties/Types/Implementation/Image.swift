@@ -14,12 +14,12 @@ import UIKit
 public struct Image: AttributeSupportedPropertyType {
     public let name: String
 
-    public var generated: String {
+    public func generate(context: SupportedPropertyTypeContext) -> String {
         return "UIImage(named: \"\(name)\")"
     }
 
     #if ReactantRuntime
-    public var runtimeValue: Any? {
+    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         return UIImage(named: name)
     }
     #endif

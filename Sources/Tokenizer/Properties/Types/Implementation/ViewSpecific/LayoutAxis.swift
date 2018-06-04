@@ -15,7 +15,7 @@ public enum LayoutAxis: String, AttributeSupportedPropertyType {
     case vertical
     case horizontal
 
-    public var generated: String {
+    public func generate(context: SupportedPropertyTypeContext) -> String {
         switch self {
         case .vertical:
             return "UILayoutConstraintAxis.vertical"
@@ -37,7 +37,7 @@ public enum LayoutAxis: String, AttributeSupportedPropertyType {
     import UIKit
 
     extension LayoutAxis {
-        public var runtimeValue: Any? {
+        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .vertical:
                 return UILayoutConstraintAxis.vertical.rawValue

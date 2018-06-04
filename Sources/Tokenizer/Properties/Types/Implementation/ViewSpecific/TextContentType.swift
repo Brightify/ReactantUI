@@ -55,7 +55,7 @@ public enum TextContentType: String, EnumPropertyType, AttributeSupportedPropert
 
     extension TextContentType {
 
-        public var runtimeValue: Any? {
+        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             if #available(iOS 10.0, tvOS 10.0, *) {
                 switch self {
                 case .none:

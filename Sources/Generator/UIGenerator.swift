@@ -358,11 +358,16 @@ public class UIGenerator: Generator {
     }
 
     private func generate(attributeTextStyle style: Style, styles: [AttributedTextStyle]) throws {
+        func generate(attributes array: [Property]) {
+            for property in array {
+                let propertyContext = PropertyContext(parentContext: componentContext, property: property)
+                l("    Attribute.\(property.name)(\(property.anyValue.generate(context: propertyContext.child(for: property.anyValue)))),")
+            }
+        }
+
         l("struct \(style.name.name)") {
             l("private static let ___sharedProperties___: [Reactant.Attribute] = [")
-            for property in style.properties {
-                l("    Attribute.\(property.name)(\(property.anyValue.generated)),")
-            }
+            generate(attributes: style.properties)
             l("]")
 
             for childStyle in styles {
@@ -380,9 +385,7 @@ public class UIGenerator: Generator {
     //            }
 
                 l("___sharedProperties___ + [")
-                for property in childStyle.properties {
-                    l("    Attribute.\(property.name)(\(property.anyValue.generated)),")
-                }
+                generate(attributes: childStyle.properties)
                 l("]")
             }
         }

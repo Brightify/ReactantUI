@@ -29,7 +29,7 @@ public enum SearchBarStyle: String, EnumPropertyType, AttributeSupportedProperty
 
     extension SearchBarStyle {
 
-        public var runtimeValue: Any? {
+        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .`default`:
                 return UISearchBarStyle.default.rawValue

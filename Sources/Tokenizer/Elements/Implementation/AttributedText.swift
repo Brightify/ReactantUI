@@ -148,26 +148,22 @@ extension Sequence {
     }
 }
 
-// "lolek <b>lolkaro <i>oto</i> megre<s><u>IMPO</u></s></b> lolker"
-// var string = MutableAttrString("")
-// string.append("lolek")
-// string.append("lolkaro".attributed(.font(1)))
-// string.append("oto".attributed(.font(1), .foregroundColor(red)))
-// string.append("megre".attributed(.font(1)))
-// string.append("IMPO".attributed(.strikethroughStyle(yes), .underlineStyle(yes)))
-// string.append("lolker")
 public enum AttributedText: ElementSupportedPropertyType {
     case transform(TransformedText)
     indirect case attributed(AttributedTextStyle, [AttributedText])
 }
 
 extension AttributedText {
-    public var generated: String {
+    public func generate(context: SupportedPropertyTypeContext) -> String {
         func resolveAttributes(text: AttributedText, attributes: [Property]) -> String {
             switch text {
             case .transform(let transformedText):
-                let attributesString = attributes.map { ".\($0.name)(\($0.anyValue.generated))" }.joined(separator: ", ")
-                return "\(transformedText.generated).attributed(\(attributesString))"
+                let attributesString = attributes.map {
+                    ".\($0.name)(\($0.anyValue.generate(context: context.sibling(for: $0.anyValue))))"
+                }.joined(separator: ", ")
+                print("/////////////////////////////////////////////    \(attributesString)    //////////////////////////////////////////////////////////")
+                print("/////////////////////////////////////////////    \(attributes.count)    //////////////////////////////////////////////////////////")
+                return "\(transformedText.generate(context: context.sibling(for: transformedText))).attributed([\(attributesString)])"
             case .attributed(let attributedStyle, let attributedTexts):
                 // the order of appending is important because the `distinct(where:)` keeps the first element of the duplicates
                 let lowerAttributes = attributedStyle.properties
@@ -178,6 +174,7 @@ extension AttributedText {
                 }.joined(separator: " + \n")
             }
         }
+        
         return resolveAttributes(text: self, attributes: [])
     }
 
@@ -204,12 +201,12 @@ extension AttributedText {
     #endif
 
     #if ReactantRuntime
-    public var runtimeValue: Any? {
+    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         func resolveAttributes(text: AttributedText, attributes: [Property]) -> NSAttributedString {
             switch text {
             case .transform(let transformedText):
                 let attributesString = attributes.map { ".\($0.name)" }.joined(separator: ", ")
-                return transformedText.generated.attributed()
+                return transformedText.generate(context: context.sibling(for: transformedText)).attributed()
             case .attributed(let attributedStyle, let attributedTexts):
                 // the order of appending is important because the `distinct(where:)` keeps the first element of the duplicates
                 let lowerAttributes = attributedStyle.properties
@@ -246,7 +243,7 @@ extension AttributedText {
 
         func trimmingWhitespace(content: XMLContent, leading: Bool, indentationLevel: inout Int) throws -> XMLContent? {
             switch content {
-            case let textChild as TextElement:
+            case var textChild as TextElement:
                 let trimmedText = textChild.text.replacingOccurrences(of: leading ? "^\\s+" : "\\s+$",
                                                               with: "",
                                                               options: .regularExpression)
@@ -256,8 +253,12 @@ extension AttributedText {
                 guard !trimmedText.isEmpty else { return nil }
                 return TextElement(text: trimmedText)
             case let elementChild as XMLElement:
-                guard let nextChild = leading ? elementChild.children.first : elementChild.children.last else { return elementChild }
-                return try trimmingWhitespace(content: nextChild, leading: leading, indentationLevel: &indentationLevel)
+                return elementChild
+//                guard let nextChild = leading ? elementChild.children.first : elementChild.children.last else { return elementChild }
+//
+//                return try trimmingWhitespace(content: nextChild, leading: leading, indentationLevel: &indentationLevel)
+//                return elementChild
+
             default:
                 throw PropertyMaterializationError.unknownValue("Content is neither TextElement nor XMLElement - \(content)")
             }
@@ -271,8 +272,9 @@ extension AttributedText {
                                                                       options: .regularExpression)
                 return TextElement(text: fixedText)
             case let elementChild as XMLElement:
-                guard let nextChild = elementChild.children.first else { return elementChild }
-                return try fixingContentIndentation(content: nextChild, indentationLevel: indentationLevel)
+                return elementChild
+//                guard let nextChild = elementChild.children.first else { return elementChild }
+//                return try fixingContentIndentation(content: nextChild, indentationLevel: indentationLevel)
             default:
                 throw PropertyMaterializationError.unknownValue("Content is neither TextElement nor XMLElement - \(content)")
             }

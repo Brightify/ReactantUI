@@ -13,7 +13,7 @@ import Foundation
 public struct UIColorPropertyType: AttributeSupportedPropertyType {
     public let color: Color
 
-    public var generated: String {
+    public func generate(context: SupportedPropertyTypeContext) -> String {
         switch color {
         case .absolute(let red, let green, let blue, let alpha):
             return "UIColor(red: \(red), green: \(green), blue: \(blue), alpha: \(alpha))"
@@ -23,7 +23,7 @@ public struct UIColorPropertyType: AttributeSupportedPropertyType {
     }
 
     #if SanAndreas
-    public func dematerialize() -> String {
+    public func dematerialize(context: SupportedPropertyTypeContext) -> String {
         switch color {
         case .absolute(let red, let green, let blue, let alpha):
             if alpha < 1 {
@@ -40,7 +40,7 @@ public struct UIColorPropertyType: AttributeSupportedPropertyType {
     #endif
 
     #if ReactantRuntime
-    public var runtimeValue: Any? {
+    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         switch color {
         case .absolute(let red, let green, let blue, let alpha):
             return UIColor(red: red, green: green, blue: blue, alpha: alpha)

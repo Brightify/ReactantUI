@@ -30,7 +30,7 @@ import UIKit
 
 extension DatePickerMode {
 
-    public var runtimeValue: Any? {
+    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         #if os(tvOS)
             return nil
         #else

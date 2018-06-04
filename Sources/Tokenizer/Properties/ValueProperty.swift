@@ -21,7 +21,7 @@ public struct ValueProperty<T: AttributeSupportedPropertyType>: TypedProperty {
 
     public func application(on target: String, context: PropertyContext) -> String {
         let namespacedTarget = namespace.resolvedSwiftName(target: target)
-        return "\(namespacedTarget).\(description.name) = \(value.generated)"
+        return "\(namespacedTarget).\(description.name) = \(value.generate(context: context.child(for: value)))"
     }
 
     #if SanAndreas

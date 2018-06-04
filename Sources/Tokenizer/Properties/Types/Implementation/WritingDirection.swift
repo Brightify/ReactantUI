@@ -28,7 +28,7 @@ import UIKit
 
 extension WritingDirection {
 
-    public var runtimeValue: Any? {
+    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         switch self {
         case .natural:
             return NSWritingDirection.natural.rawValue

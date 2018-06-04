@@ -12,7 +12,7 @@ public enum Font: AttributeSupportedPropertyType {
     case system(weight: SystemFontWeight, size: Float)
     case named(String, size: Float)
 
-    public var generated: String {
+    public func generate(context: SupportedPropertyTypeContext) -> String {
         switch self {
         case .system(let weight, let size):
             return "UIFont.systemFont(ofSize: \(size), weight: \(weight.name))"
@@ -22,7 +22,7 @@ public enum Font: AttributeSupportedPropertyType {
     }
     
     #if SanAndreas
-    public func dematerialize() -> String {
+    public func dematerialize(context: SupportedPropertyTypeContext) -> String {
         switch self {
         case .system(let weight, let size):
             return ":\(weight.rawValue)@\(size)"
@@ -48,7 +48,7 @@ public enum Font: AttributeSupportedPropertyType {
 
     extension Font {
 
-        public var runtimeValue: Any? {
+        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .system(let weight, let size):
                 return UIFont.systemFont(ofSize: CGFloat(size), weight: UIFont.Weight(rawValue: weight.value))

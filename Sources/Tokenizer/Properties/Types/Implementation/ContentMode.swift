@@ -39,7 +39,7 @@ import UIKit
 
 extension ContentMode {
 
-    public var runtimeValue: Any? {
+    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         switch self {
         case .scaleToFill:
             return UIViewContentMode.scaleToFill.rawValue

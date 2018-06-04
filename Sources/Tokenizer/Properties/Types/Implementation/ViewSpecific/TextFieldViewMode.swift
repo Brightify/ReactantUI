@@ -31,7 +31,7 @@ public enum TextFieldViewMode: String, EnumPropertyType, AttributeSupportedPrope
 
     extension TextFieldViewMode {
 
-        public var runtimeValue: Any? {
+        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .never:
                 return UITextFieldViewMode.never.rawValue

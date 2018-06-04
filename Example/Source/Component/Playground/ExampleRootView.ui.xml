@@ -217,8 +217,9 @@
 
         <attributedText
             style="attributko"
-            foregroundColor="black">
-            <b foregroundColor="red">Hello</b> world! <i>Great</i> day! <b>NOT!</b>
+            foregroundColor="black"
+            backgroundColor="red">
+            <b backgroundColor="red">Hello</b> world! <i>Great</i> day! <b>NOT!</b>
         </attributedText>
     </Label>
 </Component>

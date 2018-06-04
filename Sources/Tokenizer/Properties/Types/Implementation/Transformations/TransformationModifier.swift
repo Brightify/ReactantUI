@@ -6,6 +6,7 @@
 //
 //
 
+// FIXME Shouldn't this be XMLDeserializable/Serializable?
 public enum TransformationModifier {
     case identity
     case rotate(by: Float)

@@ -9,14 +9,14 @@
 import Foundation
 
 public protocol SupportedPropertyType {
-    var generated: String { get }
+    func generate(context: SupportedPropertyTypeContext) -> String
 
     #if SanAndreas
-    func dematerialize() -> String
+    func dematerialize(context: SupportedPropertyTypeContext) -> String
     #endif
 
     #if ReactantRuntime
-    var runtimeValue: Any? { get }
+    func runtimeValue(context: SupportedPropertyTypeContext) -> Any?
     #endif
 
     // FIXME Has to be put into `AttributeSupportedPropertyType

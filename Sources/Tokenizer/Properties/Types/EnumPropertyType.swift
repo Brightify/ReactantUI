@@ -12,7 +12,7 @@ public protocol EnumPropertyType: RawRepresentable, SupportedPropertyType {
 }
 
 extension EnumPropertyType where Self.RawValue == String {
-    public var generated: String {
+    public func generate(context: SupportedPropertyTypeContext) -> String {
         return "\(Self.enumName).\(rawValue)"
     }
 }

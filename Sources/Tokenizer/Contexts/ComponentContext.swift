@@ -15,4 +15,10 @@ public struct ComponentContext: DataContext {
         self.globalContext = globalContext
         self.component = component
     }
+
+    public func localStyle(named name: String) -> String {
+        return component.stylesName + "." + name
+    }
 }
+
+extension ComponentContext: HasGlobalContext { }

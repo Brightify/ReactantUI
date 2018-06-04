@@ -27,7 +27,7 @@ import UIKit
 
 extension ProgressViewStyle {
 
-    public var runtimeValue: Any? {
+    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         switch self {
         case .default:
             return UIProgressViewStyle.default.rawValue
