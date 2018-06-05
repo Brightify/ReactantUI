@@ -9,6 +9,8 @@
 import Foundation
 
 public struct Size: AttributeSupportedPropertyType {
+    public static let zero = Size(width: 0 as Double, height: 0 as Double)
+
     public let width: Float
     public let height: Float
     

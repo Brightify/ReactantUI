@@ -31,6 +31,10 @@ public protocol ElementSupportedPropertyType: SupportedPropertyType {
     static func materialize(from element: XMLElement) throws -> Self
 }
 
+public protocol MultipleAttributeSupportedPropertyType: SupportedPropertyType {
+    static func materialize(from attributes: [String: String]) throws -> Self
+}
+
 extension ElementSupportedPropertyType where Self: AttributeSupportedPropertyType {
     static func materialize(from element: XMLElement) throws -> Self {
         let text = element.text ?? ""

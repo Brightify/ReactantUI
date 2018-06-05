@@ -23,6 +23,12 @@ public protocol AttributePropertyDescription: PropertyDescription {
     func matches(attributeName: String) -> Bool
 }
 
+public protocol MultipleAttributePropertyDescription: PropertyDescription {
+    func materialize(attributes: [String: String]) throws -> Property
+
+    func matches(attributeName: String) -> Bool
+}
+
 public protocol ElementPropertyDescription: PropertyDescription {
     func materialize(element: XMLElement) throws -> Property
 
@@ -42,6 +48,12 @@ extension TypedPropertyDescription {
 extension AttributePropertyDescription {
     public func matches(attributeName: String) -> Bool {
         return attributeName == namespace.resolvedAttributeName(name: name)
+    }
+}
+
+extension MultipleAttributePropertyDescription {
+    public func matches(attributeName: String) -> Bool {
+        return attributeName.starts(with: namespace.resolvedAttributeName(name: name) + ".")
     }
 }
 

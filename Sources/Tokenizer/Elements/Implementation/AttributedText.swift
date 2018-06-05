@@ -11,82 +11,82 @@ import UIKit
 import Reactant
 #endif
 
-/// Enum which represents NS attributes for NSAttributedString (like NSStrokeColorAttributeName). Each case has value and assigned name.
-public enum AttributedTextAttribute {
-    case font(Font)
-//    case paragraphStyle(NSParagraphStyle)
-    case foregroundColor(UIColorPropertyType)
-    case backgroundColor(UIColorPropertyType)
-    case ligature(Int)
-    case kern(Float)
-    case striketroughStyle(UnderlineStyle)
-    case underlineStyle(UnderlineStyle)
-    case strokeColor(UIColorPropertyType)
-    case strokeWidth(Float)
-//    case shadow(NSShadow)
-    case textEffect(String)
-//    case attachment(TextAttachment)
-    case linkURL(URL)
-    case link(String)
-    case baselineOffset(Float)
-    case underlineColor(UIColorPropertyType)
-    case strikethroughColor(UIColorPropertyType)
-    case obliqueness(Float)
-    case expansion(Float)
-    case writingDirection(WritingDirection)
-    case verticalGlyphForm(Int)
-}
-
-extension AttributedTextAttribute {
-    var description: String {
-        switch self {
-        case .font:
-            return "font"
-//        case .paragraphStyle:
-//            return "paragraphStyle"
-        case .foregroundColor:
-            return "foregroundColor"
-        case .backgroundColor:
-            return "backgroundColor"
-        case .ligature:
-            return "ligature"
-        case .kern:
-            return "kern"
-        case .striketroughStyle:
-            return "strikethroughStyle"
-        case .underlineStyle:
-            return "underlineStyle"
-        case .strokeColor:
-            return "strokeColor"
-        case .strokeWidth:
-            return "strokeWidth"
-//        case .shadow:
-//            return "shadow"
-        case .textEffect:
-            return "textEffect"
-//        case .attachment:
+///// Enum which represents NS attributes for NSAttributedString (like NSStrokeColorAttributeName). Each case has value and assigned name.
+//public enum AttributedTextAttribute {
+//    case font(Font)
+//    case foregroundColor(UIColorPropertyType)
+//    case backgroundColor(UIColorPropertyType)
+//    case ligature(Int)
+//    case kern(Float)
+//    case striketroughStyle(UnderlineStyle)
+//    case underlineStyle(UnderlineStyle)
+//    case strokeColor(UIColorPropertyType)
+//    case strokeWidth(Float)
+//    case shadowColor(UIColorPropertyType)
+//    case textEffect(String)
+//    case attachmentImage(Image)
+//    case linkURL(URL)
+//    case link(TransformedText)
+//    case baselineOffset(Float)
+//    case underlineColor(UIColorPropertyType)
+//    case strikethroughColor(UIColorPropertyType)
+//    case obliqueness(Float)
+//    case expansion(Float)
+//    case writingDirection(WritingDirection)
+//    case verticalGlyphForm(Int)
+////    case paragraphStyle(NSParagraphStyle)
+//}
+//
+//extension AttributedTextAttribute {
+//    var description: String {
+//        switch self {
+//        case .font:
+//            return "font"
+//        case .foregroundColor:
+//            return "foregroundColor"
+//        case .backgroundColor:
+//            return "backgroundColor"
+//        case .ligature:
+//            return "ligature"
+//        case .kern:
+//            return "kern"
+//        case .striketroughStyle:
+//            return "strikethroughStyle"
+//        case .underlineStyle:
+//            return "underlineStyle"
+//        case .strokeColor:
+//            return "strokeColor"
+//        case .strokeWidth:
+//            return "strokeWidth"
+////        case .shadow:
+////            return "shadow"
+////        case .textEffect:
+////            return "textEffect"
+//        case .attachmentImage:
 //            return "attachment"
-        case .linkURL:
-            return "link"
-        case .link:
-            return "link"
-        case .baselineOffset:
-            return "baselineOffset"
-        case .underlineColor:
-            return "underlineColor"
-        case .strikethroughColor:
-            return "strikethroughColor"
-        case .obliqueness:
-            return "obliqueness"
-        case .expansion:
-            return "expansion"
-        case .writingDirection:
-            return "writingDirection"
-        case .verticalGlyphForm:
-            return "verticalGlyphForm"
-        }
-    }
-}
+//        case .linkURL:
+//            return "link"
+//        case .link:
+//            return "link"
+//        case .baselineOffset:
+//            return "baselineOffset"
+//        case .underlineColor:
+//            return "underlineColor"
+//        case .strikethroughColor:
+//            return "strikethroughColor"
+//        case .obliqueness:
+//            return "obliqueness"
+//        case .expansion:
+//            return "expansion"
+//        case .writingDirection:
+//            return "writingDirection"
+//        case .verticalGlyphForm:
+//            return "verticalGlyphForm"
+////        case .paragraphStyle:
+////            return "paragraphStyle"
+//        }
+//    }
+//}
 
 //extension Attribute {
 //    fileprivate static var comparison: (Attribute, Attribute) -> Bool {
@@ -122,7 +122,6 @@ extension AttributedTextAttribute {
 //        }
 //    }
 //
-
 //}
 
 extension Array {
@@ -148,34 +147,56 @@ extension Sequence {
     }
 }
 
-public enum AttributedText: ElementSupportedPropertyType {
-    case transform(TransformedText)
-    indirect case attributed(AttributedTextStyle, [AttributedText])
+public struct AttributedText: ElementSupportedPropertyType {
+    public let style: StyleName?
+    public let localProperties: [Property]
+    public let parts: [AttributedText.Part]
+
+    public enum Part {
+        case transform(TransformedText)
+        indirect case attributed(AttributedTextStyle, [AttributedText.Part])
+    }
 }
 
 extension AttributedText {
     public func generate(context: SupportedPropertyTypeContext) -> String {
-        func resolveAttributes(text: AttributedText, attributes: [Property]) -> String {
-            switch text {
+        func resolveAttributes(part: AttributedText.Part, inheritedAttributes: [Property], parentElements: [String]) -> [String] {
+            switch part {
             case .transform(let transformedText):
-                let attributesString = attributes.map {
+                let generatedAttributes = inheritedAttributes.map {
                     ".\($0.name)(\($0.anyValue.generate(context: context.sibling(for: $0.anyValue))))"
-                }.joined(separator: ", ")
-                print("/////////////////////////////////////////////    \(attributesString)    //////////////////////////////////////////////////////////")
-                print("/////////////////////////////////////////////    \(attributes.count)    //////////////////////////////////////////////////////////")
-                return "\(transformedText.generate(context: context.sibling(for: transformedText))).attributed([\(attributesString)])"
+                    }.joined(separator: ", ")
+                let generatedTransformedText = transformedText.generate(context: context.sibling(for: transformedText))
+                let generatedParentStyles = parentElements.compactMap { elementName in
+                    // TODO Implement support for global styles
+                    style.map { context.localStyle(named: $0.name) + ".\(elementName)" }
+                }
+                let attributesString = (generatedParentStyles + ["[\(generatedAttributes)]"]).joined(separator: " + ")
+                return ["\(generatedTransformedText).attributed(\(attributesString))"]
             case .attributed(let attributedStyle, let attributedTexts):
                 // the order of appending is important because the `distinct(where:)` keeps the first element of the duplicates
                 let lowerAttributes = attributedStyle.properties
-                    .arrayByAppending(attributes)
+                    .arrayByAppending(inheritedAttributes)
                     .distinct(where: { $0.name == $1.name })
-                return attributedTexts.map {
-                    resolveAttributes(text: $0, attributes: lowerAttributes)
-                }.joined(separator: " + \n")
+                let newParentElements = parentElements + [attributedStyle.name]
+
+                return attributedTexts.flatMap {
+                    resolveAttributes(part: $0, inheritedAttributes: lowerAttributes, parentElements: newParentElements)
+                }
             }
         }
-        
-        return resolveAttributes(text: self, attributes: [])
+
+        let mutableStringParts = parts.flatMap {
+            resolveAttributes(part: $0, inheritedAttributes: localProperties, parentElements: [])
+        }
+
+        return """
+        {
+            let s = NSMutableAttributedString()
+            \(mutableStringParts.map { "s.append(\($0))" }.joined(separator: "\n"))
+            return s
+        }()
+        """
     }
 
     #if SanAndreas
@@ -202,32 +223,33 @@ extension AttributedText {
 
     #if ReactantRuntime
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
-        func resolveAttributes(text: AttributedText, attributes: [Property]) -> NSAttributedString {
-            switch text {
-            case .transform(let transformedText):
-                let attributesString = attributes.map { ".\($0.name)" }.joined(separator: ", ")
-                return transformedText.generate(context: context.sibling(for: transformedText)).attributed()
-            case .attributed(let attributedStyle, let attributedTexts):
-                // the order of appending is important because the `distinct(where:)` keeps the first element of the duplicates
-                let lowerAttributes = attributedStyle.properties
-                    .arrayByAppending(attributes)
-                    .distinct(where: { $0.name == $1.name })
-                let mutableAttributedString = NSMutableAttributedString()
-                for attributedText in attributedTexts {
-                    let attributedString = resolveAttributes(text: attributedText, attributes: lowerAttributes)
-                    mutableAttributedString.append(attributedString)
-                }
-                return mutableAttributedString
-            }
-        }
-        return resolveAttributes(text: self, attributes: [])
+        return nil
+//        func resolveAttributes(text: AttributedText, attributes: [Property]) -> NSAttributedString {
+//            switch text {
+//            case .transform(let transformedText):
+//                let attributesString = attributes.map { ".\($0.name)" }.joined(separator: ", ")
+//                return transformedText.generate(context: context.sibling(for: transformedText)).attributed()
+//            case .attributed(let attributedStyle, let attributedTexts):
+//                // the order of appending is important because the `distinct(where:)` keeps the first element of the duplicates
+//                let lowerAttributes = attributedStyle.properties
+//                    .arrayByAppending(attributes)
+//                    .distinct(where: { $0.name == $1.name })
+//                let mutableAttributedString = NSMutableAttributedString()
+//                for attributedText in attributedTexts {
+//                    let attributedString = resolveAttributes(text: attributedText, attributes: lowerAttributes)
+//                    mutableAttributedString.append(attributedString)
+//                }
+//                return mutableAttributedString
+//            }
+//        }
+//        return resolveAttributes(text: self, attributes: [])
     }
     #endif
 
     public static func materialize(from element: XMLElement) throws -> AttributedText {
         let styleName = element.value(ofAttribute: "style") as StyleName?
 
-        func parseTextElement(contents: [XMLContent]) throws -> [AttributedText] {
+        func parseTextElement(contents: [XMLContent]) throws -> [AttributedText.Part] {
             return try contents.map { content in
                 switch content {
                 case let textChild as TextElement:
@@ -297,9 +319,9 @@ extension AttributedText {
             }
 
         let parsedText = try parseTextElement(contents: trimmedContents)
+        // FIXME: `AttributedTextStyle` shouldn't be reused here and we should parse the properties ourselves
         let style = try AttributedTextStyle(node: element)
-
-        return .attributed(style, parsedText)
+        return AttributedText(style: styleName, localProperties: style.properties, parts: parsedText)
     }
 
     public static var xsdType: XSDType {
@@ -318,7 +340,7 @@ public class AttributedTextProperties: PropertyContainer {
     public let strokeColor: AssignablePropertyDescription<UIColorPropertyType>
     public let strokeWidth: AssignablePropertyDescription<Float>
     public let shadowColor: AssignablePropertyDescription<UIColorPropertyType>
-    public let shadowOffset: AssignablePropertyDescription<Float>
+    public let shadowOffset: AssignablePropertyDescription<Size>
     public let shadowRadius: AssignablePropertyDescription<Float>
 //    public let textEffect: AssignablePropertyDescription<String>
     public let attachmentImage: AssignablePropertyDescription<Image>

@@ -234,6 +234,10 @@
 		689FA0D0209CD7B000B39225 /* ReactantUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 689FA0CE209CD7B000B39225 /* ReactantUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		689FA0D3209CD7B000B39225 /* ReactantUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689FA0CC209CD7B000B39225 /* ReactantUI.framework */; };
 		689FA0D4209CD7B000B39225 /* ReactantUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 689FA0CC209CD7B000B39225 /* ReactantUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		68BF19B920C66B69000AF052 /* Structure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BF19B820C66B69000AF052 /* Structure.swift */; };
+		68BF19BB20C679AD000AF052 /* Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BF19BA20C679AD000AF052 /* Shadow.swift */; };
+		68BF19BD20C67E12000AF052 /* MultipleAttributeAssignablePropertyDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BF19BC20C67E12000AF052 /* MultipleAttributeAssignablePropertyDescription.swift */; };
+		68BF19BF20C680D2000AF052 /* MultipleAttributeAssignableProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BF19BE20C680D2000AF052 /* MultipleAttributeAssignableProperty.swift */; };
 		7139F67920934BC2009EA7F4 /* Condition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7139F67720934BBB009EA7F4 /* Condition.swift */; };
 		7139F67B20934C1D009EA7F4 /* GeneratedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B689A1EAF870E007CC668 /* GeneratedUI.swift */; };
 		71BAEAB720972E1600D56639 /* ConditionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BAEAB520972DFD00D56639 /* ConditionParser.swift */; };
@@ -519,6 +523,10 @@
 		689FA0CC209CD7B000B39225 /* ReactantUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReactantUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		689FA0CE209CD7B000B39225 /* ReactantUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReactantUI.h; sourceTree = "<group>"; };
 		689FA0CF209CD7B000B39225 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		68BF19B820C66B69000AF052 /* Structure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Structure.swift; sourceTree = "<group>"; };
+		68BF19BA20C679AD000AF052 /* Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shadow.swift; sourceTree = "<group>"; };
+		68BF19BC20C67E12000AF052 /* MultipleAttributeAssignablePropertyDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleAttributeAssignablePropertyDescription.swift; sourceTree = "<group>"; };
+		68BF19BE20C680D2000AF052 /* MultipleAttributeAssignableProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleAttributeAssignableProperty.swift; sourceTree = "<group>"; };
 		7139F67720934BBB009EA7F4 /* Condition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Condition.swift; sourceTree = "<group>"; };
 		7139F67D20934D6E009EA7F4 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		71BAEAB520972DFD00D56639 /* ConditionParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionParser.swift; sourceTree = "<group>"; };
@@ -840,6 +848,9 @@
 				18449188209223A70080B743 /* Types */,
 				184491C3209223A70080B743 /* ValueProperty.swift */,
 				687D4D5E20C02D1800F890CB /* ParagraphStyleProperties.swift */,
+				68BF19B820C66B69000AF052 /* Structure.swift */,
+				68BF19BA20C679AD000AF052 /* Shadow.swift */,
+				68BF19BE20C680D2000AF052 /* MultipleAttributeAssignableProperty.swift */,
 			);
 			path = Properties;
 			sourceTree = "<group>";
@@ -852,6 +863,7 @@
 				1844917F209223A70080B743 /* ControlStatePropertyDescription.swift */,
 				18449180209223A70080B743 /* PropertyDescription.swift */,
 				18449181209223A70080B743 /* ValuePropertyDescription.swift */,
+				68BF19BC20C67E12000AF052 /* MultipleAttributeAssignablePropertyDescription.swift */,
 			);
 			path = Descriptions;
 			sourceTree = "<group>";
@@ -1712,6 +1724,7 @@
 				1844922D209223A70080B743 /* Font.swift in Sources */,
 				18449253209223A70080B743 /* SupportedPropertyType.swift in Sources */,
 				1844922E209223A70080B743 /* Image.swift in Sources */,
+				68BF19BF20C680D2000AF052 /* MultipleAttributeAssignableProperty.swift in Sources */,
 				18449274209223A70080B743 /* XMLSerializableAttribute.swift in Sources */,
 				687D4D5F20C02D1800F890CB /* ParagraphStyleProperties.swift in Sources */,
 				18449271209223A70080B743 /* XMLAttributeBuilder.swift in Sources */,
@@ -1737,6 +1750,7 @@
 				18449234209223A70080B743 /* Size.swift in Sources */,
 				18449247209223A70080B743 /* ProgressViewStyle.swift in Sources */,
 				1844923D209223A70080B743 /* ControlContentHorizontalAlignment.swift in Sources */,
+				68BF19B920C66B69000AF052 /* Structure.swift in Sources */,
 				18449200209223A70080B743 /* FooterTableView.swift in Sources */,
 				18449267209223A70080B743 /* Lexer.swift in Sources */,
 				18449259209223A70080B743 /* ValueProperty.swift in Sources */,
@@ -1773,10 +1787,12 @@
 				1844914420921F150080B743 /* RUIExceptionCatcher.m in Sources */,
 				1844913620921F150080B743 /* LiveUIApplier.swift in Sources */,
 				6893A6B520BBF30E004802E4 /* URL.swift in Sources */,
+				68BF19BB20C679AD000AF052 /* Shadow.swift in Sources */,
 				184491EF209223A70080B743 /* Container.swift in Sources */,
 				1844923B209223A70080B743 /* ActivityIndicatorStyle.swift in Sources */,
 				18449237209223A70080B743 /* TransformationModifier.swift in Sources */,
 				184491F3209223A70080B743 /* MapView.swift in Sources */,
+				68BF19BD20C67E12000AF052 /* MultipleAttributeAssignablePropertyDescription.swift in Sources */,
 				1844921C209223A70080B743 /* ValuePropertyDescription.swift in Sources */,
 				1844913C20921F150080B743 /* PreviewListCell.swift in Sources */,
 				18449222209223A70080B743 /* PropertyMaterializationError.swift in Sources */,

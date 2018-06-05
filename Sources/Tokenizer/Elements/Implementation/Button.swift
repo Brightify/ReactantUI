@@ -17,34 +17,6 @@ public class Button: Container {
         try super.init(node: node)
 
         let titleChildren = node.xmlChildren.filter { $0.name == "title" }
-
-//        func parseTitleElement(element: XMLElement) throws -> [AttributedText] {
-//            var result = [] as [AttributedText]
-//            for child in element.children {
-//                switch child {
-//                case let titleChild as TextElement:
-//                    result.append(AttributedText.transform(try TransformedText.materialize(from: titleChild.text)))
-//                case let elementChild as XMLElement:
-//                    let textStyle = try AttributedTextStyle(elementChild)
-//                    result.append(.attributed(textStyle, try parseTitleElement(element: elementChild)))
-//                default:
-//                    fatalError("Button parsing reached an undefined point inside `title` element.")
-//                }
-//            }
-//            return result
-//        }
-//
-//        for titleElement in titleChildren {
-//            // TODO: do something useful with the `controlState` variable
-//            let controlState: ControlState
-//            if let stateAttribute = titleElement.attribute(by: "state") {
-//                controlState = try ControlState.materialize(from: stateAttribute.text)
-//            } else {
-//                controlState = .normal
-//            }
-//            // TODO: DEBUG ONLY!! REMOVE
-//            print(try parseTitleElement(element: titleElement))
-//        }
     }
 
     public override class var availableProperties: [PropertyDescription] {

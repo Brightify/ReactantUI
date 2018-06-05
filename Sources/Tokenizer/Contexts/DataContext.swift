@@ -10,7 +10,6 @@ import Foundation
 public protocol DataContext {
 
     func localStyle(named name: String) -> String
-
 }
 
 public protocol HasParentContext {

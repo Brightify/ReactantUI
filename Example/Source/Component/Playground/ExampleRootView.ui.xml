@@ -21,7 +21,8 @@
             <base foregroundColor="white" />
         </attributedTextStyle>
         <attributedTextStyle name="attributko">
-            <b fontSize="14" foregroundColor="#f5f5f5" backgroundColor="#dddddd" />
+            <b font="light@14" foregroundColor="#f5f5f5" backgroundColor="#dddddd" />
+            <i font="bold@50" />
         </attributedTextStyle>
     </styles>
 
