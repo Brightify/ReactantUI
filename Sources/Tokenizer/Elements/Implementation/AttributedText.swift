@@ -228,7 +228,7 @@ extension AttributedText {
         let styleName = element.value(ofAttribute: "style") as StyleName?
 
         func parseTextElement(contents: [XMLContent]) throws -> [AttributedText] {
-            return try contents.flatMap { content in
+            return try contents.map { content in
                 switch content {
                 case let textChild as TextElement:
                     return .transform(try TransformedText.materialize(from: textChild.text))
