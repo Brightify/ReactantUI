@@ -219,7 +219,7 @@
             style="attributko"
             foregroundColor="black"
             backgroundColor="red">
-            <b backgroundColor="red">Hello</b> world! <i>Great</i> day! <b>NOT!</b>
+            <b backgroundColor="green">Hello</b> world! <i>Great</i> day! <b>NOT!</b>
         </attributedText>
     </Label>
 </Component>

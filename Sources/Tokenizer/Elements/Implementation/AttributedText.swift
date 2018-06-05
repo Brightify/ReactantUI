@@ -243,7 +243,7 @@ extension AttributedText {
 
         func trimmingWhitespace(content: XMLContent, leading: Bool, indentationLevel: inout Int) throws -> XMLContent? {
             switch content {
-            case var textChild as TextElement:
+            case let textChild as TextElement:
                 let trimmedText = textChild.text.replacingOccurrences(of: leading ? "^\\s+" : "\\s+$",
                                                               with: "",
                                                               options: .regularExpression)
@@ -252,12 +252,13 @@ extension AttributedText {
                 }
                 guard !trimmedText.isEmpty else { return nil }
                 return TextElement(text: trimmedText)
+
             case let elementChild as XMLElement:
+                let index = leading ? elementChild.children.startIndex : elementChild.children.endIndex
+                guard let modifiedChild = try trimmingWhitespace(content: elementChild.children[index], leading: leading, indentationLevel: &indentationLevel)
+                    else { return elementChild }
+                elementChild.children[index] = modifiedChild
                 return elementChild
-//                guard let nextChild = leading ? elementChild.children.first : elementChild.children.last else { return elementChild }
-//
-//                return try trimmingWhitespace(content: nextChild, leading: leading, indentationLevel: &indentationLevel)
-//                return elementChild
 
             default:
                 throw PropertyMaterializationError.unknownValue("Content is neither TextElement nor XMLElement - \(content)")
@@ -271,10 +272,12 @@ extension AttributedText {
                                                                       with: "\\\n",
                                                                       options: .regularExpression)
                 return TextElement(text: fixedText)
+
             case let elementChild as XMLElement:
+                let index = elementChild.children.startIndex
+                elementChild.children[index] = try fixingContentIndentation(content: elementChild.children[index], indentationLevel: indentationLevel)
                 return elementChild
-//                guard let nextChild = elementChild.children.first else { return elementChild }
-//                return try fixingContentIndentation(content: nextChild, indentationLevel: indentationLevel)
+
             default:
                 throw PropertyMaterializationError.unknownValue("Content is neither TextElement nor XMLElement - \(content)")
             }
