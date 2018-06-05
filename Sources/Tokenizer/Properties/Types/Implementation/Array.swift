@@ -12,12 +12,14 @@ extension Array: SupportedPropertyType where Iterator.Element: SupportedProperty
         return "[" + map { $0.generate(context: context.sibling(for: $0)) }.joined(separator: ", ") + "]"
     }
 
+    #if ReactantRuntime
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
-        return [] as [Element]
+        return map { $0.runtimeValue(context: context.sibling(for: $0)) }
     }
+    #endif
 
     public static var xsdType: XSDType {
-        return .builtin(.array)
+        return .builtin(.string)
     }
 }
 
@@ -25,6 +27,6 @@ extension Array: AttributeSupportedPropertyType where Iterator.Element: Attribut
     public static func materialize(from value: String) throws -> Array<Element> {
         // removing spaces might be problematic, hopefully no sane `SupportedPropertyType` uses space as part of tokenizing
         // comma separation might be problematic as some types might use it inside of themselves, e.g. a point (x: 10, y: 12)
-        return try value.replacingOccurrences(of: " ", with: "").components(separatedBy: "|").map { try Element.materialize(from: $0) }
+        return try value.replacingOccurrences(of: " ", with: "").components(separatedBy: ";").map { try Element.materialize(from: $0) }
     }
 }

@@ -13,7 +13,6 @@ public enum BuiltinXSDType: String {
     case decimal
     case boolean
     case token
-    case array
 
     public var xsdName: String {
         return "xs:".appending(rawValue)

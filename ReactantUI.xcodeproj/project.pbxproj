@@ -238,6 +238,12 @@
 		68BF19BB20C679AD000AF052 /* Shadow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BF19BA20C679AD000AF052 /* Shadow.swift */; };
 		68BF19BD20C67E12000AF052 /* MultipleAttributeAssignablePropertyDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BF19BC20C67E12000AF052 /* MultipleAttributeAssignablePropertyDescription.swift */; };
 		68BF19BF20C680D2000AF052 /* MultipleAttributeAssignableProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BF19BE20C680D2000AF052 /* MultipleAttributeAssignableProperty.swift */; };
+		68BF19C320C6A835000AF052 /* ElementControlStateProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BF19C220C6A835000AF052 /* ElementControlStateProperty.swift */; };
+		68BF19C520C6A88B000AF052 /* ElementControlStatePropertyDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BF19C420C6A88B000AF052 /* ElementControlStatePropertyDescription.swift */; };
+		68BF19D420C6D6CA000AF052 /* TextTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BF19D320C6D6CA000AF052 /* TextTab.swift */; };
+		68BF19D620C6DC69000AF052 /* ParagraphStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BF19D520C6DC69000AF052 /* ParagraphStyle.swift */; };
+		68BF19DA20C6F553000AF052 /* NSShadow+convenienceInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BF19D720C6F537000AF052 /* NSShadow+convenienceInit.swift */; };
+		68BF19DB20C6F559000AF052 /* NSShadow+convenienceInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BF19D720C6F537000AF052 /* NSShadow+convenienceInit.swift */; };
 		7139F67920934BC2009EA7F4 /* Condition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7139F67720934BBB009EA7F4 /* Condition.swift */; };
 		7139F67B20934C1D009EA7F4 /* GeneratedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B689A1EAF870E007CC668 /* GeneratedUI.swift */; };
 		71BAEAB720972E1600D56639 /* ConditionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BAEAB520972DFD00D56639 /* ConditionParser.swift */; };
@@ -527,6 +533,11 @@
 		68BF19BA20C679AD000AF052 /* Shadow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shadow.swift; sourceTree = "<group>"; };
 		68BF19BC20C67E12000AF052 /* MultipleAttributeAssignablePropertyDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleAttributeAssignablePropertyDescription.swift; sourceTree = "<group>"; };
 		68BF19BE20C680D2000AF052 /* MultipleAttributeAssignableProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleAttributeAssignableProperty.swift; sourceTree = "<group>"; };
+		68BF19C220C6A835000AF052 /* ElementControlStateProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementControlStateProperty.swift; sourceTree = "<group>"; };
+		68BF19C420C6A88B000AF052 /* ElementControlStatePropertyDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElementControlStatePropertyDescription.swift; sourceTree = "<group>"; };
+		68BF19D320C6D6CA000AF052 /* TextTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextTab.swift; sourceTree = "<group>"; };
+		68BF19D520C6DC69000AF052 /* ParagraphStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParagraphStyle.swift; sourceTree = "<group>"; };
+		68BF19D720C6F537000AF052 /* NSShadow+convenienceInit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSShadow+convenienceInit.swift"; sourceTree = "<group>"; };
 		7139F67720934BBB009EA7F4 /* Condition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Condition.swift; sourceTree = "<group>"; };
 		7139F67D20934D6E009EA7F4 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		71BAEAB520972DFD00D56639 /* ConditionParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionParser.swift; sourceTree = "<group>"; };
@@ -851,6 +862,7 @@
 				68BF19B820C66B69000AF052 /* Structure.swift */,
 				68BF19BA20C679AD000AF052 /* Shadow.swift */,
 				68BF19BE20C680D2000AF052 /* MultipleAttributeAssignableProperty.swift */,
+				68BF19C220C6A835000AF052 /* ElementControlStateProperty.swift */,
 			);
 			path = Properties;
 			sourceTree = "<group>";
@@ -864,6 +876,7 @@
 				18449180209223A70080B743 /* PropertyDescription.swift */,
 				18449181209223A70080B743 /* ValuePropertyDescription.swift */,
 				68BF19BC20C67E12000AF052 /* MultipleAttributeAssignablePropertyDescription.swift */,
+				68BF19C420C6A88B000AF052 /* ElementControlStatePropertyDescription.swift */,
 			);
 			path = Descriptions;
 			sourceTree = "<group>";
@@ -909,6 +922,8 @@
 				184491BB209223A70080B743 /* ViewVisibility.swift */,
 				6893A6B620BBF48C004802E4 /* UnderlineStyle.swift */,
 				6893A6B820BBFA77004802E4 /* WritingDirection.swift */,
+				68BF19D320C6D6CA000AF052 /* TextTab.swift */,
+				68BF19D520C6DC69000AF052 /* ParagraphStyle.swift */,
 			);
 			path = Implementation;
 			sourceTree = "<group>";
@@ -1224,6 +1239,7 @@
 			isa = PBXGroup;
 			children = (
 				689FA0B7209CB2A200B39225 /* UIView+traits.swift */,
+				68BF19D720C6F537000AF052 /* NSShadow+convenienceInit.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1510,7 +1526,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "pushd $PROJECT_DIR\nenv -i HOME=$HOME PATH=$PATH swift build\npopd\n# --enable-live\n$PROJECT_DIR/.build/debug/reactant-ui generate --inputPath=$PROJECT_DIR/Example/ --outputFile=$PROJECT_DIR/Example/Generated/GeneratedUI.swift --xcodeprojPath=$PROJECT_DIR/ReactantUI.xcodeproj\n#pushd $PROJECT_DIR/Example\n#$PROJECT_DIR/.build/debug/reactant-ui --enable-live > $PROJECT_DIR/Example/Generated/GeneratedUI.swift\n#popd";
+			shellScript = "pushd $PROJECT_DIR\nenv -i HOME=$HOME PATH=$PATH swift build\npopd\n# --enable-live\n$PROJECT_DIR/.build/debug/reactant-ui generate --enable-live --inputPath=$PROJECT_DIR/Example/ --outputFile=$PROJECT_DIR/Example/Generated/GeneratedUI.swift --xcodeprojPath=$PROJECT_DIR/ReactantUI.xcodeproj\n#pushd $PROJECT_DIR/Example\n#$PROJECT_DIR/.build/debug/reactant-ui --enable-live > $PROJECT_DIR/Example/Generated/GeneratedUI.swift\n#popd";
 		};
 		2284DAE81FAC95B900D231D3 /* Generate Reactant UI */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1702,6 +1718,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68BF19DB20C6F559000AF052 /* NSShadow+convenienceInit.swift in Sources */,
 				1844921E209223A70080B743 /* Properties.swift in Sources */,
 				18449245209223A70080B743 /* LineBreakMode.swift in Sources */,
 				18449277209223A70080B743 /* XMLElement+Utils.swift in Sources */,
@@ -1769,6 +1786,7 @@
 				18449230209223A70080B743 /* OptionSetValue.swift in Sources */,
 				184491EE209223A70080B743 /* ComponentReference.swift in Sources */,
 				18449276209223A70080B743 /* XMLSerializer.swift in Sources */,
+				68BF19C320C6A835000AF052 /* ElementControlStateProperty.swift in Sources */,
 				184491FD209223A70080B743 /* Stepper.swift in Sources */,
 				1844914120921F150080B743 /* UIWindow+TopViewController.swift in Sources */,
 				687D4D9D20C1B25B00F890CB /* ElementContext.swift in Sources */,
@@ -1778,6 +1796,7 @@
 				18449248209223A70080B743 /* ReturnKeyType.swift in Sources */,
 				184491F0209223A70080B743 /* DatePicker.swift in Sources */,
 				1844913820921F150080B743 /* LiveUIErrorMessage.swift in Sources */,
+				68BF19D420C6D6CA000AF052 /* TextTab.swift in Sources */,
 				1844913420921F150080B743 /* UIWindow+Debug.swift in Sources */,
 				687D4D6120C0360C00F890CB /* Array.swift in Sources */,
 				1844921B209223A70080B743 /* PropertyDescription.swift in Sources */,
@@ -1787,6 +1806,7 @@
 				1844914420921F150080B743 /* RUIExceptionCatcher.m in Sources */,
 				1844913620921F150080B743 /* LiveUIApplier.swift in Sources */,
 				6893A6B520BBF30E004802E4 /* URL.swift in Sources */,
+				68BF19D620C6DC69000AF052 /* ParagraphStyle.swift in Sources */,
 				68BF19BB20C679AD000AF052 /* Shadow.swift in Sources */,
 				184491EF209223A70080B743 /* Container.swift in Sources */,
 				1844923B209223A70080B743 /* ActivityIndicatorStyle.swift in Sources */,
@@ -1808,6 +1828,7 @@
 				18449262209223A70080B743 /* BaseParser.swift in Sources */,
 				18449216209223A70080B743 /* LayoutAttribute.swift in Sources */,
 				1844913920921F150080B743 /* LiveUIErrorMessageItem.swift in Sources */,
+				68BF19C520C6A88B000AF052 /* ElementControlStatePropertyDescription.swift in Sources */,
 				18449243209223A70080B743 /* LayoutAxis.swift in Sources */,
 				18449218209223A70080B743 /* ControlStateProperty.swift in Sources */,
 				71BAEAB720972E1600D56639 /* ConditionParser.swift in Sources */,
@@ -1912,6 +1933,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68BF19DA20C6F553000AF052 /* NSShadow+convenienceInit.swift in Sources */,
 				6836D5F920B8404F00FD2DF8 /* UIView+traits.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

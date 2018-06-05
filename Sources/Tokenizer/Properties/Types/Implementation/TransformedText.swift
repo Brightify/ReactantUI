@@ -36,6 +36,7 @@ extension TransformedText: AttributeSupportedPropertyType {
                     .replacingOccurrences(of: "\"", with: "\\\"")
                     .replacingOccurrences(of: "\n", with: "\\n")
                     .replacingOccurrences(of: "\r", with: "\\r")
+                    .replacingOccurrences(of: "\t", with: "\\t")
 
                 return "\"\(escapedValue)\""
             }
@@ -59,6 +60,7 @@ extension TransformedText: AttributeSupportedPropertyType {
                 return value.replacingOccurrences(of: "\"", with: "&quot;")
                     .replacingOccurrences(of: "\n", with: "\\n")
                     .replacingOccurrences(of: "\r", with: "\\r")
+                    .replacingOccurrences(of: "\t", with: "\\t")
             }
         }
         return resolveTransformations(text: self)
@@ -80,6 +82,7 @@ extension TransformedText: AttributeSupportedPropertyType {
             case .text(let value):
                 return value.replacingOccurrences(of: "\\n", with: "\n")
                     .replacingOccurrences(of: "\\r", with: "\r")
+                    .replacingOccurrences(of: "\\t", with: "\t")
             }
         }
         return resolveTransformations(text: self)

@@ -17,12 +17,12 @@
             backgroundColor.highlighted="white"
             isUserInteractionEnabled="true" />
         <attributedTextStyle name="bandaska">
-            <i fontSize="100" />
+            <i font="20" />
             <base foregroundColor="white" />
         </attributedTextStyle>
         <attributedTextStyle name="attributko">
-            <b font="light@14" foregroundColor="#f5f5f5" backgroundColor="#dddddd" />
-            <i font="bold@50" />
+            <b font="light@14" backgroundColor="green" foregroundColor="#f5f5f5" />
+            <i font="bold@20" backgroundColor="red" foregroundColor="#f5f5f5" />
         </attributedTextStyle>
     </styles>
 
@@ -213,14 +213,39 @@
     </ScrollView> -->
 
     <Label
-        layout:center="super"
+        layout:id="attributnik"
+        layout:edges="super inset(20)"
         numberOfLines="0">
-
         <attributedText
             style="attributko"
-            foregroundColor="black"
-            backgroundColor="red">
-            <b backgroundColor="green">Hello</b> world! <i>Great</i> day! <b>NOT!</b>
+            font="light@17"
+            foregroundColor="white"
+            backgroundColor="black"
+            paragraphStyle.tabStops="15; 50"
+            paragraphStyle.defaultTabInterval="15"
+            paragraphStyle.firstLineHeadIndent="0"
+            paragraphStyle.headIndent="15"
+            paragraphStyle.minimumLineHeight="30"
+            paragraphStyle.maximumLineHeight="30"
+            paragraphStyle.paragraphSpacing="10"
+            >
+            •\tCase Pearls for insight to specific tips or set-up for pediatric cases.\n•\tPatient Reference provides typical vitals signs and equipment sizes.\n•\tCritical Pathway Checklist helps you learn and cover the essentials in a crisis.\n•\tBe Prepared and Keep Your Pedi Safe!
         </attributedText>
     </Label>
+
+    <Button
+        layout:fillHorizontally="super"
+        layout:below="id:attributnik"
+        layout:height="60">
+        <attributedTitle
+            state="selected|highlighted"
+            style="bandaska">
+            <i foregroundColor="white"><i>lolanda</i><base><i>nope.avi</i>more textko</base></i>
+        </attributedTitle>
+        <attributedTitle
+            state="focused"
+            style="bandaska">
+            <i>lolanda</i><base><i>nope.avi</i>more textko</base>
+        </attributedTitle>
+    </Button>
 </Component>

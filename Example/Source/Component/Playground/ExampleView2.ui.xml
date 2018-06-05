@@ -31,14 +31,23 @@
         </Label>
 
             <Button
-                title="Forgotten password?"
                 backgroundColor="#FFddaa"
-                isSelected="true"
                 contentHorizontalAlignment="center"
                 layout:fillHorizontally="super inset(60)"
                 layout:height="50"
                 layout:below="id:label offset(20)"
-                layout:bottom="super inset(10)"/>
+                layout:bottom="super inset(10)">
+                <attributedTitle
+                    foregroundColor="brown"
+                    underlineStyle="styleSingle"
+                    underlineColor="white">
+                    Forgotten passwordko?
+                </attributedTitle>
+                <attributedTitle
+                    state="selected|highlighted">
+                    <s font="bold@30" foregroundColor="white">Tough luck!</s>
+                </attributedTitle>
+            </Button>
 
         <ActivityIndicator
             indicatorStyle="gray"/>

@@ -118,7 +118,7 @@ public class ReactantLiveUIApplier {
     private func applyConstraints(views: [(name: String, element: UIElement, view: UIView)], element: UIElement, superview: UIView) throws {
         let elementType = type(of: element)
         guard let name = views.first(where: { $0.element === element })?.name else {
-            fatalError("Incosistency of name-element-view triples occured")
+            fatalError("Inconsistency of name-element-view triples occured")
         }
 
         guard let view = findView(named: name, in: views) else {

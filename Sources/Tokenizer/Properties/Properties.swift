@@ -50,6 +50,7 @@ public struct Properties: PropertiesContainer {
     public static let simpleTableView = prepare(SimpleTableViewProperites.self)
     public static let progressView = prepare(ProgressViewProperties.self)
     public static let attributedText = prepare(AttributedTextProperties.self)
+    public static let paragraphStyle = prepare(ParagraphStyleProperties.self)
 }
 
 public struct ToolingProperties: PropertiesContainer {

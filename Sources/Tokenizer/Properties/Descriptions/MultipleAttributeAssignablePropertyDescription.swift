@@ -51,7 +51,7 @@ public struct MultipleAttributeAssignablePropertyDescription<T: MultipleAttribut
 extension MultipleAttributeAssignablePropertyDescription: MultipleAttributePropertyDescription where T: MultipleAttributeSupportedPropertyType {
 
     public func materialize(attributes: [String : String]) throws -> Property {
-        let namePrefixLength = namespace.resolvedAttributeName(name: name).count
+        let namePrefixLength = namespace.resolvedAttributeName(name: name).count + 1
 
         let nameAdjustedAttributes = Dictionary(attributes.map { item -> (String, String) in
             var mutableKey = item.key

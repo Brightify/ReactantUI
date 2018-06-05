@@ -53,6 +53,13 @@ public class PropertyContainer {
             properties.append(property)
             return property
         }
+
+        // TODO Remove with Swift 4.2
+        func controlState<T>(name: String, key: String) -> ElementControlStatePropertyDescription<T> {
+            let property = ElementControlStatePropertyDescription<T>(namespace: namespace, name: name, key: key)
+            properties.append(property)
+            return property
+        }
         
         public func property<T>(name: String) -> AssignablePropertyDescription<T> {
             return assignable(name: name, swiftName: name, key: name)
@@ -80,6 +87,10 @@ public class PropertyContainer {
         public func property<T>(name: String) -> ControlStatePropertyDescription<T> {
             return controlState(name: name, key: name)
         }
+
+        public func property<T>(name: String) -> ElementControlStatePropertyDescription<T> {
+            return controlState(name: name, key: name)
+        }
         
         public func property<T>(name: String, key: String) -> ControlStatePropertyDescription<T> {
             return controlState(name: name, key: key)
@@ -87,6 +98,12 @@ public class PropertyContainer {
 
         public func property<T>(name: String) -> ValuePropertyDescription<T> {
             return value(name: name)
+        }
+
+        public func property<T>(name: String) -> MultipleAttributeAssignablePropertyDescription<T> {
+            let property = MultipleAttributeAssignablePropertyDescription<T>(namespace: namespace, name: name, swiftName: name, key: name)
+            properties.append(property)
+            return property
         }
         
         public func namespaced<T: PropertyContainer>(in namespace: String, optional: Bool = false, _ type: T.Type) -> T {

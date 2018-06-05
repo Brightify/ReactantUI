@@ -12,8 +12,8 @@ public class ParagraphStyleProperties: PropertyContainer {
     public let firstLineHeadIndent: AssignablePropertyDescription<Float>
     public let headIndent: AssignablePropertyDescription<Float>
     public let tailIndent: AssignablePropertyDescription<Float>
-    public let tabStops: AssignablePropertyDescription<[Int]>
-    public let lineBreakMode: AssignablePropertyDescription<LineBreakMode> // this might need its own type instead
+    public let tabStops: AssignablePropertyDescription<[TextTab]>
+    public let lineBreakMode: AssignablePropertyDescription<LineBreakMode>
     public let maximumLineHeight: AssignablePropertyDescription<Float>
     public let minimumLineHeight: AssignablePropertyDescription<Float>
     public let lineHeightMultiple: AssignablePropertyDescription<Float>

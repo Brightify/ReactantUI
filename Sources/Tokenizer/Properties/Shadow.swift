@@ -20,12 +20,13 @@ public struct Shadow: MultipleAttributeSupportedPropertyType {
     }
 
     #if SanAndreas
+    // TODO
     public func dematerialize() -> String {
-        return "width: \(width), height: \(height)"
+        return ""
     }
     #endif
 
-    public static func materialize(from attributes: [String : String]) throws -> Shadow {
+    public static func materialize(from attributes: [String: String]) throws -> Shadow {
         let offset = try attributes["offset"].map(Size.materialize) ?? Size.zero
         let blurRadius = try attributes["blurRadius"].map(Float.materialize) ?? 0
         let color = try attributes["color"].map(UIColorPropertyType.materialize)
@@ -40,19 +41,6 @@ public struct Shadow: MultipleAttributeSupportedPropertyType {
 
 #if ReactantRuntime
 import UIKit
-
-extension NSShadow {
-    public convenience init(offset: CGSize?, blurRadius: CGFloat, color: UIColor?) {
-        self.init()
-        if let offset = offset {
-            self.shadowOffset = offset
-        }
-        self.shadowBlurRadius = blurRadius
-        if let color = color {
-            self.shadowColor = color
-        }
-    }
-}
 
 extension Shadow {
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {

@@ -13,12 +13,6 @@ import UIKit
 #endif
 
 public class Label: View {
-    public required init(node: XMLElement) throws {
-        try super.init(node: node)
-
-//        let textChildren = node.xmlChildren.filter { $0.name == "text" }
-    }
-
     public override class var availableProperties: [PropertyDescription] {
         return Properties.label.allProperties
     }

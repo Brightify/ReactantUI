@@ -13,14 +13,18 @@ public struct PropertyHelper {
 
         let attributeProperties = properties.compactMap { $0 as? AttributePropertyDescription }
         let elementProperties = properties.compactMap { $0 as? ElementPropertyDescription }
+        let multipleAttributeProperties = properties.compactMap { $0 as? MultipleAttributePropertyDescription }
 
-        var result = [] as [Property]
-        for (attributeName, attribute) in element.allAttributes {
-            guard let propertyDescription = attributeProperties.first(where: { $0.matches(attributeName: attributeName) }) else {
-                continue
+        var result = try PropertyHelper.deserializeSupportedProperties(properties: attributeProperties, from: element.allAttributes.mapValues { $0.text })
+
+        for propertyDescription in multipleAttributeProperties {
+            var matchedAttributes = [:] as [String: String]
+            for (attributeName, attribute) in element.allAttributes where propertyDescription.matches(attributeName: attributeName) {
+                matchedAttributes[attributeName] = attribute.text
             }
-            let property = try propertyDescription.materialize(attributeName: attributeName, value: attribute.text)
+            guard !matchedAttributes.isEmpty else { continue }
 
+            let property = try propertyDescription.materialize(attributes: matchedAttributes)
             result.append(property)
         }
 
@@ -35,6 +39,15 @@ public struct PropertyHelper {
         }
 
         return result
+    }
+
+    public static func deserializeSupportedProperties(properties: [AttributePropertyDescription], from dictionary: [String: String]) throws -> [Property] {
+        return try dictionary.compactMap { attributeName, attribute in
+            guard let propertyDescription = properties.first(where: { $0.matches(attributeName: attributeName) }) else {
+                return nil
+            }
+            return try propertyDescription.materialize(attributeName: attributeName, value: attribute)
+        }
     }
 
     public static func deserializeToolingProperties(properties: [PropertyDescription], in element: SWXMLHash.XMLElement) throws -> [String: Property] {

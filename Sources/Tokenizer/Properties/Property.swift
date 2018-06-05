@@ -18,7 +18,7 @@ public protocol Property {
     var namespace: [PropertyContainer.Namespace] { get }
 
     var anyValue: SupportedPropertyType { get }
-    
+
     func application(on target: String, context: PropertyContext) -> String
 
     #if SanAndreas

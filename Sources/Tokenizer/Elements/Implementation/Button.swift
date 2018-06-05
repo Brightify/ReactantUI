@@ -12,13 +12,7 @@ import Foundation
 import UIKit
 #endif
 
-public class Button: Container {
-    public required init(node: XMLElement) throws {
-        try super.init(node: node)
-
-        let titleChildren = node.xmlChildren.filter { $0.name == "title" }
-    }
-
+public class Button: View {
     public override class var availableProperties: [PropertyDescription] {
         return Properties.button.allProperties
     }
@@ -48,6 +42,7 @@ public class ButtonProperties: ControlProperties {
     public let contentEdgeInsets: AssignablePropertyDescription<EdgeInsets>
     public let titleEdgeInsets: AssignablePropertyDescription<EdgeInsets>
     public let imageEdgeInsets: AssignablePropertyDescription<EdgeInsets>
+    public let attributedTitle: ElementControlStatePropertyDescription<AttributedText>
     
     public let titleLabel: LabelProperties
     public let imageView: ImageViewProperties
@@ -66,6 +61,7 @@ public class ButtonProperties: ControlProperties {
         contentEdgeInsets = configuration.property(name: "contentEdgeInsets")
         titleEdgeInsets = configuration.property(name: "titleEdgeInsets")
         imageEdgeInsets = configuration.property(name: "imageEdgeInsets")
+        attributedTitle = configuration.property(name: "attributedTitle")
         titleLabel = configuration.namespaced(in: "titleLabel", optional: true, LabelProperties.self)
         imageView = configuration.namespaced(in: "imageView", optional: true, ImageViewProperties.self)
         
