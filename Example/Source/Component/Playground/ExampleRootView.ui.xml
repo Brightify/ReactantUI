@@ -102,7 +102,8 @@
             axis="vertical"
             backgroundColor="black"
             spacing="10"
-            layout:top="super inset(50)"
+            layout:id="stacko"
+            layout:top="super inset(20)"
             layout:fillHorizontally="super inset(20)">
             <Component field="test" />
             <Component type="ExampleView2" />
@@ -213,9 +214,9 @@
     </ScrollView> -->
 
     <Label
-        layout:id="attributnik"
         layout:edges="super inset(20)"
-        numberOfLines="0">
+        numberOfLines="0"
+        alpha="0">
         <attributedText
             style="attributko"
             font="light@17"
@@ -227,15 +228,14 @@
             paragraphStyle.headIndent="15"
             paragraphStyle.minimumLineHeight="30"
             paragraphStyle.maximumLineHeight="30"
-            paragraphStyle.paragraphSpacing="10"
-            >
+            paragraphStyle.paragraphSpacing="10">
             •\tCase Pearls for insight to specific tips or set-up for pediatric cases.\n•\tPatient Reference provides typical vitals signs and equipment sizes.\n•\tCritical Pathway Checklist helps you learn and cover the essentials in a crisis.\n•\tBe Prepared and Keep Your Pedi Safe!
         </attributedText>
     </Label>
 
     <Button
         layout:fillHorizontally="super"
-        layout:below="id:attributnik"
+        layout:below="id:stacko"
         layout:height="60">
         <attributedTitle
             state="selected|highlighted"
@@ -248,4 +248,19 @@
             <i>lolanda</i><base><i>nope.avi</i>more textko</base>
         </attributedTitle>
     </Button>
+
+    <Label
+        layout:bottom="safeAreaLayoutGuide inset(10)"
+        layout:fillHorizontally="super inset(20)"
+        numberOfLines="0">
+        <attributedText
+            style="attributko"
+            font="light@17"
+            foregroundColor="white"
+            backgroundColor="black">
+            <b font="bold@24">Django Freeman</b>
+            Keep Your Pedi Safe!
+            The D is silent.
+        </attributedText>
+    </Label>
 </Component>

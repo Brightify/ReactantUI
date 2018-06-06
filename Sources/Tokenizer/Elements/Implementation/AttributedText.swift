@@ -299,7 +299,7 @@ public class AttributedTextProperties: PropertyContainer {
         writingDirection = configuration.property(name: "writingDirection")
         verticalGlyphForm = configuration.property(name: "verticalGlyphForm")
 
-        paragraphStyle = configuration.property(name: "paragraphStyle") // configuration.namespaced(in: "paragraphStyle", ParagraphStyleProperties.self)
+        paragraphStyle = configuration.property(name: "paragraphStyle")
 
         super.init(configuration: configuration)
     }
