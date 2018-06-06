@@ -63,10 +63,6 @@ class TextParser: BaseParser<TransformedText> {
                 components.append("[")
             case .bracketsClose:
                 components.append("]")
-            case .logicalAnd:
-                components.append("&&")
-            case .logicalOr:
-                components.append("||")
             case .exclamation:
                 components.append("!")
             }
