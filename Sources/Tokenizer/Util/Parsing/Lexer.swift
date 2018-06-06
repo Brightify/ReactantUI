@@ -58,8 +58,6 @@ extension Lexer {
     typealias TokenGenerator = (String) -> Token?
     static let tokenList: [(String, TokenGenerator)] = [
         ("[ \t\n]", { .whitespace($0) }),
-        ("and", { _ in .logicalAnd }),
-        ("or", { _ in .logicalOr }),
         ("[a-zA-Z][a-zA-Z0-9]*", { .identifier($0) }),
         ("-?[0-9]+(\\.[0-9]+)?", { original in Float(original).map { Token.number(value: $0, original: original) } }),
         ("\\(", { _ in .parensOpen }),

@@ -10,9 +10,9 @@ import Foundation
 extension ConditionParser {
     fileprivate func toBinaryOperation(token: Lexer.Token) -> ConditionBinaryOperation? {
         switch token {
-        case .logicalAnd:
+        case .identifier(let candidate) where candidate.lowercased() == "and":
             return .and
-        case .logicalOr:
+        case .identifier(let candidate) where candidate.lowercased() == "or":
             return .or
         case .colon:
             guard let nextToken = peekNextToken() else { return nil }
