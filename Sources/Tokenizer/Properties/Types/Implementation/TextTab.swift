@@ -7,13 +7,7 @@
 
 import Foundation
 
-extension Array where Iterator.Element == TextTab {
-    public static let defaultValue: [TextTab] = (1...12).map { _ in TextTab.defaultValue }
-}
-
 public struct TextTab: AttributeSupportedPropertyType {
-    public static let defaultValue = TextTab(textAlignment: .left, location: 28)
-
     public let textAlignment: TextAlignment
     public let location: Float
 
