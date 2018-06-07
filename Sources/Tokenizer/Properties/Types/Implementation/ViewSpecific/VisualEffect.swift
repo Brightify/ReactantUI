@@ -86,7 +86,7 @@ public enum BlurEffect: String {
 
     extension BlurEffect {
 
-        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
+        public var runtimeValue: Any? {
             switch self {
             case .extraLight:
                 return UIBlurEffect(style: .extraLight)

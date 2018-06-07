@@ -31,7 +31,7 @@
         layout:id="test"
         layout:leading="[!(horizontal == compact) and (vertical == regular) and pad or width :lt 100] super;
                         [(horizontal == compact or vertical == compact or pad) and height :gte 20] self;
-                        :gte 10"
+                        [false] :gte 10"
         layout:top="safeAreaLayoutGuide.top"
         layout:width="100"
         layout:height="50"/>
@@ -105,13 +105,8 @@
             layout:id="stacko"
             layout:top="super inset(20)"
             layout:fillHorizontally="super inset(20)">
-            <Component field="test" />
             <Component type="ExampleView2" />
-            <TextField text="Test" secure="true" layout:height="50" />
-            <ProgressView
-                progress="0.4"
-                progressTintColor="red"
-                trackTintColor="green"/>
+            <Component type="ExampleView2" />
         </StackView>
 
     <!-- <ScrollView layout:edges="super">

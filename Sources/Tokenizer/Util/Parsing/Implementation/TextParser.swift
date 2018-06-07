@@ -11,10 +11,13 @@ class TextParser: BaseParser<TransformedText> {
 
     override func parseSingle() throws -> TransformedText {
         if peekToken() == .colon {
-            let transformIdentifier: String? = peekNext {
-                guard case .identifier(let identifier) = $0, peekNextToken() == .parensOpen else { return nil }
-                return identifier
+            let transformIdentifier: String?
+            if case .identifier(let identifier)? = peekNextToken(), peekAhead(offset: 2) == .parensOpen {
+                transformIdentifier = identifier
+            } else {
+                transformIdentifier = nil
             }
+
             if let identifier = transformIdentifier {
                 try popTokens(3)
                 let lastToken = try popLastToken()

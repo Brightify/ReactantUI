@@ -1,20 +1,15 @@
 //
-//  UIView+traits.swift
-//  ReactantUI
+//  UITraitHelper.swift
+//  LiveUI-iOS
 //
-//  Created by Tadeáš Kříž on 04/05/2018.
+//  Created by Matyáš Kříž on 07/06/2018.
 //
 
+#if canImport(UIKit)
 import Foundation
 import UIKit
 
-public extension UIView {
-    public var traits: UITraitHelper {
-        return UITraitHelper(for: self)
-    }
-}
-
-public struct UITraitHelper {
+public class UITraitHelper {
     public var horizontalSize: UIUserInterfaceSizeClass {
         return view.traitCollection.horizontalSizeClass
     }
@@ -33,6 +28,10 @@ public struct UITraitHelper {
     }
 
     private let view: UIView
+    private lazy var rootView: UIView = getRootView()
+    private var rootViewOrientation: ViewOrientation {
+        return ViewOrientation(size: rootView.frame.size)
+    }
 
     public init(for view: UIView) {
         self.view = view
@@ -50,8 +49,8 @@ public struct UITraitHelper {
         return UIDevice.current.userInterfaceIdiom == deviceType
     }
 
-    public func orientation(_ orientation: UIDeviceOrientation) -> Bool {
-        return UIDevice.current.orientation == orientation
+    public func orientation(_ orientation: ViewOrientation) -> Bool {
+        return rootViewOrientation == orientation
     }
 
     public enum DimensionType {
@@ -62,18 +61,20 @@ public struct UITraitHelper {
     public func viewRootSize(_ dimensionType: DimensionType) -> Float {
         switch dimensionType {
         case .width:
-            return Float(getRootView().frame.width)
+            return Float(rootView.frame.width)
         case .height:
-            return Float(getRootView().frame.height)
+            return Float(rootView.frame.height)
         }
     }
 
     private func getRootView() -> UIView {
         var rootView = view
-        while let superview = view.superview {
+        while let superview = rootView.superview {
             rootView = superview
         }
 
         return rootView
     }
 }
+#endif
+

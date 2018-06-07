@@ -25,7 +25,7 @@ public struct CGColorPropertyType: AttributeSupportedPropertyType {
 
     #if ReactantRuntime
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
-        return (color.runtimeValue as? UIColor)?.cgColor
+        return (color.runtimeValue(context: context.sibling(for: color)) as? UIColor)?.cgColor
     }
     #endif
 

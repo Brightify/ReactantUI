@@ -130,7 +130,10 @@ class ConditionParser: BaseParser<Condition> {
             return parsedCondition
         case .identifier(let identifier):
             try popToken()
-            return .statement(ConditionStatement(identifier: identifier)!)
+            guard let statement = ConditionStatement(identifier: identifier) else {
+                throw ConditionError("Identifier `\(identifier)` is not valid condition statement.")
+            }
+            return .statement(statement)
         case .number(let number, _):
             try popToken()
             return .statement(.number(number))

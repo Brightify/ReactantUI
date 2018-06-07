@@ -9,6 +9,9 @@ let package = Package(
             name: "reactant-ui",
             targets: ["reactant-ui"]),
         .library(
+            name: "Common",
+            targets: ["Common"]),
+        .library(
             name: "Tokenizer",
             targets: ["Tokenizer"]),
         .library(
@@ -22,8 +25,11 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "Tokenizer",
+            name: "Common",
             dependencies: []),
+        .target(
+            name: "Tokenizer",
+            dependencies: ["Common"]),
         .target(
             name: "Generator",
             dependencies: ["Tokenizer", "xcproj", "SwiftCLI", "AEXML"]),

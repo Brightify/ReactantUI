@@ -32,8 +32,61 @@ public class TableView: View {
     #endif
 }
 
+public enum RowHeight: AttributeSupportedPropertyType {
+    private static let automaticIdentifier = "auto"
+
+    case value(Float)
+    case automatic
+
+    public func generate(context: SupportedPropertyTypeContext) -> String {
+        switch self {
+        case .value(let value):
+            return value.generate(context: context.sibling(for: value))
+        case .automatic:
+            return "UITableViewAutomaticDimension"
+        }
+    }
+
+    #if SanAndreas
+    public func dematerialize(context: SupportedPropertyTypeContext) -> String {
+        switch self {
+        case .value(let value):
+            return value.dematerialize(context: context.sibling(for: value))
+        case .automatic:
+            return RowHeight.automaticIdentifier
+        }
+    }
+    #endif
+
+    public static func materialize(from value: String) throws -> RowHeight {
+        if value == automaticIdentifier {
+            return .automatic
+        } else {
+            return try .value(Float.materialize(from: value))
+        }
+    }
+
+    #if canImport(UIKit)
+    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
+        switch self {
+        case .value(let value):
+            return value
+        case .automatic:
+            return UITableViewAutomaticDimension
+        }
+    }
+    #endif
+
+    public static var xsdType: XSDType {
+        let valueType = Float.xsdType
+        let automaticType = XSDType.enumeration(EnumerationXSDType(name: "rowHeightAuto", base: .string, values: [automaticIdentifier]))
+
+        return XSDType.union(UnionXSDType(name: "rowHeight", memberTypes: [valueType, automaticType]))
+    }
+}
+
 public class TableViewProperties: ViewProperties {
-    public let rowHeight: AssignablePropertyDescription<Float>
+    public let rowHeight: AssignablePropertyDescription<RowHeight>
     public let separatorStyle: AssignablePropertyDescription<TableViewCellSeparatorStyle>
     public let separatorColor: AssignablePropertyDescription<UIColorPropertyType>
     public let separatorEffect: AssignablePropertyDescription<VisualEffect>

@@ -6,7 +6,11 @@
 //
 
 import Foundation
-#if ReactantRuntime
+// canImport(Common) is required because there's no module "Common" in ReactantLiveUI
+#if canImport(Common)
+import Common
+#endif
+#if canImport(UIKit)
 import UIKit
 #endif
 
@@ -22,18 +26,19 @@ public struct InterfaceState {
     public let interfaceIdiom: InterfaceIdiom
     public let horizontalSizeClass: InterfaceSizeClass
     public let verticalSizeClass: InterfaceSizeClass
-    public let deviceOrientation: DeviceOrientation
+    public let viewOrientation: ViewOrientation
     public let rootDimensions: (width: Float, height: Float)
 
-    public init(interfaceIdiom: InterfaceIdiom, horizontalSizeClass: InterfaceSizeClass,
-                verticalSizeClass: InterfaceSizeClass, deviceOrientation: DeviceOrientation,
+    public init(interfaceIdiom: InterfaceIdiom,
+                horizontalSizeClass: InterfaceSizeClass,
+                verticalSizeClass: InterfaceSizeClass,
                 rootDimensions: (width: Float, height: Float)) {
 
         self.interfaceIdiom = interfaceIdiom
         self.horizontalSizeClass = horizontalSizeClass
         self.verticalSizeClass = verticalSizeClass
-        self.deviceOrientation = deviceOrientation
         self.rootDimensions = rootDimensions
+        self.viewOrientation = ViewOrientation(width: rootDimensions.width, height: rootDimensions.height)
     }
 }
 
@@ -152,35 +157,39 @@ public indirect enum Condition {
     }
 
     #if ReactantRuntime
-    func evaluate(from interfaceState: InterfaceState, in view: UIView) throws -> Bool {
+    func evaluate(from traits: UITraitHelper, in view: UIView) throws -> Bool {
         switch self {
         case .statement(let statement):
-            return try statement.evaluate(from: interfaceState)
+            return try statement.evaluate(from: traits)
         case .unary(let operation, let condition):
-            return try condition.evaluate(from: interfaceState, in: view) == (operation != .negation)
+            return try condition.evaluate(from: traits, in: view) == (operation != .negation)
         case .binary(let operation, let lhsCondition, let rhsCondition):
             switch operation {
             case .and:
-                return try lhsCondition.evaluate(from: interfaceState, in: view) && rhsCondition.evaluate(from: interfaceState, in: view)
+                return try lhsCondition.evaluate(from: traits, in: view) && rhsCondition.evaluate(from: traits, in: view)
             case .or:
-                return try lhsCondition.evaluate(from: interfaceState, in: view) || rhsCondition.evaluate(from: interfaceState, in: view)
+                return try lhsCondition.evaluate(from: traits, in: view) || rhsCondition.evaluate(from: traits, in: view)
+            case .equal where lhsCondition.isComparable && rhsCondition.isComparable:
+                return try compare(from: traits, in: view)
+            case .equal where !lhsCondition.isComparable && !rhsCondition.isComparable:
+                return try lhsCondition.evaluate(from: traits, in: view) == rhsCondition.evaluate(from: traits, in: view)
             case .equal:
-                return try lhsCondition.evaluate(from: interfaceState, in: view) == rhsCondition.evaluate(from: interfaceState, in: view)
+                throw ConditionError("Can't chech equality ")
             case .less, .lessEqual, .greater, .greaterEqual:
-                return try compare(from: interfaceState, in: view)
+                return try compare(from: traits, in: view)
             }
         }
     }
 
-    func compare(from interfaceState: InterfaceState, in view: UIView) throws -> Bool {
+    func compare(from traits: UITraitHelper, in view: UIView) throws -> Bool {
         guard case .binary(let operation, let lhsCondition, let rhsCondition) = self else {
             fatalError("Comparation evaluation somehow got called with a nonbinary condition.")
         }
         guard case .statement(let lhsStatement) = lhsCondition, case .statement(let rhsStatement) = rhsCondition else {
             throw ConditionError("Cannot evaluate comparison from two conditions, please compare only two factors (don't use parentheses).")
         }
-        let lhsValue = lhsStatement.numberValue(in: view)
-        let rhsValue = rhsStatement.numberValue(in: view)
+        let lhsValue = lhsStatement.numberValue(from: traits)
+        let rhsValue = rhsStatement.numberValue(from: traits)
         switch operation {
         case .less:
             return lhsValue < rhsValue
@@ -209,7 +218,7 @@ public enum ConditionStatement {
     case interfaceIdiom(InterfaceIdiom)
     case sizeClass(SizeClassType, InterfaceSizeClass)
     case interfaceSizeClass(InterfaceSizeClass)
-    case orientation(DeviceOrientation)
+    case orientation(ViewOrientation)
     case trueStatement
     case falseStatement
     case number(Float)
@@ -273,7 +282,7 @@ public enum ConditionStatement {
     }
 
     #if ReactantRuntime
-    func numberValue(in view: UIView) -> Float {
+    func numberValue(from traits: UITraitHelper) -> Float {
         switch self {
         case .interfaceIdiom, .sizeClass, .orientation, .trueStatement, .falseStatement, .interfaceSizeClass:
             fatalError("Requested `numberValue` from a logical condition statement.")
@@ -282,25 +291,25 @@ public enum ConditionStatement {
         case .dimensionType(let type):
             switch type {
             case .width:
-                return view.traits.viewRootSize(.width)
+                return traits.viewRootSize(.width)
             case .height:
-                return view.traits.viewRootSize(.height)
+                return traits.viewRootSize(.height)
             }
         }
     }
 
-    func evaluate(from interfaceState: InterfaceState) throws -> Bool {
+    func evaluate(from traits: UITraitHelper) throws -> Bool {
         switch self {
         case .interfaceIdiom(let idiom):
-            return idiom == interfaceState.interfaceIdiom
-        case .sizeClass(let sizeClass, let type):
-            if sizeClass == .horizontal {
-                return type == interfaceState.horizontalSizeClass
+            return traits.device(idiom.runtimeValue)
+        case .sizeClass(let type, let sizeClass):
+            if type == .horizontal {
+                return traits.size(horizontal: sizeClass.runtimeValue)
             } else {
-                return type == interfaceState.verticalSizeClass
+                return traits.size(vertical: sizeClass.runtimeValue)
             }
         case .orientation(let orientation):
-            return orientation == interfaceState.deviceOrientation
+            return traits.orientation(orientation)
         case .trueStatement:
             return true
         case .falseStatement:
@@ -337,6 +346,23 @@ public enum InterfaceIdiom {
             return "unspecified"
         }
     }
+
+    #if canImport(UIKit)
+    var runtimeValue: UIUserInterfaceIdiom {
+        switch self {
+        case .pad:
+            return .pad
+        case .phone:
+            return .phone
+        case .tv:
+            return .tv
+        case .carPlay:
+            return .carPlay
+        case .unspecified:
+            return .unspecified
+        }
+    }
+    #endif
 }
 
 public enum InterfaceSizeClass {
@@ -354,6 +380,19 @@ public enum InterfaceSizeClass {
             return "unspecified"
         }
     }
+
+    #if canImport(UIKit)
+    var runtimeValue: UIUserInterfaceSizeClass {
+        switch self {
+        case .compact:
+            return .compact
+        case .regular:
+            return .regular
+        case .unspecified:
+            return .unspecified
+        }
+    }
+    #endif
 }
 
 public enum SizeClassType {
@@ -366,29 +405,6 @@ public enum SizeClassType {
             return "horizontal"
         case .vertical:
             return "vertical"
-        }
-    }
-}
-
-public enum DeviceOrientation {
-    case landscape
-    case portrait
-    case faceDown
-    case faceUp
-    case unknown
-
-    var description: String {
-        switch self {
-        case .landscape:
-            return "landscape"
-        case .portrait:
-            return "portrait"
-        case .faceDown:
-            return "faceDown"
-        case .faceUp:
-            return "faceUp"
-        case .unknown:
-            return "unknown"
         }
     }
 }
@@ -582,19 +598,13 @@ extension InterfaceIdiom {
     }
 }
 
-extension DeviceOrientation {
+extension ViewOrientation {
     fileprivate var traitsParameter: String {
         switch self {
-        case .faceDown:
-            return ".faceDown"
-        case .faceUp:
-            return ".faceUp"
         case .portrait:
             return ".portrait"
         case .landscape:
             return ".landscape"
-        case .unknown:
-            return ".unknown"
         }
     }
 }

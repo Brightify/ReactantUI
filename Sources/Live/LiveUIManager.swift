@@ -31,6 +31,7 @@ public class ReactantLiveUIManager {
             definitionsSubject.onNext(definitions)
         }
     }
+    private let forceReapplyTrigger = PublishSubject<AnyObject>()
     private let definitionsSubject = ReplaySubject<[String: (definition: ComponentDefinition, loaded: Date, xmlPath: String)]>.create(bufferSize: 1)
 
     /// Closure to be called right after applying new constraints to Live UI.
@@ -237,8 +238,12 @@ public class ReactantLiveUIManager {
         } else {
             watchers[xmlPath]?.viewCount += 1
         }
+        let reapplyTrigger = forceReapplyTrigger.filter { $0 === view }
         observeDefinition(for: view.__rui.typeName)
-            .observeOn(MainScheduler.asyncInstance)
+            .flatMapLatest {
+                Observable.concat(.just($0), reapplyTrigger.rewrite(with: $0))
+            }
+            .observeOn(MainScheduler.instance)
             .takeUntil((view as UIView).rx.deallocated)
             .subscribe(onNext: { [weak view] definition in
                 guard let view = view else { return }
@@ -249,6 +254,10 @@ public class ReactantLiveUIManager {
                 }
             })
             .disposed(by: disposeBag)
+    }
+
+    public func reapply<UI: UIView>(_ view: UI) where UI: ReactantUI {
+        forceReapplyTrigger.onNext(view)
     }
 
     /**

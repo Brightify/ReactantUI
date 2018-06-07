@@ -5,6 +5,7 @@
 //  Created by Matouš Hýbl on 09/03/2018.
 //
 
+#if !ReactantRuntime
 import Foundation
 
 extension Collection {
@@ -35,3 +36,6 @@ extension Collection {
         return grouped
     }
 }
+#else
+import Reactant
+#endif

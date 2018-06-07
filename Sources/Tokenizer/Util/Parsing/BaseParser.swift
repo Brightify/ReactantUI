@@ -41,45 +41,36 @@ class BaseParser<ITEM> {
         return items
     }
 
-    func hasEnded(tokens: [Lexer.Token]) -> Bool {
-        return peekToken(tokens: tokens, position: position) == nil
-    }
-
     func hasEnded() -> Bool {
-        return hasEnded(tokens: tokens)
+        return peekToken() == nil
     }
 
     func parseSingle() throws -> ITEM {
         fatalError("Abstract!")
     }
 
-    func peekToken(tokens: [Lexer.Token], position: Int) -> Lexer.Token? {
-        guard position < tokens.count else { return nil }
-        return tokens[position]
-    }
-
     func peekToken() -> Lexer.Token? {
-        return peekToken(tokens: tokens, position: position)
-    }
-
-    func peekNextToken(tokens: [Lexer.Token], position: Int) -> Lexer.Token? {
-        guard position < tokens.count - 1 else { return nil }
-        return tokens[position + 1]
+        return peekAhead(offset: 0)
     }
 
     func peekNextToken() -> Lexer.Token? {
-        return peekNextToken(tokens: tokens, position: position)
+        return peekAhead(offset: 1)
     }
 
-    func peekNext<T>(tokens: [Lexer.Token], position: inout Int, _ f: (Lexer.Token) throws -> T?) rethrows -> T? {
-        guard let nextToken = peekNextToken(tokens: tokens, position: position) else { return nil }
-        position += 1
-        defer { position -= 1 }
-        return try f(nextToken)
-    }
+//    func peekNext<T>(tokens: [Lexer.Token], position: inout Int, _ f: (Lexer.Token) throws -> T?) rethrows -> T? {
+//        guard let nextToken = peekNextToken(tokens: tokens, position: position) else { return nil }
+//        position += 1
+//        defer { position -= 1 }
+//        return try f(nextToken)
+//    }
+//
+//    func peekNext<T>(_ f: (Lexer.Token) throws -> T?) rethrows -> T? {
+//        return try peekNext(tokens: tokens, position: &position, f)
+//    }
 
-    func peekNext<T>(_ f: (Lexer.Token) throws -> T?) rethrows -> T? {
-        return try peekNext(tokens: tokens, position: &position, f)
+    func peekAhead(offset: Int) -> Lexer.Token? {
+        guard position + offset < tokens.count else { return nil }
+        return tokens[position + offset]
     }
 
     @discardableResult

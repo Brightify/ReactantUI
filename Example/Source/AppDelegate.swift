@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Reactant
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -14,6 +15,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
+        Configuration.global.set(Properties.Style.controllerRoot) {
+            $0.backgroundColor = .white
+        }
+
         let window = UIWindow()
         self.window = window
         window.backgroundColor = .white

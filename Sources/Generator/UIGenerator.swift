@@ -120,13 +120,7 @@ public class UIGenerator: Generator {
                 }
                 l()
                 l("func updateReactantUI()") {
-                    tempCounter = 1
-                    let guardNames = ["target"] + root.children.generatedNames(tempCounter: &tempCounter)
-                    l("guard ")
-                    for guardName in guardNames {
-                        l("  let \(guardName) = self.\(guardName)\(guardName == guardNames.last ? "" : ",")")
-                    }
-                    l("else { /* FIXME Should we fatalError here? */ return }")
+                    l("guard let target = self.target else { /* FIXME Should we fatalError here? */ return }")
 
                     if configuration.isLiveEnabled {
                         if configuration.swiftVersion >= .swift4_1 {
@@ -134,9 +128,20 @@ public class UIGenerator: Generator {
                         } else {
                             l("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
                         }
-                        // This will register `self` to remove `deinit` from ViewBase
-                        //l("ReactantLiveUIManager.shared.update(target)")
+                        // This will reapply the component definition.
+                        // TODO Do a real "update" instead of "remake" that's being done now
+                        l("ReactantLiveUIManager.shared.reapply(target)")
                         l("#else")
+                    }
+
+                    tempCounter = 1
+                    let guardNames = root.children.generatedNames(tempCounter: &tempCounter)
+                    if !guardNames.isEmpty {
+                        l("guard ")
+                        for guardName in guardNames {
+                            l("  let \(guardName) = self.\(guardName)\(guardName == guardNames.last ? "" : ",")")
+                        }
+                        l("else { /* FIXME Should we fatalError here? */ return }")
                     }
 
                     // TODO: Add conditional properties?

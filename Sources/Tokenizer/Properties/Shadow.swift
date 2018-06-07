@@ -46,7 +46,17 @@ extension Shadow {
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         let offsetValue = offset.runtimeValue(context: context.sibling(for: offset)).flatMap { $0 as? CGSize }
         let colorValue = color.flatMap { $0.runtimeValue(context: context.sibling(for: $0)) }.flatMap { $0 as? UIColor }
-        return NSShadow(offset: offsetValue, blurRadius: CGFloat(blurRadius), color: colorValue)
+
+        let shadow = NSShadow()
+        if let offset = offsetValue {
+            shadow.shadowOffset = offset
+        }
+        if let color = colorValue {
+            shadow.shadowColor = color
+        }
+        shadow.shadowBlurRadius = CGFloat(blurRadius)
+
+        return shadow
     }
 }
 #endif

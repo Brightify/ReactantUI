@@ -152,16 +152,11 @@ public class ReactantLiveUIApplier {
         var error: LiveUIError?
 
         view.snp.makeConstraints { make in
-//            let currentInterfaceState = InterfaceState(
-//                interfaceIdiom: InterfaceIdiom(uiIdiom: UIDevice.current.userInterfaceIdiom),
-//                horizontalSizeClass: InterfaceSizeClass(uiSizeClass: view.traits.horizontalSize),
-//                verticalSizeClass: InterfaceSizeClass(uiSizeClass: view.traits.verticalSize),
-//                deviceOrientation: DeviceOrientation(uiOrientation: UIDevice.current.orientation),
-//                rootDimensions: (width: view.traits.viewRootSize(.width), height: view.traits.viewRootSize(.height))
-//            )
+            let traits = UITraitHelper(for: view)
+
             for constraint in element.layout.constraints {
                 // FIXME: that `try!` is not looking good
-//                if let condition = constraint.condition, try! !condition.evaluate(from: currentInterfaceState, in: view) { continue }
+                if let condition = constraint.condition, try! !condition.evaluate(from: traits, in: view) { continue }
 
                 let maker: ConstraintMakerExtendable
                 switch constraint.anchor {
@@ -352,23 +347,6 @@ extension InterfaceSizeClass {
             self = .regular
         case .unspecified:
             self = .unspecified
-        }
-    }
-}
-
-extension DeviceOrientation {
-    init(uiOrientation: UIDeviceOrientation) {
-        switch uiOrientation {
-        case .faceDown:
-            self = .faceDown
-        case .faceUp:
-            self = .faceUp
-        case .landscapeLeft, .landscapeRight:
-            self = .landscape
-        case .portrait, .portraitUpsideDown:
-            self = .portrait
-        case .unknown:
-            self = .unknown
         }
     }
 }

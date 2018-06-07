@@ -230,7 +230,6 @@
 		6893A6B520BBF30E004802E4 /* URL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6893A6B320BBF0DA004802E4 /* URL.swift */; };
 		6893A6B720BBF48C004802E4 /* UnderlineStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6893A6B620BBF48C004802E4 /* UnderlineStyle.swift */; };
 		6893A6B920BBFA77004802E4 /* WritingDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6893A6B820BBFA77004802E4 /* WritingDirection.swift */; };
-		689FA0B9209CB2A700B39225 /* UIView+traits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689FA0B7209CB2A200B39225 /* UIView+traits.swift */; };
 		689FA0D0209CD7B000B39225 /* ReactantUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 689FA0CE209CD7B000B39225 /* ReactantUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		689FA0D3209CD7B000B39225 /* ReactantUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689FA0CC209CD7B000B39225 /* ReactantUI.framework */; };
 		689FA0D4209CD7B000B39225 /* ReactantUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 689FA0CC209CD7B000B39225 /* ReactantUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -243,7 +242,10 @@
 		68BF19D420C6D6CA000AF052 /* TextTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BF19D320C6D6CA000AF052 /* TextTab.swift */; };
 		68BF19D620C6DC69000AF052 /* ParagraphStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BF19D520C6DC69000AF052 /* ParagraphStyle.swift */; };
 		68BF19DA20C6F553000AF052 /* NSShadow+convenienceInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BF19D720C6F537000AF052 /* NSShadow+convenienceInit.swift */; };
-		68BF19DB20C6F559000AF052 /* NSShadow+convenienceInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BF19D720C6F537000AF052 /* NSShadow+convenienceInit.swift */; };
+		68CA17BE20C977B3005654B0 /* ViewOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA17BD20C977B3005654B0 /* ViewOrientation.swift */; };
+		68CA17D020C97F0D005654B0 /* ViewOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA17BD20C977B3005654B0 /* ViewOrientation.swift */; };
+		68CA17D420C98039005654B0 /* UITraitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA17D320C98039005654B0 /* UITraitHelper.swift */; };
+		68CA17D520C9805A005654B0 /* UITraitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA17D320C98039005654B0 /* UITraitHelper.swift */; };
 		7139F67920934BC2009EA7F4 /* Condition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7139F67720934BBB009EA7F4 /* Condition.swift */; };
 		7139F67B20934C1D009EA7F4 /* GeneratedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B689A1EAF870E007CC668 /* GeneratedUI.swift */; };
 		71BAEAB720972E1600D56639 /* ConditionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BAEAB520972DFD00D56639 /* ConditionParser.swift */; };
@@ -538,6 +540,8 @@
 		68BF19D320C6D6CA000AF052 /* TextTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextTab.swift; sourceTree = "<group>"; };
 		68BF19D520C6DC69000AF052 /* ParagraphStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParagraphStyle.swift; sourceTree = "<group>"; };
 		68BF19D720C6F537000AF052 /* NSShadow+convenienceInit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSShadow+convenienceInit.swift"; sourceTree = "<group>"; };
+		68CA17BD20C977B3005654B0 /* ViewOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewOrientation.swift; sourceTree = "<group>"; };
+		68CA17D320C98039005654B0 /* UITraitHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITraitHelper.swift; sourceTree = "<group>"; };
 		7139F67720934BBB009EA7F4 /* Condition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Condition.swift; sourceTree = "<group>"; };
 		7139F67D20934D6E009EA7F4 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		71BAEAB520972DFD00D56639 /* ConditionParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionParser.swift; sourceTree = "<group>"; };
@@ -675,7 +679,8 @@
 		18448FCA2092053F0080B743 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				689FA0B6209CB29000B39225 /* Common */,
+				68CA17BF20C9781B005654B0 /* Common */,
+				689FA0B6209CB29000B39225 /* Runtime */,
 				184492782092255A0080B743 /* ReactantLiveUI.h */,
 				18449147209223A70080B743 /* Tokenizer */,
 				1844911820921F150080B743 /* Live */,
@@ -1235,13 +1240,13 @@
 			path = Contexts;
 			sourceTree = "<group>";
 		};
-		689FA0B6209CB29000B39225 /* Common */ = {
+		689FA0B6209CB29000B39225 /* Runtime */ = {
 			isa = PBXGroup;
 			children = (
 				689FA0B7209CB2A200B39225 /* UIView+traits.swift */,
 				68BF19D720C6F537000AF052 /* NSShadow+convenienceInit.swift */,
 			);
-			path = Common;
+			path = Runtime;
 			sourceTree = "<group>";
 		};
 		689FA0CD209CD7B000B39225 /* ReactantUI */ = {
@@ -1251,6 +1256,15 @@
 				689FA0CF209CD7B000B39225 /* Info.plist */,
 			);
 			path = ReactantUI;
+			sourceTree = "<group>";
+		};
+		68CA17BF20C9781B005654B0 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				68CA17BD20C977B3005654B0 /* ViewOrientation.swift */,
+				68CA17D320C98039005654B0 /* UITraitHelper.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 		7152B12B2D8D6874507C49C6 /* Pods */ = {
@@ -1374,6 +1388,7 @@
 				2284DAD51FAC855E00D231D3 /* Sources */,
 				2284DAD61FAC855E00D231D3 /* Frameworks */,
 				2284DAD71FAC855E00D231D3 /* Resources */,
+				D0B222E610B405469097B9A5 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1413,7 +1428,8 @@
 				TargetAttributes = {
 					182B68661EAF7589007CC668 = {
 						CreatedOnToolsVersion = 8.3.1;
-						ProvisioningStyle = Manual;
+						DevelopmentTeam = Z4J75M6GAC;
+						ProvisioningStyle = Automatic;
 					};
 					18448FAB2092041B0080B743 = {
 						CreatedOnToolsVersion = 9.2;
@@ -1567,18 +1583,20 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Example/Pods-Example-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Differentiator/Differentiator.framework",
-				"${BUILT_PRODUCTS_DIR}/Reactant/Reactant.framework",
-				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
-				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
-				"${BUILT_PRODUCTS_DIR}/RxDataSources/RxDataSources.framework",
-				"${BUILT_PRODUCTS_DIR}/RxOptional/RxOptional.framework",
-				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Differentiator-iOS/Differentiator.framework",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher-iOS/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/Reactant-iOS/Reactant.framework",
+				"${BUILT_PRODUCTS_DIR}/Result-iOS/Result.framework",
+				"${BUILT_PRODUCTS_DIR}/RxCocoa-iOS/RxCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/RxDataSources-iOS/RxDataSources.framework",
+				"${BUILT_PRODUCTS_DIR}/RxOptional-iOS/RxOptional.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift-iOS/RxSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit-iOS/SnapKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differentiator.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reactant.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
@@ -1646,6 +1664,40 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		D0B222E610B405469097B9A5 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Example-tvOS/Pods-Example-tvOS-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Differentiator-tvOS/Differentiator.framework",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher-tvOS/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/Reactant-tvOS/Reactant.framework",
+				"${BUILT_PRODUCTS_DIR}/Result-tvOS/Result.framework",
+				"${BUILT_PRODUCTS_DIR}/RxCocoa-tvOS/RxCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/RxDataSources-tvOS/RxDataSources.framework",
+				"${BUILT_PRODUCTS_DIR}/RxOptional-tvOS/RxOptional.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift-tvOS/RxSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit-tvOS/SnapKit.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differentiator.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reactant.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxDataSources.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxOptional.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Example-tvOS/Pods-Example-tvOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		F43B5C19F6586BA1C5EA8D15 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1653,14 +1705,15 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests/Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Differentiator/Differentiator.framework",
-				"${BUILT_PRODUCTS_DIR}/Reactant/Reactant.framework",
-				"${BUILT_PRODUCTS_DIR}/Result/Result.framework",
-				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
-				"${BUILT_PRODUCTS_DIR}/RxDataSources/RxDataSources.framework",
-				"${BUILT_PRODUCTS_DIR}/RxOptional/RxOptional.framework",
-				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Differentiator-iOS/Differentiator.framework",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher-iOS/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/Reactant-iOS/Reactant.framework",
+				"${BUILT_PRODUCTS_DIR}/Result-iOS/Result.framework",
+				"${BUILT_PRODUCTS_DIR}/RxCocoa-iOS/RxCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/RxDataSources-iOS/RxDataSources.framework",
+				"${BUILT_PRODUCTS_DIR}/RxOptional-iOS/RxOptional.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift-iOS/RxSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit-iOS/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Nimble/Nimble.framework",
 				"${BUILT_PRODUCTS_DIR}/Quick/Quick.framework",
 				"${BUILT_PRODUCTS_DIR}/RxBlocking/RxBlocking.framework",
@@ -1670,6 +1723,7 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differentiator.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reactant.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
@@ -1718,7 +1772,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				68BF19DB20C6F559000AF052 /* NSShadow+convenienceInit.swift in Sources */,
 				1844921E209223A70080B743 /* Properties.swift in Sources */,
 				18449245209223A70080B743 /* LineBreakMode.swift in Sources */,
 				18449277209223A70080B743 /* XMLElement+Utils.swift in Sources */,
@@ -1745,6 +1798,7 @@
 				18449274209223A70080B743 /* XMLSerializableAttribute.swift in Sources */,
 				687D4D5F20C02D1800F890CB /* ParagraphStyleProperties.swift in Sources */,
 				18449271209223A70080B743 /* XMLAttributeBuilder.swift in Sources */,
+				68CA17D420C98039005654B0 /* UITraitHelper.swift in Sources */,
 				1844925E209223A70080B743 /* Collection+groupBy.swift in Sources */,
 				18449211209223A70080B743 /* ConstraintRelation.swift in Sources */,
 				18449239209223A70080B743 /* TransformedText.swift in Sources */,
@@ -1774,6 +1828,7 @@
 				1844924D209223A70080B743 /* TextAlignment.swift in Sources */,
 				18449268209223A70080B743 /* ParseError.swift in Sources */,
 				18449228209223A70080B743 /* ContentMode.swift in Sources */,
+				68CA17D020C97F0D005654B0 /* ViewOrientation.swift in Sources */,
 				184491F9209223A70080B743 /* SearchBar.swift in Sources */,
 				18449227209223A70080B743 /* Color.swift in Sources */,
 				18449235209223A70080B743 /* SystemFontWeight.swift in Sources */,
@@ -1872,7 +1927,6 @@
 				1844914020921F150080B743 /* ReactantLiveUIConfiguration.swift in Sources */,
 				18449215209223A70080B743 /* LayoutAnchor.swift in Sources */,
 				1844913E20921F150080B743 /* PreviewListRootView.swift in Sources */,
-				689FA0B9209CB2A700B39225 /* UIView+traits.swift in Sources */,
 				18449219209223A70080B743 /* AssignablePropertyDesciption.swift in Sources */,
 				184491FF209223A70080B743 /* TabBar.swift in Sources */,
 				184491F1209223A70080B743 /* ImageView.swift in Sources */,
@@ -1933,8 +1987,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68CA17D520C9805A005654B0 /* UITraitHelper.swift in Sources */,
 				68BF19DA20C6F553000AF052 /* NSShadow+convenienceInit.swift in Sources */,
 				6836D5F920B8404F00FD2DF8 /* UIView+traits.swift in Sources */,
+				68CA17BE20C977B3005654B0 /* ViewOrientation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2071,10 +2127,10 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = Z4J75M6GAC;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2096,7 +2152,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = org.brightify.reactant.Example;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.brightify.reactant.Example-MK";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -2134,10 +2190,10 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = Z4J75M6GAC;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -2152,7 +2208,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = org.brightify.reactant.Example;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.brightify.reactant.Example-MK";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
