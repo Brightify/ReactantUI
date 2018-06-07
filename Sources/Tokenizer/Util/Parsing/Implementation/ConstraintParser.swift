@@ -33,6 +33,7 @@ class ConstraintParser: BaseParser<Constraint> {
             }
 
             condition = try ConditionParser(tokens: conditionTokens).parseSingle()
+            try condition?.validate()
         }
 
         let field = try parseField()

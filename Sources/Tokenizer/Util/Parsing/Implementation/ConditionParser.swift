@@ -107,7 +107,7 @@ class ConditionParser: BaseParser<Condition> {
         let mergedCondition: Condition
         if case .statement(let lhsStatement) = lhsCondition,
             case .statement(let rhsStatement) = rhsCondition,
-            let mergedStatement = lhsStatement.mergeWithSizeClass(statement: rhsStatement) {
+            let mergedStatement = lhsStatement.mergeWith(statement: rhsStatement) {
 
             mergedCondition = .statement(mergedStatement)
         } else {

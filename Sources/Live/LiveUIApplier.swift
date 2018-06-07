@@ -152,7 +152,17 @@ public class ReactantLiveUIApplier {
         var error: LiveUIError?
 
         view.snp.makeConstraints { make in
+//            let currentInterfaceState = InterfaceState(
+//                interfaceIdiom: InterfaceIdiom(uiIdiom: UIDevice.current.userInterfaceIdiom),
+//                horizontalSizeClass: InterfaceSizeClass(uiSizeClass: view.traits.horizontalSize),
+//                verticalSizeClass: InterfaceSizeClass(uiSizeClass: view.traits.verticalSize),
+//                deviceOrientation: DeviceOrientation(uiOrientation: UIDevice.current.orientation),
+//                rootDimensions: (width: view.traits.viewRootSize(.width), height: view.traits.viewRootSize(.height))
+//            )
             for constraint in element.layout.constraints {
+                // FIXME: that `try!` is not looking good
+//                if let condition = constraint.condition, try! !condition.evaluate(from: currentInterfaceState, in: view) { continue }
+
                 let maker: ConstraintMakerExtendable
                 switch constraint.anchor {
                 case .top:
@@ -299,6 +309,7 @@ public class ReactantLiveUIApplier {
             try container.children.forEach { try applyConstraints(views: views, element: $0, superview: view) }
         }
     }
+
 }
 
 extension UIView {
@@ -311,6 +322,53 @@ extension UIView {
         }
         set {
             associateObject(self, key: &UIView.applierTagKey, value: newValue)
+        }
+    }
+}
+
+extension InterfaceIdiom {
+    init(uiIdiom: UIUserInterfaceIdiom) {
+        switch uiIdiom {
+        case .carPlay:
+            self = .carPlay
+        case .pad:
+            self = .pad
+        case .phone:
+            self = .phone
+        case .tv:
+            self = .tv
+        case .unspecified:
+            self = .unspecified
+        }
+    }
+}
+
+extension InterfaceSizeClass {
+    init(uiSizeClass: UIUserInterfaceSizeClass) {
+        switch uiSizeClass {
+        case .compact:
+            self = .compact
+        case .regular:
+            self = .regular
+        case .unspecified:
+            self = .unspecified
+        }
+    }
+}
+
+extension DeviceOrientation {
+    init(uiOrientation: UIDeviceOrientation) {
+        switch uiOrientation {
+        case .faceDown:
+            self = .faceDown
+        case .faceUp:
+            self = .faceUp
+        case .landscapeLeft, .landscapeRight:
+            self = .landscape
+        case .portrait, .portraitUpsideDown:
+            self = .portrait
+        case .unknown:
+            self = .unknown
         }
     }
 }
