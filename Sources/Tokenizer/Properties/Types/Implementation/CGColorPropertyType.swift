@@ -14,7 +14,7 @@ public struct CGColorPropertyType: AttributeSupportedPropertyType {
     public let color: UIColorPropertyType
 
     public func generate(context: SupportedPropertyTypeContext) -> String {
-        return try "\(color.generate(context: context.sibling(for: color))).cgColor"
+        return "\(color.generate(context: context.sibling(for: color))).cgColor"
     }
 
     #if SanAndreas

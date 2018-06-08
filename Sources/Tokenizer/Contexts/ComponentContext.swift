@@ -19,6 +19,13 @@ public struct ComponentContext: DataContext {
     public func localStyle(named name: String) -> String {
         return component.stylesName + "." + name
     }
+
+    public func style(named styleName: StyleName) -> Style? {
+        guard case .local(let name) = styleName else {
+            return globalContext.style(named: styleName)
+        }
+        return component.styles.first { $0.name.name == name }
+    }
 }
 
 extension ComponentContext: HasGlobalContext { }

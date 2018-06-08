@@ -37,9 +37,7 @@ public class ReactantLiveUIManager {
     /// Closure to be called right after applying new constraints to Live UI.
     public var onApplied: ((ComponentDefinition, UIView) -> Void)?
 
-    private var globalContext: GlobalContext {
-        return GlobalContext(styleSheets: [])
-    }
+    private var globalContext: GlobalContext = GlobalContext(styleSheets: [])
 
     private var styles: [String: StyleGroup] = [:] {
         didSet {
@@ -305,6 +303,8 @@ public class ReactantLiveUIManager {
                         let group: StyleGroup = try xml["styleGroup"].value()
                         oldStyles[group.name] = group
                         self.styles = oldStyles
+                        // FIXME: Inside GlobalContext init we do the opposite of what's done here (building the dictionary), it could be made simpler)
+                        self.globalContext = GlobalContext(styleSheets: Array(self.styles.values))
                     } catch let error {
                         self.logError(error, in: path)
                     }

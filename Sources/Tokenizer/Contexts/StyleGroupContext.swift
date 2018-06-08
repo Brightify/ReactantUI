@@ -19,6 +19,14 @@ public struct StyleGroupContext: DataContext {
     public func localStyle(named name: String) -> String {
         return group.swiftName + "." + name
     }
+
+    public func style(named styleName: StyleName) -> Style? {
+        guard case .global(let groupName, let name) = styleName, groupName == group.name else {
+            return globalContext.style(named: styleName)
+        }
+
+        return group.styles.first { $0.name.name == name }
+    }
 }
 
 extension StyleGroupContext: HasGlobalContext { }

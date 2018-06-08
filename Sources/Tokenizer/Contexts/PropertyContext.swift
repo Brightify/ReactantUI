@@ -15,8 +15,4 @@ public struct PropertyContext: DataContext, HasParentContext {
         self.parentContext = parentContext
         self.property = property
     }
-
-    public func localStyle(named name: String) -> String {
-        return parentContext.localStyle(named: name)
-    }
 }

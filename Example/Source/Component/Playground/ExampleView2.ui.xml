@@ -22,8 +22,8 @@
             font=":regular@20"
             numberOfLines="0"
             textAlignment="center"
-            layout:top="[portrait] super inset(100);
-                        [landscape] super inset(20)"
+            layout:top="[portrait] super inset(10);
+                        [landscape] super inset(0)"
             layout:centerX="super"
             layout:leading=":gte super inset(10)"
             layout:trailing=":lte super inset(10)">
@@ -48,7 +48,7 @@
                 </attributedTitle>
                 <attributedTitle
                     state="selected|highlighted">
-                    <s font="bold@30" foregroundColor="white">Tough luck!</s>
+                    <s font="bold@30" foregroundColor="white">Tough fuck!</s>
                 </attributedTitle>
             </Button>
 

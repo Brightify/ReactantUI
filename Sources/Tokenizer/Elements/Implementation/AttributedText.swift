@@ -238,12 +238,20 @@ extension AttributedText {
             }
         }
 
-        let mutableStringParts = parts.flatMap {
-            resolveAttributes(part: $0, inheritedAttributes: localProperties)
+        let lowerAttributes: [Property]
+        if let styleName = style, let styleType = context.style(named: styleName)?.type,
+            case .attributedText(let styles) = styleType {
+            lowerAttributes = localProperties
+                .arrayByAppending(styles.flatMap { $0.properties })
+                .distinct(where: { $0.name == $1.name })
+        } else {
+            lowerAttributes = localProperties
         }
 
         let result = NSMutableAttributedString()
-        mutableStringParts.forEach { result.append($0) }
+        parts
+            .flatMap { resolveAttributes(part: $0, inheritedAttributes: lowerAttributes) }
+            .forEach { result.append($0) }
         return result
     }
     #endif

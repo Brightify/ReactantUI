@@ -10,6 +10,8 @@ import Foundation
 public protocol DataContext {
 
     func localStyle(named name: String) -> String
+
+    func style(named styleName: StyleName) -> Style?
 }
 
 public protocol HasParentContext {
@@ -31,5 +33,19 @@ extension HasParentContext where Self: HasGlobalContext {
 extension DataContext where Self: HasParentContext, Self.ParentContext: DataContext {
     public func localStyle(named name: String) -> String {
         return parentContext.localStyle(named: name)
+    }
+
+    public func style(named styleName: StyleName) -> Style? {
+        return parentContext.style(named: styleName)
+    }
+}
+
+extension DataContext where Self: HasParentContext, Self.ParentContext == DataContext {
+    public func localStyle(named name: String) -> String {
+        return parentContext.localStyle(named: name)
+    }
+
+    public func style(named styleName: StyleName) -> Style? {
+        return parentContext.style(named: styleName)
     }
 }
