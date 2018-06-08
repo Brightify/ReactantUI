@@ -39,7 +39,7 @@ public struct Shadow: MultipleAttributeSupportedPropertyType {
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 
 extension Shadow {

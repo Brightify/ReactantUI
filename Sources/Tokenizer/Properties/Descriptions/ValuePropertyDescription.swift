@@ -8,7 +8,7 @@
 
 import Foundation
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 #endif
 

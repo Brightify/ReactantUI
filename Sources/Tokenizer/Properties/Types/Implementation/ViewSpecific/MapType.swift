@@ -26,7 +26,7 @@ public enum MapType: String, EnumPropertyType, AttributeSupportedPropertyType {
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
     import MapKit
 
     extension MapType {

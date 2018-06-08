@@ -8,7 +8,7 @@
 
 import Foundation
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 #endif
 
@@ -21,7 +21,7 @@ public class TabBar: View {
         return "UITabBar"
     }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public override func initialize() -> UIView {
         return UITabBar()
     }

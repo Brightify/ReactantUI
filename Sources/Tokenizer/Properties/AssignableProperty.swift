@@ -8,7 +8,7 @@
 
 import Foundation
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 #endif
 
@@ -33,7 +33,7 @@ public struct AssignableProperty<T: AttributeSupportedPropertyType>: TypedProper
     }
     #endif
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public func apply(on object: AnyObject, context: PropertyContext) throws {
         let key = description.key
         let selector = Selector("set\(key.capitalizingFirstLetter()):")

@@ -24,7 +24,7 @@ public enum ActivityIndicatorStyle: String, EnumPropertyType, AttributeSupported
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
     import UIKit
 
     extension ActivityIndicatorStyle {

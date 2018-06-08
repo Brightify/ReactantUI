@@ -155,7 +155,7 @@ public enum Color {
 //    }
 //}
 
-//#if ReactantRuntime
+//#if canImport(UIKit)
 //import UIKit
 //
 //extension Color {

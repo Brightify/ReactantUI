@@ -8,7 +8,7 @@
 
 import Foundation
 
-#if ReactantRuntime
+#if canImport(UIKit)
     import UIKit
 #endif
 public class TextView: View {
@@ -20,7 +20,7 @@ public class TextView: View {
         return "UITextView"
     }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public override func initialize() -> UIView {
         return UITextView()
     }

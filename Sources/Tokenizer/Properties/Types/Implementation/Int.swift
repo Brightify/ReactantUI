@@ -12,7 +12,7 @@ extension Int: AttributeSupportedPropertyType {
         return "\(self)"
     }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         return self
     }

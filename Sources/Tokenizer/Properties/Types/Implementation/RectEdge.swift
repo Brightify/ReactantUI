@@ -33,7 +33,7 @@ public enum RectEdge: String {
 }
 
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 
 extension RectEdge: OptionSetValue {

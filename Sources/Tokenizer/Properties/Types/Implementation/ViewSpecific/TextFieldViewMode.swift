@@ -26,7 +26,7 @@ public enum TextFieldViewMode: String, EnumPropertyType, AttributeSupportedPrope
 }
 
 
-#if ReactantRuntime
+#if canImport(UIKit)
     import UIKit
 
     extension TextFieldViewMode {

@@ -25,7 +25,7 @@ public enum DatePickerMode: String, EnumPropertyType, AttributeSupportedProperty
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 
 extension DatePickerMode {

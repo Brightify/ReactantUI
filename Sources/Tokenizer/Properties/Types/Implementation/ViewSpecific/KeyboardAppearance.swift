@@ -24,7 +24,7 @@ public enum KeyboardAppearance: String, EnumPropertyType, AttributeSupportedProp
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
     import UIKit
 
     extension KeyboardAppearance {

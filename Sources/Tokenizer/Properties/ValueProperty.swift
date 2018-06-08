@@ -5,7 +5,7 @@
 //  Created by Matouš Hýbl on 23/03/2018.
 //
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 #endif
 
@@ -30,7 +30,7 @@ public struct ValueProperty<T: AttributeSupportedPropertyType>: TypedProperty {
     }
     #endif
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public func apply(on object: AnyObject, context: PropertyContext) throws {
 
     }

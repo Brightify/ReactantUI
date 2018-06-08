@@ -26,7 +26,7 @@ public enum LayoutDistribution: String, EnumPropertyType, AttributeSupportedProp
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
     import UIKit
 
     extension LayoutDistribution {

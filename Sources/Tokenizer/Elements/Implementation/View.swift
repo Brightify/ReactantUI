@@ -8,7 +8,7 @@
 
 import Foundation
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 #endif
 
@@ -44,7 +44,7 @@ public class View: XMLElementDeserializable, UIElement {
         return "\(try type(of: self).runtimeType())()"
     }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public func initialize() throws -> UIView {
         return UIView()
     }
@@ -243,7 +243,7 @@ public struct PreferredSize: SupportedPropertyType {
     }
     #endif
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         return nil
     }

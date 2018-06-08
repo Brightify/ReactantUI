@@ -27,7 +27,7 @@ public enum LayoutAlignment: String, EnumPropertyType, AttributeSupportedPropert
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
     import UIKit
 
     extension LayoutAlignment {

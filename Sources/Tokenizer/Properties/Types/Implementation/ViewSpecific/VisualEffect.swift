@@ -32,7 +32,7 @@ public enum VisualEffect: AttributeSupportedPropertyType {
     }
     #endif
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         switch self {
         case .blur(let effect):
@@ -81,7 +81,7 @@ public enum BlurEffect: String {
     static let allValues: [BlurEffect] = [.extraLight, .light, .dark, .prominent, .regular]
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
     import UIKit
 
     extension BlurEffect {

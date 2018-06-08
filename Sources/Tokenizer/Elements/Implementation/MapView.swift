@@ -8,7 +8,7 @@
 
 import Foundation
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 import MapKit
 #endif
@@ -30,7 +30,7 @@ public class MapView: View {
         return "MKMapView"
     }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public override func initialize() -> UIView {
     return MKMapView()
     }

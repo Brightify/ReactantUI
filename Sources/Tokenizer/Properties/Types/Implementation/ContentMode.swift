@@ -34,7 +34,7 @@ public enum ContentMode: String, EnumPropertyType, AttributeSupportedPropertyTyp
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 
 extension ContentMode {

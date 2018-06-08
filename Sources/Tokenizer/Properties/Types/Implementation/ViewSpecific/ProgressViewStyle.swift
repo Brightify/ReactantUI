@@ -22,7 +22,7 @@ public enum ProgressViewStyle: String, EnumPropertyType, AttributeSupportedPrope
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 
 extension ProgressViewStyle {

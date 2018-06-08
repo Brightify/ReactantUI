@@ -8,7 +8,7 @@
 
 import Foundation
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 #endif
 
@@ -22,7 +22,7 @@ public class StackView: Container {
         return "addArrangedSubview"
     }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public override func add(subview: UIView, toInstanceOfSelf: UIView) {
         guard let stackView = toInstanceOfSelf as? UIStackView else {
             return super.add(subview: subview, toInstanceOfSelf: toInstanceOfSelf)
@@ -35,7 +35,7 @@ public class StackView: Container {
         return "UIStackView"
     }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public override func initialize() -> UIView {
         return UIStackView()
     }

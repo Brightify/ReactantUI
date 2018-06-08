@@ -43,7 +43,7 @@ public struct TextTab: AttributeSupportedPropertyType {
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 
 extension TextTab {

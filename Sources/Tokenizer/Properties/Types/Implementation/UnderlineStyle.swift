@@ -6,7 +6,7 @@
 //
 
 import Foundation
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 #endif
 
@@ -34,7 +34,7 @@ public enum UnderlineStyle: String, EnumPropertyType, AttributeSupportedProperty
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 
 extension UnderlineStyle {

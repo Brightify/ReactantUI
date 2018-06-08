@@ -8,7 +8,7 @@
 
 import Foundation
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 #endif
 
@@ -26,7 +26,7 @@ public class PickerView: View {
         #endif
     }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public override func initialize() throws -> UIView {
         #if os(tvOS)
             throw TokenizationError.unsupportedElementError(element: PickerView.self)

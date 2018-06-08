@@ -23,7 +23,7 @@ public enum WritingDirection: String, EnumPropertyType, AttributeSupportedProper
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 
 extension WritingDirection {

@@ -24,7 +24,7 @@ public enum SearchBarStyle: String, EnumPropertyType, AttributeSupportedProperty
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
     import UIKit
 
     extension SearchBarStyle {

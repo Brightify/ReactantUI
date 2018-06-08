@@ -8,7 +8,7 @@
 
 import Foundation
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 #endif
 
@@ -25,7 +25,7 @@ public class Toolbar: View {
         #endif
     }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public override func initialize() -> UIView {
         #if os(tvOS)
             fatalError("View not available in tvOS")

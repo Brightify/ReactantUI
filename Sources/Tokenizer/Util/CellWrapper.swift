@@ -6,7 +6,7 @@
 //
 
 import Foundation
-#if ReactantRuntime
+#if canImport(UIKit)
     import UIKit
     import Reactant
     import RxDataSources

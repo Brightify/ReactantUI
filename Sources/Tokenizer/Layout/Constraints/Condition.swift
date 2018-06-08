@@ -156,7 +156,7 @@ public indirect enum Condition {
         }
     }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     func evaluate(from traits: UITraitHelper, in view: UIView) throws -> Bool {
         switch self {
         case .statement(let statement):
@@ -281,7 +281,7 @@ public enum ConditionStatement {
         }
     }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     func numberValue(from traits: UITraitHelper) -> Float {
         switch self {
         case .interfaceIdiom, .sizeClass, .orientation, .trueStatement, .falseStatement, .interfaceSizeClass:

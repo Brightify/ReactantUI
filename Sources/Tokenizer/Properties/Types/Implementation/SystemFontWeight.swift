@@ -7,7 +7,7 @@
 //
 
 import Foundation
-#if ReactantRuntime
+#if canImport(UIKit)
     import UIKit
 #endif
 
@@ -49,7 +49,7 @@ public enum SystemFontWeight: String {
         }
     }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public var value: CGFloat {
         switch self {
         case .thin:

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-#if ReactantRuntime
+#if canImport(UIKit)
     import UIKit
 #endif
 
@@ -39,7 +39,7 @@ public struct UIColorPropertyType: AttributeSupportedPropertyType {
     }
     #endif
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         switch color {
         case .absolute(let red, let green, let blue, let alpha):

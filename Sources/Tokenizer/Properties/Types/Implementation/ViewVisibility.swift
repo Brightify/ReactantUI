@@ -40,7 +40,7 @@ public enum ViewCollapseAxis: String, EnumPropertyType {
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
     import Reactant
 
     extension ViewVisibility {
@@ -58,7 +58,7 @@ public enum ViewCollapseAxis: String, EnumPropertyType {
     }
 #endif
 
-#if ReactantRuntime
+#if canImport(UIKit)
 
     extension ViewCollapseAxis {
 

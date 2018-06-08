@@ -25,7 +25,7 @@ public enum TextBorderStyle: String, EnumPropertyType, AttributeSupportedPropert
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
     import UIKit
 
     extension TextBorderStyle {

@@ -50,7 +50,7 @@ public enum TextContentType: String, EnumPropertyType, AttributeSupportedPropert
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
     import UIKit
 
     extension TextContentType {

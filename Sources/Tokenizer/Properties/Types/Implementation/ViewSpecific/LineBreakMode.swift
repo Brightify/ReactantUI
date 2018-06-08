@@ -28,7 +28,7 @@ public enum LineBreakMode: String, EnumPropertyType, AttributeSupportedPropertyT
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 
 extension LineBreakMode {

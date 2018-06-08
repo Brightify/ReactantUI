@@ -24,7 +24,7 @@ public enum ScrollViewIndicatorStyle: String, EnumPropertyType, AttributeSupport
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
     import UIKit
 
     extension ScrollViewIndicatorStyle {

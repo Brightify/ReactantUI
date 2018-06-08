@@ -8,7 +8,7 @@
 
 import Foundation
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 import Reactant
 import RxDataSources
@@ -67,7 +67,7 @@ public class PlainTableView: View, ComponentDefinitionContainer {
         return element
     }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public override func initialize() throws -> UIView {
         let createCell = try ReactantLiveUIManager.shared.componentInstantiation(named: cellType)
         let exampleCount = ToolingProperties.plainTableView.exampleCount.get(from: self.toolingProperties) ?? 5

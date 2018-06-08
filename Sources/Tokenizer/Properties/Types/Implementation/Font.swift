@@ -43,7 +43,7 @@ public enum Font: AttributeSupportedPropertyType {
 
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
     import UIKit
 
     extension Font {

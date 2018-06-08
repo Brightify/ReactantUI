@@ -6,7 +6,7 @@
 //  Copyright © 2017 Brightify. All rights reserved.
 //
 
-#if ReactantRuntime
+#if canImport(UIKit)
     import UIKit
 #endif
 
@@ -15,7 +15,7 @@ public protocol UIContainer {
 
     var addSubviewMethod: String { get }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     func add(subview: UIView, toInstanceOfSelf: UIView)
     #endif
 }

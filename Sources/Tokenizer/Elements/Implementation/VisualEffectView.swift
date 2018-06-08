@@ -8,7 +8,7 @@
 
 import Foundation
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 #endif
 
@@ -25,7 +25,7 @@ public class VisualEffectView: Container {
         return "UIVisualEffectView"
     }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public override func initialize() -> UIView {
     return UIVisualEffectView()
     }

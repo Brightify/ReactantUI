@@ -92,7 +92,7 @@ public enum ControlContentHorizontalAlignment: Int, EnumPropertyType, AttributeS
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
     import UIKit
     
     extension ControlContentHorizontalAlignment {

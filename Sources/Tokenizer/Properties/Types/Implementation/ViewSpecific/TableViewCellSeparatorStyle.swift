@@ -22,7 +22,7 @@ public enum TableViewCellSeparatorStyle: String, EnumPropertyType, AttributeSupp
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
     import UIKit
 
     extension TableViewCellSeparatorStyle {

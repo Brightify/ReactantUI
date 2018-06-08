@@ -7,7 +7,7 @@
 
 import Foundation
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 #endif
 
@@ -18,7 +18,7 @@ public struct Image: AttributeSupportedPropertyType {
         return "UIImage(named: \"\(name)\")"
     }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         return UIImage(named: name)
     }

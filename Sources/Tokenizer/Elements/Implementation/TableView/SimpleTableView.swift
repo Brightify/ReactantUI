@@ -8,7 +8,7 @@
 
 import Foundation
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 import Reactant
 import RxDataSources
@@ -95,7 +95,7 @@ public class SimpleTableView: View, ComponentDefinitionContainer {
         return element
     }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public override func initialize() throws -> UIView {
         let createCell = try ReactantLiveUIManager.shared.componentInstantiation(named: cellType)
         let createHeader = try ReactantLiveUIManager.shared.componentInstantiation(named: headerType)

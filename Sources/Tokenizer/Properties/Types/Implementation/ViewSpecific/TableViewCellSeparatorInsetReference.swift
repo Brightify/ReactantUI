@@ -22,7 +22,7 @@ public enum TableViewCellSeparatorInsetReference: String, EnumPropertyType, Attr
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
     import UIKit
 
     extension TableViewCellSeparatorInsetReference {

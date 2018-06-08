@@ -7,7 +7,7 @@
 //
 
 import Foundation
-#if ReactantRuntime
+#if canImport(UIKit)
     import UIKit
 #endif
 
@@ -31,7 +31,7 @@ public struct AffineTransformation: AttributeSupportedPropertyType {
     }
     #endif
     
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         var cgTransform = CGAffineTransform.identity
         for transformation in transformations {

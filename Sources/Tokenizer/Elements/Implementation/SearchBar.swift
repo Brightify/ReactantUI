@@ -8,7 +8,7 @@
 
 import Foundation
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 #endif
 
@@ -25,7 +25,7 @@ public class SearchBar: View {
         #endif
     }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public override func initialize() throws -> UIView {
         #if os(tvOS)
             throw TokenizationError.unsupportedElementError(element: SearchBar.self)

@@ -18,7 +18,7 @@ extension Bool: AttributeSupportedPropertyType {
     }
     #endif
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         return self
     }

@@ -44,7 +44,7 @@ public enum ControlState: String, EnumPropertyType {
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 
 extension ControlState {
@@ -75,7 +75,7 @@ public extension Sequence where Element == ControlState {
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 
 extension ControlState: OptionSetValue {

@@ -34,7 +34,7 @@ public enum KeyboardType: String, EnumPropertyType, AttributeSupportedPropertyTy
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
     import UIKit
 
     extension KeyboardType {

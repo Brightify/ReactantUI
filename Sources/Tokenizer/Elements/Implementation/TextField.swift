@@ -8,7 +8,7 @@
 
 import Foundation
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 import Reactant
 #endif
@@ -26,7 +26,7 @@ public class TextField: View {
         return "Reactant.TextField"
     }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public override func initialize() -> UIView {
         return Reactant.TextField()
     }

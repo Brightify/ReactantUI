@@ -8,7 +8,7 @@
 
 import Foundation
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 #endif
 
@@ -62,7 +62,7 @@ public class ComponentReference: View, ComponentDefinitionContainer {
         super.init()
     }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public override func initialize() throws -> UIView {
         guard let type = type else { throw LiveUIError(message: "Should never initialize when type is undefined.") }
         return try ReactantLiveUIManager.shared.componentInstantiation(named: type)()

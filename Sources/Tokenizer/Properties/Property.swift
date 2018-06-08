@@ -6,7 +6,7 @@
 //  Copyright © 2017 Brightify. All rights reserved.
 //
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 #endif
 
@@ -25,7 +25,7 @@ public protocol Property {
     func dematerialize(context: PropertyContext) -> XMLSerializableAttribute
     #endif
     
-    #if ReactantRuntime
+    #if canImport(UIKit)
     func apply(on object: AnyObject, context: PropertyContext) throws -> Void
     #endif
 }

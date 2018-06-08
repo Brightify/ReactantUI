@@ -24,7 +24,7 @@ public enum BarStyle: String, EnumPropertyType, AttributeSupportedPropertyType {
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 
 extension BarStyle {

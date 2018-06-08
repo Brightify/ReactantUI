@@ -7,7 +7,7 @@
 //
 
 import Foundation
-#if ReactantRuntime
+#if canImport(UIKit)
     import UIKit
 #endif
 
@@ -51,7 +51,7 @@ public struct Rect: AttributeSupportedPropertyType {
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
 
     extension Rect {
         public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {

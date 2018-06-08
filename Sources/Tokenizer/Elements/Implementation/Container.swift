@@ -8,7 +8,7 @@
 
 import Foundation
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 import Reactant
 #endif
@@ -20,7 +20,7 @@ public class Container: View, UIContainer {
         return "addSubview"
     }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public func add(subview: UIView, toInstanceOfSelf: UIView) {
         toInstanceOfSelf.addSubview(subview)
     }
@@ -54,7 +54,7 @@ public class Container: View, UIContainer {
         return viewElement
     }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public override func initialize() -> UIView {
         return ContainerView()
     }

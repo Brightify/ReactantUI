@@ -6,7 +6,7 @@
 //
 
 import Foundation
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 import Reactant
 #endif
@@ -211,7 +211,7 @@ extension AttributedText {
     }
     #endif
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         func resolveAttributes(part: AttributedText.Part, inheritedAttributes: [Property]) -> [NSAttributedString] {
             switch part {

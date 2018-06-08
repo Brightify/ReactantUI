@@ -67,7 +67,7 @@ extension TransformedText: AttributeSupportedPropertyType {
     }
     #endif
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         func resolveTransformations(text: TransformedText) -> String {
             switch text {

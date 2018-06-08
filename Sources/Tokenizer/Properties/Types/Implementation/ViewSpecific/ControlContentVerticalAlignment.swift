@@ -69,7 +69,7 @@ public enum ControlContentVerticalAlignment: Int, EnumPropertyType, AttributeSup
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
     import UIKit
     
     extension ControlContentVerticalAlignment {

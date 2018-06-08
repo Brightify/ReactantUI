@@ -5,7 +5,7 @@
 //  Created by Matous Hybl.
 //  Copyright © 2017 Brightify. All rights reserved.
 //
-#if ReactantRuntime
+#if canImport(UIKit)
     import UIKit
 #endif
 
@@ -18,7 +18,7 @@ public class ImageView: View {
         return "UIImageView"
     }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public override func initialize() -> UIView {
         return UIImageView()
     }

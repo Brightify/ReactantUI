@@ -15,7 +15,7 @@ public protocol SupportedPropertyType {
     func dematerialize(context: SupportedPropertyTypeContext) -> String
     #endif
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     func runtimeValue(context: SupportedPropertyTypeContext) -> Any?
     #endif
 

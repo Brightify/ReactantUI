@@ -38,7 +38,7 @@ public struct ParagraphStyle: MultipleAttributeSupportedPropertyType {
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 
 extension ParagraphStyle {

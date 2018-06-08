@@ -12,7 +12,7 @@ extension URL: AttributeSupportedPropertyType {
         return "\(self.absoluteString)"
     }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         return self
     }

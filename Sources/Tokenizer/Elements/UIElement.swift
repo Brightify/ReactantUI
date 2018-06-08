@@ -7,7 +7,7 @@
 //
 
 import Foundation
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 #endif
 
@@ -32,7 +32,7 @@ public protocol UIElement: class, UIElementBase, XMLElementSerializable {
 
     func initialization() throws -> String
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     func initialize() throws -> UIView
     #endif
 }

@@ -92,7 +92,7 @@ public struct EdgeInsets: AttributeSupportedPropertyType {
     }
 }
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 
 extension EdgeInsets {

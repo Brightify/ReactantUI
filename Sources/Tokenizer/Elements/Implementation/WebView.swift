@@ -8,7 +8,7 @@
 
 import Foundation
 
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 #if os(iOS)
 import WebKit
@@ -45,7 +45,7 @@ public class WebView: View {
         #endif
     }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public override func initialize() throws -> UIView {
         #if os(tvOS)
             throw TokenizationError.unsupportedElementError(element: WebView.self)

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-#if ReactantRuntime
+#if canImport(UIKit)
 import UIKit
 #endif
 
@@ -49,7 +49,7 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, UIElem
         return "addSubview"
     }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public func add(subview: UIView, toInstanceOfSelf: UIView) {
         toInstanceOfSelf.addSubview(subview)
     }

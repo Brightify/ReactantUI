@@ -12,7 +12,7 @@ extension Array: SupportedPropertyType where Iterator.Element: SupportedProperty
         return "[" + map { $0.generate(context: context.sibling(for: $0)) }.joined(separator: ", ") + "]"
     }
 
-    #if ReactantRuntime
+    #if canImport(UIKit)
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         return map { $0.runtimeValue(context: context.sibling(for: $0)) }
     }
