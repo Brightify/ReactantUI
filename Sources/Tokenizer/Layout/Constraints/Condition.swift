@@ -436,7 +436,7 @@ extension Condition {
                 lhsCondition.generateSwift(viewName: viewName),
                 operation.swiftRepresentation,
                 rhsCondition.generateSwift(viewName: viewName),
-                ].joined(separator: " ")
+            ].joined(separator: " ")
         }
     }
 
@@ -452,7 +452,7 @@ extension Condition {
                 lhsCondition.generateXML(),
                 operation.xmlRepresentation,
                 rhsCondition.generateXML(),
-                ].joined(separator: " ")
+            ].joined(separator: " ")
         }
     }
 }
@@ -465,15 +465,15 @@ extension ConditionStatement {
         case .falseStatement:
             return "false"
         case .sizeClass(let sizeClassType, let viewInterfaceSize):
-            return "\(viewName).traits.size(\(sizeClassType.traitsParameter): \(viewInterfaceSize.traitsParameter))"
+            return "\(viewName).traits.size(\(sizeClassType.description): .\(viewInterfaceSize.description))"
         case .interfaceIdiom(let interfaceIdiom):
-            return "\(viewName).traits.device(\(interfaceIdiom.traitsParameter))"
+            return "\(viewName).traits.device(.\(interfaceIdiom.description))"
         case .orientation(let orientation):
-            return "\(viewName).traits.orientation(\(orientation.traitsParameter))"
+            return "\(viewName).traits.orientation(.\(orientation.description))"
         case .number(let number):
             return String(number)
         case .dimensionType(let dimensionType):
-            return "\(viewName).traits.viewRootSize(\(dimensionType.traitsParameter))"
+            return "\(viewName).traits.viewRootSize(.\(dimensionType.description))"
         case .interfaceSizeClass:
             fatalError("Swift condition code generation reached an undefined point.")
         }
@@ -554,68 +554,5 @@ extension ConditionUnaryOperation {
 
     var xmlRepresentation: String {
         return swiftRepresentation
-    }
-}
-
-extension SizeClassType {
-    fileprivate var traitsParameter: String {
-        switch self {
-        case .horizontal:
-            return "horizontal"
-        case .vertical:
-            return "vertical"
-        }
-    }
-}
-
-extension InterfaceSizeClass {
-    fileprivate var traitsParameter: String {
-        switch self {
-        case .regular:
-            return "UIUserInterfaceSizeClass.regular"
-        case .compact:
-            return "UIUserInterfaceSizeClass.compact"
-        case .unspecified:
-            return "UIUserInterfaceSizeClass.unspecified"
-        }
-    }
-}
-
-extension InterfaceIdiom {
-    fileprivate var traitsParameter: String {
-        switch self {
-        case .phone:
-            return ".phone"
-        case .pad:
-            return ".pad"
-        case .tv:
-            return ".tv"
-        case .carPlay:
-            return ".carPlay"
-        case .unspecified:
-            return ".unspecified"
-        }
-    }
-}
-
-extension ViewOrientation {
-    fileprivate var traitsParameter: String {
-        switch self {
-        case .portrait:
-            return ".portrait"
-        case .landscape:
-            return ".landscape"
-        }
-    }
-}
-
-extension DimensionType {
-    fileprivate var traitsParameter: String {
-        switch self {
-        case .width:
-            return ".width"
-        case .height:
-            return ".height"
-        }
     }
 }
