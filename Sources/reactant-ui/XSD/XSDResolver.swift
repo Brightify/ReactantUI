@@ -64,17 +64,17 @@ class XSDResolver {
                 let type = XSDSimpleType(name: typeName, type: property.type.xsdType)
 
                 for type in union.memberTypes {
-                    let typeName = type.name
-                    let type = XSDSimpleType(name: typeName, type: type)
-                    file.simpleTypes.insert(type)
+                    // We don't want to create a simple type for builtin types
+                    if case .builtin = type {
+                        continue
+                    } else {
+                        let typeName = type.name
+                        let type = XSDSimpleType(name: typeName, type: type)
+                        file.simpleTypes.insert(type)
+                    }
                 }
 
                 file.simpleTypes.insert(type)
-            }
-
-            if element is ComponentReference.Type {
-                attributes.attributes.insert(XSDAttribute(name: "type", typeName: BuiltinXSDType.string.xsdName))
-                // FIXME figure out how anonymous components are handled
             }
 
             if property is ControlStatePropertyDescriptionMarker {
@@ -89,6 +89,11 @@ class XSDResolver {
             }
 
             attributes.attributes.insert(XSDAttribute(name: propertyName, typeName: typeName))
+        }
+
+        if element is ComponentReference.Type {
+            attributes.attributes.insert(XSDAttribute(name: "type", typeName: BuiltinXSDType.string.xsdName))
+            // FIXME figure out how anonymous components are handled
         }
 
         xsdElement.attributeGroups.insert("layout:layoutAttributes")
