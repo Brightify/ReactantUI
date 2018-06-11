@@ -9,7 +9,7 @@ import Foundation
 
 public protocol DataContext {
 
-    func localStyle(named name: String) -> String
+    func resolvedStyleName(named styleName: StyleName) -> String
 
     func style(named styleName: StyleName) -> Style?
 }
@@ -31,8 +31,8 @@ extension HasParentContext where Self: HasGlobalContext {
 }
 
 extension DataContext where Self: HasParentContext, Self.ParentContext: DataContext {
-    public func localStyle(named name: String) -> String {
-        return parentContext.localStyle(named: name)
+    public func resolvedStyleName(named styleName: StyleName) -> String {
+        return parentContext.resolvedStyleName(named: styleName)
     }
 
     public func style(named styleName: StyleName) -> Style? {
@@ -41,8 +41,8 @@ extension DataContext where Self: HasParentContext, Self.ParentContext: DataCont
 }
 
 extension DataContext where Self: HasParentContext, Self.ParentContext == DataContext {
-    public func localStyle(named name: String) -> String {
-        return parentContext.localStyle(named: name)
+    public func resolvedStyleName(named styleName: StyleName) -> String {
+        return parentContext.resolvedStyleName(named: styleName)
     }
 
     public func style(named styleName: StyleName) -> Style? {

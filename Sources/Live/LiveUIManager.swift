@@ -48,6 +48,8 @@ public class ReactantLiveUIManager {
                 definitionsCopy[key]?.loaded = now
             }
             definitions = definitionsCopy
+
+            globalContext = GlobalContext(styleSheetDictionary: self.styles)
         }
     }
 
@@ -303,8 +305,6 @@ public class ReactantLiveUIManager {
                         let group: StyleGroup = try xml["styleGroup"].value()
                         oldStyles[group.name] = group
                         self.styles = oldStyles
-                        // FIXME: Inside GlobalContext init we do the opposite of what's done here (building the dictionary), it could be made simpler)
-                        self.globalContext = GlobalContext(styleSheets: Array(self.styles.values))
                     } catch let error {
                         self.logError(error, in: path)
                     }

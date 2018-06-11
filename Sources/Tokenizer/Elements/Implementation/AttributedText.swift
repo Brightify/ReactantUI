@@ -155,11 +155,10 @@ extension AttributedText {
             case .transform(let transformedText):
                 let generatedAttributes = inheritedAttributes.map {
                     ".\($0.name)(\($0.anyValue.generate(context: context.sibling(for: $0.anyValue))))"
-                    }.joined(separator: ", ")
+                }.joined(separator: ", ")
                 let generatedTransformedText = transformedText.generate(context: context.sibling(for: transformedText))
                 let generatedParentStyles = parentElements.compactMap { elementName in
-                    // TODO Implement support for global styles
-                    style.map { context.localStyle(named: $0.name) + ".\(elementName)" }
+                    style.map { context.resolvedStyleName(named: $0) + ".\(elementName)" }
                 }
                 let attributesString = (generatedParentStyles + ["[\(generatedAttributes)]"]).joined(separator: " + ")
                 return ["\(generatedTransformedText).attributed(\(attributesString))"]
@@ -228,8 +227,25 @@ extension AttributedText {
 
             case .attributed(let attributedStyle, let attributedTexts):
                 // the order of appending is important because the `distinct(where:)` keeps the first element of the duplicates
+//                let newParentElements = parentElements + [attributedStyle.name]
+//                let globalAttributes: [Property]
+//                if let styleName = style, let styleType = context.style(named: styleName)?.type,
+//                    case .attributedText(let styles) = styleType {
+//                    globalAttributes = []
+//                } else {
+//                    globalAttributes = []
+//                }
+                var globalAttributes = [] as [Property]
+                if let styleName = style {
+                    if case .attributedText(let styles)? = context.style(named: styleName)?.type,
+                        let globalStyle = styles.first(where: { $0.name == attributedStyle.name }) {
+                        globalAttributes = globalStyle.properties
+                    }
+                }
+
                 let lowerAttributes = attributedStyle.properties
                     .arrayByAppending(inheritedAttributes)
+                    .arrayByAppending(globalAttributes)
                     .distinct(where: { $0.name == $1.name })
 
                 return attributedTexts.flatMap {
@@ -238,19 +254,9 @@ extension AttributedText {
             }
         }
 
-        let lowerAttributes: [Property]
-        if let styleName = style, let styleType = context.style(named: styleName)?.type,
-            case .attributedText(let styles) = styleType {
-            lowerAttributes = localProperties
-                .arrayByAppending(styles.flatMap { $0.properties })
-                .distinct(where: { $0.name == $1.name })
-        } else {
-            lowerAttributes = localProperties
-        }
-
         let result = NSMutableAttributedString()
         parts
-            .flatMap { resolveAttributes(part: $0, inheritedAttributes: lowerAttributes) }
+            .flatMap { resolveAttributes(part: $0, inheritedAttributes: localProperties) }
             .forEach { result.append($0) }
         return result
     }

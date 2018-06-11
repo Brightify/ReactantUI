@@ -26,6 +26,13 @@ public struct GlobalContext: DataContext {
 
     private typealias StyleSheets = [String: [String: Style]]
 
+    public init(styleSheetDictionary: [String: StyleGroup]) {
+        styles = Dictionary(keyValueTuples: styleSheetDictionary.map { arg in
+            let (key, value) = arg
+            return (key, Dictionary(keyValueTuples: value.styles.map { ($0.name.name, $0) }))
+        })
+    }
+
     public init(styleSheets: [StyleGroup]) {
         let groups = (styleSheets
             .flatMap { $0.styles }
@@ -38,8 +45,11 @@ public struct GlobalContext: DataContext {
         styles = Dictionary(keyValueTuples: groups)
     }
 
-    public func localStyle(named name: String) -> String {
-        return name
+    public func resolvedStyleName(named styleName: StyleName) -> String {
+        guard case .global(let groupName, let name) = styleName else {
+            fatalError("Global context cannot resolve local style name \(styleName.name).")
+        }
+        return "\(groupName.capitalizingFirstLetter())Styles.\(name)"
     }
 
     public func style(named styleName: StyleName) -> Style? {

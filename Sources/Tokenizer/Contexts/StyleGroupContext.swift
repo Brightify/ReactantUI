@@ -16,8 +16,8 @@ public struct StyleGroupContext: DataContext {
         self.group = group
     }
 
-    public func localStyle(named name: String) -> String {
-        return group.swiftName + "." + name
+    public func resolvedStyleName(named styleName: StyleName) -> String {
+        return group.swiftName + "." + styleName.name
     }
 
     public func style(named styleName: StyleName) -> Style? {
