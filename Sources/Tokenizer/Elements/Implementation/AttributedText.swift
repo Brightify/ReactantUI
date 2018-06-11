@@ -227,25 +227,16 @@ extension AttributedText {
 
             case .attributed(let attributedStyle, let attributedTexts):
                 // the order of appending is important because the `distinct(where:)` keeps the first element of the duplicates
-//                let newParentElements = parentElements + [attributedStyle.name]
-//                let globalAttributes: [Property]
-//                if let styleName = style, let styleType = context.style(named: styleName)?.type,
-//                    case .attributedText(let styles) = styleType {
-//                    globalAttributes = []
-//                } else {
-//                    globalAttributes = []
-//                }
-                var globalAttributes = [] as [Property]
-                if let styleName = style {
-                    if case .attributedText(let styles)? = context.style(named: styleName)?.type,
-                        let globalStyle = styles.first(where: { $0.name == attributedStyle.name }) {
-                        globalAttributes = globalStyle.properties
-                    }
+                var resolvedAttributes: [Property]?
+                if let styleName = style,
+                    case .attributedText(let styles)? = context.style(named: styleName)?.type,
+                    let resolvedStyle = styles.first(where: { $0.name == attributedStyle.name }) {
+                    resolvedAttributes = resolvedStyle.properties
                 }
 
                 let lowerAttributes = attributedStyle.properties
                     .arrayByAppending(inheritedAttributes)
-                    .arrayByAppending(globalAttributes)
+                    .arrayByAppending(resolvedAttributes ?? [])
                     .distinct(where: { $0.name == $1.name })
 
                 return attributedTexts.flatMap {
