@@ -25,7 +25,14 @@ public enum StyleName: XMLAttributeDeserializable {
     }
 
     public init(from value: String) throws {
-        let components = value.components(separatedBy: ":").filter { !$0.isEmpty }
+        let notationCharacter: String
+        if value.contains(".") {
+            notationCharacter = "."
+        } else {
+            notationCharacter = ":"
+        }
+
+        let components = value.components(separatedBy: notationCharacter).filter { !$0.isEmpty }
         if components.count == 2 {
             self = .global(group: components[0], name: components[1])
         } else if components.count == 1 {
