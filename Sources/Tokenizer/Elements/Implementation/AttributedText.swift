@@ -133,6 +133,9 @@ extension AttributedText {
         var indentationLevel = 0
         let trimmedContents: [XMLContent] = try element.children.enumerated().compactMap { (index, content) in
             switch index {
+            case 0 where element.children.count == 1:
+                guard let partialResult = try trimmingWhitespace(content: content, leading: true, indentationLevel: &indentationLevel) else { return nil }
+                return try trimmingWhitespace(content: partialResult, leading: false, indentationLevel: &indentationLevel)
             case 0:
                 return try trimmingWhitespace(content: content, leading: true, indentationLevel: &indentationLevel)
             case element.children.count - 1:
