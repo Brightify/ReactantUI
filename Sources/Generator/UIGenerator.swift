@@ -364,34 +364,48 @@ public class UIGenerator: Generator {
 
     private func generate(attributeTextStyle style: Style, styles: [AttributedTextStyle]) throws {
         func generate(attributes array: [Property]) {
+            l("[")
             for property in array {
                 let propertyContext = PropertyContext(parentContext: componentContext, property: property)
                 l("    Attribute.\(property.name)(\(property.anyValue.generate(context: propertyContext.child(for: property.anyValue)))),")
             }
+            l("]")
         }
 
         l("struct \(style.name.name)") {
-            l("private static let ___sharedProperties___: [Reactant.Attribute] = [")
-            generate(attributes: style.properties)
-            l("]")
+            if !style.properties.isEmpty {
+                l("private static let ___sharedProperties___: [Reactant.Attribute] = [")
+                generate(attributes: style.properties)
+                l("]")
+            }
 
             for childStyle in styles {
-                l("static let \(childStyle.name): [Reactant.Attribute] = ")
-                // TODO: Extending
-    //            for extendedStyle in style.extend {
-    //                switch extendedStyle {
-    //                case .local(let name):
-    //                    l("\(root.stylesName).\(name)")
-    //                case .global(let group, let name):
-    //                    l("\(group.capitalizingFirstLetter() + "Styles").\(name)")
-    //                }
-    //
-    //                l("+")
-    //            }
+                l("static let \(childStyle.name) = ")
 
-                l("___sharedProperties___ + [")
+                // extended styles generation
+                // currently O(n^3 * m) where m is the extension depth level
+                func generateExtensions(from extendedStyles: [StyleName]) {
+                    for extendedStyleName in extendedStyles {
+                        guard let extendedStyle = componentContext.style(named: extendedStyleName),
+                            case .attributedText(let styles) = extendedStyle.type,
+                            styles.first(where: { $0.name == childStyle.name }) != nil else { continue }
+
+                        generateExtensions(from: extendedStyle.extend)
+
+                        l(componentContext.resolvedStyleName(named: extendedStyleName) + ".\(childStyle.name),")
+                    }
+                }
+
+                l("Array<Reactant.Attribute>(subarrays: ")
+                generateExtensions(from: style.extend)
+
+                if !style.properties.isEmpty {
+                    l("___sharedProperties___,")
+                }
+
                 generate(attributes: childStyle.properties)
-                l("]")
+
+                l(")")
             }
         }
     }

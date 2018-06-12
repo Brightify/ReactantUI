@@ -99,7 +99,7 @@ extension AttributedText {
                 return TextElement(text: trimmedText)
 
             case let elementChild as XMLElement:
-                // FIXME: error checking here! index can get out of range
+                guard !elementChild.children.isEmpty else { return elementChild }
                 let index = leading ? elementChild.children.startIndex : elementChild.children.endIndex
                 guard let modifiedChild = try trimmingWhitespace(content: elementChild.children[index], leading: leading, indentationLevel: &indentationLevel)
                     else { return elementChild }
@@ -226,14 +226,23 @@ extension AttributedText {
                 return [NSAttributedString(string: transformedText, attributes: attributes)]
 
             case .attributed(let attributedStyle, let attributedTexts):
-                // the order of appending is important because the `distinct(where:)` keeps the first element of the duplicates
                 var resolvedAttributes: [Property]?
-                if let styleName = style,
-                    case .attributedText(let styles)? = context.style(named: styleName)?.type,
-                    let resolvedStyle = styles.first(where: { $0.name == attributedStyle.name }) {
-                    resolvedAttributes = resolvedStyle.properties
+
+                func resolvedExtensions(from styleNames: [StyleName]) -> [Property] {
+                    return styleNames.flatMap { styleName -> [Property] in
+                        guard let resolvedStyle = context.style(named: styleName),
+                            case .attributedText(let styles) = resolvedStyle.type,
+                            let extendedAttributeStyle = styles.first(where: { $0.name == attributedStyle.name }) else { return [] }
+
+                        return extendedAttributeStyle.properties.arrayByAppending(resolvedExtensions(from: resolvedStyle.extend))
+                    }
                 }
 
+                if let styleName = style {
+                    resolvedAttributes = resolvedExtensions(from: [styleName])
+                }
+
+                // the order of appending is important because the `distinct(where:)` keeps the first element of the duplicates
                 let lowerAttributes = attributedStyle.properties
                     .arrayByAppending(inheritedAttributes)
                     .arrayByAppending(resolvedAttributes ?? [])

@@ -83,17 +83,21 @@ class GenerateCommand: Command {
         let styleFiles = styleXmlEnumerator?.compactMap { $0 as? String }.filter { $0.hasSuffix(".styles.xml") }
             .map { inputPathURL.appendingPathComponent($0).path } ?? []
 
-        // TODO: get this from somewhere
-        let globalContext = GlobalContext(styleSheets: [])
-
+        // path with the stylegroup associated with it
+        var globalContextFiles = [] as [(path: String, group: StyleGroup)]
         var stylePaths = [] as [String]
-        for (index, path) in styleFiles.enumerated() {
+        for path in styleFiles {
             output.append("// Generated from \(path)")
             let data = try Data(contentsOf: URL(fileURLWithPath: path))
 
             let xml = SWXMLHash.parse(data)
             let group: StyleGroup = try xml["styleGroup"].value()
+            globalContextFiles.append((path, group))
             stylePaths.append(path)
+        }
+
+        let globalContext = GlobalContext(styleSheets: globalContextFiles.map { $0.group })
+        for (offset: index, element: (path: path, group: group)) in globalContextFiles.enumerated() {
             let configuration = GeneratorConfiguration(minimumMajorVersion: minimumDeploymentTarget,
                                                        localXmlPath: path,
                                                        isLiveEnabled: enableLive.value,
