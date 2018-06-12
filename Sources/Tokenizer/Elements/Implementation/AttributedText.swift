@@ -244,8 +244,8 @@ extension AttributedText {
 
                 // the order of appending is important because the `distinct(where:)` keeps the first element of the duplicates
                 let lowerAttributes = attributedStyle.properties
-                    .arrayByAppending(inheritedAttributes)
                     .arrayByAppending(resolvedAttributes ?? [])
+                    .arrayByAppending(inheritedAttributes)
                     .distinct(where: { $0.name == $1.name })
 
                 return attributedTexts.flatMap {
