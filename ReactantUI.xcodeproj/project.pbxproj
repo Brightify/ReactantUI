@@ -186,7 +186,7 @@
 		18449277209223A70080B743 /* XMLElement+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184491E9209223A70080B743 /* XMLElement+Utils.swift */; };
 		18449279209225BE0080B743 /* ReactantLiveUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 184492782092255A0080B743 /* ReactantLiveUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1844928120922AE20080B743 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1844927C20922AE10080B743 /* Info.plist */; };
-		1844928220922AE20080B743 /* LiveUI_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1844927D20922AE10080B743 /* LiveUI_iOSTests.swift */; };
+		1844928220922AE20080B743 /* LabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1844927D20922AE10080B743 /* LabelTests.swift */; };
 		1844928320922AE20080B743 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1844927F20922AE10080B743 /* Info.plist */; };
 		1844928420922AE20080B743 /* Tokenizer_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1844928020922AE10080B743 /* Tokenizer_iOSTests.swift */; };
 		22141C8B2052B02F00205F56 /* MainWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141C8A2052B02F00205F56 /* MainWireframe.swift */; };
@@ -216,7 +216,15 @@
 		5B1333D6A201F8A50D8697D9 /* Pods_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1AAC4CA06239D481C4E7F9D /* Pods_Example.framework */; };
 		6836D5F920B8404F00FD2DF8 /* UIView+traits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689FA0B7209CB2A200B39225 /* UIView+traits.swift */; };
 		6836D5FB20B86C3500FD2DF8 /* AttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6836D5FA20B86C3500FD2DF8 /* AttributedText.swift */; };
+		68692E7620D2881B001CCC01 /* AnonymousTestComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68692E7520D2881B001CCC01 /* AnonymousTestComponent.swift */; };
+		68692E7A20D2B22F001CCC01 /* ElementMapping+mapFrom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68692E7920D2B22F001CCC01 /* ElementMapping+mapFrom.swift */; };
+		68692E7C20D2B26D001CCC01 /* TestOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68692E7B20D2B26D001CCC01 /* TestOptions.swift */; };
+		68692E7E20D2B2FF001CCC01 /* Snapshotter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68692E7D20D2B2FF001CCC01 /* Snapshotter.swift */; };
+		68692E8020D2B36B001CCC01 /* UIImage+drawIntoPointer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68692E7F20D2B36B001CCC01 /* UIImage+drawIntoPointer.swift */; };
+		68692E8220D2B3C2001CCC01 /* Comparer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68692E8120D2B3C2001CCC01 /* Comparer.swift */; };
 		6870E26620CFC5ED002825CC /* Array+subarrays.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6870E26320CFC0E2002825CC /* Array+subarrays.swift */; };
+		687822EC20CFF6BB00838C96 /* NSObjectProtocol+where.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687822EA20CFF6B300838C96 /* NSObjectProtocol+where.swift */; };
+		687822F020CFF95C00838C96 /* assertEqual.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687822EF20CFF95C00838C96 /* assertEqual.swift */; };
 		687D4D5F20C02D1800F890CB /* ParagraphStyleProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687D4D5E20C02D1800F890CB /* ParagraphStyleProperties.swift */; };
 		687D4D6120C0360C00F890CB /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687D4D6020C0360C00F890CB /* Array.swift */; };
 		687D4D9B20C1B25B00F890CB /* ComponentContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 687D4D9520C1B25B00F890CB /* ComponentContext.swift */; };
@@ -270,6 +278,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 18448FAB2092041B0080B743;
 			remoteInfo = "LiveUI-iOS";
+		};
+		68692E7720D2A72B001CCC01 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 182B685D1EAF7530007CC668 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 182B68661EAF7589007CC668;
+			remoteInfo = Example;
 		};
 		689FA0D1209CD7B000B39225 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -480,7 +495,7 @@
 		184491E9209223A70080B743 /* XMLElement+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XMLElement+Utils.swift"; sourceTree = "<group>"; };
 		184492782092255A0080B743 /* ReactantLiveUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReactantLiveUI.h; sourceTree = "<group>"; };
 		1844927C20922AE10080B743 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1844927D20922AE10080B743 /* LiveUI_iOSTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveUI_iOSTests.swift; sourceTree = "<group>"; };
+		1844927D20922AE10080B743 /* LabelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelTests.swift; sourceTree = "<group>"; };
 		1844927F20922AE10080B743 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1844928020922AE10080B743 /* Tokenizer_iOSTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tokenizer_iOSTests.swift; sourceTree = "<group>"; };
 		22141C8A2052B02F00205F56 /* MainWireframe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWireframe.swift; sourceTree = "<group>"; };
@@ -514,7 +529,15 @@
 		5F1124193368C79B42B1596B /* Pods-Example-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Example-tvOS/Pods-Example-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		668836B2629A4DD2DFC1CED6 /* Pods-LiveUI-LiveUI-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveUI-LiveUI-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LiveUI-LiveUI-iOS/Pods-LiveUI-LiveUI-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		6836D5FA20B86C3500FD2DF8 /* AttributedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedText.swift; sourceTree = "<group>"; };
+		68692E7520D2881B001CCC01 /* AnonymousTestComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnonymousTestComponent.swift; sourceTree = "<group>"; };
+		68692E7920D2B22F001CCC01 /* ElementMapping+mapFrom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ElementMapping+mapFrom.swift"; sourceTree = "<group>"; };
+		68692E7B20D2B26D001CCC01 /* TestOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestOptions.swift; sourceTree = "<group>"; };
+		68692E7D20D2B2FF001CCC01 /* Snapshotter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Snapshotter.swift; sourceTree = "<group>"; };
+		68692E7F20D2B36B001CCC01 /* UIImage+drawIntoPointer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+drawIntoPointer.swift"; sourceTree = "<group>"; };
+		68692E8120D2B3C2001CCC01 /* Comparer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comparer.swift; sourceTree = "<group>"; };
 		6870E26320CFC0E2002825CC /* Array+subarrays.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+subarrays.swift"; sourceTree = "<group>"; };
+		687822EA20CFF6B300838C96 /* NSObjectProtocol+where.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObjectProtocol+where.swift"; sourceTree = "<group>"; };
+		687822EF20CFF95C00838C96 /* assertEqual.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = assertEqual.swift; sourceTree = "<group>"; };
 		687D4D5E20C02D1800F890CB /* ParagraphStyleProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParagraphStyleProperties.swift; sourceTree = "<group>"; };
 		687D4D6020C0360C00F890CB /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		687D4D9520C1B25B00F890CB /* ComponentContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComponentContext.swift; sourceTree = "<group>"; };
@@ -1082,6 +1105,7 @@
 			isa = PBXGroup;
 			children = (
 				1844927F20922AE10080B743 /* Info.plist */,
+				687822E920CFF67700838C96 /* ReactantUI */,
 				1844927B20922AE10080B743 /* Live */,
 				1844927E20922AE10080B743 /* Tokenizer */,
 			);
@@ -1092,7 +1116,7 @@
 			isa = PBXGroup;
 			children = (
 				1844927C20922AE10080B743 /* Info.plist */,
-				1844927D20922AE10080B743 /* LiveUI_iOSTests.swift */,
+				1844927D20922AE10080B743 /* LabelTests.swift */,
 			);
 			path = Live;
 			sourceTree = "<group>";
@@ -1226,6 +1250,21 @@
 				22957E3B207235E20088C09E /* StackViewRootView.ui.xml */,
 			);
 			path = StackView;
+			sourceTree = "<group>";
+		};
+		687822E920CFF67700838C96 /* ReactantUI */ = {
+			isa = PBXGroup;
+			children = (
+				687822EA20CFF6B300838C96 /* NSObjectProtocol+where.swift */,
+				68692E7920D2B22F001CCC01 /* ElementMapping+mapFrom.swift */,
+				687822EF20CFF95C00838C96 /* assertEqual.swift */,
+				68692E8120D2B3C2001CCC01 /* Comparer.swift */,
+				68692E7F20D2B36B001CCC01 /* UIImage+drawIntoPointer.swift */,
+				68692E7D20D2B2FF001CCC01 /* Snapshotter.swift */,
+				68692E7520D2881B001CCC01 /* AnonymousTestComponent.swift */,
+				68692E7B20D2B26D001CCC01 /* TestOptions.swift */,
+			);
+			path = ReactantUI;
 			sourceTree = "<group>";
 		};
 		687D4D9420C1B25B00F890CB /* Contexts */ = {
@@ -1376,6 +1415,7 @@
 			);
 			dependencies = (
 				18448FB72092041B0080B743 /* PBXTargetDependency */,
+				68692E7820D2A72B001CCC01 /* PBXTargetDependency */,
 			);
 			name = "LiveUI-iOSTests";
 			productName = "LiveUI-iOSTests";
@@ -1439,7 +1479,9 @@
 					};
 					18448FB32092041B0080B743 = {
 						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 0930;
 						ProvisioningStyle = Automatic;
+						TestTargetID = 182B68661EAF7589007CC668;
 					};
 					2284DAD81FAC855E00D231D3 = {
 						CreatedOnToolsVersion = 9.0.1;
@@ -1969,8 +2011,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1844928220922AE20080B743 /* LiveUI_iOSTests.swift in Sources */,
+				1844928220922AE20080B743 /* LabelTests.swift in Sources */,
+				68692E8220D2B3C2001CCC01 /* Comparer.swift in Sources */,
+				68692E8020D2B36B001CCC01 /* UIImage+drawIntoPointer.swift in Sources */,
+				68692E7A20D2B22F001CCC01 /* ElementMapping+mapFrom.swift in Sources */,
+				687822EC20CFF6BB00838C96 /* NSObjectProtocol+where.swift in Sources */,
+				68692E7E20D2B2FF001CCC01 /* Snapshotter.swift in Sources */,
+				687822F020CFF95C00838C96 /* assertEqual.swift in Sources */,
+				68692E7620D2881B001CCC01 /* AnonymousTestComponent.swift in Sources */,
 				71D94EC420935F8E007D83A1 /* ConstraintConditionTests.swift in Sources */,
+				68692E7C20D2B26D001CCC01 /* TestOptions.swift in Sources */,
 				1844928420922AE20080B743 /* Tokenizer_iOSTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2009,6 +2059,11 @@
 			isa = PBXTargetDependency;
 			target = 18448FAB2092041B0080B743 /* LiveUI-iOS */;
 			targetProxy = 18448FBF2092041B0080B743 /* PBXContainerItemProxy */;
+		};
+		68692E7820D2A72B001CCC01 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 182B68661EAF7589007CC668 /* Example */;
+			targetProxy = 68692E7720D2A72B001CCC01 /* PBXContainerItemProxy */;
 		};
 		689FA0D2209CD7B000B39225 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2365,9 +2420,11 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example.app/Example";
 			};
 			name = Debug;
 		};
@@ -2402,9 +2459,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.brightify.LiveUI-iOSTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example.app/Example";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
