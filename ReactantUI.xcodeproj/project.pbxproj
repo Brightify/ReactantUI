@@ -214,6 +214,7 @@
 		22957E3C207235E20088C09E /* StackViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22957E3B207235E20088C09E /* StackViewRootView.ui.xml */; };
 		58836BDBAF0F10A4A5E31625 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7139F67D20934D6E009EA7F4 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */; };
 		5B1333D6A201F8A50D8697D9 /* Pods_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1AAC4CA06239D481C4E7F9D /* Pods_Example.framework */; };
+		681A1E1620D3CA8D00109BEC /* ButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681A1E1520D3CA8D00109BEC /* ButtonTests.swift */; };
 		6836D5F920B8404F00FD2DF8 /* UIView+traits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689FA0B7209CB2A200B39225 /* UIView+traits.swift */; };
 		6836D5FB20B86C3500FD2DF8 /* AttributedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6836D5FA20B86C3500FD2DF8 /* AttributedText.swift */; };
 		68692E7620D2881B001CCC01 /* AnonymousTestComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68692E7520D2881B001CCC01 /* AnonymousTestComponent.swift */; };
@@ -528,6 +529,7 @@
 		5A946519C18AE694A9F16B15 /* Pods-LiveUI-LiveUI-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveUI-LiveUI-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-LiveUI-LiveUI-iOS/Pods-LiveUI-LiveUI-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		5F1124193368C79B42B1596B /* Pods-Example-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Example-tvOS/Pods-Example-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		668836B2629A4DD2DFC1CED6 /* Pods-LiveUI-LiveUI-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveUI-LiveUI-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LiveUI-LiveUI-iOS/Pods-LiveUI-LiveUI-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		681A1E1520D3CA8D00109BEC /* ButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTests.swift; sourceTree = "<group>"; };
 		6836D5FA20B86C3500FD2DF8 /* AttributedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedText.swift; sourceTree = "<group>"; };
 		68692E7520D2881B001CCC01 /* AnonymousTestComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnonymousTestComponent.swift; sourceTree = "<group>"; };
 		68692E7920D2B22F001CCC01 /* ElementMapping+mapFrom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ElementMapping+mapFrom.swift"; sourceTree = "<group>"; };
@@ -1117,6 +1119,7 @@
 			children = (
 				1844927C20922AE10080B743 /* Info.plist */,
 				1844927D20922AE10080B743 /* LabelTests.swift */,
+				681A1E1520D3CA8D00109BEC /* ButtonTests.swift */,
 			);
 			path = Live;
 			sourceTree = "<group>";
@@ -2014,6 +2017,7 @@
 				1844928220922AE20080B743 /* LabelTests.swift in Sources */,
 				68692E8220D2B3C2001CCC01 /* Comparer.swift in Sources */,
 				68692E8020D2B36B001CCC01 /* UIImage+drawIntoPointer.swift in Sources */,
+				681A1E1620D3CA8D00109BEC /* ButtonTests.swift in Sources */,
 				68692E7A20D2B22F001CCC01 /* ElementMapping+mapFrom.swift in Sources */,
 				687822EC20CFF6BB00838C96 /* NSObjectProtocol+where.swift in Sources */,
 				68692E7E20D2B2FF001CCC01 /* Snapshotter.swift in Sources */,

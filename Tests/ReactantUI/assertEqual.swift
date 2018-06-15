@@ -20,7 +20,7 @@ func assertEqual(xml: String, view expectedView: UIView, testAtSizes testSizes: 
     assertEqual(xml: xml, view: expectedView, testAtSizes: testSizes, tolerance: tolerance, file: file, function: function, line: line)
 }
 
-func assertEqual(xml: String, view expectedView: UIView, testAtSizes testSizes: [CGSize], tolerance: Double = 0, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
+func assertEqual(xml: String, view expectedView: UIView, testAtSizes testSizes: [CGSize], tolerance: Double = 0, testVariant: Int? = nil, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
     let globalContext = GlobalContext(styleSheets: [])
 
     for testSize in testSizes {
@@ -56,9 +56,16 @@ func assertEqual(xml: String, view expectedView: UIView, testAtSizes testSizes: 
             deserializedView.bounds = CGRect(size: testSize)
             let actual = try Snapshotter.takeSnapshot(of: deserializedView)
 
-            try saveSnapshotIfEnabled(expected: expected, actual: actual, function: function, line: line)
+            try saveSnapshotIfEnabled(expected: expected, actual: actual, testVariant: testVariant, function: function, line: line)
 
-            let message = "View deserialized from XML is not equal (or within tolerance) to expected view. The size tested was \(testSize)."
+            let testVariantString: String
+            if let testVariant = testVariant {
+                testVariantString = " from test variant " + String(testVariant)
+            } else {
+                testVariantString = ""
+            }
+
+            let message = "Deserialized view\(testVariantString) of size \(testSize) is not similar within tolerance to expected view."
             if tolerance == 0 {
                 XCTAssertTrue(try Comparer.fastCompare(lhs: expected, rhs: actual), message, file: file, line: line)
             } else {
@@ -72,7 +79,7 @@ func assertEqual(xml: String, view expectedView: UIView, testAtSizes testSizes: 
     }
 }
 
-private func saveSnapshotIfEnabled(expected: UIImage, actual: UIImage, function: StaticString = #function, line: UInt = #line) throws {
+private func saveSnapshotIfEnabled(expected: UIImage, actual: UIImage, testVariant: Int?, function: StaticString = #function, line: UInt = #line) throws {
     guard let snapshotPath = TestOptions.snapshotPath, TestOptions.shouldSaveSnapshots else { return }
 
     let expectedData = UIImagePNGRepresentation(expected)
@@ -83,9 +90,16 @@ private func saveSnapshotIfEnabled(expected: UIImage, actual: UIImage, function:
         return "\(Int(expected.size.width))x\(Int(expected.size.height))-\(modifier)@\(Int(expected.scale))x.png"
     }
 
+    let testVariantString: String
+    if let testVariant = testVariant {
+        testVariantString = "v" + String(testVariant)
+    } else {
+        testVariantString = ""
+    }
+
     let snapshotUrl = URL(fileURLWithPath: snapshotPath, isDirectory: true)
         .appendingPathComponent("TestRun_\(TestOptions.testRunDateFormatted)", isDirectory: true)
-        .appendingPathComponent("\(function)@\(line)", isDirectory: true)
+        .appendingPathComponent("\(function)\(testVariantString)@\(line)", isDirectory: true)
 
     let fileManager = FileManager.default
     try fileManager.createDirectory(at: snapshotUrl, withIntermediateDirectories: true, attributes: nil)
