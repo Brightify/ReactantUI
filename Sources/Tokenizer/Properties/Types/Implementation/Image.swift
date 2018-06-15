@@ -25,7 +25,7 @@ public struct Image: AttributeSupportedPropertyType {
     #endif
 
     #if SanAndreas
-    public func dematerialize() -> String {
+    public func dematerialize(context: SupportedPropertyTypeContext) -> String {
         return name
     }
     #endif

@@ -12,9 +12,9 @@ import UIKit
 #endif
 
 public struct MultipleAttributeAssignableProperty<T: MultipleAttributeSupportedPropertyType>: TypedProperty {
-    public let namespace: [PropertyContainer.Namespace]
-    public let name: String
-    public let description: MultipleAttributeAssignablePropertyDescription<T>
+    public var namespace: [PropertyContainer.Namespace]
+    public var name: String
+    public var description: MultipleAttributeAssignablePropertyDescription<T>
     public var value: T
 
     public var attributeName: String {
@@ -28,7 +28,7 @@ public struct MultipleAttributeAssignableProperty<T: MultipleAttributeSupportedP
 
     #if SanAndreas
     public func dematerialize(context: PropertyContext) -> XMLSerializableAttribute {
-        return XMLSerializableAttribute(name: attributeName, value: value.dematerialize())
+        return XMLSerializableAttribute(name: attributeName, value: value.dematerialize(context: context.child(for: value)))
     }
     #endif
 

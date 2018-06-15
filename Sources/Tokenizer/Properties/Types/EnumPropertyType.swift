@@ -19,7 +19,7 @@ extension EnumPropertyType where Self.RawValue == String {
 
 extension SupportedPropertyType where Self: RawRepresentable, Self.RawValue == String {
     #if SanAndreas
-    public func dematerialize() -> String {
+    public func dematerialize(context: SupportedPropertyTypeContext) -> String {
         return rawValue
     }
     #endif

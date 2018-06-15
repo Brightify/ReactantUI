@@ -21,8 +21,8 @@ public struct Shadow: MultipleAttributeSupportedPropertyType {
 
     #if SanAndreas
     // TODO
-    public func dematerialize() -> String {
-        return ""
+    public func dematerialize(context: SupportedPropertyTypeContext) -> String {
+        fatalError("Implement me!")
     }
     #endif
 

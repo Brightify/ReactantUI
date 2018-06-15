@@ -29,7 +29,7 @@ public struct Rect: AttributeSupportedPropertyType {
     }
     
     #if SanAndreas
-    public func dematerialize() -> String {
+    public func dematerialize(context: SupportedPropertyTypeContext) -> String {
         return "x: \(origin.x), y: \(origin.y), width: \(size.width), height: \(size.height)"
     }
     #endif

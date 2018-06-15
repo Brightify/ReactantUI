@@ -30,7 +30,7 @@ public struct Point: AttributeSupportedPropertyType {
     }
     
     #if SanAndreas
-    public func dematerialize() -> String {
+    public func dematerialize(context: SupportedPropertyTypeContext) -> String {
         return "x: \(x), y: \(y)"
     }
     #endif

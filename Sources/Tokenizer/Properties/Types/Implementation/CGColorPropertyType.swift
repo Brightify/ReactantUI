@@ -18,8 +18,8 @@ public struct CGColorPropertyType: AttributeSupportedPropertyType {
     }
 
     #if SanAndreas
-    public func dematerialize() -> String {
-        return color.dematerialize()
+    public func dematerialize(context: SupportedPropertyTypeContext) -> String {
+        return color.dematerialize(context: context.sibling(for: color))
     }
     #endif
 

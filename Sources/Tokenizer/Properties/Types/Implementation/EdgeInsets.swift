@@ -34,7 +34,7 @@ public struct EdgeInsets: AttributeSupportedPropertyType {
     }
     
     #if SanAndreas
-    public func dematerialize() -> String {
+    public func dematerialize(context: SupportedPropertyTypeContext) -> String {
         return "top: \(top), left: \(left), bottom: \(bottom), right: \(right)"
     }
     #endif

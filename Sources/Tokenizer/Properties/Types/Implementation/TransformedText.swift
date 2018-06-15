@@ -45,7 +45,7 @@ extension TransformedText: AttributeSupportedPropertyType {
     }
 
     #if SanAndreas
-    public func dematerialize() -> String {
+    public func dematerialize(context: SupportedPropertyTypeContext) -> String {
         func resolveTransformations(text: TransformedText) -> String {
             switch text {
             case .transform(.uppercased, let inner):

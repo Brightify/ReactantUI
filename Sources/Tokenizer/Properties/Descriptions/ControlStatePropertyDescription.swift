@@ -41,11 +41,11 @@ public struct ControlStatePropertyDescription<T: AttributeSupportedPropertyType>
         setProperty(property, to: &properties, for: state)
     }
 
-    private func getProperty(from dictionary: [String: Property], for state: [ControlState]) -> ControlStateProperty<T>? {
+    public func getProperty(from dictionary: [String: Property], for state: [ControlState]) -> ControlStateProperty<T>? {
         return dictionary[dictionaryKey(for: state)] as? ControlStateProperty<T>
     }
 
-    private func setProperty(_ property: Property, to dictionary: inout [String: Property], for state: [ControlState]) {
+    public func setProperty(_ property: Property, to dictionary: inout [String: Property], for state: [ControlState]) {
         dictionary[dictionaryKey(for: state)] = property
     }
 

@@ -19,8 +19,8 @@ extension Double: AttributeSupportedPropertyType {
     #endif
 
     #if SanAndreas
-    public func dematerialize() -> String {
-        return generated
+    public func dematerialize(context: SupportedPropertyTypeContext) -> String {
+        return generate(context: context)
     }
     #endif
 

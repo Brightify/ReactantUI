@@ -12,11 +12,11 @@ import UIKit
 #endif
 
 public struct ElementControlStateProperty<T: ElementSupportedPropertyType>: TypedProperty {
-    public let namespace: [PropertyContainer.Namespace]
-    public let name: String
-    public let state: [ControlState]
+    public var namespace: [PropertyContainer.Namespace]
+    public var name: String
+    public var state: [ControlState]
 
-    public let description: ElementControlStatePropertyDescription<T>
+    public var description: ElementControlStatePropertyDescription<T>
     public var value: T
 
     public var attributeName: String {
@@ -37,7 +37,7 @@ public struct ElementControlStateProperty<T: ElementSupportedPropertyType>: Type
 
     #if SanAndreas
     public func dematerialize(context: PropertyContext) -> XMLSerializableAttribute {
-        return XMLSerializableAttribute(name: attributeName, value: value.dematerialize())
+        return XMLSerializableAttribute(name: attributeName, value: value.dematerialize(context: context.child(for: value)))
     }
     #endif
 

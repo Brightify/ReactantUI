@@ -8,8 +8,7 @@
 import Foundation
 
 extension ComponentDefinition: XMLElementSerializable {
-
-    public func serialize() -> XMLSerializableElement {
+    public func serialize(context: DataContext) -> XMLSerializableElement {
         var builder = XMLAttributeBuilder()
 
         if isRootView {
@@ -25,13 +24,33 @@ extension ComponentDefinition: XMLElementSerializable {
         }
 
         let styleNameAttribute = stylesName == "Styles" ? [] : [XMLSerializableAttribute(name: "name", value: stylesName)]
-        let stylesElement = styles.isEmpty ? [] : [XMLSerializableElement(name: "styles", attributes: styleNameAttribute, children: styles.map { $0.serialize() })]
+        // FIXME We should create an intermediate context
+        let stylesElement: [XMLSerializableElement]
+        if styles.isEmpty {
+            stylesElement = []
+        } else {
+            let styleChildren = styles.map { $0.serialize(context: context) }
+            stylesElement = [XMLSerializableElement(name: "styles", attributes: styleNameAttribute, children: styleChildren)]
+        }
 
-        let childElements = children.map { $0.serialize() }
+        // FIXME We should create an intermediate context
+        let childElements = children.map { $0.serialize(context: context) }
 
         #if SanAndreas
-            properties.map { $0.dematerialize() }.forEach { builder.add(attribute: $0) }
-            toolingProperties.map { _, property in property.dematerialize() }.forEach { builder.add(attribute: $0) }
+        properties
+            .map {
+                $0.dematerialize(context: PropertyContext(parentContext: context, property: $0))
+            }
+            .forEach {
+                builder.add(attribute: $0)
+            }
+        toolingProperties.values
+            .map {
+                $0.dematerialize(context: PropertyContext(parentContext: context, property: $0))
+            }
+            .forEach {
+                builder.add(attribute: $0)
+            }
         #endif
 
         var viewElement = XMLSerializableElement(name: "Component", attributes: builder.attributes, children: stylesElement + childElements)

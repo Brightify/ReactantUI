@@ -31,7 +31,7 @@ public enum ControlContentVerticalAlignment: Int, EnumPropertyType, AttributeSup
     
     #if SanAndreas
 
-    public func dematerialize() -> String {
+    public func dematerialize(context: SupportedPropertyTypeContext) -> String {
         switch self {
             case .center:
                 return "center"

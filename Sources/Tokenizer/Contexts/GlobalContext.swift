@@ -7,7 +7,9 @@
 
 import Foundation
 
-#if !canImport(Reactant)
+#if canImport(Reactant)
+import Reactant
+#else
 extension Dictionary {
     public init(keyValueTuples: [(Key, Value)]) {
         var result: [Key: Value] = [:]

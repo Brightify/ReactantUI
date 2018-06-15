@@ -23,7 +23,7 @@ public enum ContentMode: String, EnumPropertyType, AttributeSupportedPropertyTyp
     case bottomLeft
     case bottomRight
 
-    static var allValues: [ContentMode] = [.scaleToFill, .scaleAspectFit, .scaleAspectFill,
+    public static var allValues: [ContentMode] = [.scaleToFill, .scaleAspectFit, .scaleAspectFill,
                                            .redraw, .center, .top, .bottom, .left, .right,
                                            .topLeft, .topRight, .bottomLeft, .bottomRight]
 

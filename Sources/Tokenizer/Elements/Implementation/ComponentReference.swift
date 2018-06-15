@@ -69,8 +69,8 @@ public class ComponentReference: View, ComponentDefinitionContainer {
     }
     #endif
     
-    public override func serialize() -> XMLSerializableElement {
-        var serialized = super.serialize()
+    public override func serialize(context: DataContext) -> XMLSerializableElement {
+        var serialized = super.serialize(context: context)
         if let type = type {
             serialized.attributes.insert(XMLSerializableAttribute(name: "type", value: type), at: 0)
         }

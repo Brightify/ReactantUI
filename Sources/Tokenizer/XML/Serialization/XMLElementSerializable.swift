@@ -8,5 +8,5 @@
 import Foundation
 
 public protocol XMLElementSerializable {
-    func serialize() -> XMLSerializableElement
+    func serialize(context: DataContext) -> XMLSerializableElement
 }

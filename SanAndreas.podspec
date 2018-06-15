@@ -25,6 +25,7 @@ Pod::Spec.new do |spec|
     spec.dependency 'Reactant', '> 1.0'
     spec.dependency 'RxCocoa'
     spec.source_files = [
+        'Sources/Common/**/*.swift',
         'Sources/Tokenizer/**/*.swift',
     ]
 end

@@ -35,11 +35,11 @@ public struct AssignablePropertyDescription<T: AttributeSupportedPropertyType>: 
         setProperty(property, to: &properties)
     }
 
-    private func getProperty(from dictionary: [String: Property]) -> AssignableProperty<T>? {
+    public func getProperty(from dictionary: [String: Property]) -> AssignableProperty<T>? {
         return dictionary[dictionaryKey()] as? AssignableProperty<T>
     }
 
-    private func setProperty(_ property: Property, to dictionary: inout [String: Property]) {
+    public func setProperty(_ property: Property, to dictionary: inout [String: Property]) {
         dictionary[dictionaryKey()] = property
     }
 

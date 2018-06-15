@@ -61,8 +61,8 @@ public class PlainTableView: View, ComponentDefinitionContainer {
         try super.init(node: node)
     }
 
-    public override func serialize() -> XMLSerializableElement {
-        var element = super.serialize()
+    public override func serialize(context: DataContext) -> XMLSerializableElement {
+        var element = super.serialize(context: context)
         element.attributes.append(XMLSerializableAttribute(name: "cell", value: cellType))
         return element
     }

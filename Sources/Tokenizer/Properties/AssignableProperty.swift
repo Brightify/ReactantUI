@@ -13,9 +13,9 @@ import UIKit
 #endif
 
 public struct AssignableProperty<T: AttributeSupportedPropertyType>: TypedProperty {
-    public let namespace: [PropertyContainer.Namespace]
-    public let name: String
-    public let description: AssignablePropertyDescription<T>
+    public var namespace: [PropertyContainer.Namespace]
+    public var name: String
+    public var description: AssignablePropertyDescription<T>
     public var value: T
     
     public var attributeName: String {
@@ -29,7 +29,7 @@ public struct AssignableProperty<T: AttributeSupportedPropertyType>: TypedProper
     
     #if SanAndreas
     public func dematerialize(context: PropertyContext) -> XMLSerializableAttribute {
-        return XMLSerializableAttribute(name: attributeName, value: value.dematerialize())
+        return XMLSerializableAttribute(name: attributeName, value: value.dematerialize(context: context.child(for: value)))
     }
     #endif
 

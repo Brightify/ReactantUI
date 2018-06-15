@@ -91,7 +91,7 @@ public class View: XMLElementDeserializable, UIElement {
         }
     }
 
-    public func serialize() -> XMLSerializableElement {
+    public func serialize(context: DataContext) -> XMLSerializableElement {
         var builder = XMLAttributeBuilder()
         if let field = field {
             builder.attribute(name: "field", value: field)
@@ -102,8 +102,13 @@ public class View: XMLElementDeserializable, UIElement {
         }
         
         #if SanAndreas
-            properties.map { $0.dematerialize() }.forEach { builder.add(attribute: $0) }
-            toolingProperties.map { _, property in property.dematerialize() }.forEach { builder.add(attribute: $0) }
+        (properties + toolingProperties.values)
+            .map {
+                $0.dematerialize(context: PropertyContext(parentContext: context, property: $0))
+            }
+            .forEach {
+                builder.add(attribute: $0)
+            }
         #endif
         
         layout.serialize().forEach { builder.add(attribute: $0) }
@@ -235,7 +240,7 @@ public struct PreferredSize: SupportedPropertyType {
     }
 
     #if SanAndreas
-    public func dematerialize() -> String {
+    public func dematerialize(context: SupportedPropertyTypeContext) -> String {
         if width == height {
             return "\(width.stringValue)"
         }

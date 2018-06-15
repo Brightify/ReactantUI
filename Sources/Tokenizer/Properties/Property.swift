@@ -11,11 +11,11 @@ import UIKit
 #endif
 
 public protocol Property {
-    var name: String { get }
+    var name: String { get set }
     
     var attributeName: String { get }
     
-    var namespace: [PropertyContainer.Namespace] { get }
+    var namespace: [PropertyContainer.Namespace] { get set }
 
     var anyValue: SupportedPropertyType { get }
 

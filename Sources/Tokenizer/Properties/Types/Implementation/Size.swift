@@ -29,7 +29,7 @@ public struct Size: AttributeSupportedPropertyType {
     }
     
     #if SanAndreas
-    public func dematerialize() -> String {
+    public func dematerialize(context: SupportedPropertyTypeContext) -> String {
         return "width: \(width), height: \(height)"
     }
     #endif

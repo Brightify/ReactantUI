@@ -26,7 +26,7 @@ public struct AffineTransformation: AttributeSupportedPropertyType {
     }
     
     #if SanAndreas
-    public func dematerialize() -> String {
+    public func dematerialize(context: SupportedPropertyTypeContext) -> String {
         return transformations.map { $0.dematerialize() }.joined(separator: " ")
     }
     #endif

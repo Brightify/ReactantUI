@@ -22,7 +22,7 @@ public protocol UIElementBase {
     var requiredImports: Set<String> { get }
 }
 
-public protocol UIElement: class, UIElementBase, XMLElementSerializable {
+public protocol UIElement: AnyObject, UIElementBase, XMLElementSerializable {
     var field: String? { get }
     var layout: Layout { get set }
     var styles: [StyleName] { get set }

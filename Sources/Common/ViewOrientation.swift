@@ -27,8 +27,8 @@ extension ViewOrientation {
     }
 }
 
-#if canImport(UIKit)
-import UIKit
+#if canImport(CoreGraphics)
+import CoreGraphics
 
 extension ViewOrientation {
     public init(size: CGSize) {
