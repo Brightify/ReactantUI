@@ -138,28 +138,28 @@ class LabelTests: XCTestCase {
     func testLabelAttributedTextLocalStyles() {
         let sources = [
         """
-        <Label>
+        <Label layout:edges="super">
         <attributedText style="style1">
-            <b>fontko</b>
+            <b>boldko</b>
         </attributedText>
         </Label>
         """,
         """
-        <Label>
+        <Label layout:edges="super">
         <attributedText style="style2">
-            <i>boldko</i>
+            <i>fontko</i>
         </attributedText>
         </Label>
         """,
         """
-        <Label>
+        <Label layout:edges="super">
         <attributedText style="style1">
             normalko
         </attributedText>
         </Label>
         """,
         """
-        <Label>
+        <Label layout:edges="super">
         <attributedText style="style1" backgroundColor="red">
             normalko <b backgroundColor="#f5f5f5" font=":bold@20">bold with light background</b> normale
         </attributedText>
@@ -171,10 +171,10 @@ class LabelTests: XCTestCase {
 
         let expectedViews = [
             UILabel().where {
-                $0.attributedText = "fontko".attributed(.font(UIFont.System.regular.font(size: 20)))
+                $0.attributedText = "boldko".attributed(.font(UIFont.System.bold.font(size: 20)))
             },
             UILabel().where {
-                $0.attributedText = "boldko".attributed(.font(UIFont.System.bold.font(size: 20)))
+                $0.attributedText = "fontko".attributed(.font(UIFont.System.regular.font(size: 20)))
             },
             UILabel().where {
                 $0.attributedText = "normalko".attributed()
@@ -185,7 +185,7 @@ class LabelTests: XCTestCase {
             ]
 
         for (index, (source, expectedView)) in zip(sources, expectedViews).enumerated() {
-//            assertEqual(xml: source, view: expectedView, testAtSizes: standardTestSizes, testVariant: index)
+            assertEqual(xml: source, view: expectedView, testAtSizes: standardTestSizes, testVariant: index)
         }
     }
 }
