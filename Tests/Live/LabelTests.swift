@@ -130,9 +130,7 @@ class LabelTests: XCTestCase {
             },
         ]
 
-        for (index, (source, expectedView)) in zip(sources, expectedViews).enumerated() {
-            assertEqual(xml: source, view: expectedView, testAtSizes: standardTestSizes, testVariant: index)
-        }
+        assertSuiteEqual(xmls: sources, views: expectedViews, testAtSizes: standardTestSizes)
     }
 
     func testLabelAttributedTextLocalStyles() {
@@ -164,10 +162,7 @@ class LabelTests: XCTestCase {
             normalko <b backgroundColor="#f5f5f5" font=":bold@20">bold with light background</b> normale
         </attributedText>
         </Label>
-        """,].map {
-            // we are interpolating the # in the template with our view
-            componentTwoStyles.replacingOccurrences(of: "#{}", with: $0)
-        }
+        """,]
 
         let expectedViews = [
             UILabel().where {
@@ -184,9 +179,7 @@ class LabelTests: XCTestCase {
             },
             ]
 
-        for (index, (source, expectedView)) in zip(sources, expectedViews).enumerated() {
-            assertEqual(xml: source, view: expectedView, testAtSizes: standardTestSizes, testVariant: index)
-        }
+        assertSuiteEqual(xmls: sources, views: expectedViews, componentTemplate: componentTwoStyles, testAtSizes: standardTestSizes)
     }
 }
 
