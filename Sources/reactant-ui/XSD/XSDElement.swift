@@ -25,7 +25,7 @@ extension XSDElement: Hashable, Equatable {
 }
 
 extension XSDElement: XMLElementSerializable {
-    func serialize() -> XMLSerializableElement {
+    func serialize(context: DataContext) -> XMLSerializableElement {
         var attributeBuilder = XMLAttributeBuilder()
         attributeBuilder.attribute(name: "name", value: name)
         attributeBuilder.attribute(name: "maxOccurs", value: "unbounded")

@@ -9,7 +9,7 @@ import Foundation
 import Tokenizer
 
 struct XSDComponentRootElement: XMLElementSerializable {
-    func serialize() -> XMLSerializableElement {
+    func serialize(context: DataContext) -> XMLSerializableElement {
         let groupRef = XMLSerializableElement(name: "xs:group", attributes: [XMLSerializableAttribute(name: "ref", value: "viewGroup")], children: [])
         let styles = XMLSerializableElement(name: "xs:element", attributes: [XMLSerializableAttribute(name: "name", value: "styles"),
                                                                    XMLSerializableAttribute(name: "maxOccurs", value: "1"),

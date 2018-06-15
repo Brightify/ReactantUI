@@ -14,7 +14,7 @@ struct XSDSimpleType {
 }
 
 extension XSDSimpleType: XMLElementSerializable {
-    func serialize() -> XMLSerializableElement {
+    func serialize(context: DataContext) -> XMLSerializableElement {
         var attributeBuilder = XMLAttributeBuilder()
 
         attributeBuilder.attribute(name: "name", value: name)

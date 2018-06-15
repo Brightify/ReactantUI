@@ -26,8 +26,8 @@ extension XSDAttributeGroup: Hashable, Equatable {
 }
 
 extension XSDAttributeGroup: XMLElementSerializable {
-    func serialize() -> XMLSerializableElement {
-        let attributes = self.attributes.map { $0.serialize() }
+    func serialize(context: DataContext) -> XMLSerializableElement {
+        let attributes = self.attributes.map { $0.serialize(context: context) }
         return XMLSerializableElement(name: "xs:attributeGroup",
                                       attributes: [XMLSerializableAttribute(name: "name", value: name)],
                                       children: attributes)

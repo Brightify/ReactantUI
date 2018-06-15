@@ -17,12 +17,12 @@ struct XSDFile {
 }
 
 extension XSDFile: XMLElementSerializable {
-    func serialize() -> XMLSerializableElement {
-        let simpleTypes = self.simpleTypes.map { $0.serialize() }
-        let complexTypes = self.complexTypes.map { $0.serialize() }
-        let attributeGroups = self.attributeGroups.map { $0.serialize() }
-        let groups = self.groups.map { $0.serialize() }
-        let elements = self.elements.map { $0.serialize() }
+    func serialize(context: DataContext) -> XMLSerializableElement {
+        let simpleTypes = self.simpleTypes.map { $0.serialize(context: context) }
+        let complexTypes = self.complexTypes.map { $0.serialize(context: context) }
+        let attributeGroups = self.attributeGroups.map { $0.serialize(context: context) }
+        let groups = self.groups.map { $0.serialize(context: context) }
+        let elements = self.elements.map { $0.serialize(context: context) }
         return XMLSerializableElement(name: "xs:schema",
                                       attributes: [],
                                       children: simpleTypes + complexTypes + attributeGroups + groups + elements)

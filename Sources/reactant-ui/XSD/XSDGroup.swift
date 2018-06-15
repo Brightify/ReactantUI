@@ -24,11 +24,11 @@ extension XSDGroup: Hashable, Equatable {
 }
 
 extension XSDGroup: XMLElementSerializable {
-    func serialize() -> XMLSerializableElement {
+    func serialize(context: DataContext) -> XMLSerializableElement {
         return XMLSerializableElement(name: "xs:group",
                             attributes: [
                                 XMLSerializableAttribute(name: "name", value: name)
                             ],
-                            children: [XMLSerializableElement(name: "xs:choice", attributes: [], children: elements.map { $0.serialize() })])
+                            children: [XMLSerializableElement(name: "xs:choice", attributes: [], children: elements.map { $0.serialize(context: context) })])
     }
 }
