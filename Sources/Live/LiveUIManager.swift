@@ -34,6 +34,8 @@ public class ReactantLiveUIManager {
     }
     private let forceReapplyTrigger = PublishSubject<AnyObject>()
     private let definitionsSubject = ReplaySubject<[String: (definition: ComponentDefinition, loaded: Date, xmlPath: String)]>.create(bufferSize: 1)
+    
+    private let watcherClient = TCPWatcherClient()
 
     /// Closure to be called right after applying new constraints to Live UI.
     public var onApplied: ((ComponentDefinition, UIView) -> Void)?
@@ -107,7 +109,9 @@ public class ReactantLiveUIManager {
     }
 
     /// Provided the root directory is set, it reloads the component definitions from all `ui.xml` files, including subfolders.
+    // TODO
     public func reloadFiles() {
+        print("Reload files\n")
         guard let rootDir = configuration?.rootDir else { return }
         guard let enumerator = FileManager.default.enumerator(atPath: rootDir) else { return }
         for file in enumerator {
@@ -176,8 +180,7 @@ public class ReactantLiveUIManager {
     }
 
     private func definitions(in file: String) throws -> [ComponentDefinition] {
-        let url = URL(fileURLWithPath: file)
-        guard let data = try? Data(contentsOf: url, options: .uncached) else {
+        guard let data = watchers[file]?.watcher.fileContent else {
             throw LiveUIError(message: "ERROR: file not found")
         }
         let xml = SWXMLHash.parse(data)
@@ -237,7 +240,8 @@ public class ReactantLiveUIManager {
         if !watchers.keys.contains(xmlPath) {
             let watcher: Watcher
             do {
-                watcher = try Watcher(path: xmlPath)
+                watcher = try TCPWatcher(path: xmlPath, client: watcherClient)
+//                watcher = try FileWatcher(path: xmlPath)
             } catch let error {
                 logError(error, in: xmlPath)
                 return
@@ -246,8 +250,7 @@ public class ReactantLiveUIManager {
             watchers[xmlPath] = (watcher: watcher, viewCount: 1)
 
             watcher.watch()
-                .startWith(xmlPath)
-                .subscribe(onNext: { path in
+                .subscribe(onNext: { path, _ in
                     self.resetError(for: path)
                     do {
                         try self.registerDefinitions(in: path)
@@ -258,8 +261,6 @@ public class ReactantLiveUIManager {
                     }
                 })
                 .disposed(by: disposeBag)
-
-
         } else {
             watchers[xmlPath]?.viewCount += 1
         }
@@ -350,7 +351,8 @@ public class ReactantLiveUIManager {
 
             let watcher: Watcher
             do {
-                watcher = try Watcher(path: path)
+                watcher = try TCPWatcher(path: path, client: watcherClient)
+//                watcher = try FileWatcher(path: path)
             } catch let error {
                 logError(error, in: path)
                 return
@@ -358,14 +360,8 @@ public class ReactantLiveUIManager {
 
             watcher
                 .watch()
-                .startWith(path)
-                .subscribe(onNext: { path in
+                .subscribe(onNext: { path, data in
                     self.resetError(for: path)
-                    let url = URL(fileURLWithPath: path)
-                    guard let data = try? Data(contentsOf: url, options: .uncached) else {
-                        self.logError("ERROR: file not found", in: path)
-                        return
-                    }
                     let xml = SWXMLHash.parse(data)
                     do {
                         var oldStyles = self.styles
@@ -409,7 +405,7 @@ public class ReactantLiveUIManager {
             logError(tokenizationError.message, in: path)
         case let deserializationError as XMLDeserializationError:
             logError(deserializationError.description, in: path)
-        case let watcherError as Watcher.Error:
+        case let watcherError as FileWatcher.Error:
             logError(watcherError.message, in: path)
         case let constraintParserError as ParseError:
             switch constraintParserError {
@@ -455,3 +451,4 @@ public class ReactantLiveUIManager {
         }
     }
 }
+
