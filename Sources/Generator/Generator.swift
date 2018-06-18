@@ -120,13 +120,13 @@ public class Generator {
     func ifSimulator(_ commands: String) -> String {
         if configuration.swiftVersion >= .swift4_1 {
             return """
-            #if targetEnvironment(simulator)
+            #if targetEnvironment(simulator) || DEBUG
                 \(commands)
             #endif
             """
         } else {
             return """
-            #if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))
+            #if ((arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))) || DEBUG
                 \(commands)
             #endif
             """

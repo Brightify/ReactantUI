@@ -30,9 +30,9 @@ public class UIGenerator: Generator {
                 l("var edgesForExtendedLayout: UIRectEdge") {
                     if configuration.isLiveEnabled {
                         if configuration.swiftVersion >= .swift4_1 {
-                            l("#if targetEnvironment(simulator)")
+                            l("#if targetEnvironment(simulator) || DEBUG")
                         } else {
-                            l("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
+                            l("#if ((arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))) || DEBUG")
                         }
                         l("return ReactantLiveUIManager.shared.extendedEdges(of: self)")
                         l("#else")
@@ -82,9 +82,9 @@ public class UIGenerator: Generator {
                     l("guard let target = self.target else { /* FIXME Should we fatalError here? */ return }")
                     if configuration.isLiveEnabled {
                         if configuration.swiftVersion >= .swift4_1 {
-                            l("#if targetEnvironment(simulator)")
+                            l("#if targetEnvironment(simulator) || DEBUG")
                         } else {
-                            l("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
+                            l("#if ((arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))) || DEBUG")
                         }
                         // This will register `self` to remove `deinit` from ViewBase
                         l("ReactantLiveUIManager.shared.register(target)") {
@@ -144,9 +144,9 @@ public class UIGenerator: Generator {
 
                     if configuration.isLiveEnabled {
                         if configuration.swiftVersion >= .swift4_1 {
-                            l("#if targetEnvironment(simulator)")
+                            l("#if targetEnvironment(simulator) || DEBUG")
                         } else {
-                            l("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
+                            l("#if ((arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))) || DEBUG")
                         }
                         // This will reapply the component definition.
                         // TODO Do a real "update" instead of "remake" that's being done now
