@@ -200,9 +200,9 @@ class GenerateCommand: Command {
         if enableLive.value {
             let generatedApplicationDescriptionPath = applicationDescriptionPath.map { "\"\($0)\"" } ?? "nil"
             if swiftVersion < .swift4_1 {
-                output.append("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
+                output.append("#if ((arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))) || DEBUG")
             } else {
-                output.append("#if targetEnvironment(simulator)")
+                output.append("#if targetEnvironment(simulator) || DEBUG")
             }
             output.append("""
                       struct GeneratedReactantLiveUIConfiguration: ReactantLiveUIConfiguration {
@@ -373,13 +373,13 @@ class GenerateCommand: Command {
     private func ifSimulator(swiftVersion: SwiftVersion, commands: String) -> String {
         if swiftVersion >= .swift4_1 {
             return """
-            #if targetEnvironment(simulator)
+            #if targetEnvironment(simulator) || DEBUG
             \(commands)
             #endif
             """
         } else {
             return """
-            #if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))
+            #if ((arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))) || DEBUG
             \(commands)
             #endif
             """
