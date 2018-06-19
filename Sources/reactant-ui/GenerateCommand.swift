@@ -60,13 +60,15 @@ class GenerateCommand: Command {
     public func execute() throws {
         var output: [String] = []
 
-        guard let inputPath = inputPath.value, let inputPathURL = URL(string: "file://\(inputPath)") else {
+        guard let inputPath = inputPath.value else {
             throw GenerateCommandError.inputPathInvalid
         }
+        let inputPathURL = URL(fileURLWithPath: inputPath)
 
-        guard let outputFile = outputFile.value, let outputPathURL = URL(string: "file://\(outputFile)") else {
+        guard let outputFile = outputFile.value else {
             throw GenerateCommandError.ouputFileInvalid
         }
+        let outputPathURL = URL(fileURLWithPath: outputFile)
 
         let rawSwiftVersion = swiftVersionParameter.value ?? "4.1" // use 4.1 as default
         guard let swiftVersion = SwiftVersion(raw: rawSwiftVersion) else {

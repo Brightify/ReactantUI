@@ -54,7 +54,7 @@ DEPENDENCIES:
   - SnapKit (~> 4.0)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  https://github.com/cocoapods/specs.git:
     - Differentiator
     - Kingfisher
     - Result
@@ -82,7 +82,7 @@ SPEC CHECKSUMS:
   Differentiator: a87be69eba49ec4ab460c7671143ee3a9eececfd
   Kingfisher: 9ee7e788d8ba07c3f21ce0d43f33cec310a4f781
   Reactant: 5e4f19b798a42b46a61db6d86b42b85d70f774d4
-  ReactantLiveUI: ea44a15cd63b1873c6b51fbb1b24b0d7fc51acee
+  ReactantLiveUI: a09dde6cd269dc0a8ad6d9c1f41985df9f074089
   ReactantUI: 08fe3cb9d4281682ed2546a90a58d6750a514586
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   RxCocoa: d62846ca96495d862fa4c59ea7d87e5031d7340e
@@ -93,4 +93,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 0f12ab431a57b8915d21bc0b044b60ca740f870b
 
-COCOAPODS: 1.5.0
+COCOAPODS: 1.5.3
