@@ -39,9 +39,24 @@ public struct AttributedText: ElementSupportedPropertyType {
     public let localProperties: [Property]
     public let parts: [AttributedText.Part]
 
+    public var requiresTheme: Bool {
+        return localProperties.first(where: { $0.anyValue.requiresTheme }) != nil ||
+            parts.first(where: { $0.requiresTheme }) != nil
+    }
+
     public enum Part {
         case transform(TransformedText)
         indirect case attributed(AttributedTextStyle, [AttributedText.Part])
+
+        var requiresTheme: Bool {
+            switch self {
+            case .transform:
+                return false
+            case .attributed(let style, let innerText):
+                return style.properties.first(where: { $0.anyValue.requiresTheme }) != nil ||
+                    innerText.first(where: { $0.requiresTheme }) != nil
+            }
+        }
     }
 }
 

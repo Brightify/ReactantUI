@@ -17,5 +17,9 @@ class ViewController: ControllerBase<Void, ExampleRootView> {
         super.init()
 
         rootView.componentState = (test: "test", 1, test2: (a: 10, b: "hello worl"))
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .camera) {
+            ApplicationTheme.selector.select(theme: ApplicationTheme.selector.currentTheme == .day ? .night : .day)
+        }
     }
 }

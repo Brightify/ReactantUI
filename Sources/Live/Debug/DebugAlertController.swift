@@ -30,6 +30,15 @@ class DebugAlertController: UIAlertController {
         controller.popoverPresentationController?.sourceView = window
         controller.popoverPresentationController?.sourceRect = window.bounds
 
+        if manager.globalContext.applicationDescription.themes.count > 1 {
+            let switchTheme = UIAlertAction(title: "Switch theme ..", style: .default) { [weak window] _ in
+                guard let controller = window?.rootViewController else { return }
+                manager.presentThemeSelection(in: controller)
+            }
+
+            controller.addAction(switchTheme)
+        }
+
         let reloadFiles = UIAlertAction(title: "Reload files", style: .default) { _ in
             manager.reloadFiles()
         }
@@ -40,6 +49,7 @@ class DebugAlertController: UIAlertController {
         }
         controller.addAction(preview)
         controller.addAction(UIAlertAction(title: "Close menu", style: UIAlertActionStyle.cancel))
+
         return controller
     }
 }

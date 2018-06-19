@@ -38,6 +38,8 @@ public struct CGColorPropertyType: AttributeSupportedPropertyType {
         return CGColorPropertyType(color: materializedValue)
     }
 
+    public static var runtimeType: String = "CGColor"
+
     public static var xsdType: XSDType {
         return Color.xsdType
     }

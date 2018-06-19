@@ -107,11 +107,31 @@ public class UIGenerator: Generator {
                         }
                         l("#else")
                     }
+                    var themedProperties = [:] as [String: [Property]]
                     for property in root.properties {
+                        guard !property.anyValue.requiresTheme else {
+                            themedProperties["target", default: []].append(property)
+                            continue
+                        }
                         let propertyContext = PropertyContext(parentContext: componentContext, property: property)
                         l(property.application(on: "target", context: propertyContext))
                     }
-                    try root.children.forEach { try generate(element: $0, superName: "target", containedIn: root) }
+                    try root.children.forEach {
+                        try generate(element: $0, superName: "target", containedIn: root, themedProperties: &themedProperties)
+                    }
+
+                    if !themedProperties.isEmpty {
+                        l("ApplicationTheme.selector.register(target: target, listener: { theme in")
+                        for (name, properties) in themedProperties {
+                            for property in properties {
+                                let propertyContext = PropertyContext(parentContext: componentContext, property: property)
+                                l(property.application(on: name, context: propertyContext))
+                            }
+                        }
+                        l("})")
+                    }
+
+
                     tempCounter = 1
                     root.children.forEach { generateConstraints(element: $0, superName: "target", forUpdate: false) }
                     if configuration.isLiveEnabled {
@@ -165,6 +185,8 @@ public class UIGenerator: Generator {
                                       ReactantLiveUIManager.shared.unregister(knownTarget)
                                 """))
                     }
+
+                    l("ApplicationTheme.selector.unregister(target: target)")
                 }
             }
             l()
@@ -179,7 +201,7 @@ public class UIGenerator: Generator {
         return output
     }
 
-    private func generate(element: UIElement, superName: String, containedIn: UIContainer) throws {
+    private func generate(element: UIElement, superName: String, containedIn: UIContainer, themedProperties: inout [String: [Property]]) throws {
         let name: String
         if let field = element.field {
             name = "target.\(field)"
@@ -205,13 +227,18 @@ public class UIGenerator: Generator {
         }
 
         for property in element.properties {
+            guard !property.anyValue.requiresTheme else {
+                themedProperties[name, default: []].append(property)
+                continue
+            }
+
             let propertyContext = PropertyContext(parentContext: componentContext, property: property)
             l(property.application(on: name, context: propertyContext))
         }
         l("\(superName).\(containedIn.addSubviewMethod)(\(name))")
         l()
         if let container = element as? UIContainer {
-            try container.children.forEach { try generate(element: $0, superName: name, containedIn: container) }
+            try container.children.forEach { try generate(element: $0, superName: name, containedIn: container, themedProperties: &themedProperties) }
         }
     }
 

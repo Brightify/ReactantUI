@@ -54,7 +54,7 @@
     <ImageView
         layout:edges="super"
         layoutMargins="10,10,10,10"
-        image="falcon"
+        image="theme.falcon"
         visibility="visible"
         clipsToBounds="true"
         layout:compressionPriority="high"

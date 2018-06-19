@@ -1,5 +1,10 @@
 PODS:
   - Differentiator (3.0.2)
+  - iOSSnapshotTestCase (3.0.0):
+    - iOSSnapshotTestCase/SwiftSupport (= 3.0.0)
+  - iOSSnapshotTestCase/Core (3.0.0)
+  - iOSSnapshotTestCase/SwiftSupport (3.0.0):
+    - iOSSnapshotTestCase/Core
   - Kingfisher (4.8.0)
   - Nimble (7.0.3)
   - Quick (1.2.0)
@@ -45,6 +50,7 @@ PODS:
   - SnapKit (4.0.0)
 
 DEPENDENCIES:
+  - iOSSnapshotTestCase
   - Kingfisher (~> 4.0)
   - Nimble (~> 7.0)
   - Quick (~> 1.1)
@@ -63,6 +69,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Differentiator
+    - iOSSnapshotTestCase
     - Kingfisher
     - Nimble
     - Quick
@@ -82,6 +89,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Differentiator: a87be69eba49ec4ab460c7671143ee3a9eececfd
+  iOSSnapshotTestCase: 23984ffe05289728d646cbb6a7a10b4fb1c93440
   Kingfisher: 976d828df2b24834c6a3f2fc4d82cdbd26552be1
   Nimble: 7f5a9c447a33002645a071bddafbfb24ea70e0ac
   Quick: 58d203b1c5e27fff7229c4c1ae445ad7069a7a08
@@ -96,6 +104,6 @@ SPEC CHECKSUMS:
   RxTest: e634f15fd2c2cd0e0120132ef7a4f7be69ad0393
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
 
-PODFILE CHECKSUM: 6df853ab16a9fdfc35d933fbfe6cb94530be326c
+PODFILE CHECKSUM: 6dfc0770d22924e3f8247bbfdb61c8a46138deeb
 
 COCOAPODS: 1.5.3

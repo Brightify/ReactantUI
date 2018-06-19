@@ -6,12 +6,21 @@
 //
 
 import Foundation
+#if canImport(UIKit)
+import UIKit
+#endif
 
 public protocol DataContext {
 
     func resolvedStyleName(named styleName: StyleName) -> String
 
     func style(named styleName: StyleName) -> Style?
+
+    func themed(image name: String) -> Image?
+
+    func themed(color name: String) -> UIColorPropertyType?
+
+    func themed(font name: String) -> Font?
 }
 
 public protocol HasParentContext {
@@ -38,6 +47,18 @@ extension DataContext where Self: HasParentContext, Self.ParentContext: DataCont
     public func style(named styleName: StyleName) -> Style? {
         return parentContext.style(named: styleName)
     }
+
+    public func themed(image name: String) -> Image? {
+        return parentContext.themed(image: name)
+    }
+
+    public func themed(color name: String) -> UIColorPropertyType? {
+        return parentContext.themed(color: name)
+    }
+
+    public func themed(font name: String) -> Font? {
+        return parentContext.themed(font: name)
+    }
 }
 
 extension DataContext where Self: HasParentContext, Self.ParentContext == DataContext {
@@ -47,5 +68,17 @@ extension DataContext where Self: HasParentContext, Self.ParentContext == DataCo
 
     public func style(named styleName: StyleName) -> Style? {
         return parentContext.style(named: styleName)
+    }
+
+    public func themed(image name: String) -> Image? {
+        return parentContext.themed(image: name)
+    }
+
+    public func themed(color name: String) -> UIColorPropertyType? {
+        return parentContext.themed(color: name)
+    }
+
+    public func themed(font name: String) -> Font? {
+        return parentContext.themed(font: name)
     }
 }

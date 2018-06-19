@@ -189,6 +189,9 @@
 		1844928220922AE20080B743 /* LabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1844927D20922AE10080B743 /* LabelTests.swift */; };
 		1844928320922AE20080B743 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1844927F20922AE10080B743 /* Info.plist */; };
 		1844928420922AE20080B743 /* Tokenizer_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1844928020922AE10080B743 /* Tokenizer_iOSTests.swift */; };
+		18758FE420D980FF004C6690 /* Example.hyperdrive.xml in Resources */ = {isa = PBXBuildFile; fileRef = 18758FE320D980FF004C6690 /* Example.hyperdrive.xml */; };
+		18758FE620D9BBB0004C6690 /* ReactantThemeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18758FE520D9BBB0004C6690 /* ReactantThemeSelector.swift */; };
+		18F7988820D7D76600522E1E /* ApplicationDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F7988620D7D74400522E1E /* ApplicationDescription.swift */; };
 		22141C8B2052B02F00205F56 /* MainWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141C8A2052B02F00205F56 /* MainWireframe.swift */; };
 		22141C8E2052B08700205F56 /* ExampleSelectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141C8D2052B08700205F56 /* ExampleSelectionController.swift */; };
 		22141C902052B09200205F56 /* ExampleSelectionRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141C8F2052B09200205F56 /* ExampleSelectionRootView.swift */; };
@@ -499,6 +502,9 @@
 		1844927D20922AE10080B743 /* LabelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelTests.swift; sourceTree = "<group>"; };
 		1844927F20922AE10080B743 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1844928020922AE10080B743 /* Tokenizer_iOSTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tokenizer_iOSTests.swift; sourceTree = "<group>"; };
+		18758FE320D980FF004C6690 /* Example.hyperdrive.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Example.hyperdrive.xml; sourceTree = "<group>"; };
+		18758FE520D9BBB0004C6690 /* ReactantThemeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactantThemeSelector.swift; sourceTree = "<group>"; };
+		18F7988620D7D74400522E1E /* ApplicationDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationDescription.swift; sourceTree = "<group>"; };
 		22141C8A2052B02F00205F56 /* MainWireframe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWireframe.swift; sourceTree = "<group>"; };
 		22141C8D2052B08700205F56 /* ExampleSelectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSelectionController.swift; sourceTree = "<group>"; };
 		22141C8F2052B09200205F56 /* ExampleSelectionRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSelectionRootView.swift; sourceTree = "<group>"; };
@@ -669,6 +675,7 @@
 				182B687C1EAF7641007CC668 /* Component */,
 				22141C8A2052B02F00205F56 /* MainWireframe.swift */,
 				182B687B1EAF7641007CC668 /* AppDelegate.swift */,
+				18758FE320D980FF004C6690 /* Example.hyperdrive.xml */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -783,6 +790,7 @@
 				1844916F209223A70080B743 /* Layout */,
 				1844917A209223A70080B743 /* Properties */,
 				184491C4209223A70080B743 /* Styles */,
+				18F7988520D7D73500522E1E /* Themes */,
 				184491C8209223A70080B743 /* Util */,
 				184491DA209223A70080B743 /* XML */,
 				184491E9209223A70080B743 /* XMLElement+Utils.swift */,
@@ -1133,6 +1141,14 @@
 			path = Tokenizer;
 			sourceTree = "<group>";
 		};
+		18F7988520D7D73500522E1E /* Themes */ = {
+			isa = PBXGroup;
+			children = (
+				18F7988620D7D74400522E1E /* ApplicationDescription.swift */,
+			);
+			path = Themes;
+			sourceTree = "<group>";
+		};
 		22141C8C2052B06500205F56 /* ExampleSelection */ = {
 			isa = PBXGroup;
 			children = (
@@ -1290,6 +1306,7 @@
 				689FA0B7209CB2A200B39225 /* UIView+traits.swift */,
 				68BF19D720C6F537000AF052 /* NSShadow+convenienceInit.swift */,
 				6870E26320CFC0E2002825CC /* Array+subarrays.swift */,
+				18758FE520D9BBB0004C6690 /* ReactantThemeSelector.swift */,
 			);
 			path = Runtime;
 			sourceTree = "<group>";
@@ -1474,6 +1491,7 @@
 				TargetAttributes = {
 					182B68661EAF7589007CC668 = {
 						CreatedOnToolsVersion = 8.3.1;
+						DevelopmentTeam = Z4J75M6GAC;
 						ProvisioningStyle = Automatic;
 					};
 					18448FAB2092041B0080B743 = {
@@ -1531,6 +1549,7 @@
 				22141CA42052B55E00205F56 /* PlainCell.ui.xml in Resources */,
 				182B68911EAF7641007CC668 /* ExampleRootView.ui.xml in Resources */,
 				22957E3C207235E20088C09E /* StackViewRootView.ui.xml in Resources */,
+				18758FE420D980FF004C6690 /* Example.hyperdrive.xml in Resources */,
 				182B688E1EAF7641007CC668 /* CommonStyles.styles.xml in Resources */,
 				182B68951EAF7641007CC668 /* Assets.xcassets in Resources */,
 				182B68931EAF7641007CC668 /* ExampleView2.ui.xml in Resources */,
@@ -1589,7 +1608,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "pushd $PROJECT_DIR\nenv -i HOME=$HOME PATH=$PATH swift build\npopd\n# --enable-live\n$PROJECT_DIR/.build/debug/reactant-ui generate --enable-live --inputPath=$PROJECT_DIR/Example/ --outputFile=$PROJECT_DIR/Example/Generated/GeneratedUI.swift --xcodeprojPath=$PROJECT_DIR/ReactantUI.xcodeproj\n#pushd $PROJECT_DIR/Example\n#$PROJECT_DIR/.build/debug/reactant-ui --enable-live > $PROJECT_DIR/Example/Generated/GeneratedUI.swift\n#popd";
+			shellScript = "pushd $PROJECT_DIR\nenv -i HOME=$HOME PATH=$PATH swift build\npopd\n# --enable-live\n$PROJECT_DIR/.build/debug/reactant-ui generate \\\n  --enable-live \\\n  --inputPath=$PROJECT_DIR/Example/ \\\n  --outputFile=$PROJECT_DIR/Example/Generated/GeneratedUI.swift \\\n  --description=$PROJECT_DIR/Example/Source/Example.hyperdrive.xml \\\n  --xcodeprojPath=$PROJECT_DIR/ReactantUI.xcodeproj\n#pushd $PROJECT_DIR/Example\n#$PROJECT_DIR/.build/debug/reactant-ui --enable-live > $PROJECT_DIR/Example/Generated/GeneratedUI.swift\n#popd";
 		};
 		2284DAE81FAC95B900D231D3 /* Generate Reactant UI */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1766,6 +1785,7 @@
 				"${BUILT_PRODUCTS_DIR}/RxBlocking/RxBlocking.framework",
 				"${BUILT_PRODUCTS_DIR}/RxNimble/RxNimble.framework",
 				"${BUILT_PRODUCTS_DIR}/RxTest/RxTest.framework",
+				"${BUILT_PRODUCTS_DIR}/iOSSnapshotTestCase/FBSnapshotTestCase.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -1783,6 +1803,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxBlocking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxNimble.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxTest.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSnapshotTestCase.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1908,6 +1929,7 @@
 				1844914420921F150080B743 /* RUIExceptionCatcher.m in Sources */,
 				1844913620921F150080B743 /* LiveUIApplier.swift in Sources */,
 				6893A6B520BBF30E004802E4 /* URL.swift in Sources */,
+				18F7988820D7D76600522E1E /* ApplicationDescription.swift in Sources */,
 				68BF19D620C6DC69000AF052 /* ParagraphStyle.swift in Sources */,
 				68BF19BB20C679AD000AF052 /* Shadow.swift in Sources */,
 				184491EF209223A70080B743 /* Container.swift in Sources */,
@@ -2047,6 +2069,7 @@
 				68BF19DA20C6F553000AF052 /* NSShadow+convenienceInit.swift in Sources */,
 				6836D5F920B8404F00FD2DF8 /* UIView+traits.swift in Sources */,
 				68CA17BE20C977B3005654B0 /* ViewOrientation.swift in Sources */,
+				18758FE620D9BBB0004C6690 /* ReactantThemeSelector.swift in Sources */,
 				6870E26620CFC5ED002825CC /* Array+subarrays.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -22,6 +22,7 @@ public class ReactantLiveUIManager {
     public static let shared = ReactantLiveUIManager()
 
     private var configuration: ReactantLiveUIConfiguration?
+    private var applicationDescriptionWatcher: Watcher?
     private var watchers: [String: (watcher: Watcher, viewCount: Int)] = [:]
     private var styleWatchers: [String: Watcher] = [:]
     private var extendedEdges: [String: UIRectEdge] = [:]
@@ -37,9 +38,7 @@ public class ReactantLiveUIManager {
     /// Closure to be called right after applying new constraints to Live UI.
     public var onApplied: ((ComponentDefinition, UIView) -> Void)?
 
-    private var globalContext: GlobalContext = GlobalContext(styleSheets: [])
-
-    private var styles: [String: StyleGroup] = [:] {
+    private(set) var globalContext = GlobalContext() {
         didSet {
             resetErrors()
             let now = Date()
@@ -48,8 +47,12 @@ public class ReactantLiveUIManager {
                 definitionsCopy[key]?.loaded = now
             }
             definitions = definitionsCopy
+        }
+    }
 
-            globalContext = GlobalContext(styleSheetDictionary: self.styles)
+    private var styles: [String: StyleGroup] = [:] {
+        didSet {
+            globalContext.setStyles(from: styles)
         }
     }
 
@@ -90,6 +93,7 @@ public class ReactantLiveUIManager {
         window.addSubview(errorView)
         errorView.frame = window.bounds
 
+        watchApplicationDescription(configuration.applicationDescriptionPath)
         loadStyles(configuration.commonStylePaths)
     }
 
@@ -138,6 +142,28 @@ public class ReactantLiveUIManager {
         let previewList = PreviewListController(dependencies: dependencies, reactions: reactions)
         navigation.push(controller: previewList)
         controller.present(controller: navigation)
+    }
+
+    func presentThemeSelection(in controller: UIViewController) {
+        let alertController = UIAlertController(title: "Select theme", message: nil, preferredStyle: .alert)
+
+        for theme in globalContext.applicationDescription.themes {
+            let actionTitle: String
+            if theme == globalContext.applicationDescription.defaultTheme {
+                actionTitle = "\(theme) (default)"
+            } else {
+                actionTitle = theme
+            }
+            let themeAction = UIAlertAction(title: actionTitle, style: .default) { [weak self] _ in
+                self?.globalContext.currentTheme = theme
+            }
+            alertController.addAction(themeAction)
+        }
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in }
+        alertController.addAction(cancelAction)
+        
+        controller.present(controller: alertController)
     }
 
     private func preview(for name: String) -> PreviewController {
@@ -199,7 +225,6 @@ public class ReactantLiveUIManager {
         return definitionsSubject.map { $0[type] }
             .distinctUntilChanged { $0?.loaded == $1?.loaded }
             .filter { $0 != nil }.map { $0!.definition }
-
     }
 
     /**
@@ -275,6 +300,48 @@ public class ReactantLiveUIManager {
         } else {
             watchers[xmlPath]?.viewCount -= 1
         }
+    }
+
+    public func setSelectedTheme(name: String) {
+        globalContext.currentTheme = name
+    }
+
+    private func watchApplicationDescription(_ path: String?) {
+        guard let path = path, applicationDescriptionWatcher == nil else { return }
+
+        let watcher: Watcher
+        do {
+            watcher = try Watcher(path: path)
+        } catch let error {
+            logError(error, in: path)
+            return
+        }
+
+        watcher
+            .watch()
+            .startWith(path)
+            .subscribe(onNext: { [unowned self] path in
+                self.resetError(for: path)
+                let url = URL(fileURLWithPath: path)
+                guard let data = try? Data(contentsOf: url, options: .uncached) else {
+                    self.logError("ERROR: file not found", in: path)
+                    return
+                }
+                let xml = SWXMLHash.parse(data)
+                do {
+                    var globalContextCopy = self.globalContext
+                    globalContextCopy.applicationDescription = try xml["Application"].value()
+                    if !globalContextCopy.applicationDescription.themes.contains(globalContextCopy.currentTheme) {
+                        globalContextCopy.currentTheme = globalContextCopy.applicationDescription.defaultTheme
+                    }
+                    self.globalContext = globalContextCopy
+                } catch let error {
+                    self.logError(error, in: path)
+                }
+            })
+            .disposed(by: disposeBag)
+
+        applicationDescriptionWatcher = watcher
     }
 
     private func loadStyles(_ stylePaths: [String]) {
