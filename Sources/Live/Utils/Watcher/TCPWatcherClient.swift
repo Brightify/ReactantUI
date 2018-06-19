@@ -12,6 +12,8 @@ public class TCPWatcherClient {
     private enum Operation: UInt8 {
         case register = 0
         case unregister = 1
+        case reloadFiles = 2
+        case data = 3
     }
     
     private static let serverUDPPort = 5000
@@ -21,6 +23,10 @@ public class TCPWatcherClient {
     private let udpSocket: Int32
     private let tcpSocket: Int32
     private var clientSocket: Int32 = -1
+    
+    private var filesBuffer: [(String, Data)] = []
+    private var loadingComplete = false
+    private let filesBufferCondition = NSCondition()
     
     private let tcpQueue = DispatchQueue(label: "TCPQueue")
     private let tcpIncommingQueue = DispatchQueue(label: "TCPIncommingQueue")
@@ -73,7 +79,7 @@ public class TCPWatcherClient {
             print("Error send")
         }
         
-        tcpQueue.async {
+        tcpQueue.sync {
             self.clientSocket = withUnsafeMutablePointer(to: &tcpAddress) {
                 $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {
                     accept(self.tcpSocket, $0, &slen)
@@ -83,44 +89,55 @@ public class TCPWatcherClient {
                 print("Error accept")
             }
             
-            DispatchQueue.main.sync {
-                print("Connection established.\n")
-            }
+            print("Connection established.\n")
             
             self.tcpIncommingQueue.async {
                 while true {
-                    var headerBuffer = [UInt8](repeating: 0, count: 8)
-                    let receivedHeaderCount = recv(self.clientSocket, &headerBuffer, 8, 0)
-                    if receivedHeaderCount == 8 {
-                        let nameSize = Int(headerBuffer[0] << 24) +
-                            Int(headerBuffer[1]) << 16 +
-                            Int(headerBuffer[2]) << 8 +
-                            Int(headerBuffer[3]) << 0
-                        let bodySize = Int(headerBuffer[4] << 24) +
-                            Int(headerBuffer[5]) << 16 +
-                            Int(headerBuffer[6]) << 8 +
-                            Int(headerBuffer[7]) << 0
-                        // Size + 1 for C string null terminator
-                        var nameBuffer = [UInt8](repeating: 0, count: nameSize + 1)
-                        var bodyBuffer = [UInt8](repeating: 0, count: bodySize)
-                        let receivedNameCount = recv(self.clientSocket, &nameBuffer, nameSize, 0)
-                        let receivedBodyCount = recv(self.clientSocket, &bodyBuffer, bodySize, 0)
-                        if receivedNameCount == nameSize && receivedBodyCount == bodySize {
-                            let fileName = String(cString: nameBuffer)
-                            let body = Data(bodyBuffer)
-
-                            print("Incomming file: " + fileName + "\n")
-                            
-                            self.watchersQueue.async {
-                                if let watchers = self.watchers[fileName] {
-                                    for watcher in watchers {
-                                        watcher.1(fileName, body)
+                    var operationBuffer = [UInt8](repeating: 0, count: 1)
+                    let receivedHeaderCount = recv(self.clientSocket, &operationBuffer, 1, MSG_WAITALL)
+                    if receivedHeaderCount == 1 {
+                        let operation = Operation(rawValue: operationBuffer[0])
+                        if operation == .data {
+                            let result = self.receiveFile()
+                            if let result = result {
+                                self.watchersQueue.async {
+                                    if let watchers = self.watchers[result.0] {
+                                        for watcher in watchers {
+                                            watcher.1(result.0, result.1)
+                                        }
                                     }
                                 }
                             }
+                        } else if operation == .reloadFiles {
+                            var countBuffer = [UInt8](repeating: 0, count: 4)
+                            let receivedHeaderCount = recv(self.clientSocket, &countBuffer, 4, MSG_WAITALL)
+                            var files: [(String, Data)] = []
+                            if receivedHeaderCount == 4 {
+                                let fileCount = Int(countBuffer[0] << 24) +
+                                    Int(countBuffer[1]) << 16 +
+                                    Int(countBuffer[2]) << 8 +
+                                    Int(countBuffer[3]) << 0
+                                for var _ in 0..<fileCount {
+                                    if let file = self.receiveFile() {
+                                        files.append(file)
+                                    } else {
+                                        print("Error file")
+                                    }
+                                }
+                            } else {
+                                print("Error count")
+                            }
+                            self.filesBufferCondition.lock()
+                            self.loadingComplete = true
+                            self.filesBuffer = files
+                            self.filesBufferCondition.unlock()
+                            
+                            self.filesBufferCondition.signal()
                         } else {
-                            print("Error data")
+                            print("Error unknown operation")
                         }
+                    } else {
+                        print("Error operation")
                     }
                 }
             }
@@ -158,6 +175,24 @@ public class TCPWatcherClient {
         sendMessage(file: watcher.path, operation: .unregister)
     }
     
+    func reloadFiles(rootDir: String) -> [(String, Data)] {
+        print("Reload files \(rootDir)\n")
+        filesBufferCondition.lock()
+        filesBuffer = []
+        loadingComplete = false
+        filesBufferCondition.unlock()
+        
+        sendMessage(file: rootDir, operation: .reloadFiles)
+        
+        filesBufferCondition.lock()
+        while !loadingComplete {
+            filesBufferCondition.wait()
+        }
+        filesBufferCondition.unlock()
+        
+        return filesBuffer
+    }
+    
     private func sendMessage(file: String, operation: Operation) {
         tcpQueue.async {
             let bufferSize = 1 + 4 + file.utf8.count
@@ -174,5 +209,38 @@ public class TCPWatcherClient {
                 print("Error send message")
             }
         }
+    }
+    
+    private func receiveFile() -> (String, Data)? {
+        var headerBuffer = [UInt8](repeating: 0, count: 8)
+        let receivedHeaderCount = recv(self.clientSocket, &headerBuffer, 8, MSG_WAITALL)
+        if receivedHeaderCount == 8 {
+            let nameSize = Int(headerBuffer[0] << 24) +
+                Int(headerBuffer[1]) << 16 +
+                Int(headerBuffer[2]) << 8 +
+                Int(headerBuffer[3]) << 0
+            let bodySize = Int(headerBuffer[4] << 24) +
+                Int(headerBuffer[5]) << 16 +
+                Int(headerBuffer[6]) << 8 +
+                Int(headerBuffer[7]) << 0
+            // Size + 1 for C string null terminator
+            var nameBuffer = [UInt8](repeating: 0, count: nameSize + 1)
+            var bodyBuffer = [UInt8](repeating: 0, count: bodySize)
+            let receivedNameCount = recv(self.clientSocket, &nameBuffer, nameSize, MSG_WAITALL)
+            let receivedBodyCount = recv(self.clientSocket, &bodyBuffer, bodySize, MSG_WAITALL)
+            if receivedNameCount == nameSize && receivedBodyCount == bodySize {
+                let fileName = String(cString: nameBuffer)
+                let body = Data(bodyBuffer)
+                
+                print("Incomming file: " + fileName + "\n")
+                
+                return (fileName, body)
+            } else {
+                print("Error file data")
+            }
+        } else {
+            print("Error file header")
+        }
+        return nil
     }
 }
