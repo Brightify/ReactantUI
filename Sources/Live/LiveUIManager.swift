@@ -36,6 +36,7 @@ public class ReactantLiveUIManager {
     private let definitionsSubject = ReplaySubject<[String: (definition: ComponentDefinition, loaded: Date, xmlPath: String)]>.create(bufferSize: 1)
     
     private let watcherClient = TCPWatcherClient()
+    private var preloadedFiles: [String: Data] = [:]
 
     /// Closure to be called right after applying new constraints to Live UI.
     public var onApplied: ((ComponentDefinition, UIView) -> Void)?
@@ -95,6 +96,10 @@ public class ReactantLiveUIManager {
         window.addSubview(errorView)
         errorView.frame = window.bounds
 
+        for file in watcherClient.reloadFiles(rootDir: configuration.rootDir) {
+            preloadedFiles[file.0] = file.1
+        }
+        
         watchApplicationDescription(configuration.applicationDescriptionPath)
         loadStyles(configuration.commonStylePaths)
     }
@@ -109,22 +114,33 @@ public class ReactantLiveUIManager {
     }
 
     /// Provided the root directory is set, it reloads the component definitions from all `ui.xml` files, including subfolders.
-    // TODO
     public func reloadFiles() {
-        print("Reload files\n")
+//        guard let rootDir = configuration?.rootDir else { return }
+//        guard let enumerator = FileManager.default.enumerator(atPath: rootDir) else { return }
+//        for file in enumerator {
+//            guard let fileName = file as? String, fileName.hasSuffix(".ui.xml") else { continue }
+//            let path = rootDir + "/" + fileName
+//            if let configuration = configuration, configuration.componentTypes.keys.contains(path) { continue }
+//            do {
+//                let definitions = try self.definitions(in: path)
+//                for definition in definitions {
+//                    runtimeDefinitions[definition.type] = path
+//                }
+//            } catch let error {
+//                logError(error, in: path)
+//            }
+//        }
+        
         guard let rootDir = configuration?.rootDir else { return }
-        guard let enumerator = FileManager.default.enumerator(atPath: rootDir) else { return }
-        for file in enumerator {
-            guard let fileName = file as? String, fileName.hasSuffix(".ui.xml") else { continue }
-            let path = rootDir + "/" + fileName
-            if let configuration = configuration, configuration.componentTypes.keys.contains(path) { continue }
+        for file in watcherClient.reloadFiles(rootDir: rootDir) {
+            if let configuration = configuration, configuration.componentTypes.keys.contains(file.0) { continue }
             do {
-                let definitions = try self.definitions(in: path)
+                let definitions = try self.definitions(in: file.0, data: file.1)
                 for definition in definitions {
-                    runtimeDefinitions[definition.type] = path
+                    runtimeDefinitions[definition.type] = file.0
                 }
             } catch let error {
-                logError(error, in: path)
+                logError(error, in: file.0)
             }
         }
     }
@@ -183,23 +199,27 @@ public class ReactantLiveUIManager {
         guard let data = watchers[file]?.watcher.fileContent else {
             throw LiveUIError(message: "ERROR: file not found")
         }
+        return try definitions(in: file, data: data)
+    }
+    
+    private func definitions(in file: String, data: Data) throws -> [ComponentDefinition] {
         let xml = SWXMLHash.parse(data)
-
+        
         guard let node = xml["Component"].element else { throw LiveUIError(message: "ERROR: Node is not Component") }
         var rootDefinition: ComponentDefinition
-
+        
         if let type: String = xml["Component"].value(ofAttribute: "type") {
             rootDefinition = try ComponentDefinition(node: node, type: type)
         } else {
             rootDefinition = try ComponentDefinition(node: node, type: componentType(from: file))
         }
-
+        
         if rootDefinition.isRootView {
             extendedEdges[file] = rootDefinition.edgesForExtendedLayout.resolveUnion()
         } else {
             extendedEdges.removeValue(forKey: file)
         }
-
+        
         return rootDefinition.componentDefinitions
     }
 
@@ -240,7 +260,11 @@ public class ReactantLiveUIManager {
         if !watchers.keys.contains(xmlPath) {
             let watcher: Watcher
             do {
-                watcher = try TCPWatcher(path: xmlPath, client: watcherClient)
+                if let data = preloadedFiles[xmlPath] {
+                    watcher = try TCPWatcher(path: xmlPath, data: data, client: watcherClient)
+                } else {
+                    watcher = try TCPWatcher(path: xmlPath, client: watcherClient)
+                }
 //                watcher = try FileWatcher(path: xmlPath)
             } catch let error {
                 logError(error, in: xmlPath)
@@ -351,7 +375,11 @@ public class ReactantLiveUIManager {
 
             let watcher: Watcher
             do {
-                watcher = try TCPWatcher(path: path, client: watcherClient)
+                if let data = preloadedFiles[path] {
+                    watcher = try TCPWatcher(path: path, data: data, client: watcherClient)
+                } else {
+                    watcher = try TCPWatcher(path: path, client: watcherClient)
+                }
 //                watcher = try FileWatcher(path: path)
             } catch let error {
                 logError(error, in: path)
