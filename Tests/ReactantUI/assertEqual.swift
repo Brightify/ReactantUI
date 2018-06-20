@@ -38,7 +38,7 @@ func assertEqual(xml: String, view expectedView: UIView, testAtSizes testSizes: 
 }
 
 func assertEqual(xml: String, view expectedView: UIView, testAtSizes testSizes: [CGSize], tolerance: Double = 0, testVariant: Int? = nil, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
-    let globalContext = GlobalContext(styleSheets: [])
+    let globalContext = GlobalContext()
 
     for testSize in testSizes {
         do {
