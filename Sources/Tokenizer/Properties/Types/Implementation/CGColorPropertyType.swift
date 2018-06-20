@@ -13,6 +13,10 @@ import Foundation
 public struct CGColorPropertyType: AttributeSupportedPropertyType {
     public let color: UIColorPropertyType
 
+    public var requiresTheme: Bool {
+        return color.requiresTheme
+    }
+
     public func generate(context: SupportedPropertyTypeContext) -> String {
         return "\(color.generate(context: context.sibling(for: color))).cgColor"
     }
