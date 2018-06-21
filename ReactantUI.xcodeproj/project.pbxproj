@@ -266,9 +266,8 @@
 		8843F0C7B69C4B4D90D21F24 /* Pods_LiveUI_LiveUI_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 105120706C0623FA651A558C /* Pods_LiveUI_LiveUI_iOS.framework */; };
 		BA1D32AF765F430AA225944F /* Pods_Example_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34D6F4260245D9C7942B5C54 /* Pods_Example_tvOS.framework */; };
 		DC47339020D25B4900BE051F /* Watcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC47338820D25AE600BE051F /* Watcher.swift */; };
-		DC47339120D25B4900BE051F /* TCPWatcherClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC47338920D25AE600BE051F /* TCPWatcherClient.swift */; };
-		DC47339220D25B4900BE051F /* TCPWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC47338A20D25AE600BE051F /* TCPWatcher.swift */; };
 		DC47339320D25B4900BE051F /* FileWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC47338B20D25AE600BE051F /* FileWatcher.swift */; };
+		DC63EA1120DA533B00DB60A0 /* TCPWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC47338A20D25AE600BE051F /* TCPWatcher.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -586,7 +585,6 @@
 		D1AAC4CA06239D481C4E7F9D /* Pods_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D751C6166DAD45DBDBC6DEC0 /* Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests/Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		DC47338820D25AE600BE051F /* Watcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Watcher.swift; sourceTree = "<group>"; };
-		DC47338920D25AE600BE051F /* TCPWatcherClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCPWatcherClient.swift; sourceTree = "<group>"; };
 		DC47338A20D25AE600BE051F /* TCPWatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TCPWatcher.swift; sourceTree = "<group>"; };
 		DC47338B20D25AE600BE051F /* FileWatcher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FileWatcher.swift; sourceTree = "<group>"; };
 		F34C6D0ED725F70B6F5A3341 /* Pods-Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Example/Pods-Example.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1366,7 +1364,6 @@
 			isa = PBXGroup;
 			children = (
 				DC47338820D25AE600BE051F /* Watcher.swift */,
-				DC47338920D25AE600BE051F /* TCPWatcherClient.swift */,
 				DC47338A20D25AE600BE051F /* TCPWatcher.swift */,
 				DC47338B20D25AE600BE051F /* FileWatcher.swift */,
 			);
@@ -1885,6 +1882,7 @@
 				68CA17D420C98039005654B0 /* UITraitHelper.swift in Sources */,
 				1844925E209223A70080B743 /* Collection+groupBy.swift in Sources */,
 				18449211209223A70080B743 /* ConstraintRelation.swift in Sources */,
+				DC63EA1120DA533B00DB60A0 /* TCPWatcher.swift in Sources */,
 				18449239209223A70080B743 /* TransformedText.swift in Sources */,
 				184491F6209223A70080B743 /* PickerView.swift in Sources */,
 				1844922C209223A70080B743 /* Float.swift in Sources */,
@@ -1997,7 +1995,6 @@
 				18449272209223A70080B743 /* XMLAttributeSerializable.swift in Sources */,
 				184491FC209223A70080B743 /* StackView.swift in Sources */,
 				18449238209223A70080B743 /* TransformationParser.swift in Sources */,
-				DC47339220D25B4900BE051F /* TCPWatcher.swift in Sources */,
 				1844920A209223A70080B743 /* VisualEffectView.swift in Sources */,
 				18449256209223A70080B743 /* PatternXSDType.swift in Sources */,
 				1844921D209223A70080B743 /* LayerProperties.swift in Sources */,
@@ -2048,7 +2045,6 @@
 				1844923F209223A70080B743 /* DatePickerMode.swift in Sources */,
 				7139F67920934BC2009EA7F4 /* Condition.swift in Sources */,
 				18449232209223A70080B743 /* Rect.swift in Sources */,
-				DC47339120D25B4900BE051F /* TCPWatcherClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

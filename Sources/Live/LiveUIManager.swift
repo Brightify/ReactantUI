@@ -15,16 +15,16 @@ import RxCocoa
 /**
  * A class to be used as singleton - `ReactantLiveUIManager.shared`.
  *
- * Manages ComponentDefinitions and sends an event every time a componentDefinition gets updated, this is achieved through Watchers that notify the manager when a file changes.
+ * Manages ComponentDefinitions and sends an event every time a componentDefinition gets updated, this is achieved through Watcher that notify the manager when a file changes.
  */
 public class ReactantLiveUIManager {
     /// Shared instance of the `ReactantLiveUIManager`.
     public static let shared = ReactantLiveUIManager()
-
+    
     private var configuration: ReactantLiveUIConfiguration?
-    private var applicationDescriptionWatcher: Watcher?
-    private var watchers: [String: (watcher: Watcher, viewCount: Int)] = [:]
-    private var styleWatchers: [String: Watcher] = [:]
+    private var watchedFilesCounter: [String: Int] = [:]
+    private var watchedStyles = Set<String>()
+    private var watchedApplicationDescription = false
     private var extendedEdges: [String: UIRectEdge] = [:]
     private var runtimeDefinitions: [String: String] = [:]
     private var definitions: [String: (definition: ComponentDefinition, loaded: Date, xmlPath: String)] = [:] {
@@ -32,12 +32,16 @@ public class ReactantLiveUIManager {
             definitionsSubject.onNext(definitions)
         }
     }
+    
+    #if targetEnvironment(simulator)
+    private let watcher: Watcher = FileWatcher()
+    #else
+    private let watcher: Watcher = TCPWatcher()
+    #endif
+    
     private let forceReapplyTrigger = PublishSubject<AnyObject>()
     private let definitionsSubject = ReplaySubject<[String: (definition: ComponentDefinition, loaded: Date, xmlPath: String)]>.create(bufferSize: 1)
     
-    private let watcherClient = TCPWatcherClient()
-    private var preloadedFiles: [String: Data] = [:]
-
     /// Closure to be called right after applying new constraints to Live UI.
     public var onApplied: ((ComponentDefinition, UIView) -> Void)?
 
@@ -96,9 +100,7 @@ public class ReactantLiveUIManager {
         window.addSubview(errorView)
         errorView.frame = window.bounds
 
-        for file in watcherClient.reloadFiles(rootDir: configuration.rootDir) {
-            preloadedFiles[file.0] = file.1
-        }
+        watcher.preload(rootDir: configuration.rootDir)
         
         watchApplicationDescription(configuration.applicationDescriptionPath)
         loadStyles(configuration.commonStylePaths)
@@ -114,33 +116,17 @@ public class ReactantLiveUIManager {
     }
 
     /// Provided the root directory is set, it reloads the component definitions from all `ui.xml` files, including subfolders.
-    public func reloadFiles() {
-//        guard let rootDir = configuration?.rootDir else { return }
-//        guard let enumerator = FileManager.default.enumerator(atPath: rootDir) else { return }
-//        for file in enumerator {
-//            guard let fileName = file as? String, fileName.hasSuffix(".ui.xml") else { continue }
-//            let path = rootDir + "/" + fileName
-//            if let configuration = configuration, configuration.componentTypes.keys.contains(path) { continue }
-//            do {
-//                let definitions = try self.definitions(in: path)
-//                for definition in definitions {
-//                    runtimeDefinitions[definition.type] = path
-//                }
-//            } catch let error {
-//                logError(error, in: path)
-//            }
-//        }
-        
+    public func reloadFiles() {        
         guard let rootDir = configuration?.rootDir else { return }
-        for file in watcherClient.reloadFiles(rootDir: rootDir) {
-            if let configuration = configuration, configuration.componentTypes.keys.contains(file.0) { continue }
+        for file in watcher.reloadAll(in: rootDir) {
+            if let configuration = configuration, configuration.componentTypes.keys.contains(file.file) { continue }
             do {
-                let definitions = try self.definitions(in: file.0, data: file.1)
+                let definitions = try self.definitions(in: file.file, data: file.data)
                 for definition in definitions {
-                    runtimeDefinitions[definition.type] = file.0
+                    runtimeDefinitions[definition.type] = file.file
                 }
             } catch let error {
-                logError(error, in: file.0)
+                logError(error, in: file.file)
             }
         }
     }
@@ -195,13 +181,6 @@ public class ReactantLiveUIManager {
 
     }
 
-    private func definitions(in file: String) throws -> [ComponentDefinition] {
-        guard let data = watchers[file]?.watcher.fileContent else {
-            throw LiveUIError(message: "ERROR: file not found")
-        }
-        return try definitions(in: file, data: data)
-    }
-    
     private func definitions(in file: String, data: Data) throws -> [ComponentDefinition] {
         let xml = SWXMLHash.parse(data)
         
@@ -223,8 +202,8 @@ public class ReactantLiveUIManager {
         return rootDefinition.componentDefinitions
     }
 
-    private func registerDefinitions(in file: String) throws {
-        let definitions = try self.definitions(in: file)
+    private func registerDefinitions(in file: String, data: Data) throws {
+        let definitions = try self.definitions(in: file, data: data)
         register(definitions: definitions, in: file)
     }
 
@@ -257,28 +236,15 @@ public class ReactantLiveUIManager {
      */
     public func register<UI: UIView>(_ view: UI, setConstraint: @escaping (String, SnapKit.Constraint) -> Bool = { _, _ in false }) where UI: ReactantUI {
         let xmlPath = view.__rui.xmlPath
-        if !watchers.keys.contains(xmlPath) {
-            let watcher: Watcher
-            do {
-                if let data = preloadedFiles[xmlPath] {
-                    watcher = try TCPWatcher(path: xmlPath, data: data, client: watcherClient)
-                } else {
-                    watcher = try TCPWatcher(path: xmlPath, client: watcherClient)
-                }
-//                watcher = try FileWatcher(path: xmlPath)
-            } catch let error {
-                logError(error, in: xmlPath)
-                return
-            }
-
-            watchers[xmlPath] = (watcher: watcher, viewCount: 1)
-
-            watcher.watch()
-                .subscribe(onNext: { path, _ in
+        if watchedFilesCounter[xmlPath] == nil {
+            watchedFilesCounter[xmlPath] = 1
+            
+            watcher.watch(file: xmlPath)
+                .subscribe(onNext: { path, data in
                     self.resetError(for: path)
                     do {
-                        try self.registerDefinitions(in: path)
-
+                        try self.registerDefinitions(in: path, data: data)
+                        
                         self.activeWindow?.topViewController()?.updateViewConstraints()
                     } catch let error {
                         self.logError(error, in: path)
@@ -286,7 +252,7 @@ public class ReactantLiveUIManager {
                 })
                 .disposed(by: disposeBag)
         } else {
-            watchers[xmlPath]?.viewCount += 1
+            watchedFilesCounter[xmlPath] = (watchedFilesCounter[xmlPath] ?? 0) + 1
         }
         let reapplyTrigger = forceReapplyTrigger.filter { $0 === view }
         observeDefinition(for: view.__rui.typeName)
@@ -316,14 +282,15 @@ public class ReactantLiveUIManager {
      */
     public func unregister<UI: UIView>(_ ui: UI) where UI: ReactantUI {
         let xmlPath = ui.__rui.xmlPath
-        guard let watcher = watchers[xmlPath] else {
+        guard let count = watchedFilesCounter[xmlPath] else {
             logError("ERROR: attempting to remove not registered UI", in: xmlPath)
             return
         }
-        if watcher.viewCount == 1 {
-            watchers.removeValue(forKey: xmlPath)
+        if count == 1 {
+            watcher.stopWatching(file: xmlPath)
+            watchedFilesCounter.removeValue(forKey: xmlPath)
         } else {
-            watchers[xmlPath]?.viewCount -= 1
+            watchedFilesCounter[xmlPath] = count - 1
         }
     }
 
@@ -332,26 +299,12 @@ public class ReactantLiveUIManager {
     }
 
     private func watchApplicationDescription(_ path: String?) {
-        guard let path = path, applicationDescriptionWatcher == nil else { return }
-
-        let watcher: Watcher
-        do {
-            watcher = try Watcher(path: path)
-        } catch let error {
-            logError(error, in: path)
-            return
-        }
+        guard let path = path, watchedApplicationDescription == false else { return }
 
         watcher
-            .watch()
-            .startWith(path)
-            .subscribe(onNext: { [unowned self] path in
+            .watch(file: path)
+            .subscribe(onNext: { [unowned self] path, data in
                 self.resetError(for: path)
-                let url = URL(fileURLWithPath: path)
-                guard let data = try? Data(contentsOf: url, options: .uncached) else {
-                    self.logError("ERROR: file not found", in: path)
-                    return
-                }
                 let xml = SWXMLHash.parse(data)
                 do {
                     var globalContextCopy = self.globalContext
@@ -365,44 +318,30 @@ public class ReactantLiveUIManager {
                 }
             })
             .disposed(by: disposeBag)
-
-        applicationDescriptionWatcher = watcher
+        
+        watchedApplicationDescription = true
     }
 
     private func loadStyles(_ stylePaths: [String]) {
         for path in stylePaths {
-            if styleWatchers.keys.contains(path) == false {
-
-            let watcher: Watcher
-            do {
-                if let data = preloadedFiles[path] {
-                    watcher = try TCPWatcher(path: path, data: data, client: watcherClient)
-                } else {
-                    watcher = try TCPWatcher(path: path, client: watcherClient)
-                }
-//                watcher = try FileWatcher(path: path)
-            } catch let error {
-                logError(error, in: path)
-                return
-            }
-
-            watcher
-                .watch()
-                .subscribe(onNext: { path, data in
-                    self.resetError(for: path)
-                    let xml = SWXMLHash.parse(data)
-                    do {
-                        var oldStyles = self.styles
-                        let group: StyleGroup = try xml["styleGroup"].value()
-                        oldStyles[group.name] = group
-                        self.styles = oldStyles
-                    } catch let error {
-                        self.logError(error, in: path)
-                    }
-                })
-                .disposed(by: disposeBag)
-
-                styleWatchers[path] = watcher
+            if watchedStyles.contains(path) == false {
+                watcher
+                    .watch(file: path)
+                    .subscribe(onNext: { path, data in
+                        self.resetError(for: path)
+                        let xml = SWXMLHash.parse(data)
+                        do {
+                            var oldStyles = self.styles
+                            let group: StyleGroup = try xml["styleGroup"].value()
+                            oldStyles[group.name] = group
+                            self.styles = oldStyles
+                        } catch let error {
+                            self.logError(error, in: path)
+                        }
+                    })
+                    .disposed(by: disposeBag)
+                
+                watchedStyles.insert(path)
             }
         }
     }
@@ -433,8 +372,6 @@ public class ReactantLiveUIManager {
             logError(tokenizationError.message, in: path)
         case let deserializationError as XMLDeserializationError:
             logError(deserializationError.description, in: path)
-        case let watcherError as FileWatcher.Error:
-            logError(watcherError.message, in: path)
         case let constraintParserError as ParseError:
             switch constraintParserError {
             case .message(let message):
