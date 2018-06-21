@@ -441,7 +441,8 @@ public class UIGenerator: Generator {
         guard let mapping = ElementMapping.mapping[type] else {
             throw GeneratorError(message: "Mapping for type \(type) does not exist")
         }
-        l("static func \(style.name.name)(_ view: \(try mapping.runtimeType()))") {
+
+        func styleApplication() {
             for extendedStyle in style.extend {
                 switch extendedStyle {
                 case .local(let name):
@@ -455,6 +456,21 @@ public class UIGenerator: Generator {
                 l(property.application(on: "view", context: propertyContext))
             }
         }
+
+        if style.requiresTheme(context: componentContext) {
+            l("static func \(style.name.name)(theme: ApplicationTheme) -> (_ view: \(try mapping.runtimeType())) -> Void") {
+                l("return { view in", encapsulateIn: .none) {
+                    styleApplication()
+                }
+                l("}")
+            }
+
+        } else {
+            l("static func \(style.name.name)(_ view: \(try mapping.runtimeType()))") {
+                styleApplication()
+            }
+        }
+
     }
 }
 

@@ -18,12 +18,17 @@ public extension ReactantThemeDefinition where Self: RawRepresentable, Self.RawV
 }
 
 public class ReactantThemeSelector<THEME: ReactantThemeDefinition> where THEME: Equatable {
+    public typealias Listener = (THEME) -> Void
+    fileprivate enum ListenerKey: Hashable {
+        case object(ObjectIdentifier)
+        case uuid(UUID)
+    }
     public struct ListenerToken: Hashable, Equatable {
-        private let identifier: ObjectIdentifier
+        private let key: ListenerKey
         private let cancelation: () -> Void
 
-        fileprivate init(identifier: ObjectIdentifier, cancel: @escaping () -> Void) {
-            self.identifier = identifier
+        fileprivate init(key: ListenerKey, cancel: @escaping () -> Void) {
+            self.key = key
             self.cancelation = cancel
         }
 
@@ -32,15 +37,15 @@ public class ReactantThemeSelector<THEME: ReactantThemeDefinition> where THEME: 
         }
 
         public var hashValue: Int {
-            return identifier.hashValue
+            return key.hashValue
         }
 
         public static func ==(lhs: ListenerToken, rhs: ListenerToken) -> Bool {
-            return lhs.identifier == rhs.identifier
+            return lhs.key == rhs.key
         }
     }
 
-    private var listeners: [ObjectIdentifier: (THEME) -> Void] = [:]
+    private var listeners: [ListenerKey: (THEME) -> Void] = [:]
     public private(set) var currentTheme: THEME {
         didSet {
             notifyListeners()
@@ -60,29 +65,41 @@ public class ReactantThemeSelector<THEME: ReactantThemeDefinition> where THEME: 
         notifyListeners()
     }
 
+    /**
+     *  Creates a new registration bound to the target passed.
+     *  NOTE: Only one listener can be registered for a single object instance.
+     */
     @discardableResult
-    public func register(target: AnyObject, listener: @escaping (THEME) -> Void) -> ListenerToken {
+    public func register(target: AnyObject, listener: @escaping Listener) -> ListenerToken {
+        let key = ListenerKey.object(ObjectIdentifier(target))
+        return register(key: key, listener: listener)
+    }
+
+    /// Creates a new registration
+    public func register(listener: @escaping Listener) -> ListenerToken {
+        let key = ListenerKey.uuid(UUID())
+        return register(key: key, listener: listener)
+    }
+
+    private func register(key: ListenerKey, listener: @escaping Listener) -> ListenerToken {
         // Make sure the listener is called with the current theme before exiting this function
         defer { listener(currentTheme) }
 
-        // We keep the last listener registered for an object.
-        let identifier = ObjectIdentifier(target)
+        listeners[key] = listener
 
-        listeners[identifier] = listener
-
-        return ListenerToken(identifier: identifier, cancel: { [weak self] in
+        return ListenerToken(key: key, cancel: { [weak self] in
             // TODO Do we want to crash if cancellation has been called multiple times?
-            self?.unregister(identifier: identifier)
+            self?.unregister(key: key)
         })
     }
 
     public func unregister(target: AnyObject) {
-        let identifier = ObjectIdentifier(target)
-        unregister(identifier: identifier)
+        let key = ListenerKey.object(ObjectIdentifier(target))
+        unregister(key: key)
     }
 
-    private func unregister(identifier: ObjectIdentifier) {
-        listeners[identifier] = nil
+    private func unregister(key: ListenerKey) {
+        listeners[key] = nil
     }
 
     private func notifyListeners() {

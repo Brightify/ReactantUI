@@ -120,6 +120,13 @@ public struct Style: XMLElementDeserializable {
         }
     }
 
+    public func requiresTheme(context: DataContext) -> Bool {
+        return properties.contains(where: { $0.anyValue.requiresTheme }) ||
+            extend.contains(where: {
+                context.style(named: $0)?.requiresTheme(context: context) == true
+            })
+    }
+
     public static func deserialize(_ element: XMLElement) throws -> Style {
         return try Style(node: element, groupName: nil)
     }

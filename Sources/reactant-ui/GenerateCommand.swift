@@ -294,6 +294,10 @@ class GenerateCommand: Command {
         return """
 
         public enum ApplicationTheme: String, ReactantThemeDefinition {
+            public static var current: ApplicationTheme {
+                return selector.currentTheme
+            }
+
             public static let selector = ReactantThemeSelector<ApplicationTheme>(defaultTheme: .\(description.defaultTheme))
 
         \(cases)
