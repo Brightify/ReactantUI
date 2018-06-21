@@ -45,8 +45,12 @@ public enum Font: AttributeSupportedPropertyType {
     #endif
 
     public static func materialize(from value: String) throws -> Font {
-        let tokens = Lexer.tokenize(input: value, keepWhitespace: true)
-        return try FontParser(tokens: tokens).parseSingle()
+        if let themedName = ApplicationDescription.themedValueName(value: value) {
+            return .themed(themedName)
+        } else {
+            let tokens = Lexer.tokenize(input: value, keepWhitespace: true)
+            return try FontParser(tokens: tokens).parseSingle()
+        }
     }
 
     public static var runtimeType: String = "UIFont"
