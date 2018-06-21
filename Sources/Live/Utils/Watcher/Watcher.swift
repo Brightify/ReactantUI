@@ -9,10 +9,14 @@
 import Foundation
 import RxSwift
 
-/// Watches for file changes inside a specific path and sends an event through `subject` containing the path of changed file.
+/// Watches for XML files changes and sends an event through `subject` containing the path and content of changed file.
 protocol Watcher {
     
-    var fileContent: Data { get }
+    func watch(file: String) -> Observable<(file: String, data: Data)>
     
-    func watch() -> Observable<(String, Data)>
+    func stopWatching(file: String)
+    
+    func preload(rootDir: String)
+    
+    func reloadAll(in rootDir: String) -> [(file: String, data: Data)]
 }
