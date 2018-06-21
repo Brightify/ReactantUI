@@ -79,6 +79,8 @@ public struct Constraint {
                 } else {
                     targetString = "fallback_safeAreaLayoutGuide"
                 }
+            case .readableContentGuide:
+                targetString = "readableContentGuide"
             }
             if targetAnchor != anchor && attribute != .before && attribute != .after {
                 targetString += ".\(targetAnchor.description)"

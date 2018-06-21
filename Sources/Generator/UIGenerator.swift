@@ -324,6 +324,8 @@ public class UIGenerator: Generator {
                 } else {
                     target = "target.safeAreaLayoutGuide"
                 }
+            case .readableContentGuide:
+                target="target.readableContentGuide"
             }
             constraintLine += target
             if targetDefinition.targetAnchor != constraint.anchor {
