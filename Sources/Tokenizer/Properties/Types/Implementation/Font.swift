@@ -40,6 +40,8 @@ public enum Font: AttributeSupportedPropertyType {
             return ":\(weight.rawValue)@\(size)"
         case .named(let name, let size):
             return "\(name)@\(size)"
+        case .themed(_):
+            fatalError("Not implemented")
         }
     }
     #endif

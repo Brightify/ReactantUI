@@ -48,7 +48,12 @@ public enum Image: AttributeSupportedPropertyType {
 
     #if SanAndreas
     public func dematerialize(context: SupportedPropertyTypeContext) -> String {
-        return name
+        switch self {
+        case .named(let name):
+            return name
+        case .themed(_):
+            fatalError("Not implemented")
+        }
     }
     #endif
 

@@ -36,17 +36,22 @@ public enum UIColorPropertyType: AttributeSupportedPropertyType {
 
     #if SanAndreas
     public func dematerialize(context: SupportedPropertyTypeContext) -> String {
-        switch color {
-        case .absolute(let red, let green, let blue, let alpha):
-            if alpha < 1 {
-                let rgba: Int = Int(red * 255) << 24 | Int(green * 255) << 16 | Int(blue * 255) << 8 | Int(alpha * 255)
-                return String(format:"#%08x", rgba)
-            } else {
-                let rgb: Int = Int(red * 255) << 16 | Int(green * 255) << 8 | Int(blue * 255)
-                return String(format:"#%06x", rgb)
+        switch self {
+        case .color(let color):
+            switch color {
+            case .absolute(let red, let green, let blue, let alpha):
+                if alpha < 1 {
+                    let rgba: Int = Int(red * 255) << 24 | Int(green * 255) << 16 | Int(blue * 255) << 8 | Int(alpha * 255)
+                    return String(format:"#%08x", rgba)
+                } else {
+                    let rgb: Int = Int(red * 255) << 16 | Int(green * 255) << 8 | Int(blue * 255)
+                    return String(format:"#%06x", rgb)
+                }
+            case .named(let name):
+                return name
             }
-        case .named(let name):
-            return name
+        case .themed(_):
+            fatalError("Not implemented")
         }
     }
     #endif

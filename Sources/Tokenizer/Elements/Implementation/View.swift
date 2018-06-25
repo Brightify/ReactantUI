@@ -66,10 +66,10 @@ public class View: XMLElementDeserializable, UIElement {
     public init() {
         field = nil
         styles = []
-        layout = Layout(contentCompressionPriorityHorizontal: View.defaultContentCompression.horizontal,
-                             contentCompressionPriorityVertical: View.defaultContentCompression.vertical,
-                             contentHuggingPriorityHorizontal: View.defaultContentHugging.horizontal,
-                             contentHuggingPriorityVertical: View.defaultContentHugging.vertical)
+        layout = Layout(contentCompressionPriorityHorizontal: type(of: self).defaultContentCompression.horizontal,
+                             contentCompressionPriorityVertical: type(of: self).defaultContentCompression.vertical,
+                             contentHuggingPriorityHorizontal: type(of: self).defaultContentHugging.horizontal,
+                             contentHuggingPriorityVertical: type(of: self).defaultContentHugging.vertical)
         properties = []
         toolingProperties = [:]
     }
