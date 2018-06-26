@@ -295,7 +295,7 @@ class GenerateCommand: Command {
             import RxSwift
 
             extension ReactantThemeSelector.ListenerToken: Disposable {
-                public func dispose() {
+                func dispose() {
                     cancel()
                 }
             }

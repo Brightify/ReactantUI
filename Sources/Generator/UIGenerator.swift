@@ -26,7 +26,7 @@ public class UIGenerator: Generator {
             l("\(modifier)final class \(root.type): ViewBase<Void, Void>") { }
         }
         let constraintFields = root.children.flatMap(self.constraintFields)
-        try l("\(modifier)extension \(root.type): ReactantUI" + (root.isRootView ? ", RootView" : "")) {
+        try l("extension \(root.type): ReactantUI" + (root.isRootView ? ", RootView" : "")) {
             if root.isRootView {
                 l("\(modifier)var edgesForExtendedLayout: UIRectEdge") {
                     if configuration.isLiveEnabled {
