@@ -67,6 +67,7 @@ class GenerateCommand: Command {
     let applicationDescriptionFile = Key<String>("--description", description: "Path to an XML file with Application Description.")
     let swiftVersionParameter = Key<String>("--swift")
     let defaultAccessModifier = Key<String>("--defaultAccessModifier")
+    let generateDisposableHelper = Flag("--generate-disposable-helper")
 
     public func execute() throws {
         var output: [String] = []
@@ -289,13 +290,13 @@ class GenerateCommand: Command {
 
         let rxSwiftShim: String
         // canImport is only available from 4.1 and above
-        if swiftVersion >= .swift4_1 {
+        if swiftVersion >= .swift4_1 && generateDisposableHelper.value {
             rxSwiftShim = """
             #if canImport(RxSwift)
             import RxSwift
 
             extension ReactantThemeSelector.ListenerToken: Disposable {
-                func dispose() {
+                public func dispose() {
                     cancel()
                 }
             }
