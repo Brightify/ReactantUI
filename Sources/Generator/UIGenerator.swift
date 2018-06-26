@@ -21,13 +21,14 @@ public class UIGenerator: Generator {
     }
 
     public override func generate(imports: Bool) throws -> String {
+        let modifier = (componentContext.component.modifier == .public || configuration.defaultModifier == .public) ? "public " : ""
         if root.isAnonymous {
-            l("final class \(root.type): ViewBase<Void, Void>") { }
+            l("\(modifier)final class \(root.type): ViewBase<Void, Void>") { }
         }
         let constraintFields = root.children.flatMap(self.constraintFields)
-        try l("extension \(root.type): ReactantUI" + (root.isRootView ? ", RootView" : "")) {
+        try l("\(modifier)extension \(root.type): ReactantUI" + (root.isRootView ? ", RootView" : "")) {
             if root.isRootView {
-                l("var edgesForExtendedLayout: UIRectEdge") {
+                l("\(modifier)var edgesForExtendedLayout: UIRectEdge") {
                     if configuration.isLiveEnabled {
                         if configuration.swiftVersion >= .swift4_1 {
                             l("#if targetEnvironment(simulator)")
@@ -44,7 +45,7 @@ public class UIGenerator: Generator {
                 }
             }
             l()
-            l("var rui: \(root.type).RUIContainer") {
+            l("\(modifier)var rui: \(root.type).RUIContainer") {
                 l("return Reactant.associatedObject(self, key: &\(root.type).RUIContainer.associatedObjectKey)") {
                     l("return \(root.type).RUIContainer(target: self)")
                 }
@@ -54,18 +55,18 @@ public class UIGenerator: Generator {
                 l("return rui")
             }
             l()
-            try l("final class RUIContainer: Reactant.ReactantUIContainer") {
+            try l("\(modifier)final class RUIContainer: Reactant.ReactantUIContainer") {
                 l("fileprivate static var associatedObjectKey = 0 as UInt8")
                 l()
-                l("var xmlPath: String") {
+                l("\(modifier)var xmlPath: String") {
                     l("return \"\(configuration.localXmlPath)\"")
                 }
                 l()
-                l("var typeName: String") {
+                l("\(modifier)var typeName: String") {
                     l("return \"\(root.type)\"")
                 }
                 l()
-                l("let constraints = \(root.type).LayoutContainer()")
+                l("\(modifier)let constraints = \(root.type).LayoutContainer()")
                 l()
                 l("private weak var target: \(root.type)?")
                 l()
@@ -78,7 +79,7 @@ public class UIGenerator: Generator {
                     l("self.target = target")
                 }
                 l()
-                try l("func setupReactantUI()") {
+                try l("\(modifier)func setupReactantUI()") {
                     l("guard let target = self.target else { /* FIXME Should we fatalError here? */ return }")
                     if configuration.isLiveEnabled {
                         if configuration.swiftVersion >= .swift4_1 {
@@ -139,7 +140,7 @@ public class UIGenerator: Generator {
                     }
                 }
                 l()
-                l("func updateReactantUI()") {
+                l("\(modifier)func updateReactantUI()") {
                     l("guard let target = self.target else { /* FIXME Should we fatalError here? */ return }")
 
                     if configuration.isLiveEnabled {
@@ -178,7 +179,7 @@ public class UIGenerator: Generator {
                     }
                 }
                 l()
-                l("static func destroyReactantUI(target: UIView)") {
+                l("\(modifier)static func destroyReactantUI(target: UIView)") {
                     if configuration.isLiveEnabled {
                         l(ifSimulator("""
                                       guard let knownTarget = target as? \(root.type) else { /* FIXME Should we fatalError here? */ return }
@@ -190,12 +191,12 @@ public class UIGenerator: Generator {
                 }
             }
             l()
-            l("final class LayoutContainer") {
+            l("\(modifier)final class LayoutContainer") {
                 for constraintField in constraintFields {
                     l("fileprivate(set) var \(constraintField): SnapKit.Constraint?")
                 }
             }
-            try generateStyles()
+            try generateStyles(modifier: modifier)
         }
 
         return output
@@ -378,20 +379,20 @@ public class UIGenerator: Generator {
         }
     }
 
-    private func generateStyles() throws {
-        try l("struct \(root.stylesName)") {
+    private func generateStyles(modifier: String) throws {
+        try l("\(modifier)struct \(root.stylesName)") {
             for style in root.styles {
                 switch style.type {
                 case .attributedText(let styles):
-                    try generate(attributeTextStyle: style, styles: styles)
+                    try generate(modifier: modifier, attributeTextStyle: style, styles: styles)
                 case .view(let type):
-                    try generate(viewStyle: style, type: type)
+                    try generate(modifier: modifier, viewStyle: style, type: type)
                 }
             }
         }
     }
 
-    private func generate(attributeTextStyle style: Style, styles: [AttributedTextStyle]) throws {
+    private func generate(modifier: String, attributeTextStyle style: Style, styles: [AttributedTextStyle]) throws {
         func generate(attributes array: [Property]) {
             l("[")
             for property in array {
@@ -401,7 +402,7 @@ public class UIGenerator: Generator {
             l("]")
         }
 
-        l("struct \(style.name.name)") {
+        l("\(modifier)struct \(style.name.name)") {
             if !style.properties.isEmpty {
                 l("private static let ___sharedProperties___: [Reactant.Attribute] = [")
                 generate(attributes: style.properties)
@@ -439,7 +440,7 @@ public class UIGenerator: Generator {
         }
     }
 
-    private func generate(viewStyle style: Style, type: String) throws {
+    private func generate(modifier: String, viewStyle style: Style, type: String) throws {
         guard let mapping = ElementMapping.mapping[type] else {
             throw GeneratorError(message: "Mapping for type \(type) does not exist")
         }
@@ -460,7 +461,7 @@ public class UIGenerator: Generator {
         }
 
         if style.requiresTheme(context: componentContext) {
-            l("static func \(style.name.name)(theme: ApplicationTheme) -> (_ view: \(try mapping.runtimeType())) -> Void") {
+            l("\(modifier)static func \(style.name.name)(theme: ApplicationTheme) -> (_ view: \(try mapping.runtimeType())) -> Void") {
                 l("return { view in", encapsulateIn: .none) {
                     styleApplication()
                 }
@@ -468,7 +469,7 @@ public class UIGenerator: Generator {
             }
 
         } else {
-            l("static func \(style.name.name)(_ view: \(try mapping.runtimeType()))") {
+            l("\(modifier)static func \(style.name.name)(_ view: \(try mapping.runtimeType()))") {
                 styleApplication()
             }
         }
