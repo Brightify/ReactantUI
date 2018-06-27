@@ -51,7 +51,7 @@ public class UIGenerator: Generator {
                 }
             }
             l()
-            l("var __rui: Reactant.ReactantUIContainer") {
+            l("\(modifier)var __rui: Reactant.ReactantUIContainer") {
                 l("return rui")
             }
             l()
