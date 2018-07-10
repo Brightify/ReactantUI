@@ -43,11 +43,11 @@
                     foregroundColor="brown"
                     underlineStyle="styleSingle"
                     underlineColor="white">
-                    Forgotten passwordko?
+                    :uppercased(Forgotten passwordko?)
                 </attributedTitle>
                 <attributedTitle
                     state="selected|highlighted">
-                    <s font="bold@30" foregroundColor="white">Tough luck!</s>
+                    <s font=":bold@30" foregroundColor="white">:localized(Tough luck!)<i font=":light@20">lol?</i></s>
                 </attributedTitle>
             </Button>
 

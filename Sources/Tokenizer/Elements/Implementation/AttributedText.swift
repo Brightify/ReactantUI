@@ -196,22 +196,18 @@ extension AttributedText {
         let optimizedStringParts = parts.flatMap {
             resolveAttributes(part: $0, inheritedAttributes: localProperties, parentElements: [])
         }.reduce([]) { current, stringPart in
-            // getting rid of quotes at the beginning and end because `TransformedText` encloses its output with them
-            let startIndex = stringPart.text.index(after: stringPart.text.startIndex)
-            let endIndex = stringPart.text.index(before: stringPart.text.endIndex)
-            let trimmedStringPart = (text: String(stringPart.text[startIndex..<endIndex]), attributes: stringPart.attributes)
             guard let lastStringPart = current.last, lastStringPart.attributes == stringPart.attributes else {
-                return current.arrayByAppending(trimmedStringPart)
+                return current.arrayByAppending(stringPart)
             }
             var mutableCurrent = current
-            mutableCurrent[mutableCurrent.endIndex - 1] = (text: lastStringPart.text + trimmedStringPart.text, attributes: lastStringPart.attributes)
+            mutableCurrent[mutableCurrent.endIndex - 1] = (text: "\(lastStringPart.text) + \(stringPart.text)", attributes: lastStringPart.attributes)
             return mutableCurrent
         } as [(text: String, attributes: String)]
 
         return """
         {
             let s = NSMutableAttributedString()
-            \(optimizedStringParts.map { "s.append(\"\($0.text)\".attributed(\($0.attributes)))" }.joined(separator: "\n"))
+            \(optimizedStringParts.map { "s.append(\($0.text).attributed(\($0.attributes)))" }.joined(separator: "\n"))
             return s
         }()
         """
