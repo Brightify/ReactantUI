@@ -207,7 +207,7 @@ extension AttributedText {
         return """
         {
             let s = NSMutableAttributedString()
-            \(optimizedStringParts.map { "s.append(\($0.text).attributed(\($0.attributes)))" }.joined(separator: "\n"))
+            \(optimizedStringParts.map { "s.append((\($0.text)).attributed(\($0.attributes)))" }.joined(separator: "\n"))
             return s
         }()
         """
