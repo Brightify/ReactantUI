@@ -17,6 +17,15 @@ public enum Color {
     case absolute(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)
     case named(String)
 
+    init(color: SystemColor) {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        self = Color.absolute(red: red, green: green, blue: blue, alpha: alpha)
+    }
+
     /// Accepted formats: "#RRGGBB" and "#RRGGBBAA".
     init?(hex: String) {
         let hexNumber = String(hex.dropFirst())
@@ -109,59 +118,110 @@ public enum Color {
     }
 }
 
-//public struct Color {
-//    public enum RuntimeType {
-//        case uiColor
-//        case cgColor
-//    }
-//
-//    public var red: CGFloat
-//    public var green: CGFloat
-//    public var blue: CGFloat
-//    public var alpha: CGFloat
-//
-//    /// Accepted formats: "#RRGGBB" and "#RRGGBBAA".
-//    init?(hex: String) {
-//        let hexNumber = String(hex.characters.dropFirst())
-//        let length = hexNumber.characters.count
-//        guard length == 6 || length == 8 else {
-//            return nil
-//        }
-//
-//        if let hexValue = UInt(hexNumber, radix: 16) {
-//            if length == 6 {
-//                self.init(rgb: hexValue)
-//            } else {
-//                self.init(rgba: hexValue)
-//            }
-//        } else {
-//            return nil
-//        }
-//    }
-//
-//    init(rgb: UInt) {
-//        if rgb > 0xFFFFFF {
-//            print("// WARNING: RGB color is greater than the value of white (0xFFFFFF) which is probably developer error.")
-//        }
-//        self.init(rgba: (rgb << 8) + 0xFF)
-//    }
-//
-//    init(rgba: UInt) {
-//        let red = CGFloat((rgba & 0xFF000000) >> 24) / 255.0
-//        let green = CGFloat((rgba & 0xFF0000) >> 16) / 255.0
-//        let blue = CGFloat((rgba & 0xFF00) >> 8) / 255.0
-//        let alpha = CGFloat(rgba & 0xFF) / 255.0
-//
-//    }
-//}
+extension Color {
+    func withAlphaComponent(_ value: CGFloat) -> Color {
+        var hue: CGFloat = 0
+        var saturation: CGFloat = 0
+        var brightness: CGFloat = 0
+        var alpha: CGFloat = 0
 
-//#if canImport(UIKit)
-//import UIKit
-//
-//extension Color {
-//
-//    public var runtimeValue: UIColor {
-//        return UIColor(red: red, green: green, blue: blue, alpha: alpha)
-//    }
-//}
-//#endif
+        #if os(iOS)
+        guard color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) else { return self }
+        #else
+        color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+        #endif
+        alpha = adjust(alpha, by: value)
+        return Color(color: SystemColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha))
+    }
+
+    /**
+     * Increases color's brightness.
+     * - parameter percent: determines by how much will the color get lighter
+     * Expected values between 0.0-1.0
+     */
+    func lighter(by percent: CGFloat) -> Color {
+        var hue: CGFloat = 0
+        var saturation: CGFloat = 0
+        var brightness: CGFloat = 0
+        var alpha: CGFloat = 0
+
+        #if os(iOS)
+        guard color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) else { return self }
+        #else
+        color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+        #endif
+        brightness = adjust(brightness, by: percent)
+        return Color(color: SystemColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha))
+    }
+
+    /**
+     * Reduces color's brightness.
+     * - parameter percent: determines by how much will the color get darker
+     * Expected values between 0.0-1.0
+     */
+    func darker(by percent: CGFloat) -> Color {
+        return lighter(by: -percent)
+    }
+
+    /**
+     * Increases color's saturation.
+     * - parameter percent: determines by how much will the color get saturated
+     * Expected values between 0.0-1.0
+     */
+    func saturated(by percent: CGFloat) -> Color {
+        var hue: CGFloat = 0
+        var saturation: CGFloat = 0
+        var brightness: CGFloat = 0
+        var alpha: CGFloat = 0
+
+        #if os(iOS)
+        guard color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) else { return self }
+        #else
+        color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+        #endif
+        saturation = adjust(saturation, by: percent)
+        return Color(color: SystemColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha))
+    }
+
+    /**
+     * Reduces color's saturation.
+     * - parameter percent: determines by how much will the color get desaturated
+     * Expected values between 0.0-1.0
+     */
+    func desaturated(by percent: CGFloat) -> Color {
+        return saturated(by: -percent)
+    }
+
+    /**
+     * Increases color's alpha.
+     * - parameter percent: determines by how much will the color's alpha increase
+     * Expected values between 0.0-1.0
+     */
+    func fadedIn(by percent: CGFloat) -> Color {
+        var hue: CGFloat = 0
+        var saturation: CGFloat = 0
+        var brightness: CGFloat = 0
+        var alpha: CGFloat = 0
+
+        #if os(iOS)
+        guard color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) else { return self }
+        #else
+        color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+        #endif
+        alpha = adjust(alpha, by: percent)
+        return Color(color: SystemColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha))
+    }
+
+    /**
+     * Reduces color's alpha.
+     * - parameter percent: determines by how much will the color's alpha decrease
+     * Expected values between 0.0-1.0
+     */
+    func fadedOut(by percent: CGFloat) -> Color {
+        return fadedIn(by: -percent)
+    }
+
+    private func adjust(_ value: CGFloat, by amount: CGFloat) -> CGFloat {
+        return min(max(0, value + value * amount), 1)
+    }
+}

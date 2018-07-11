@@ -66,15 +66,75 @@ public enum UIColorPropertyType: AttributeSupportedPropertyType {
     #endif
 
     public static func materialize(from value: String) throws -> UIColorPropertyType {
-        if let themedName = ApplicationDescription.themedValueName(value: value) {
-            return .themed(themedName)
-        } else if Color.supportedNames.contains(value) {
-            return .color(.named(value))
-        } else if let materializedValue = Color(hex: value) {
-            return .color(materializedValue)
-        } else {
-            throw PropertyMaterializationError.unknownValue(value)
+        // we're not creating our own parser for this, so we will disallow using dots inside the values and instead enforce
+        // using percent signs
+        let colorComponents = value.components(separatedBy: "@")
+
+        func getColor(from value: String) throws -> UIColorPropertyType {
+            if let themedName = ApplicationDescription.themedValueName(value: value) {
+                return .themed(themedName)
+            } else if Color.supportedNames.contains(value) {
+                return .color(.named(value))
+            } else if let materializedValue = Color(hex: value) {
+                return .color(materializedValue)
+            } else {
+                throw PropertyMaterializationError.unknownValue(value)
+            }
         }
+
+        let base = try getColor(from: colorComponents[0])
+
+        guard colorComponents.count > 1 else { return base }
+        // note the `var color` that we're going to apply the modificators to
+        guard case .color(var color) = base else {
+            throw ParseError.message("Only direct colors support modifications for now.")
+        }
+
+        for colorComponent in colorComponents.dropFirst() {
+            let procedure = try SimpleProcedure(from: colorComponent)
+            // all of the current modifications require just one parameter
+            // feel free to change this in case you add a method that needs more than one
+            guard let parameter = procedure.parameters.first, procedure.parameters.count == 1 else {
+                throw ParseError.message("Wrong number (\(procedure.parameters.count)) of parameters in procedure \(procedure.name).")
+            }
+
+            if let label = parameter.label {
+                // right now all the modifications can have the `by:` label, no other
+                let correctLabel = "by"
+                guard label == correctLabel else {
+                    throw ParseError.message("Wrong label \(label) inside procedure \(procedure.name). \"\(correctLabel)\" or none should be used instead.")
+                }
+            }
+
+            guard let probablyPercentSign = parameter.value.last, probablyPercentSign == "%" else {
+                throw ParseError.message("Parameter \(parameter.label?.appending(" ") ?? "")in procedure \(procedure.name) with value \(parameter.value) doesn't end with a percent sign.")
+            }
+            let parameterValue = parameter.value.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).dropLast()
+            guard let value = Int(parameterValue) else {
+                throw ParseError.message("\(parameterValue) is not a valid integer to denote the value of the parameter.")
+            }
+
+            let floatValue = CGFloat(value) / 100
+            switch procedure.name {
+            case "lighter":
+                color = color.lighter(by: floatValue)
+            case "darker":
+                color = color.darker(by: floatValue)
+            case "saturated":
+                color = color.saturated(by: floatValue)
+            case "desaturated":
+                color = color.desaturated(by: floatValue)
+            case "fadedOut":
+                color = color.fadedOut(by: floatValue)
+            case "fadedIn":
+                color = color.fadedIn(by: floatValue)
+            case "alpha":
+                color = color.withAlphaComponent(floatValue)
+            default:
+                throw ParseError.message("Unknown procedure \(procedure.name) used on color \(colorComponents[0]).")
+            }
+        }
+        return .color(color)
     }
 
     public static var xsdType: XSDType {
