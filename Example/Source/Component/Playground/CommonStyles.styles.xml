@@ -1,8 +1,12 @@
 <styleGroup name="common">
     <LabelStyle name="whiteLabel" textColor="white" numberOfLines="0" />
     <attributedTextStyle name="globalko">
-        <i font=":bold@20" />
+        <i foregroundColor="red" font=":bold@20" />
         <base font=":bold@30" foregroundColor="white" backgroundColor="black" />
+    </attributedTextStyle>
+    <attributedTextStyle name="globalka" extend="common:globalko">
+        <i font=":bold@22" />
+        <based font=":bold@30" foregroundColor="white" backgroundColor="black" />
     </attributedTextStyle>
     <!-- <MapViewStyle name="map" mapType="satellite"/> -->
 </styleGroup>

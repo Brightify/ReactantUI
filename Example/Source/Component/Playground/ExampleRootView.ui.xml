@@ -31,6 +31,16 @@
             <i font=":bold@4" underlineStyle="styleSingle" underlineColor="black" />
             <base foregroundColor="white" backgroundColor="black" />
         </attributedTextStyle>
+        <attributedTextStyle
+            name="CenterButton"
+            foregroundColor="white"
+            paragraphStyle.alignment="center">
+            
+            <plus
+                font=":light@72" />
+            <text
+                font=":light@24" />
+        </attributedTextStyle>
     </styles>
 
     <View

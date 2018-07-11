@@ -392,54 +392,54 @@ public class UIGenerator: Generator {
         }
     }
 
+    // DISCLAIMER: This method is identical to a method with the same signature in `StyleGenerator.swift`. If you're changing the functionality of this method, you most likely want to bring the functionality changes over to that method as well.
     private func generate(modifier: String, attributeTextStyle style: Style, styles: [AttributedTextStyle]) throws {
         func generate(attributes array: [Property]) {
-            l("[")
             for property in array {
                 let propertyContext = PropertyContext(parentContext: componentContext, property: property)
-                l("    Attribute.\(property.name)(\(property.anyValue.generate(context: propertyContext.child(for: property.anyValue)))),")
+                l("Attribute.\(property.name)(\(property.anyValue.generate(context: propertyContext.child(for: property.anyValue)))),")
             }
-            l("]")
         }
 
         l("\(modifier)struct \(style.name.name)") {
             if !style.properties.isEmpty {
-                l("private static let ___sharedProperties___: [Reactant.Attribute] = [")
-                generate(attributes: style.properties)
-                l("]")
+                l("private static let ___sharedProperties___: [Reactant.Attribute] = ", encapsulateIn: .brackets) {
+                    generate(attributes: style.properties)
+                }
             }
 
             for childStyle in styles {
-                l("static let \(childStyle.name) = ")
+                l("static let \(childStyle.name): [Reactant.Attribute] = ", encapsulateIn: .none) {
 
-                // extended styles generation
-                // currently O(n^3 * m) where m is the extension depth level
-                func generateExtensions(from extendedStyles: [StyleName]) {
-                    for extendedStyleName in extendedStyles {
-                        guard let extendedStyle = componentContext.style(named: extendedStyleName),
-                            case .attributedText(let styles) = extendedStyle.type,
-                            styles.first(where: { $0.name == childStyle.name }) != nil else { continue }
+                    // extended styles generation
+                    // currently O(n^3 * m) where m is the extension depth level
+                    func generateExtensions(from extendedStyles: [StyleName]) {
+                        for extendedStyleName in extendedStyles {
+                            guard let extendedStyle = componentContext.style(named: extendedStyleName),
+                                case .attributedText(let styles) = extendedStyle.type,
+                                styles.contains(where: { $0.name == childStyle.name }) else { continue }
 
-                        generateExtensions(from: extendedStyle.extend)
+                            generateExtensions(from: extendedStyle.extend)
 
-                        l(componentContext.resolvedStyleName(named: extendedStyleName) + ".\(childStyle.name),")
+                            l(componentContext.resolvedStyleName(named: extendedStyleName) + ".\(childStyle.name),")
+                        }
                     }
+
+                    l("Array<Reactant.Attribute>(subarrays: ")
+                    generateExtensions(from: style.extend)
+                    if !style.properties.isEmpty {
+                        l("___sharedProperties___,")
+                    }
+                    l("", encapsulateIn: .brackets) {
+                        generate(attributes: childStyle.properties)
+                    }
+                    l(")")
                 }
-
-                l("Array<Reactant.Attribute>(subarrays: ")
-                generateExtensions(from: style.extend)
-
-                if !style.properties.isEmpty {
-                    l("___sharedProperties___,")
-                }
-
-                generate(attributes: childStyle.properties)
-
-                l(")")
             }
         }
     }
 
+    // DISCLAIMER: This method is identical to a method with the same signature in `StyleGenerator.swift`. If you're changing the functionality of this method, you most likely want to bring the functionality changes over to that method as well.
     private func generate(modifier: String, viewStyle style: Style, type: String) throws {
         guard let mapping = ElementMapping.mapping[type] else {
             throw GeneratorError(message: "Mapping for type \(type) does not exist")
@@ -473,7 +473,6 @@ public class UIGenerator: Generator {
                 styleApplication()
             }
         }
-
     }
 }
 
