@@ -27,7 +27,7 @@
             <basko font=":light@20" backgroundColor="red@desaturated(40%)@saturated(40%)" foregroundColor="#f5f5f5" />
         </attributedTextStyle>
         <attributedTextStyle name="bandasnik" extend="common:globalko">
-            <b font=":light@40" backgroundColor="green" foregroundColor="#f5f5f5@fadedOut(by: 30%)@desaturated(25%)" />
+            <b font=":light@40" backgroundColor="green" foregroundColor="#f5f5f5@fadedOut(by: 0.3)@desaturated(25%)" />
             <i font=":bold@4" underlineStyle="styleSingle" underlineColor="black@alpha(50%)" />
             <base foregroundColor="white" backgroundColor="black" />
         </attributedTextStyle>

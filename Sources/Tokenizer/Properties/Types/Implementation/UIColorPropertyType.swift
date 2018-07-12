@@ -106,15 +106,17 @@ public enum UIColorPropertyType: AttributeSupportedPropertyType {
                 }
             }
 
-            guard let probablyPercentSign = parameter.value.last, probablyPercentSign == "%" else {
-                throw ParseError.message("Parameter \(parameter.label?.appending(" ") ?? "")in procedure \(procedure.name) with value \(parameter.value) doesn't end with a percent sign.")
-            }
-            let parameterValue = parameter.value.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).dropLast()
-            guard let value = Int(parameterValue) else {
-                throw ParseError.message("\(parameterValue) is not a valid integer to denote the value of the parameter.")
+            let trimmedValue = parameter.value.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+
+            let floatValue: CGFloat
+            if let probablePercentSign = trimmedValue.last, probablePercentSign == "%", let value = Int(trimmedValue.dropLast()) {
+                floatValue = CGFloat(value) / 100
+            } else if let value = Float(trimmedValue) {
+                floatValue = CGFloat(value)
+            } else {
+                throw ParseError.message("\(parameter.value) is not a valid integer (with percent sign) nor floating point number to denote the value of the parameter in procedure \(procedure.name).")
             }
 
-            let floatValue = CGFloat(value) / 100
             switch procedure.name {
             case "lighter":
                 color = color.lighter(by: floatValue)

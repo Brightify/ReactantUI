@@ -125,12 +125,8 @@ extension Color {
         var brightness: CGFloat = 0
         var alpha: CGFloat = 0
 
-        #if os(iOS)
-        guard color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) else { return self }
-        #else
-        color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
-        #endif
-        alpha = adjust(alpha, by: value)
+        guard getColorComponents(hue: &hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) else { return self }
+        alpha = min(1, max(0, value))
         return Color(color: SystemColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha))
     }
 
@@ -145,11 +141,7 @@ extension Color {
         var brightness: CGFloat = 0
         var alpha: CGFloat = 0
 
-        #if os(iOS)
-        guard color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) else { return self }
-        #else
-        color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
-        #endif
+        guard getColorComponents(hue: &hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) else { return self }
         brightness = adjust(brightness, by: percent)
         return Color(color: SystemColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha))
     }
@@ -174,11 +166,7 @@ extension Color {
         var brightness: CGFloat = 0
         var alpha: CGFloat = 0
 
-        #if os(iOS)
-        guard color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) else { return self }
-        #else
-        color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
-        #endif
+        guard getColorComponents(hue: &hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) else { return self }
         saturation = adjust(saturation, by: percent)
         return Color(color: SystemColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha))
     }
@@ -203,11 +191,7 @@ extension Color {
         var brightness: CGFloat = 0
         var alpha: CGFloat = 0
 
-        #if os(iOS)
-        guard color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) else { return self }
-        #else
-        color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
-        #endif
+        guard getColorComponents(hue: &hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) else { return self }
         alpha = adjust(alpha, by: percent)
         return Color(color: SystemColor(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha))
     }
@@ -219,6 +203,16 @@ extension Color {
      */
     func fadedOut(by percent: CGFloat) -> Color {
         return fadedIn(by: -percent)
+    }
+
+    private func getColorComponents(hue: inout CGFloat, saturation: inout CGFloat, brightness: inout CGFloat, alpha: inout CGFloat) -> Bool {
+        #if os(iOS)
+        guard color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) else { return false }
+        #else
+        guard let colorSpacedColor = color.usingColorSpace(.deviceRGB) else { return false }
+        colorSpacedColor.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+        #endif
+        return true
     }
 
     private func adjust(_ value: CGFloat, by amount: CGFloat) -> CGFloat {
