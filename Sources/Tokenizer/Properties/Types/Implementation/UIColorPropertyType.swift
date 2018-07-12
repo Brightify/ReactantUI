@@ -98,14 +98,6 @@ public enum UIColorPropertyType: AttributeSupportedPropertyType {
                 throw ParseError.message("Wrong number (\(procedure.parameters.count)) of parameters in procedure \(procedure.name).")
             }
 
-            if let label = parameter.label {
-                // right now all the modifications can have the `by:` label, no other
-                let correctLabel = "by"
-                guard label == correctLabel else {
-                    throw ParseError.message("Wrong label \(label) inside procedure \(procedure.name). \"\(correctLabel)\" or none should be used instead.")
-                }
-            }
-
             let trimmedValue = parameter.value.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
 
             let floatValue: CGFloat
@@ -117,20 +109,35 @@ public enum UIColorPropertyType: AttributeSupportedPropertyType {
                 throw ParseError.message("\(parameter.value) is not a valid integer (with percent sign) nor floating point number to denote the value of the parameter in procedure \(procedure.name).")
             }
 
+            func verifyLabel(correctLabel: String) throws {
+                if let label = parameter.label {
+                    guard label == correctLabel else {
+                        throw ParseError.message("Wrong label \(label) inside procedure \(procedure.name). \"\(correctLabel)\" or none should be used instead.")
+                    }
+                }
+            }
+
             switch procedure.name {
             case "lighter":
+                try verifyLabel(correctLabel: "by")
                 color = color.lighter(by: floatValue)
             case "darker":
+                try verifyLabel(correctLabel: "by")
                 color = color.darker(by: floatValue)
             case "saturated":
+                try verifyLabel(correctLabel: "by")
                 color = color.saturated(by: floatValue)
             case "desaturated":
+                try verifyLabel(correctLabel: "by")
                 color = color.desaturated(by: floatValue)
             case "fadedOut":
+                try verifyLabel(correctLabel: "by")
                 color = color.fadedOut(by: floatValue)
             case "fadedIn":
+                try verifyLabel(correctLabel: "by")
                 color = color.fadedIn(by: floatValue)
             case "alpha":
+                try verifyLabel(correctLabel: "at")
                 color = color.withAlphaComponent(floatValue)
             default:
                 throw ParseError.message("Unknown procedure \(procedure.name) used on color \(colorComponents[0]).")
