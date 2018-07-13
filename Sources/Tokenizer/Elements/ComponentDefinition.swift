@@ -85,6 +85,17 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, UIElem
 
         toolingProperties = try PropertyHelper.deserializeToolingProperties(properties: ToolingProperties.componentDefinition.allProperties, in: node)
         properties = try PropertyHelper.deserializeSupportedProperties(properties: View.availableProperties, in: node)
+
+        // here we gather all the constraints' fields that do not have a condition and check if any are duplicate
+        // in that case we warn the user about it, because it's probably not what they intended
+        let fields = children.flatMap({ $0.layout.constraints.compactMap({ return $0.condition == nil ? $0.field : nil }) }).sorted()
+        for (index, field) in fields.enumerated() {
+            let nextIndex = index + 1
+            guard nextIndex < fields.count else { break }
+            if field == fields[nextIndex] {
+                Logger.instance.warning("Duplicate constraint names for name \(field). The project will be compilable, but the behavior might be unexpected.")
+            }
+        }
     }
 
     /**
@@ -95,7 +106,6 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, UIElem
     public static func deserialize(_ node: SWXMLHash.XMLElement) throws -> ComponentDefinition {
         return try ComponentDefinition(node: node, type: node.value(ofAttribute: "type"))
     }
-
 }
 
 extension ComponentDefinition {

@@ -270,6 +270,7 @@
 		68D71F6E21147447005CC92A /* SizeClassType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D71F6D21147447005CC92A /* SizeClassType.swift */; };
 		68D71F7021147453005CC92A /* DimensionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D71F6F21147453005CC92A /* DimensionType.swift */; };
 		68DBC63D210717A200A81E8D /* LiveUIWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DBC63C210717A200A81E8D /* LiveUIWorker.swift */; };
+		68F357D220F8A6BE00605086 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F357D120F8A6BE00605086 /* Logger.swift */; };
 		7139F67920934BC2009EA7F4 /* Condition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7139F67720934BBB009EA7F4 /* Condition.swift */; };
 		71BAEAB720972E1600D56639 /* ConditionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BAEAB520972DFD00D56639 /* ConditionParser.swift */; };
 		71D94EC420935F8E007D83A1 /* ConstraintConditionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D94EC320935F8E007D83A1 /* ConstraintConditionTests.swift */; };
@@ -595,6 +596,7 @@
 		68D71F6D21147447005CC92A /* SizeClassType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SizeClassType.swift; sourceTree = "<group>"; };
 		68D71F6F21147453005CC92A /* DimensionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DimensionType.swift; sourceTree = "<group>"; };
 		68DBC63C210717A200A81E8D /* LiveUIWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveUIWorker.swift; sourceTree = "<group>"; };
+		68F357D120F8A6BE00605086 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		7139F67720934BBB009EA7F4 /* Condition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Condition.swift; sourceTree = "<group>"; };
 		7139F67D20934D6E009EA7F4 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		71BAEAB520972DFD00D56639 /* ConditionParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionParser.swift; sourceTree = "<group>"; };
@@ -1067,6 +1069,7 @@
 				184491D8209223A70080B743 /* Swift+Compatibility.swift */,
 				184491D9209223A70080B743 /* TokenizationError.swift */,
 				22D6749C2121C32E00CB97FD /* Array+distinctLast.swift */,
+				68F357D120F8A6BE00605086 /* Logger.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1945,6 +1948,7 @@
 				18449235209223A70080B743 /* SystemFontWeight.swift in Sources */,
 				687D4DA220C1B27200F890CB /* SupportedPropertyTypeContext.swift in Sources */,
 				18449210209223A70080B743 /* ConstraintPriority.swift in Sources */,
+				68F357D220F8A6BE00605086 /* Logger.swift in Sources */,
 				184491FE209223A70080B743 /* Switch.swift in Sources */,
 				1844925A209223A70080B743 /* Style.swift in Sources */,
 				1844924C209223A70080B743 /* TableViewCellSeparatorStyle.swift in Sources */,
