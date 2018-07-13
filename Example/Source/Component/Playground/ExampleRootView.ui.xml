@@ -46,9 +46,9 @@
     <View
         backgroundColor="blue"
         layout:id="test"
-        layout:leading="[!(horizontal == compact) and (vertical == regular) and pad or width :lt 100] super;
-                        [(horizontal == compact or vertical == compact or pad) and height :gte 20] self;
-                        [false] :gte 10"
+        layout:leading="[!(horizontal == compact) and (vertical == regular) and pad or width :lt 100] coolConstraint = super;
+                        [(horizontal == compact or vertical == compact or pad) and height :gte 20] coolConstraint = self;
+                        [false] uniqueConstraint = :gte 10"
         layout:top="safeAreaLayoutGuide.top"
         layout:width="100"
         layout:height="50" />
