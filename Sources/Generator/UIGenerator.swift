@@ -25,6 +25,7 @@ public class UIGenerator: Generator {
         if root.isAnonymous {
             l("\(modifier)final class \(root.type): ViewBase<Void, Void>") { }
         }
+        
         let constraintFields = root.children.flatMap(self.constraintFields)
         try l("extension \(root.type): ReactantUI" + (root.isRootView ? ", RootView" : "")) {
             if root.isRootView {
@@ -365,17 +366,17 @@ public class UIGenerator: Generator {
     }
 
     private func constraintFields(element: UIElement) -> [String] {
-        var fields = [] as [String]
+        var fields = Set<String>()
         for constraint in element.layout.constraints {
             guard let field = constraint.field else { continue }
 
-            fields.append(field)
+            fields.insert(field)
         }
 
         if let container = element as? UIContainer {
             return fields + container.children.flatMap(constraintFields)
         } else {
-            return fields
+            return Array(fields)
         }
     }
 
