@@ -85,6 +85,6 @@ public struct Layout: XMLElementDeserializable {
             contentCompressionPriorityVertical: contentCompressionPriorityVertical,
             contentHuggingPriorityHorizontal: contentHuggingPriorityHorizontal,
             contentHuggingPriorityVertical: contentHuggingPriorityVertical,
-            constraints: layoutAttributes.flatMap(Constraint.constraints))
+            constraints: layoutAttributes.flatMap(Constraint.constraints(name:attribute:)))
     }
 }
