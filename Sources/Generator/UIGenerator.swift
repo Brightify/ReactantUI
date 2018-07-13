@@ -431,10 +431,9 @@ public class UIGenerator: Generator {
                     if !style.properties.isEmpty {
                         l("___sharedProperties___,")
                     }
-                    l("", encapsulateIn: .brackets) {
+                    l("", encapsulateIn: .custom(open: "[", close: "])")) {
                         generate(attributes: childStyle.properties)
                     }
-                    l(")")
                 }
             }
         }

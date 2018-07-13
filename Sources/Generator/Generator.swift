@@ -61,6 +61,7 @@ public class Generator {
         case parentheses
         case brackets
         case braces
+        case custom(open: String, close: String)
 
         var open: String {
             switch self {
@@ -73,6 +74,8 @@ public class Generator {
             case .braces:
                 // FIXME Let's think about the space here, do we want to remove it?
                 return " {"
+            case .custom(let open, _):
+                return open
             }
         }
 
@@ -86,6 +89,8 @@ public class Generator {
                 return "]"
             case .braces:
                 return "}"
+            case .custom(_, let close):
+                return close
             }
         }
     }
