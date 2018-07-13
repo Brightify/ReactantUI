@@ -260,6 +260,7 @@
 		68CA17D020C97F0D005654B0 /* ViewOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA17BD20C977B3005654B0 /* ViewOrientation.swift */; };
 		68CA17D420C98039005654B0 /* UITraitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA17D320C98039005654B0 /* UITraitHelper.swift */; };
 		68CA17D520C9805A005654B0 /* UITraitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA17D320C98039005654B0 /* UITraitHelper.swift */; };
+		68F357D220F8A6BE00605086 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68F357D120F8A6BE00605086 /* Logger.swift */; };
 		7139F67920934BC2009EA7F4 /* Condition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7139F67720934BBB009EA7F4 /* Condition.swift */; };
 		7139F67B20934C1D009EA7F4 /* GeneratedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B689A1EAF870E007CC668 /* GeneratedUI.swift */; };
 		71BAEAB720972E1600D56639 /* ConditionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BAEAB520972DFD00D56639 /* ConditionParser.swift */; };
@@ -577,6 +578,7 @@
 		68BF19D720C6F537000AF052 /* NSShadow+convenienceInit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSShadow+convenienceInit.swift"; sourceTree = "<group>"; };
 		68CA17BD20C977B3005654B0 /* ViewOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewOrientation.swift; sourceTree = "<group>"; };
 		68CA17D320C98039005654B0 /* UITraitHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITraitHelper.swift; sourceTree = "<group>"; };
+		68F357D120F8A6BE00605086 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		7139F67720934BBB009EA7F4 /* Condition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Condition.swift; sourceTree = "<group>"; };
 		7139F67D20934D6E009EA7F4 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		71BAEAB520972DFD00D56639 /* ConditionParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionParser.swift; sourceTree = "<group>"; };
@@ -1044,6 +1046,7 @@
 				184491D7209223A70080B743 /* StringUtils.swift */,
 				184491D8209223A70080B743 /* Swift+Compatibility.swift */,
 				184491D9209223A70080B743 /* TokenizationError.swift */,
+				68F357D120F8A6BE00605086 /* Logger.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1906,6 +1909,7 @@
 				18449235209223A70080B743 /* SystemFontWeight.swift in Sources */,
 				687D4DA220C1B27200F890CB /* SupportedPropertyTypeContext.swift in Sources */,
 				18449210209223A70080B743 /* ConstraintPriority.swift in Sources */,
+				68F357D220F8A6BE00605086 /* Logger.swift in Sources */,
 				184491FE209223A70080B743 /* Switch.swift in Sources */,
 				1844925A209223A70080B743 /* Style.swift in Sources */,
 				1844924C209223A70080B743 /* TableViewCellSeparatorStyle.swift in Sources */,

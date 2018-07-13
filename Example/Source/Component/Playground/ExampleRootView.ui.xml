@@ -120,8 +120,8 @@
             backgroundColor="black"
             spacing="10"
             layout:id="stacko"
-            layout:top="super inset(20)"
-            layout:fillHorizontally="readableContentGuide inset(20)">
+            layout:top="constraint = super inset(20)"
+            layout:fillHorizontally="constraint = readableContentGuide inset(20)">
             <Component type="ExampleView2" />
             <Component type="ExampleView2" />
         </StackView>
