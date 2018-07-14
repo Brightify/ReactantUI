@@ -24,7 +24,7 @@ public class XSDSerializer {
     }
 
     public func serialize() -> String {
-        let context = GlobalContext(styleSheetDictionary: [:])
+        let context = GlobalContext()
         var element = root.serialize(context: context)
 
         var builder = XMLAttributeBuilder()

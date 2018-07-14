@@ -17,6 +17,12 @@ extension EnumPropertyType where Self.RawValue == String {
     }
 }
 
+extension EnumPropertyType {
+    public static var runtimeType: String {
+        return enumName
+    }
+}
+
 extension SupportedPropertyType where Self: RawRepresentable, Self.RawValue == String {
     #if SanAndreas
     public func dematerialize(context: SupportedPropertyTypeContext) -> String {

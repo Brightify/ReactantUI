@@ -87,6 +87,8 @@ public struct EdgeInsets: AttributeSupportedPropertyType {
         }
     }
 
+    public static var runtimeType: String = "UIEdgeInsets"
+
     public static var xsdType: XSDType {
         return .builtin(.string)
     }

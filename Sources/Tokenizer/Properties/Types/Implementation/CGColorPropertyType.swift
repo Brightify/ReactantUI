@@ -13,6 +13,10 @@ import Foundation
 public struct CGColorPropertyType: AttributeSupportedPropertyType {
     public let color: UIColorPropertyType
 
+    public var requiresTheme: Bool {
+        return color.requiresTheme
+    }
+
     public func generate(context: SupportedPropertyTypeContext) -> String {
         return "\(color.generate(context: context.sibling(for: color))).cgColor"
     }
@@ -37,6 +41,8 @@ public struct CGColorPropertyType: AttributeSupportedPropertyType {
         let materializedValue = try UIColorPropertyType.materialize(from: value)
         return CGColorPropertyType(color: materializedValue)
     }
+
+    public static var runtimeType: String = "CGColor"
 
     public static var xsdType: XSDType {
         return Color.xsdType

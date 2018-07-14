@@ -8,29 +8,29 @@
 import Foundation
 
 public struct SupportedPropertyTypeContext: DataContext {
-    public let propertyContext: PropertyContext
+    public let parentContext: DataContext
     public let value: SupportedPropertyType
 
-    public init(propertyContext: PropertyContext, value: SupportedPropertyType) {
-        self.propertyContext = propertyContext
+    public init(parentContext: DataContext, value: SupportedPropertyType) {
+        self.parentContext = parentContext
         self.value = value
     }
 }
 
 extension SupportedPropertyTypeContext: HasParentContext {
-    public var parentContext: PropertyContext {
-        return propertyContext
-    }
+//    public var parentContext: PropertyContext {
+//        return propertyContext
+//    }
 }
 
 extension PropertyContext {
     public func child(for value: SupportedPropertyType) -> SupportedPropertyTypeContext {
-        return SupportedPropertyTypeContext(propertyContext: self, value: value)
+        return SupportedPropertyTypeContext(parentContext: self, value: value)
     }
 }
 
 extension SupportedPropertyTypeContext {
     public func sibling(for value: SupportedPropertyType) -> SupportedPropertyTypeContext {
-        return SupportedPropertyTypeContext(propertyContext: propertyContext, value: value)
+        return SupportedPropertyTypeContext(parentContext: self, value: value)
     }
 }

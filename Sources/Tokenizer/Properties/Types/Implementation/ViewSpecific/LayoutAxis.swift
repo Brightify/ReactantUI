@@ -26,6 +26,8 @@ public enum LayoutAxis: String, AttributeSupportedPropertyType {
 
     static var allValues: [LayoutAxis] = [.vertical, .horizontal]
 
+    public static var runtimeType: String = "UILayoutConstraintAxis"
+
     public static var xsdType: XSDType {
         let values = Set(LayoutAxis.allValues.map { $0.rawValue })
 

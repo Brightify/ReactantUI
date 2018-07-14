@@ -27,7 +27,7 @@ extension Array {
 extension Sequence {
     fileprivate func distinct(where comparator: (_ lhs: Iterator.Element, _ rhs: Iterator.Element) -> Bool) -> [Iterator.Element] {
         var result: [Iterator.Element] = []
-        for item in self where result.contains(where: { comparator(item, $0) }) == false {
+        for item in self where !result.contains(where: { comparator(item, $0) }) {
             result.append(item)
         }
         return result
@@ -39,9 +39,24 @@ public struct AttributedText: ElementSupportedPropertyType {
     public let localProperties: [Property]
     public let parts: [AttributedText.Part]
 
+    public var requiresTheme: Bool {
+        return localProperties.contains(where: { $0.anyValue.requiresTheme }) ||
+            parts.contains(where: { $0.requiresTheme })
+    }
+
     public enum Part {
         case transform(TransformedText)
         indirect case attributed(AttributedTextStyle, [AttributedText.Part])
+
+        var requiresTheme: Bool {
+            switch self {
+            case .transform:
+                return false
+            case .attributed(let style, let innerText):
+                return style.properties.contains(where: { $0.anyValue.requiresTheme }) ||
+                    innerText.contains(where: { $0.requiresTheme })
+            }
+        }
     }
 }
 

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Application>
+    <Themes default="night">
+        <day />
+        <night />
+    </Themes>
+
+    <Colors>
+        <shared
+            themeIndependentTitle="black" />
+        <day
+            overlayBackground="white"
+            textOnOverlay="black" />
+        <night
+            overlayBackground="black"
+            textOnOverlay="white" />
+    </Colors>
+
+    <Images>
+        <day
+            falcon="falcon_day" />
+        <night
+            falcon="falcon_night" />
+    </Images>
+    
+    <Fonts>
+        <shared
+            title=":bold@30"
+            custom="Helvetica@15" />
+    </Fonts>
+</Application>

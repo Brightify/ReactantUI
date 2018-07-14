@@ -19,6 +19,8 @@ public enum LayoutDistribution: String, EnumPropertyType, AttributeSupportedProp
 
     static var allValues: [LayoutDistribution] = [.fill, .fillEqually, .fillProportionaly, .equalCentering, .equalSpacing]
 
+    public static var runtimeType: String = "UIStackViewDistribution"
+
     public static var xsdType: XSDType {
         let values = Set(LayoutDistribution.allValues.map { $0.rawValue })
 

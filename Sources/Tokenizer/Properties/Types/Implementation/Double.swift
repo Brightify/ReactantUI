@@ -31,6 +31,8 @@ extension Double: AttributeSupportedPropertyType {
         return materialized
     }
 
+    public static var runtimeType: String = "Double"
+
     public static var xsdType: XSDType {
         return .builtin(.decimal)
     }

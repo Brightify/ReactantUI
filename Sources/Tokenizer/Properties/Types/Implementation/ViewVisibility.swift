@@ -15,7 +15,9 @@ public enum ViewVisibility: String, EnumPropertyType, AttributeSupportedProperty
     case hidden
     case collapsed
 
-    static var allValues: [ViewVisibility] = [.visible, .hidden, .collapsed]
+    public static var allValues: [ViewVisibility] = [.visible, .hidden, .collapsed]
+
+    public static var runtimeType: String = "Reactant.Visibility"
 
     public static var xsdType: XSDType {
         let values = Set(ViewVisibility.allValues.map { $0.rawValue })
@@ -31,7 +33,9 @@ public enum ViewCollapseAxis: String, EnumPropertyType {
     case vertical
     case both
 
-    static var allValues: [ViewCollapseAxis] = [.horizontal, .vertical, .both]
+    public static var allValues: [ViewCollapseAxis] = [.horizontal, .vertical, .both]
+
+    public static var runtimeType: String = "Reactant.CollapseAxis"
 
     public static var xsdType: XSDType {
         let values = Set(ViewCollapseAxis.allValues.map { $0.rawValue })

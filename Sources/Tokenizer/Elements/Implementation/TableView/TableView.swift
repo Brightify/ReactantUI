@@ -77,6 +77,8 @@ public enum RowHeight: AttributeSupportedPropertyType {
     }
     #endif
 
+    public static var runtimeType: String = "CGFloat"
+
     public static var xsdType: XSDType {
         let valueType = Float.xsdType
         let automaticType = XSDType.enumeration(EnumerationXSDType(name: "rowHeightAuto", base: .string, values: [automaticIdentifier]))

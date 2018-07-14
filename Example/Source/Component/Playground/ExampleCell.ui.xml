@@ -9,6 +9,7 @@
 
     <Label
         text="Test"
+        font="theme.title"
         backgroundColor="cyan"
         layout:fillHorizontally="super inset(20)"
         layout:fillVertically="super inset(0)" />

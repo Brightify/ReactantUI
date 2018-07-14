@@ -10,15 +10,27 @@ import Foundation
     import UIKit
 #endif
 
-public struct UIColorPropertyType: AttributeSupportedPropertyType {
-    public let color: Color
+public enum UIColorPropertyType: AttributeSupportedPropertyType {
+    case color(Color)
+    case themed(String)
+
+    public var requiresTheme: Bool {
+        switch self {
+        case .color:
+            return false
+        case .themed:
+            return true
+        }
+    }
 
     public func generate(context: SupportedPropertyTypeContext) -> String {
-        switch color {
-        case .absolute(let red, let green, let blue, let alpha):
+        switch self {
+        case .color(.absolute(let red, let green, let blue, let alpha)):
             return "UIColor(red: \(red), green: \(green), blue: \(blue), alpha: \(alpha))"
-        case .named(let name):
+        case .color(.named(let name)):
             return "UIColor.\(name)"
+        case .themed(let name):
+            return "theme.colors.\(name)"
         }
     }
 
@@ -41,24 +53,25 @@ public struct UIColorPropertyType: AttributeSupportedPropertyType {
 
     #if canImport(UIKit)
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
-        switch color {
-        case .absolute(let red, let green, let blue, let alpha):
+        switch self {
+        case .color(.absolute(let red, let green, let blue, let alpha)):
             return UIColor(red: red, green: green, blue: blue, alpha: alpha)
-        case .named(let name):
+        case .color(.named(let name)):
             return UIColor.value(forKeyPath: "\(name)Color") as? UIColor
+        case .themed(let name):
+            guard let themedColor = context.themed(color: name) else { return nil }
+            return themedColor.runtimeValue(context: context.sibling(for: themedColor))
         }
     }
     #endif
 
-    public init(color: Color) {
-        self.color = color
-    }
-
     public static func materialize(from value: String) throws -> UIColorPropertyType {
-        if Color.supportedNames.contains(value) {
-            return UIColorPropertyType(color: .named(value))
+        if let themedName = ApplicationDescription.themedValueName(value: value) {
+            return .themed(themedName)
+        } else if Color.supportedNames.contains(value) {
+            return .color(.named(value))
         } else if let materializedValue = Color(hex: value) {
-            return UIColorPropertyType(color: materializedValue)
+            return .color(materializedValue)
         } else {
             throw PropertyMaterializationError.unknownValue(value)
         }
