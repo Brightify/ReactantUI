@@ -26,21 +26,25 @@ public struct GlobalContext: DataContext {
 
     public var applicationDescription: ApplicationDescription
     public var currentTheme: ApplicationDescription.ThemeName
+    public var resourceBundle: Bundle?
     private var styles: StyleSheets = [:]
 
     public init() {
         self.applicationDescription = ApplicationDescription()
         self.currentTheme = applicationDescription.defaultTheme
+        self.resourceBundle = Bundle.main
         self.styles = [:]
     }
 
     public init(
         applicationDescription: ApplicationDescription,
         currentTheme: ApplicationDescription.ThemeName,
+        resourceBundle: Bundle?,
         styleSheetDictionary: [String: StyleGroup])
     {
         self.applicationDescription = applicationDescription
         self.currentTheme = currentTheme
+        self.resourceBundle = resourceBundle
 
         setStyles(from: styleSheetDictionary)
     }

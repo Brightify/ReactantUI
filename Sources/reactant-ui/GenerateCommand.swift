@@ -185,7 +185,7 @@ class GenerateCommand: Command {
 
         output.append("""
         private final class __ReactantUIBundleToken { }
-        private let resourceBundle = Bundle(for: __ReactantUIBundleToken.self)
+        private let __resourceBundle = Bundle(for: __ReactantUIBundleToken.self)
         """)
 
         for (path, rootDefinition) in componentDefinitions {
@@ -213,6 +213,7 @@ class GenerateCommand: Command {
                       struct GeneratedReactantLiveUIConfiguration: ReactantLiveUIConfiguration {
                       let applicationDescriptionPath: String? = \(generatedApplicationDescriptionPath)
                       let rootDir = \"\(inputPath)\"
+                      let resourceBundle: Bundle = __resourceBundle
                       let commonStylePaths: [String] = [
                   """)
             for path in stylePaths {

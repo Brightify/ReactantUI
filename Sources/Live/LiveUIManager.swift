@@ -21,7 +21,11 @@ public class ReactantLiveUIManager {
     /// Shared instance of the `ReactantLiveUIManager`.
     public static let shared = ReactantLiveUIManager()
 
-    private var configuration: ReactantLiveUIConfiguration?
+    private var configuration: ReactantLiveUIConfiguration? {
+        didSet {
+            globalContext.resourceBundle = configuration?.resourceBundle
+        }
+    }
     private var applicationDescriptionWatcher: Watcher?
     private var watchers: [String: (watcher: Watcher, viewCount: Int)] = [:]
     private var styleWatchers: [String: Watcher] = [:]
@@ -135,10 +139,10 @@ public class ReactantLiveUIManager {
         let reactions = PreviewListController.Reactions(
             preview: { name in
                 navigation.push(controller: self.preview(for: name))
-            },
+        },
             close: {
                 navigation.dismiss(animated: true)
-            })
+        })
         let previewList = PreviewListController(dependencies: dependencies, reactions: reactions)
         navigation.push(controller: previewList)
         controller.present(controller: navigation)
@@ -162,7 +166,7 @@ public class ReactantLiveUIManager {
 
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in }
         alertController.addAction(cancelAction)
-        
+
         controller.present(controller: alertController)
     }
 
@@ -348,35 +352,35 @@ public class ReactantLiveUIManager {
         for path in stylePaths {
             if styleWatchers.keys.contains(path) == false {
 
-            let watcher: Watcher
-            do {
-                watcher = try Watcher(path: path)
-            } catch let error {
-                logError(error, in: path)
-                return
-            }
+                let watcher: Watcher
+                do {
+                    watcher = try Watcher(path: path)
+                } catch let error {
+                    logError(error, in: path)
+                    return
+                }
 
-            watcher
-                .watch()
-                .startWith(path)
-                .subscribe(onNext: { path in
-                    self.resetError(for: path)
-                    let url = URL(fileURLWithPath: path)
-                    guard let data = try? Data(contentsOf: url, options: .uncached) else {
-                        self.logError("ERROR: file not found", in: path)
-                        return
-                    }
-                    let xml = SWXMLHash.parse(data)
-                    do {
-                        var oldStyles = self.styles
-                        let group: StyleGroup = try xml["styleGroup"].value()
-                        oldStyles[group.name] = group
-                        self.styles = oldStyles
-                    } catch let error {
-                        self.logError(error, in: path)
-                    }
-                })
-                .disposed(by: disposeBag)
+                watcher
+                    .watch()
+                    .startWith(path)
+                    .subscribe(onNext: { path in
+                        self.resetError(for: path)
+                        let url = URL(fileURLWithPath: path)
+                        guard let data = try? Data(contentsOf: url, options: .uncached) else {
+                            self.logError("ERROR: file not found", in: path)
+                            return
+                        }
+                        let xml = SWXMLHash.parse(data)
+                        do {
+                            var oldStyles = self.styles
+                            let group: StyleGroup = try xml["styleGroup"].value()
+                            oldStyles[group.name] = group
+                            self.styles = oldStyles
+                        } catch let error {
+                            self.logError(error, in: path)
+                        }
+                    })
+                    .disposed(by: disposeBag)
 
                 styleWatchers[path] = watcher
             }

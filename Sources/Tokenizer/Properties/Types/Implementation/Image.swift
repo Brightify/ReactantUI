@@ -27,7 +27,7 @@ public enum Image: AttributeSupportedPropertyType {
     public func generate(context: SupportedPropertyTypeContext) -> String {
         switch self {
         case .named(let name):
-            return "UIImage(named: \"\(name)\", in: resourceBundle, compatibleWith: nil)"
+            return "UIImage(named: \"\(name)\", in: __resourceBundle, compatibleWith: nil)"
         case .themed(let name):
             return "theme.images.\(name)"
         }
