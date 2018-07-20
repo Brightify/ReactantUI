@@ -183,6 +183,11 @@ class GenerateCommand: Command {
             output.append("import \(imp)")
         }
 
+        output.append("""
+        private final class __ReactantUIBundleToken { }
+        private let resourceBundle = Bundle(for: __ReactantUIBundleToken.self)
+        """)
+
         for (path, rootDefinition) in componentDefinitions {
             output.append("// Generated from \(path)")
             let configuration = GeneratorConfiguration(minimumMajorVersion: minimumDeploymentTarget,

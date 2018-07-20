@@ -28,7 +28,7 @@ extension TransformedText: AttributeSupportedPropertyType {
             case .transform(.lowercased, let inner):
                 return resolveTransformations(text: inner) + ".lowercased()"
             case .transform(.localized, let inner):
-                return "NSLocalizedString(\(resolveTransformations(text: inner)), comment: \"\")"
+                return "NSLocalizedString(\(resolveTransformations(text: inner)), bundle: resourceBundle, comment: \"\")"
             case .transform(.capitalized, let inner):
                 return resolveTransformations(text: inner) + ".capitalized"
             case .text(let value):
