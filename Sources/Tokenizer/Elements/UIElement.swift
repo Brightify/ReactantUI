@@ -33,7 +33,7 @@ public protocol UIElement: AnyObject, UIElementBase, XMLElementSerializable {
     func initialization() throws -> String
 
     #if canImport(UIKit)
-    func initialize() throws -> UIView
+    func initialize(context: ReactantLiveUIWorker.Context) throws -> UIView
     #endif
 }
 

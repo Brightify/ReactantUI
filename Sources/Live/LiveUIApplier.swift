@@ -15,15 +15,18 @@ private func findView(named name: String, in array: [(name: String, element: UIE
 }
 
 public class ReactantLiveUIViewApplier {
+    private let workerContext: ReactantLiveUIWorker.Context
     private let parentContext: DataContext
     private let findViewByFieldName: (String, UIElement) throws -> UIView
     private let resolveStyle: (UIElement) throws -> [Property]
     private let setConstraint: (String, SnapKit.Constraint) -> Bool
 
-    public init(parentContext: DataContext,
+    public init(workerContext: ReactantLiveUIWorker.Context,
+                parentContext: DataContext,
                 findViewByFieldName: @escaping (String, UIElement) throws -> UIView,
                 resolveStyle: @escaping (UIElement) throws -> [Property],
                 setConstraint: @escaping (String, SnapKit.Constraint) -> Bool) {
+        self.workerContext = workerContext
         self.parentContext = parentContext
         self.findViewByFieldName = findViewByFieldName
         self.resolveStyle = resolveStyle
@@ -39,10 +42,10 @@ public class ReactantLiveUIViewApplier {
 
         } else if let layoutId = element.layout.id {
             name = "named_\(layoutId)"
-            view = try element.initialize()
+            view = try element.initialize(context: workerContext)
         } else {
             name = "temp_\(type(of: element))_\(UUID().uuidString)"
-            view = try element.initialize()
+            view = try element.initialize(context: workerContext)
         }
 
         for property in try resolveStyle(element) {
@@ -274,32 +277,32 @@ public class ReactantLiveUIViewApplier {
 }
 
 public class ReactantLiveUIApplier {
+    private let workerContext: ReactantLiveUIWorker.Context
     private let componentContext: ComponentContext
     let definition: ComponentDefinition
     let instance: UIView
     let commonStyles: [Style]
     let setConstraint: (String, SnapKit.Constraint) -> Bool
-    private let onApplied: ((ComponentDefinition, UIView) -> Void)?
     private let viewApplier: ReactantLiveUIViewApplier
 
     private var appliedConstraints: [SnapKit.Constraint] = []
 
-    public init(context: ComponentContext,
+    public init(workerContext: ReactantLiveUIWorker.Context,
+                context: ComponentContext,
                 commonStyles: [Style],
                 instance: UIView,
-                setConstraint: @escaping (String, SnapKit.Constraint) -> Bool,
-                onApplied: ((ComponentDefinition, UIView) -> Void)?) {
+                setConstraint: @escaping (String, SnapKit.Constraint) -> Bool) {
+        self.workerContext = workerContext
         self.definition = context.component
         self.commonStyles = commonStyles
         self.instance = instance
         self.setConstraint = setConstraint
-        self.onApplied = onApplied
         self.componentContext = context
 
         func findViewByFieldName(field: String, element: UIElement) throws -> UIView {
             let view: UIView
             if instance is Anonymous {
-                view = (try? element.initialize()) ?? UIView()
+                view = (try? element.initialize(context: workerContext)) ?? UIView()
                 instance.setValue(view, forUndefinedKey: field)
             } else if instance.responds(to: Selector("\(field)")) {
                 guard let targetView = instance.value(forKey: field) as? UIView else {
@@ -319,6 +322,7 @@ public class ReactantLiveUIApplier {
         }
 
         viewApplier = ReactantLiveUIViewApplier(
+            workerContext: workerContext,
             parentContext: componentContext,
             findViewByFieldName: findViewByFieldName,
             resolveStyle: resolveStyle,
@@ -327,7 +331,6 @@ public class ReactantLiveUIApplier {
     }
 
     public func apply() throws {
-        defer { onApplied?(definition, instance) }
         for property in definition.properties {
             let propertyContext = PropertyContext(parentContext: componentContext, property: property)
             try property.apply(on: instance, context: propertyContext)

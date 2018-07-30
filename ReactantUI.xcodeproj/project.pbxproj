@@ -260,6 +260,8 @@
 		68CA17D020C97F0D005654B0 /* ViewOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA17BD20C977B3005654B0 /* ViewOrientation.swift */; };
 		68CA17D420C98039005654B0 /* UITraitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA17D320C98039005654B0 /* UITraitHelper.swift */; };
 		68CA17D520C9805A005654B0 /* UITraitHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA17D320C98039005654B0 /* UITraitHelper.swift */; };
+		68CB2F7B210F0F460025A261 /* Bundle+name.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CB2F79210F0F1B0025A261 /* Bundle+name.swift */; };
+		68DBC63D210717A200A81E8D /* LiveUIWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DBC63C210717A200A81E8D /* LiveUIWorker.swift */; };
 		7139F67920934BC2009EA7F4 /* Condition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7139F67720934BBB009EA7F4 /* Condition.swift */; };
 		7139F67B20934C1D009EA7F4 /* GeneratedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B689A1EAF870E007CC668 /* GeneratedUI.swift */; };
 		71BAEAB720972E1600D56639 /* ConditionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BAEAB520972DFD00D56639 /* ConditionParser.swift */; };
@@ -577,6 +579,8 @@
 		68BF19D720C6F537000AF052 /* NSShadow+convenienceInit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSShadow+convenienceInit.swift"; sourceTree = "<group>"; };
 		68CA17BD20C977B3005654B0 /* ViewOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewOrientation.swift; sourceTree = "<group>"; };
 		68CA17D320C98039005654B0 /* UITraitHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITraitHelper.swift; sourceTree = "<group>"; };
+		68CB2F79210F0F1B0025A261 /* Bundle+name.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+name.swift"; sourceTree = "<group>"; };
+		68DBC63C210717A200A81E8D /* LiveUIWorker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveUIWorker.swift; sourceTree = "<group>"; };
 		7139F67720934BBB009EA7F4 /* Condition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Condition.swift; sourceTree = "<group>"; };
 		7139F67D20934D6E009EA7F4 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		71BAEAB520972DFD00D56639 /* ConditionParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionParser.swift; sourceTree = "<group>"; };
@@ -735,6 +739,7 @@
 				1844912020921F150080B743 /* LiveUIErrorMessage.swift */,
 				1844912120921F150080B743 /* LiveUIErrorMessageItem.swift */,
 				1844912220921F150080B743 /* LiveUIManager.swift */,
+				68DBC63C210717A200A81E8D /* LiveUIWorker.swift */,
 				1844912320921F150080B743 /* Preview */,
 				1844912920921F150080B743 /* ReactantLiveUIConfiguration.swift */,
 				1844912A20921F150080B743 /* UIWindow+TopViewController.swift */,
@@ -770,6 +775,7 @@
 				1844912C20921F150080B743 /* ExceptionCatcher */,
 				1844913020921F150080B743 /* Watcher.swift */,
 				1844913120921F150080B743 /* WeakUIBox.swift */,
+				68CB2F79210F0F1B0025A261 /* Bundle+name.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1845,6 +1851,7 @@
 			files = (
 				1844921E209223A70080B743 /* Properties.swift in Sources */,
 				18449245209223A70080B743 /* LineBreakMode.swift in Sources */,
+				68DBC63D210717A200A81E8D /* LiveUIWorker.swift in Sources */,
 				18449277209223A70080B743 /* XMLElement+Utils.swift in Sources */,
 				1844924F209223A70080B743 /* TextContentType.swift in Sources */,
 				184491EA209223A70080B743 /* ComponentDefinition.swift in Sources */,
@@ -1860,6 +1867,7 @@
 				1844914520921F150080B743 /* Watcher.swift in Sources */,
 				1844921A209223A70080B743 /* ControlStatePropertyDescription.swift in Sources */,
 				18449206209223A70080B743 /* TextField.swift in Sources */,
+				68CB2F7B210F0F460025A261 /* Bundle+name.swift in Sources */,
 				18449244209223A70080B743 /* LayoutDistribution.swift in Sources */,
 				1844913F20921F150080B743 /* PreviewRootView.swift in Sources */,
 				1844922D209223A70080B743 /* Font.swift in Sources */,

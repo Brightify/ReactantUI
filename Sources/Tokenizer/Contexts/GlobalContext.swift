@@ -101,4 +101,23 @@ public struct GlobalContext: DataContext {
 
         styles = Dictionary(keyValueTuples: groups)
     }
+
+    // LiveUI variables and methods
+//    #if canImport(UIKit)
+//    public let workerContext: DataContext
+//
+//    public func componentInstantiation(named name: String) throws -> () -> UIView {
+//        return try parentContext.componentInstantiation(named: name)
+//    }
+//    #endif
 }
+
+//#if canImport(UIKit)
+//import UIKit
+//
+//extension GlobalContext: HasParentContext {
+//    public var parentContext: DataContext {
+//        return workerContext
+//    }
+//}
+//#endif

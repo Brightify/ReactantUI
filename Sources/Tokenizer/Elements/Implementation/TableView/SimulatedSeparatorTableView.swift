@@ -70,8 +70,8 @@ public class SimulatedSeparatorTableView: View, ComponentDefinitionContainer {
     }
 
     #if canImport(UIKit)
-    public override func initialize() throws -> UIView {
-        let createCell = try ReactantLiveUIManager.shared.componentInstantiation(named: cellType)
+    public override func initialize(context: ReactantLiveUIWorker.Context) throws -> UIView {
+        let createCell = try context.componentInstantiation(named: cellType)
         let exampleCount = ToolingProperties.simulatedSeparatorTableView.exampleCount.get(from: self.toolingProperties) ?? 5
         let tableView =  Reactant.SimulatedSeparatorTableView<CellWrapper>(cellFactory: {
             CellWrapper(wrapped: createCell())

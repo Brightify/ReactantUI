@@ -22,7 +22,7 @@ public class ScrollView: Container {
     }
 
     #if canImport(UIKit)
-    public override func initialize() -> UIView {
+    public override func initialize(context: ReactantLiveUIWorker.Context) -> UIView {
         return UIScrollView()
     }
     #endif
