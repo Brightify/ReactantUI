@@ -178,13 +178,7 @@ public class ReactantLiveUIWorker {
 
     private func apply(definition: ComponentDefinition, view: UIView, setConstraint: @escaping (String, SnapKit.Constraint) -> Bool) throws {
         let componentContext = ComponentContext(globalContext: context.globalContext, component: definition)
-        let uiApplier: ReactantLiveUIApplier
-        if let applier = appliers[view] {
-            uiApplier = applier
-        } else {
-            uiApplier = ReactantLiveUIApplier(workerContext: context)
-            appliers[view] = uiApplier
-        }
+        let uiApplier = appliers[view, default: ReactantLiveUIApplier(workerContext: context)]
         try uiApplier.apply(context: componentContext, commonStyles: commonStyles, view: view, setConstraint: setConstraint)
         if let invalidable = view as? Invalidable {
             invalidable.invalidate()
