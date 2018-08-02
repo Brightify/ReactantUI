@@ -65,9 +65,7 @@ public class ReactantLiveUIManager {
         worker.errorsObservable
             .subscribe(onNext: { [weak self] errors in
                 guard let `self` = self else { return }
-                for error in errors {
-                    self.errorView.componentState[error.path] = error.message
-                }
+                self.errorView.componentState = Dictionary(keyValueTuples: errors.map { ($0.path, $0.message) })
             })
             .disposed(by: disposeBag)
     }
