@@ -5,7 +5,6 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://schema.reactant.tech/ui http://schema.reactant.tech/ui.xsd
                         http://schema.reactant.tech/layout http://schema.reactant.tech/layout.xsd"
-
     rootView="true"
     backgroundColor="black">
 
@@ -60,7 +59,6 @@
         layout:width="100"
         layout:height="50" />
 
-    <!-- <View> <Label/> </View> -->
     <View/>
     <ImageView
         layout:edges="super"
