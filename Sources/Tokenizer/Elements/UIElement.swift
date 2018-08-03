@@ -11,6 +11,11 @@ import Foundation
 import UIKit
 #endif
 
+/**
+ * The most basic UI element protocol that every UI element should conform to.
+ * UI elements usually conform to this protocol through `UIElement` or `View`.
+ * Allows for more customization than conforming to `UIElement` directly.
+ */
 public protocol UIElementBase {
     var properties: [Property] { get set }
     var toolingProperties: [String: Property] { get set }
@@ -22,6 +27,10 @@ public protocol UIElementBase {
     var requiredImports: Set<String> { get }
 }
 
+/**
+ * Contains the interface to a real UI element (layout, styling).
+ * Conforming to this protocol is sufficient on its own when creating a UI element.
+ */
 public protocol UIElement: AnyObject, UIElementBase, XMLElementSerializable {
     var field: String? { get }
     var layout: Layout { get set }

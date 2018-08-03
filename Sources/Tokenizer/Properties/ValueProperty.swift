@@ -9,6 +9,10 @@
 import UIKit
 #endif
 
+/**
+ * Typed property obtained from an XML attribute.
+ * The most basic typed property. Just sets the property using the parsed value.
+ */
 public struct ValueProperty<T: AttributeSupportedPropertyType>: TypedProperty {
     public var namespace: [PropertyContainer.Namespace]
     public var name: String

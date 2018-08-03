@@ -11,6 +11,11 @@ import Foundation
 import UIKit
 #endif
 
+/**
+ * Typed property obtained from an XML element.
+ * It's mostly identical to the `ControlStateProperty`.
+ * The difference is mostly in the code generation and property application.
+ */
 public struct ElementControlStateProperty<T: ElementSupportedPropertyType>: TypedProperty {
     public var namespace: [PropertyContainer.Namespace]
     public var name: String
@@ -28,6 +33,11 @@ public struct ElementControlStateProperty<T: ElementSupportedPropertyType>: Type
         }
     }
 
+    /**
+     * - parameter target: UI element to be targetted with the property
+     * - parameter context: property context to use
+     * - returns: Swift `String` representation of the property application on the target
+     */
     public func application(on target: String, context: PropertyContext) -> String {
         let state = parseState(from: attributeName) as [ControlState]
         let stringState = state.map { "UIControlState.\($0.rawValue)" }.joined(separator: ", ")
@@ -42,6 +52,11 @@ public struct ElementControlStateProperty<T: ElementSupportedPropertyType>: Type
     #endif
 
     #if canImport(UIKit)
+    /**
+     * Try to apply the property on an object using the passed property context.
+     * - parameter object: UI element to apply the property to
+     * - parameter context: property context to use
+     */
     public func apply(on object: AnyObject, context: PropertyContext) throws {
         let key = description.key
         let selector = Selector("set\(key.capitalizingFirstLetter()):forState:")

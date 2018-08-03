@@ -10,6 +10,13 @@ import Foundation
 import UIKit
 #endif
 
+/**
+ * Every context to be used inside a RUI file should conform to this protocol in order to function properly.
+ * It's used along with `HasParentContext` and `HasGlobalContext` to resolve style names (local and global), themes, and more.
+ * Conforming to `HasParentContext` is optional but highly recommended as it allows the context to use its predefined implementations.
+ * Note that not conforming to `HasParentContext` will severe any connection from children contexts (those that reference your context)
+ * from higher-up contexts.
+ */
 public protocol DataContext {
     var resourceBundle: Bundle? { get }
 

@@ -21,6 +21,10 @@ extension Dictionary {
 }
 #endif
 
+/**
+ * The topmost context (disregarding `ReactantLiveUIWorker.Context` which serves LiveUI purposes only).
+ * Any data to be shared throughout the whole application (bundle) should be located in this context.
+ */
 public struct GlobalContext: DataContext {
     private typealias StyleSheets = [String: [String: Style]]
 
@@ -101,23 +105,4 @@ public struct GlobalContext: DataContext {
 
         styles = Dictionary(keyValueTuples: groups)
     }
-
-    // LiveUI variables and methods
-//    #if canImport(UIKit)
-//    public let workerContext: DataContext
-//
-//    public func componentInstantiation(named name: String) throws -> () -> UIView {
-//        return try parentContext.componentInstantiation(named: name)
-//    }
-//    #endif
 }
-
-//#if canImport(UIKit)
-//import UIKit
-//
-//extension GlobalContext: HasParentContext {
-//    public var parentContext: DataContext {
-//        return workerContext
-//    }
-//}
-//#endif

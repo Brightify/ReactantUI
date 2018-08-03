@@ -8,6 +8,11 @@
 
 import Foundation
 
+/**
+ * Layout information deserialized from XML element. Contains constraints, compression and hugging priorities as well as the layout ID
+ * which is exclusive to ReactantUI.
+ * - NOTE: Conditions inside constraints in the layout are evaluated independently on each other.
+ */
 public struct Layout: XMLElementDeserializable {
 
     static let nonConstraintables = ["layout:id",
@@ -41,6 +46,11 @@ public struct Layout: XMLElementDeserializable {
         self.hasConditions = constraints.index(where: { $0.condition != nil }) != nil
     }
 
+    /**
+     * Get all layout information from the passed XML element.
+     * - parameter node: XML element to parse
+     * - returns: constructed layout information in form of `Layout`
+     */
     public static func deserialize(_ node: XMLElement) throws -> Layout {
         let layoutAttributes = node.allAttributes
             .filter { $0.key.hasPrefix("layout:") && !nonConstraintables.contains($0.key) }

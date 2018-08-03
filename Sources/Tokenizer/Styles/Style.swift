@@ -11,10 +11,16 @@ import Foundation
 import Reactant
 #endif
 
+/**
+ * Style identifier used to resolve the style name.
+ */
 public enum StyleName: XMLAttributeDeserializable {
     case local(name: String)
     case global(group: String, name: String)
 
+    /**
+     * Gets the `name` variable from either of the cases.
+     */
     public var name: String {
         switch self {
         case .local(let name):
@@ -42,6 +48,10 @@ public enum StyleName: XMLAttributeDeserializable {
         }
     }
 
+    /**
+     * Generates an XML `String` representation of the `StyleName`.
+     * - returns: XML `String` representation of the `StyleName`
+     */
     public func serialize() -> String {
         switch self {
         case .local(let name):
@@ -51,6 +61,11 @@ public enum StyleName: XMLAttributeDeserializable {
         }
     }
 
+    /**
+     * Tries to parse the passed XML attribute into a `StyleName` identifier.
+     * - parameter attribute: XML attribute to be parsed into `StyleName`
+     * - returns: if not thrown, the parsed `StyleName`
+     */
     public static func deserialize(_ attribute: XMLAttribute) throws -> StyleName {
         return try StyleName(from: attribute.text)
     }
@@ -81,6 +96,23 @@ extension Array: XMLAttributeDeserializable where Iterator.Element == StyleName 
     }
 }
 
+/**
+ * Structure representing an XML style.
+ *
+ * Example:
+ * ```
+ * <styles name="ReactantStyles">
+ *   <LabelStyle name="base" backgroundColor="white" />
+ *   <ButtonStyle name="buttona"
+ *     backgroundColor.highlighted="white"
+ *     isUserInteractionEnabled="true" />
+ *   <attributedTextStyle name="bandaska" extend="common:globalko">
+ *     <i font=":bold@20" />
+ *     <base foregroundColor="white" />
+ *   </attributedTextStyle>
+ * </styles>
+ * ```
+ */
 public struct Style: XMLElementDeserializable {
     public var name: StyleName
     public var extend: [StyleName]
@@ -120,6 +152,11 @@ public struct Style: XMLElementDeserializable {
         }
     }
 
+    /**
+     * Checks if any of Style's properties require theming.
+     * - parameter context: context to use
+     * - returns: `Bool` whether or not any of its properties require theming
+     */
     public func requiresTheme(context: DataContext) -> Bool {
         return properties.contains(where: { $0.anyValue.requiresTheme }) ||
             extend.contains(where: {
@@ -127,11 +164,22 @@ public struct Style: XMLElementDeserializable {
             })
     }
 
+    /**
+     * Tries to create the `Style` structure from an XML element.
+     * - parameter element: XML element to parse
+     * - returns: if not thrown, `Style` obtained from the passed XML element
+     */
     public static func deserialize(_ element: XMLElement) throws -> Style {
         return try Style(node: element, groupName: nil)
     }
 }
 
+/**
+ * Represents `Style`'s type.
+ * Currently, there are:
+ * - view: basic UI element styling
+ * - attributedText: attributed string styling allowing multiple attributed style tags to be defined within it
+ */
 public enum StyleType {
     case view(type: String)
     case attributedText(styles: [AttributedTextStyle])
@@ -146,6 +194,9 @@ public enum StyleType {
     }
 }
 
+/**
+ * Structure representing a single tag inside an <attributedTextStyle> element within `StyleGroup` (<styles>).
+ */
 public struct AttributedTextStyle: XMLElementDeserializable {
     public var name: String
     public var properties: [Property]

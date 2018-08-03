@@ -123,7 +123,7 @@
             layout:id="stacko"
             layout:top="super inset(20)"
             layout:fillHorizontally="readableContentGuide inset(20)">
-            <Component type="ExampleView2" layout:width="dudegr=350" />
+            <Component type="ExampleView2" layout:width="dudegr=370" />
             <Component type="ExampleView2" />
         </StackView>
 
