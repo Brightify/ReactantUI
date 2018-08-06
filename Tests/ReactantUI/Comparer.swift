@@ -8,6 +8,10 @@
 import UIKit
 
 struct Comparer {
+    /**
+     * Compares two images quickly at the cost of no tolerance and unknown percentage difference.
+     * - returns: whether or not the images are identical
+     */
     static func fastCompare(lhs: UIImage, rhs: UIImage) throws -> Bool {
         guard lhs.size == rhs.size else { return false }
 
@@ -18,7 +22,10 @@ struct Comparer {
         return memcmp(lhsPixelData, rhsPixelData, squareScale * Int(lhs.size.width * lhs.size.height)) == 0
     }
 
-    /// returns the percentage of similarity
+    /**
+     * Compares two images and returns the percentage of similarity.
+     * - returns: percentage of similarity between the two passed images
+     */
     static func compare(lhs: UIImage, rhs: UIImage) throws -> Double {
         guard lhs.size == rhs.size else { return 0 }
 

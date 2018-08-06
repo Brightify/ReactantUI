@@ -36,7 +36,17 @@ enum SnapshotError: Error {
     }
 }
 
+/**
+ * Static structure that creates an accurate snapshot of the passed view (using `drawViewHiearchyInRect` if set in test options, recommended).
+ * If using the `drawViewHiearchyInRect` way, make sure to assign a host application (in project settings) to the test target, otherwise
+ * the snapshotting will result in a crash.
+ */
 struct Snapshotter {
+    /**
+     * Given a UIView, tries its best to return the highest quality possible of the passed view as a `UIImage`.
+     * - parameter view: view to take snapshot of
+     * - returns: accurate image representing the passed view
+     */
     static func takeSnapshot(of view: UIView) throws -> UIImage {
         if TestOptions.shouldUseDrawViewHierarchyInRect {
             return try imageFor(view: view)
