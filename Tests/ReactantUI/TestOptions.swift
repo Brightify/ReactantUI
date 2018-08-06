@@ -7,11 +7,14 @@
 
 import Foundation
 
-/// to set the environment variables used by the `TestOptions`, select `LiveUI-iOS` scheme, edit it
-/// select the `Test` tab on the left and then select `Arguments` up top to see the testing environment variables
+/**
+ * To set the environment variables used by the `TestOptions`, select `LiveUI-iOS` scheme, edit it
+ * select the `Test` tab on the left and then select `Arguments` up top to see the testing environment variables
+ */
 struct TestOptions {
     static let testRunIdentifier = UUID()
     static let testRunDate = Date()
+    static let configuration = TestLiveUIConfiguration()
 
     static let testRunDateFormatted: String = dateFormatter.string(from: testRunDate)
     private static let dateFormatter = DateFormatter().where {

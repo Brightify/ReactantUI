@@ -16,23 +16,6 @@ enum TestError: Error {
     case noMappingFound
 }
 
-func assertSuiteEqual(xmls sources: [String], views expectedViews: [UIView], componentTemplate: String = "#{}", testAtSizes testSizes: CGSize..., tolerance: Double = 0, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
-    assertSuiteEqual(xmls: sources, views: expectedViews, componentTemplate: componentTemplate, testAtSizes: testSizes, tolerance: tolerance, file: file, function: function, line: line)
-}
-
-func assertSuiteEqual(xmls sources: [String], views expectedViews: [UIView], componentTemplate: String = "#{}", testAtSizes testSizes: [CGSize], tolerance: Double = 0, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
-    guard sources.count == expectedViews.count else { return XCTFail("Unequal array size of XML files and expected views!", file: file, line: line) }
-
-    let embeddedSources = sources.map {
-        // we are interpolating the #{} in the template with our view
-        componentTemplate.replacingOccurrences(of: "#{}", with: $0)
-    }
-
-    for (index, (source, expectedView)) in zip(embeddedSources, expectedViews).enumerated() {
-        assertEqual(xml: source, view: expectedView, testAtSizes: testSizes, tolerance: tolerance, testVariant: sources.count > 1 ? index : nil, file: file, function: function, line: line)
-    }
-}
-
 func assertEqual(xml: String, view expectedView: UIView, testAtSizes testSizes: CGSize..., tolerance: Double = 0, testVariant: Int? = nil, file: StaticString = #file, function: StaticString = #function, line: UInt = #line) {
     assertEqual(xml: xml, view: expectedView, testAtSizes: testSizes, tolerance: tolerance, testVariant: testVariant, file: file, function: function, line: line)
 }
@@ -45,20 +28,22 @@ func assertEqual(xml: String, view expectedView: UIView, testAtSizes testSizes: 
             let parsedXML = SWXMLHash.parse(xml)
             guard let element = parsedXML.children[0].element else { return XCTFail("Couldn't parse the XML as an XML element.", file: file, line: line) }
 
+            let workerContext = ReactantLiveUIWorker.Context(configuration: TestOptions.configuration, globalContext: globalContext)
+
             let deserializedView: UIView
             if element.name == "Component" {
                 let definition = try ComponentDefinition.deserialize(element)
                 deserializedView = AnonymousTestComponent()
-                let applier = ReactantLiveUIApplier(
+                let applier = ReactantLiveUIApplier(workerContext: workerContext)
+                try applier.apply(
                     context: ComponentContext(globalContext: globalContext, component: definition),
                     commonStyles: [],
-                    instance: deserializedView,
-                    setConstraint: { _, _ in true },
-                    onApplied: nil)
-                try applier.apply()
+                    view: deserializedView,
+                    setConstraint: { _, _ in true })
             } else {
                 let view = try ElementMapping.mapFrom(element: element)
                 let applier = ReactantLiveUIViewApplier(
+                    workerContext: workerContext,
                     parentContext: globalContext,
                     findViewByFieldName: { _, _ in throw TestError.noFieldFound },
                     resolveStyle: { _ in return view.properties },
