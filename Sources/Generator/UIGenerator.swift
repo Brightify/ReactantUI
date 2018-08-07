@@ -321,12 +321,12 @@ public class UIGenerator: Generator {
                 target = name
             case .safeAreaLayoutGuide:
                 if fallback {
-                    target = "target.fallback_safeAreaLayoutGuide"
+                    target = "\(superName).fallback_safeAreaLayoutGuide"
                 } else {
-                    target = "target.safeAreaLayoutGuide"
+                    target = "\(superName).safeAreaLayoutGuide"
                 }
             case .readableContentGuide:
-                target="target.readableContentGuide"
+                target="\(superName).readableContentGuide"
             }
             constraintLine += target
             if targetDefinition.targetAnchor != constraint.anchor {
