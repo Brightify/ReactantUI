@@ -219,6 +219,7 @@
 		680DD2F92111E59B00069A82 /* MainWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141C8A2052B02F00205F56 /* MainWireframe.swift */; };
 		680DD2FA2111E59B00069A82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B687B1EAF7641007CC668 /* AppDelegate.swift */; };
 		680DD2FB2111E5C300069A82 /* GeneratedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B689A1EAF870E007CC668 /* GeneratedUI.swift */; };
+		68178D63211C23F000633BCC /* ViewCollapseAxis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68178D62211C23F000633BCC /* ViewCollapseAxis.swift */; };
 		681A1E1620D3CA8D00109BEC /* ButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681A1E1520D3CA8D00109BEC /* ButtonTests.swift */; };
 		6826D8F020F6726D00BC43B7 /* SimpleProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6826D8EE20F6725A00BC43B7 /* SimpleProcedure.swift */; };
 		6836D5F920B8404F00FD2DF8 /* UIView+traits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689FA0B7209CB2A200B39225 /* UIView+traits.swift */; };
@@ -540,6 +541,7 @@
 		5A946519C18AE694A9F16B15 /* Pods-LiveUI-LiveUI-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveUI-LiveUI-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-LiveUI-LiveUI-iOS/Pods-LiveUI-LiveUI-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		5F1124193368C79B42B1596B /* Pods-Example-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-tvOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-Example-tvOS/Pods-Example-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		668836B2629A4DD2DFC1CED6 /* Pods-LiveUI-LiveUI-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveUI-LiveUI-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LiveUI-LiveUI-iOS/Pods-LiveUI-LiveUI-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		68178D62211C23F000633BCC /* ViewCollapseAxis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewCollapseAxis.swift; sourceTree = "<group>"; };
 		681A1E1520D3CA8D00109BEC /* ButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTests.swift; sourceTree = "<group>"; };
 		6826D8EE20F6725A00BC43B7 /* SimpleProcedure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleProcedure.swift; sourceTree = "<group>"; };
 		6836D5FA20B86C3500FD2DF8 /* AttributedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedText.swift; sourceTree = "<group>"; };
@@ -974,6 +976,7 @@
 				6893A6B820BBFA77004802E4 /* WritingDirection.swift */,
 				68BF19D320C6D6CA000AF052 /* TextTab.swift */,
 				68BF19D520C6DC69000AF052 /* ParagraphStyle.swift */,
+				68178D62211C23F000633BCC /* ViewCollapseAxis.swift */,
 			);
 			path = Implementation;
 			sourceTree = "<group>";
@@ -1991,6 +1994,7 @@
 				687D4DAA20C5582800F890CB /* ElementAssignableProperty.swift in Sources */,
 				18449204209223A70080B743 /* SimulatedSeparatorTableView.swift in Sources */,
 				18449212209223A70080B743 /* ConstraintTarget.swift in Sources */,
+				68178D63211C23F000633BCC /* ViewCollapseAxis.swift in Sources */,
 				1844923C209223A70080B743 /* BarStyle.swift in Sources */,
 				18449272209223A70080B743 /* XMLAttributeSerializable.swift in Sources */,
 				184491FC209223A70080B743 /* StackView.swift in Sources */,
