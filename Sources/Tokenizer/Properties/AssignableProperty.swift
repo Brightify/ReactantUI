@@ -20,6 +20,7 @@ public struct AssignableProperty<T: AttributeSupportedPropertyType>: TypedProper
     public var name: String
     public var description: AssignablePropertyDescription<T>
     public var value: T
+    public var condition: Condition?
     
     public var attributeName: String {
         return namespace.resolvedAttributeName(name: name)
@@ -32,7 +33,15 @@ public struct AssignableProperty<T: AttributeSupportedPropertyType>: TypedProper
      */
     public func application(on target: String, context: PropertyContext) -> String {
         let namespacedTarget = namespace.resolvedSwiftName(target: target)
-        return "\(namespacedTarget).\(description.swiftName) = \(value.generate(context: context.child(for: value)))"
+        if let condition = condition {
+            return """
+            if \(condition.generateSwift(viewName: namespacedTarget)) {
+                \(namespacedTarget).\(description.swiftName) = \(value.generate(context: context.child(for: value)))
+            }
+            """
+        } else {
+            return "\(namespacedTarget).\(description.swiftName) = \(value.generate(context: context.child(for: value)))"
+        }
     }
     
     #if SanAndreas

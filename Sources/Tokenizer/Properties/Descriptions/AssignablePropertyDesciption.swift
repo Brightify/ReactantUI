@@ -43,7 +43,7 @@ public struct AssignablePropertyDescription<T: AttributeSupportedPropertyType>: 
         if let storedProperty = getProperty(from: properties) {
             property = storedProperty
         } else {
-            property = AssignableProperty(namespace: namespace, name: name, description: self, value: value)
+            property = AssignableProperty(namespace: namespace, name: name, description: self, value: value, condition: nil)
         }
         property.value = value
         setProperty(property, to: &properties)
@@ -73,9 +73,10 @@ public struct AssignablePropertyDescription<T: AttributeSupportedPropertyType>: 
 }
 
 extension AssignablePropertyDescription: AttributePropertyDescription where T: AttributeSupportedPropertyType {
-    public func materialize(attributeName: String, value: String) throws -> Property {
+
+    public func materialize(attributeName: String, value: String, condition: Condition?) throws -> Property {
         let materializedValue = try T.materialize(from: value)
 
-        return AssignableProperty(namespace: namespace, name: name, description: self, value: materializedValue)
+        return AssignableProperty(namespace: namespace, name: name, description: self, value: materializedValue, condition: condition)
     }
 }

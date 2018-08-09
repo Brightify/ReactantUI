@@ -21,6 +21,9 @@ public struct ElementAssignableProperty<T: ElementSupportedPropertyType>: TypedP
     public var description: ElementAssignablePropertyDescription<T>
     public var value: T
 
+    // TODO
+    public let condition: Condition? = nil
+
     public var attributeName: String {
         return namespace.resolvedAttributeName(name: name)
     }

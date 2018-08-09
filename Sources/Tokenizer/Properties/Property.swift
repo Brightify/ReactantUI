@@ -22,6 +22,8 @@ public protocol Property {
 
     var anyValue: SupportedPropertyType { get }
 
+    var condition: Condition? { get }
+
     func application(on target: String, context: PropertyContext) -> String
 
     #if SanAndreas

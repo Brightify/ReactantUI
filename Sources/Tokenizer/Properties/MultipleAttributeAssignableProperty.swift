@@ -21,6 +21,9 @@ public struct MultipleAttributeAssignableProperty<T: MultipleAttributeSupportedP
     public var description: MultipleAttributeAssignablePropertyDescription<T>
     public var value: T
 
+    // TODO
+    public let condition: Condition? = nil
+
     public var attributeName: String {
         return namespace.resolvedAttributeName(name: name)
     }

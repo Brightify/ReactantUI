@@ -21,6 +21,9 @@ public struct ControlStateProperty<T: AttributeSupportedPropertyType>: TypedProp
     
     public var description: ControlStatePropertyDescription<T>
     public var value: T
+
+    // TODO
+    public let condition: Condition? = nil
     
     public var attributeName: String {
         let namespacedName = namespace.resolvedAttributeName(name: name)

@@ -24,6 +24,9 @@ public struct ElementControlStateProperty<T: ElementSupportedPropertyType>: Type
     public var description: ElementControlStatePropertyDescription<T>
     public var value: T
 
+    // TODO
+    public let condition: Condition? = nil
+
     public var attributeName: String {
         let namespacedName = namespace.resolvedAttributeName(name: name)
         if state == [] || state == [.normal] {

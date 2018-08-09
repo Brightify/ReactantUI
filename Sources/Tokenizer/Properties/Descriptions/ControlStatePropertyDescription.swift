@@ -100,7 +100,7 @@ public struct ControlStatePropertyDescription<T: AttributeSupportedPropertyType>
 }
 
 extension ControlStatePropertyDescription: AttributePropertyDescription where T: AttributeSupportedPropertyType {
-    public func materialize(attributeName: String, value: String) throws -> Property {
+    public func materialize(attributeName: String, value: String, condition: Condition?) throws -> Property {
         let materializedValue = try T.materialize(from: value)
         return ControlStateProperty(namespace: namespace, name: name, state: parseState(from: attributeName), description: self, value: materializedValue)
     }

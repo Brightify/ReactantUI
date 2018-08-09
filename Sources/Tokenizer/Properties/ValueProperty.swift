@@ -19,6 +19,9 @@ public struct ValueProperty<T: AttributeSupportedPropertyType>: TypedProperty {
     public var description: ValuePropertyDescription<T>
     public var value: T
 
+    // TODO
+    public let condition: Condition? = nil
+
     public var attributeName: String {
         return namespace.resolvedAttributeName(name: name)
     }

@@ -72,7 +72,7 @@ public struct ValuePropertyDescription<T: AttributeSupportedPropertyType>: Typed
 }
 
 extension ValuePropertyDescription: AttributePropertyDescription /*where T: AttributeSupportedPropertyType*/ {
-    public func materialize(attributeName: String, value: String) throws -> Property {
+    public func materialize(attributeName: String, value: String, condition: Condition?) throws -> Property {
         let materializedValue = try T.materialize(from: value)
 
         return ValueProperty(namespace: namespace, name: name, description: self, value: materializedValue)
