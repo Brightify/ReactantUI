@@ -31,8 +31,8 @@ public class MapView: View {
     }
 
     #if canImport(UIKit)
-    public override func initialize() -> UIView {
-    return MKMapView()
+    public override func initialize(context: ReactantLiveUIWorker.Context) -> UIView {
+        return MKMapView()
     }
     #endif
 }

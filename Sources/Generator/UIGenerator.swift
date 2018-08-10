@@ -35,7 +35,7 @@ public class UIGenerator: Generator {
                         } else {
                             l("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
                         }
-                        l("return ReactantLiveUIManager.shared.extendedEdges(of: self)")
+                        l("return bundleWorker.extendedEdges(of: self)")
                         l("#else")
                     }
                     l("return \(RectEdge.toGeneratedString(root.edgesForExtendedLayout))")
@@ -88,7 +88,7 @@ public class UIGenerator: Generator {
                             l("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
                         }
                         // This will register `self` to remove `deinit` from ViewBase
-                        l("ReactantLiveUIManager.shared.register(target)") {
+                        l("bundleWorker.register(target)") {
 
                             if constraintFields.isEmpty {
                                 l("_, _ in")
@@ -151,7 +151,7 @@ public class UIGenerator: Generator {
                         }
                         // This will reapply the component definition.
                         // TODO Do a real "update" instead of "remake" that's being done now
-                        l("ReactantLiveUIManager.shared.reapply(target)")
+                        l("bundleWorker.reapply(target)")
                         l("#else")
                     }
 
@@ -183,7 +183,7 @@ public class UIGenerator: Generator {
                     if configuration.isLiveEnabled {
                         l(ifSimulator("""
                                       guard let knownTarget = target as? \(root.type) else { /* FIXME Should we fatalError here? */ return }
-                                      ReactantLiveUIManager.shared.unregister(knownTarget)
+                                      bundleWorker.unregister(knownTarget)
                                 """))
                     }
 

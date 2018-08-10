@@ -11,6 +11,7 @@ import UIKit
 #endif
 
 public protocol DataContext {
+    var resourceBundle: Bundle? { get }
 
     func resolvedStyleName(named styleName: StyleName) -> String
 
@@ -39,7 +40,14 @@ extension HasParentContext where Self: HasGlobalContext {
     }
 }
 
+// WARNING:
+// this extension and the one below are nearly identical and if you change something in this one,
+// you most likely want to change it in the other extension as well
 extension DataContext where Self: HasParentContext, Self.ParentContext: DataContext {
+    public var resourceBundle: Bundle? {
+        return parentContext.resourceBundle
+    }
+
     public func resolvedStyleName(named styleName: StyleName) -> String {
         return parentContext.resolvedStyleName(named: styleName)
     }
@@ -61,7 +69,14 @@ extension DataContext where Self: HasParentContext, Self.ParentContext: DataCont
     }
 }
 
+// WARNING:
+// this extension and the one above are nearly identical and if you change something in this one,
+// you most likely want to change it in the other extension as well
 extension DataContext where Self: HasParentContext, Self.ParentContext == DataContext {
+    public var resourceBundle: Bundle? {
+        return parentContext.resourceBundle
+    }
+
     public func resolvedStyleName(named styleName: StyleName) -> String {
         return parentContext.resolvedStyleName(named: styleName)
     }

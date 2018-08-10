@@ -68,8 +68,8 @@ public class PlainTableView: View, ComponentDefinitionContainer {
     }
 
     #if canImport(UIKit)
-    public override func initialize() throws -> UIView {
-        let createCell = try ReactantLiveUIManager.shared.componentInstantiation(named: cellType)
+    public override func initialize(context: ReactantLiveUIWorker.Context) throws -> UIView {
+        let createCell = try context.componentInstantiation(named: cellType)
         let exampleCount = ToolingProperties.plainTableView.exampleCount.get(from: self.toolingProperties) ?? 5
         let tableView =  Reactant.PlainTableView<CellWrapper>(cellFactory: {
             CellWrapper(wrapped: createCell())

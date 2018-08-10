@@ -16,13 +16,15 @@ public protocol Anonymous {}
 public class AnonymousLiveComponent: ViewBase<Void, Void>, Anonymous {
     fileprivate let _typeName: String
     fileprivate let _xmlPath: String
+    fileprivate let _worker: ReactantLiveUIWorker
     fileprivate var _properties: [String: Any] = [:]
     fileprivate var _selectionStyle: UITableViewCellSelectionStyle = .default
     fileprivate var _focusStyle: UITableViewCellFocusStyle = .default
 
-    public init(typeName: String, xmlPath: String) {
+    public init(typeName: String, xmlPath: String, worker: ReactantLiveUIWorker) {
         _xmlPath = xmlPath
         _typeName = typeName
+        _worker = worker
         super.init()
     }
 
@@ -71,24 +73,24 @@ extension AnonymousComponent: ReactantUI {
 
         func setupReactantUI() {
             guard let target = self.target else { /* FIXME Should we fatalError here? */ return }
-            ReactantLiveUIManager.shared.register(target, setConstraint: { _, _ in true })
+            target._worker.register(target, setConstraint: { _, _ in true })
         }
 
         func updateReactantUI() {
             guard let target = self.target else { /* FIXME Should we fatalError here? */ return }
-            ReactantLiveUIManager.shared.reapply(target)
+            target._worker.reapply(target)
         }
 
         static func destroyReactantUI(target: UIView) {
             guard let knownTarget = target as? AnonymousComponent else { /* FIXME Should we fatalError here? */ return }
-            ReactantLiveUIManager.shared.unregister(knownTarget)
+            knownTarget._worker.unregister(knownTarget)
         }
     }
 }
 
 extension AnonymousComponent: RootView {
     public var edgesForExtendedLayout: UIRectEdge {
-        return ReactantLiveUIManager.shared.extendedEdges(of: self)
+        return _worker.extendedEdges(of: self)
     }
 }
 

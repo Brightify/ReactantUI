@@ -96,10 +96,10 @@ public class SimpleTableView: View, ComponentDefinitionContainer {
     }
 
     #if canImport(UIKit)
-    public override func initialize() throws -> UIView {
-        let createCell = try ReactantLiveUIManager.shared.componentInstantiation(named: cellType)
-        let createHeader = try ReactantLiveUIManager.shared.componentInstantiation(named: headerType)
-        let createFooter = try ReactantLiveUIManager.shared.componentInstantiation(named: footerType)
+    public override func initialize(context: ReactantLiveUIWorker.Context) throws -> UIView {
+        let createCell = try context.componentInstantiation(named: cellType)
+        let createHeader = try context.componentInstantiation(named: headerType)
+        let createFooter = try context.componentInstantiation(named: footerType)
         let sectionCount = ToolingProperties.headerTableView.sectionCount.get(from: self.toolingProperties) ?? 5
         let itemCount = ToolingProperties.headerTableView.itemCount.get(from: self.toolingProperties) ?? 5
         let tableView = Reactant.SimpleTableView<CellWrapper, CellWrapper, CellWrapper>(

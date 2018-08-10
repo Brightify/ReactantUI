@@ -80,9 +80,9 @@ public class FooterTableView: View, ComponentDefinitionContainer {
     }
 
     #if canImport(UIKit)
-    public override func initialize() throws -> UIView {
-        let createCell = try ReactantLiveUIManager.shared.componentInstantiation(named: cellType)
-        let createFooter = try ReactantLiveUIManager.shared.componentInstantiation(named: footerType)
+    public override func initialize(context: ReactantLiveUIWorker.Context) throws -> UIView {
+        let createCell = try context.componentInstantiation(named: cellType)
+        let createFooter = try context.componentInstantiation(named: footerType)
         let sectionCount = ToolingProperties.footerTableView.sectionCount.get(from: self.toolingProperties) ?? 5
         let itemCount = ToolingProperties.footerTableView.itemCount.get(from: self.toolingProperties) ?? 5
         let tableView = Reactant.FooterTableView<CellWrapper, CellWrapper>(

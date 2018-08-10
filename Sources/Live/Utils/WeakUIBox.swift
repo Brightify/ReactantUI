@@ -1,6 +1,6 @@
 //
 //  WeakUIBox.swift
-//  Pods
+//  ReactantUI
 //
 //  Created by Matouš Hýbl on 23/03/2018.
 //

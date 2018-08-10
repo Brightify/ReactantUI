@@ -26,21 +26,25 @@ public struct GlobalContext: DataContext {
 
     public var applicationDescription: ApplicationDescription
     public var currentTheme: ApplicationDescription.ThemeName
+    public var resourceBundle: Bundle?
     private var styles: StyleSheets = [:]
 
     public init() {
         self.applicationDescription = ApplicationDescription()
         self.currentTheme = applicationDescription.defaultTheme
+        self.resourceBundle = Bundle.main
         self.styles = [:]
     }
 
     public init(
         applicationDescription: ApplicationDescription,
         currentTheme: ApplicationDescription.ThemeName,
+        resourceBundle: Bundle?,
         styleSheetDictionary: [String: StyleGroup])
     {
         self.applicationDescription = applicationDescription
         self.currentTheme = currentTheme
+        self.resourceBundle = resourceBundle
 
         setStyles(from: styleSheetDictionary)
     }
@@ -97,4 +101,23 @@ public struct GlobalContext: DataContext {
 
         styles = Dictionary(keyValueTuples: groups)
     }
+
+    // LiveUI variables and methods
+//    #if canImport(UIKit)
+//    public let workerContext: DataContext
+//
+//    public func componentInstantiation(named name: String) throws -> () -> UIView {
+//        return try parentContext.componentInstantiation(named: name)
+//    }
+//    #endif
 }
+
+//#if canImport(UIKit)
+//import UIKit
+//
+//extension GlobalContext: HasParentContext {
+//    public var parentContext: DataContext {
+//        return workerContext
+//    }
+//}
+//#endif

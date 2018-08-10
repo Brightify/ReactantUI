@@ -22,8 +22,8 @@ public class NavigationBar: View {
     }
 
     #if canImport(UIKit)
-    public override func initialize() -> UIView {
-    return UINavigationBar()
+    public override func initialize(context: ReactantLiveUIWorker.Context) -> UIView {
+        return UINavigationBar()
     }
     #endif
 }

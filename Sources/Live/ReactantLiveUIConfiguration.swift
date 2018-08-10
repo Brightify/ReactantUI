@@ -13,4 +13,5 @@ public protocol ReactantLiveUIConfiguration {
     var applicationDescriptionPath: String? { get }
     var componentTypes: [String: UIView.Type] { get }
     var commonStylePaths: [String] { get }
+    var resourceBundle: Bundle { get }
 }

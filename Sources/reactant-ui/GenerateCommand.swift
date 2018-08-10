@@ -177,11 +177,16 @@ class GenerateCommand: Command {
         try output.append(theme(context: globalContext, swiftVersion: swiftVersion))
 
         if enableLive.value {
-            output.append(ifSimulator(swiftVersion: swiftVersion, commands: "import ReactantLiveUI"))
+            output.append(ifSimulator(swiftVersion: swiftVersion, ifClause: "import ReactantLiveUI"))
         }
         for imp in imports {
             output.append("import \(imp)")
         }
+
+        output.append("""
+        private final class __ReactantUIBundleToken { }
+        private let __resourceBundle = Bundle(for: __ReactantUIBundleToken.self)
+        """)
 
         for (path, rootDefinition) in componentDefinitions {
             output.append("// Generated from \(path)")
@@ -196,7 +201,6 @@ class GenerateCommand: Command {
             }
         }
 
-
         if enableLive.value {
             let generatedApplicationDescriptionPath = applicationDescriptionPath.map { "\"\($0)\"" } ?? "nil"
             if swiftVersion < .swift4_1 {
@@ -208,6 +212,7 @@ class GenerateCommand: Command {
                       struct GeneratedReactantLiveUIConfiguration: ReactantLiveUIConfiguration {
                       let applicationDescriptionPath: String? = \(generatedApplicationDescriptionPath)
                       let rootDir = \"\(inputPath)\"
+                      let resourceBundle: Bundle = __resourceBundle
                       let commonStylePaths: [String] = [
                   """)
             for path in stylePaths {
@@ -231,16 +236,18 @@ class GenerateCommand: Command {
                   """)
         }
 
-        output.append("func activateLiveReload(in window: UIWindow) {")
+        output.append(ifSimulator(swiftVersion: swiftVersion, ifClause: "\nlet bundleWorker = ReactantLiveUIWorker(configuration: GeneratedReactantLiveUIConfiguration())\n"))
+
+        output.append("public func activateLiveReload(in window: UIWindow) {")
         if enableLive.value {
             let liveUIActivation = """
-                ReactantLiveUIManager.shared.activate(in: window, configuration: GeneratedReactantLiveUIConfiguration())
-                ApplicationTheme.selector.register(target: ReactantLiveUIManager.shared, listener: { theme in
-                    ReactantLiveUIManager.shared.setSelectedTheme(name: theme.name)
+                ReactantLiveUIManager.shared.activate(in: window, worker: bundleWorker)
+                ApplicationTheme.selector.register(target: bundleWorker, listener: { theme in
+                    bundleWorker.setSelectedTheme(name: theme.name)
                 })
             """
 
-            output.append(ifSimulator(swiftVersion: swiftVersion, commands:liveUIActivation))
+            output.append(ifSimulator(swiftVersion: swiftVersion, ifClause: liveUIActivation))
         }
         output.append("}")
 
@@ -370,17 +377,29 @@ class GenerateCommand: Command {
         }
     }
 
-    private func ifSimulator(swiftVersion: SwiftVersion, commands: String) -> String {
+    private func ifSimulator(swiftVersion: SwiftVersion, ifClause: String, elseClause: String? = nil) -> String {
+        let elseCode: String
+        if let elseClause = elseClause {
+            elseCode = """
+            #else
+            \(elseClause)
+            """
+        } else {
+            elseCode = ""
+        }
+
         if swiftVersion >= .swift4_1 {
             return """
             #if targetEnvironment(simulator)
-            \(commands)
+            \(ifClause)
+            \(elseCode)
             #endif
             """
         } else {
             return """
             #if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))
-            \(commands)
+            \(ifClause)
+            \(elseCode)
             #endif
             """
         }

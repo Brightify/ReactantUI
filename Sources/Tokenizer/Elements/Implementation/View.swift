@@ -45,7 +45,7 @@ public class View: XMLElementDeserializable, UIElement {
     }
 
     #if canImport(UIKit)
-    public func initialize() throws -> UIView {
+    public func initialize(context: ReactantLiveUIWorker.Context) throws -> UIView {
         return UIView()
     }
     #endif

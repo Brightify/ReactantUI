@@ -56,7 +56,7 @@ public class Container: View, UIContainer {
     }
 
     #if canImport(UIKit)
-    public override func initialize() -> UIView {
+    public override func initialize(context: ReactantLiveUIWorker.Context) -> UIView {
         return ContainerView()
     }
     #endif

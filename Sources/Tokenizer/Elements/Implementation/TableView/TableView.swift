@@ -26,7 +26,7 @@ public class TableView: View {
     }
 
     #if canImport(UIKit)
-    public override func initialize() -> UIView {
+    public override func initialize(context: ReactantLiveUIWorker.Context) -> UIView {
         return UITableView()
     }
     #endif
