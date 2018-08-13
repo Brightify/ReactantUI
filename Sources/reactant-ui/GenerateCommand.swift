@@ -147,7 +147,7 @@ class GenerateCommand: Command {
 
             let xml = SWXMLHash.parse(data)
 
-            let node = xml["Component"].element!
+            guard let node = xml["Component"].element else { continue }
             var definition: ComponentDefinition
             do {
                 if let type: String = xml["Component"].value(ofAttribute: "type") {
