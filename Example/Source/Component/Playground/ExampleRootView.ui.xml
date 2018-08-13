@@ -122,7 +122,7 @@
             layout:id="stacko"
             layout:top="super inset(20)"
             layout:fillHorizontally="readableContentGuide inset(20)">
-            <Component type="ExampleView2" />
+            <Component type="ExampleView2" layout:width="dudegr=350" />
             <Component type="ExampleView2" />
         </StackView>
 
@@ -153,7 +153,7 @@
                 layout:fillHorizontally="super"/>
 
             <Label
-                layout:id="prdel"
+                layout:id="please"
                 text="Keep your rocket safes"
                 font=":regular@14"
                 style=":common:whiteLabel"
@@ -168,7 +168,7 @@
                 placeholder="E-mail"
                 field="email"
                 textColor="white"
-                layout:below="id:prdel offset(50)"
+                layout:below="id:please offset(50)"
                 layout:above="send offset(-50)"
                 layout:fillHorizontally="super inset(50)" />
 

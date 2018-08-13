@@ -16,7 +16,7 @@ extension UIWindow {
     override open var keyCommands: [UIKeyCommand]? {
         return [
             UIKeyCommand(input: "d", modifierFlags: .command, action: #selector(openLiveUIDebugMenu), discoverabilityTitle: "Open Debug Menu"),
-            UIKeyCommand(input: UIKeyInputEscape, modifierFlags: [], action: #selector(dissmissErrorView), discoverabilityTitle: "Dismiss error"),
+            UIKeyCommand(input: UIKeyInputEscape, modifierFlags: [], action: #selector(dismissErrorView), discoverabilityTitle: "Dismiss error"),
         ]
     }
 
@@ -27,7 +27,7 @@ extension UIWindow {
     }
 
     @objc
-    func dissmissErrorView() {
+    func dismissErrorView() {
         ReactantLiveUIManager.shared.resetErrors()
     }
 }

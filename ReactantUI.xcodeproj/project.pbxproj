@@ -7,15 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		182B688C1EAF7641007CC668 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B687B1EAF7641007CC668 /* AppDelegate.swift */; };
 		182B688D1EAF7641007CC668 /* ATest.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 182B687D1EAF7641007CC668 /* ATest.ui.xml */; };
 		182B688E1EAF7641007CC668 /* CommonStyles.styles.xml in Resources */ = {isa = PBXBuildFile; fileRef = 182B687E1EAF7641007CC668 /* CommonStyles.styles.xml */; };
 		182B688F1EAF7641007CC668 /* ExampleCell.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 182B687F1EAF7641007CC668 /* ExampleCell.ui.xml */; };
-		182B68901EAF7641007CC668 /* ExampleRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B68801EAF7641007CC668 /* ExampleRootView.swift */; };
 		182B68911EAF7641007CC668 /* ExampleRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 182B68811EAF7641007CC668 /* ExampleRootView.ui.xml */; };
-		182B68921EAF7641007CC668 /* ExampleView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B68821EAF7641007CC668 /* ExampleView2.swift */; };
 		182B68931EAF7641007CC668 /* ExampleView2.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 182B68831EAF7641007CC668 /* ExampleView2.ui.xml */; };
-		182B68941EAF7641007CC668 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B68841EAF7641007CC668 /* ViewController.swift */; };
 		182B68951EAF7641007CC668 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 182B68861EAF7641007CC668 /* Assets.xcassets */; };
 		182B68961EAF7641007CC668 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 182B68871EAF7641007CC668 /* LaunchScreen.storyboard */; };
 		182B68981EAF7641007CC668 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 182B688A1EAF7641007CC668 /* Localizable.strings */; };
@@ -192,19 +188,10 @@
 		18758FE420D980FF004C6690 /* Example.hyperdrive.xml in Resources */ = {isa = PBXBuildFile; fileRef = 18758FE320D980FF004C6690 /* Example.hyperdrive.xml */; };
 		18758FE620D9BBB0004C6690 /* ReactantThemeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18758FE520D9BBB0004C6690 /* ReactantThemeSelector.swift */; };
 		18F7988820D7D76600522E1E /* ApplicationDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F7988620D7D74400522E1E /* ApplicationDescription.swift */; };
-		22141C8B2052B02F00205F56 /* MainWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141C8A2052B02F00205F56 /* MainWireframe.swift */; };
-		22141C8E2052B08700205F56 /* ExampleSelectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141C8D2052B08700205F56 /* ExampleSelectionController.swift */; };
-		22141C902052B09200205F56 /* ExampleSelectionRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141C8F2052B09200205F56 /* ExampleSelectionRootView.swift */; };
 		22141C922052B0A400205F56 /* ExampleSelectionRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22141C912052B0A400205F56 /* ExampleSelectionRootView.ui.xml */; };
-		22141C952052B0ED00205F56 /* SelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141C942052B0ED00205F56 /* SelectionCell.swift */; };
 		22141C972052B0FD00205F56 /* SelectionCell.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22141C962052B0FD00205F56 /* SelectionCell.ui.xml */; };
-		22141C9B2052B47000205F56 /* PlainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141C9A2052B47000205F56 /* PlainTableViewController.swift */; };
-		22141C9D2052B47F00205F56 /* PlainTableViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141C9C2052B47F00205F56 /* PlainTableViewRootView.swift */; };
 		22141C9F2052B49E00205F56 /* PlainTableViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22141C9E2052B49E00205F56 /* PlainTableViewRootView.ui.xml */; };
-		22141CA22052B55000205F56 /* PlainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141CA12052B55000205F56 /* PlainCell.swift */; };
 		22141CA42052B55E00205F56 /* PlainCell.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22141CA32052B55E00205F56 /* PlainCell.ui.xml */; };
-		224F04EB2085134000C48268 /* ProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224F04EA2085134000C48268 /* ProgressViewController.swift */; };
-		224F04ED2085134B00C48268 /* ProgressViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224F04EC2085134B00C48268 /* ProgressViewRootView.swift */; };
 		224F04EF2085136400C48268 /* ProgressViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 224F04EE2085136400C48268 /* ProgressViewRootView.ui.xml */; };
 		2284DADC1FAC855E00D231D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2284DADB1FAC855E00D231D3 /* AppDelegate.swift */; };
 		2284DADE1FAC855E00D231D3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2284DADD1FAC855E00D231D3 /* ViewController.swift */; };
@@ -212,11 +199,25 @@
 		2284DAE31FAC855E00D231D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2284DAE21FAC855E00D231D3 /* Assets.xcassets */; };
 		2284DAED1FAC96BE00D231D3 /* GeneratedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2284DAEC1FAC96BE00D231D3 /* GeneratedUI.swift */; };
 		2284DAEF1FAC971900D231D3 /* TestView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2284DAEE1FAC971900D231D3 /* TestView.ui.xml */; };
-		22957E38207235C40088C09E /* StackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22957E37207235C40088C09E /* StackViewController.swift */; };
-		22957E3A207235D00088C09E /* StackViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22957E39207235D00088C09E /* StackViewRootView.swift */; };
 		22957E3C207235E20088C09E /* StackViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22957E3B207235E20088C09E /* StackViewRootView.ui.xml */; };
 		58836BDBAF0F10A4A5E31625 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7139F67D20934D6E009EA7F4 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */; };
 		5B1333D6A201F8A50D8697D9 /* Pods_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1AAC4CA06239D481C4E7F9D /* Pods_Example.framework */; };
+		680DD2EC2111E59B00069A82 /* ProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224F04EA2085134000C48268 /* ProgressViewController.swift */; };
+		680DD2ED2111E59B00069A82 /* ProgressViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224F04EC2085134B00C48268 /* ProgressViewRootView.swift */; };
+		680DD2EE2111E59B00069A82 /* StackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22957E37207235C40088C09E /* StackViewController.swift */; };
+		680DD2EF2111E59B00069A82 /* StackViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22957E39207235D00088C09E /* StackViewRootView.swift */; };
+		680DD2F02111E59B00069A82 /* PlainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141CA12052B55000205F56 /* PlainCell.swift */; };
+		680DD2F12111E59B00069A82 /* PlainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141C9A2052B47000205F56 /* PlainTableViewController.swift */; };
+		680DD2F22111E59B00069A82 /* PlainTableViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141C9C2052B47F00205F56 /* PlainTableViewRootView.swift */; };
+		680DD2F32111E59B00069A82 /* SelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141C942052B0ED00205F56 /* SelectionCell.swift */; };
+		680DD2F42111E59B00069A82 /* ExampleSelectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141C8D2052B08700205F56 /* ExampleSelectionController.swift */; };
+		680DD2F52111E59B00069A82 /* ExampleSelectionRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141C8F2052B09200205F56 /* ExampleSelectionRootView.swift */; };
+		680DD2F62111E59B00069A82 /* ExampleRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B68801EAF7641007CC668 /* ExampleRootView.swift */; };
+		680DD2F72111E59B00069A82 /* ExampleView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B68821EAF7641007CC668 /* ExampleView2.swift */; };
+		680DD2F82111E59B00069A82 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B68841EAF7641007CC668 /* ViewController.swift */; };
+		680DD2F92111E59B00069A82 /* MainWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141C8A2052B02F00205F56 /* MainWireframe.swift */; };
+		680DD2FA2111E59B00069A82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B687B1EAF7641007CC668 /* AppDelegate.swift */; };
+		680DD2FB2111E5C300069A82 /* GeneratedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B689A1EAF870E007CC668 /* GeneratedUI.swift */; };
 		681A1E1620D3CA8D00109BEC /* ButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681A1E1520D3CA8D00109BEC /* ButtonTests.swift */; };
 		6826D8F020F6726D00BC43B7 /* SimpleProcedure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6826D8EE20F6725A00BC43B7 /* SimpleProcedure.swift */; };
 		6836D5F920B8404F00FD2DF8 /* UIView+traits.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689FA0B7209CB2A200B39225 /* UIView+traits.swift */; };
@@ -263,7 +264,6 @@
 		68CB2F7B210F0F460025A261 /* Bundle+name.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CB2F79210F0F1B0025A261 /* Bundle+name.swift */; };
 		68DBC63D210717A200A81E8D /* LiveUIWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DBC63C210717A200A81E8D /* LiveUIWorker.swift */; };
 		7139F67920934BC2009EA7F4 /* Condition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7139F67720934BBB009EA7F4 /* Condition.swift */; };
-		7139F67B20934C1D009EA7F4 /* GeneratedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B689A1EAF870E007CC668 /* GeneratedUI.swift */; };
 		71BAEAB720972E1600D56639 /* ConditionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BAEAB520972DFD00D56639 /* ConditionParser.swift */; };
 		71D94EC420935F8E007D83A1 /* ConstraintConditionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D94EC320935F8E007D83A1 /* ConstraintConditionTests.swift */; };
 		7ECD13670B984D98A5FCD87D /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 887500E4E5E1BF9478D7EFFD /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */; };
@@ -1607,7 +1607,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		182B68991EAF76C4007CC668 /* Generate Reactant UI */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
@@ -1617,7 +1617,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "pushd $PROJECT_DIR\nenv -i HOME=$HOME PATH=$PATH swift build\npopd\n# --enable-live\n$PROJECT_DIR/.build/debug/reactant-ui generate \\\n  --enable-live \\\n  --inputPath=$PROJECT_DIR/Example/ \\\n  --outputFile=$PROJECT_DIR/Example/Generated/GeneratedUI.swift \\\n  --description=$PROJECT_DIR/Example/Source/Example.hyperdrive.xml \\\n  --xcodeprojPath=$PROJECT_DIR/ReactantUI.xcodeproj\n#pushd $PROJECT_DIR/Example\n#$PROJECT_DIR/.build/debug/reactant-ui --enable-live > $PROJECT_DIR/Example/Generated/GeneratedUI.swift\n#popd";
+			shellScript = "pushd $PROJECT_DIR\nenv -i HOME=$HOME PATH=$PATH swift build\npopd\n# --enable-live\n$PROJECT_DIR/.build/debug/reactant-ui generate \\\n  --enable-live \\\n  --inputPath=$PROJECT_DIR/Example/ \\\n  --outputFile=$PROJECT_DIR/Example/Generated/GeneratedUI.swift \\\n  --description=$PROJECT_DIR/Example/Source/Example.hyperdrive.xml \\\n  --xcodeprojPath=$PROJECT_DIR/ReactantUI.xcodeproj\n#pushd $PROJECT_DIR/Example\n#$PROJECT_DIR/.build/debug/reactant-ui --enable-live > $PROJECT_DIR/Example/Generated/GeneratedUI.swift\n#popd\n";
 		};
 		2284DAE81FAC95B900D231D3 /* Generate Reactant UI */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1826,22 +1826,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				224F04ED2085134B00C48268 /* ProgressViewRootView.swift in Sources */,
-				224F04EB2085134000C48268 /* ProgressViewController.swift in Sources */,
-				22141C9B2052B47000205F56 /* PlainTableViewController.swift in Sources */,
-				182B68941EAF7641007CC668 /* ViewController.swift in Sources */,
-				22141CA22052B55000205F56 /* PlainCell.swift in Sources */,
-				22141C9D2052B47F00205F56 /* PlainTableViewRootView.swift in Sources */,
-				22141C952052B0ED00205F56 /* SelectionCell.swift in Sources */,
-				22957E3A207235D00088C09E /* StackViewRootView.swift in Sources */,
-				22141C902052B09200205F56 /* ExampleSelectionRootView.swift in Sources */,
-				7139F67B20934C1D009EA7F4 /* GeneratedUI.swift in Sources */,
-				22141C8E2052B08700205F56 /* ExampleSelectionController.swift in Sources */,
-				182B688C1EAF7641007CC668 /* AppDelegate.swift in Sources */,
-				22141C8B2052B02F00205F56 /* MainWireframe.swift in Sources */,
-				182B68921EAF7641007CC668 /* ExampleView2.swift in Sources */,
-				182B68901EAF7641007CC668 /* ExampleRootView.swift in Sources */,
-				22957E38207235C40088C09E /* StackViewController.swift in Sources */,
+				680DD2F12111E59B00069A82 /* PlainTableViewController.swift in Sources */,
+				680DD2F92111E59B00069A82 /* MainWireframe.swift in Sources */,
+				680DD2F62111E59B00069A82 /* ExampleRootView.swift in Sources */,
+				680DD2FA2111E59B00069A82 /* AppDelegate.swift in Sources */,
+				680DD2EE2111E59B00069A82 /* StackViewController.swift in Sources */,
+				680DD2F52111E59B00069A82 /* ExampleSelectionRootView.swift in Sources */,
+				680DD2ED2111E59B00069A82 /* ProgressViewRootView.swift in Sources */,
+				680DD2F02111E59B00069A82 /* PlainCell.swift in Sources */,
+				680DD2F72111E59B00069A82 /* ExampleView2.swift in Sources */,
+				680DD2FB2111E5C300069A82 /* GeneratedUI.swift in Sources */,
+				680DD2F32111E59B00069A82 /* SelectionCell.swift in Sources */,
+				680DD2F82111E59B00069A82 /* ViewController.swift in Sources */,
+				680DD2F42111E59B00069A82 /* ExampleSelectionController.swift in Sources */,
+				680DD2F22111E59B00069A82 /* PlainTableViewRootView.swift in Sources */,
+				680DD2EF2111E59B00069A82 /* StackViewRootView.swift in Sources */,
+				680DD2EC2111E59B00069A82 /* ProgressViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2362,7 +2362,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG ReactantRuntime";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_OBJC_INTERFACE_HEADER_NAME = "LiveUI/$(SWIFT_MODULE_NAME)-Swift.h";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2412,7 +2412,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = ReactantRuntime;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_OBJC_INTERFACE_HEADER_NAME = "LiveUI/$(SWIFT_MODULE_NAME)-Swift.h";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

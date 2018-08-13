@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Reactant
 
-private func findView(named name: String, in array: [(name: String, element: UIElement, view: UIView)]) -> UIView? {
+private func findView(named name: String, in array: [ReactantLiveUIViewApplier.ViewTuple]) -> UIView? {
     return array.first(where: { $0.name == name })?.view
 }
 
@@ -20,6 +20,8 @@ public class ReactantLiveUIViewApplier {
     private let findViewByFieldName: (String, UIElement) throws -> UIView
     private let resolveStyle: (UIElement) throws -> [Property]
     private let setConstraint: (String, SnapKit.Constraint) -> Bool
+
+    public typealias ViewTuple = (name: String, element: UIElement, view: UIView)
 
     public init(workerContext: ReactantLiveUIWorker.Context,
                 parentContext: DataContext,
@@ -33,13 +35,12 @@ public class ReactantLiveUIViewApplier {
         self.setConstraint = setConstraint
     }
 
-    public func apply(element: UIElement, superview: UIView?, containedIn: UIContainer?) throws -> [(String, UIElement, UIView)] {
+    public func apply(element: UIElement, superview: UIView?, containedIn: UIContainer?) throws -> [ViewTuple] {
         let name: String
         let view: UIView
         if let field = element.field {
             name = "\(field)"
             view = try findViewByFieldName(field, element)
-
         } else if let layoutId = element.layout.id {
             name = "named_\(layoutId)"
             view = try element.initialize(context: workerContext)
@@ -80,11 +81,12 @@ public class ReactantLiveUIViewApplier {
         }
     }
 
-    func applyConstraints(views: [(name: String, element: UIElement, view: UIView)], element: UIElement, superview: UIView) throws -> [SnapKit.Constraint] {
+    func applyConstraints(views: [ViewTuple], element: UIElement, superview: UIView) throws -> [SnapKit.Constraint] {
         let elementType = type(of: element)
-        guard let name = views.first(where: { $0.element === element })?.name else {
+        guard let viewTuple = views.first(where: { $0.element === element }) else {
             fatalError("Inconsistency of name-element-view triples occured")
         }
+        let name = viewTuple.name
 
         guard let view = findView(named: name, in: views) else {
             throw LiveUIError(message: "Couldn't find view with name \(name) in view hierarchy")
@@ -278,27 +280,15 @@ public class ReactantLiveUIViewApplier {
 
 public class ReactantLiveUIApplier {
     private let workerContext: ReactantLiveUIWorker.Context
-    private let componentContext: ComponentContext
-    let definition: ComponentDefinition
-    let instance: UIView
-    let commonStyles: [Style]
-    let setConstraint: (String, SnapKit.Constraint) -> Bool
-    private let viewApplier: ReactantLiveUIViewApplier
 
     private var appliedConstraints: [SnapKit.Constraint] = []
 
-    public init(workerContext: ReactantLiveUIWorker.Context,
-                context: ComponentContext,
-                commonStyles: [Style],
-                instance: UIView,
-                setConstraint: @escaping (String, SnapKit.Constraint) -> Bool) {
+    public init(workerContext: ReactantLiveUIWorker.Context) {
         self.workerContext = workerContext
-        self.definition = context.component
-        self.commonStyles = commonStyles
-        self.instance = instance
-        self.setConstraint = setConstraint
-        self.componentContext = context
+    }
 
+    public func apply(context: ComponentContext, commonStyles: [Style], view instance: UIView, setConstraint: @escaping (String, SnapKit.Constraint) -> Bool) throws {
+        let definition = context.component
         func findViewByFieldName(field: String, element: UIElement) throws -> UIView {
             let view: UIView
             if instance is Anonymous {
@@ -321,34 +311,33 @@ public class ReactantLiveUIApplier {
             return try (commonStyles + context.component.styles).resolveStyle(for: element)
         }
 
-        viewApplier = ReactantLiveUIViewApplier(
+        let viewApplier = ReactantLiveUIViewApplier(
             workerContext: workerContext,
-            parentContext: componentContext,
+            parentContext: context,
             findViewByFieldName: findViewByFieldName,
             resolveStyle: resolveStyle,
             setConstraint: setConstraint
         )
-    }
 
-    public func apply() throws {
-        for property in definition.properties {
-            let propertyContext = PropertyContext(parentContext: componentContext, property: property)
-            try property.apply(on: instance, context: propertyContext)
-        }
         instance.subviews.forEach { $0.removeFromSuperview() }
-        let views = try definition.children.flatMap {
-            try viewApplier.apply(element: $0, superview: instance, containedIn: definition)
-        }
-
         for constraint in appliedConstraints {
             constraint.deactivate()
+        }
+        appliedConstraints = []
+
+        for property in definition.properties {
+            let propertyContext = PropertyContext(parentContext: context, property: property)
+            try property.apply(on: instance, context: propertyContext)
+        }
+
+        let views = try definition.children.flatMap {
+            try viewApplier.apply(element: $0, superview: instance, containedIn: definition)
         }
 
         appliedConstraints = try definition.children.flatMap { element in
             try viewApplier.applyConstraints(views: views, element: element, superview: instance)
         }
     }
-
 }
 
 extension UIView {

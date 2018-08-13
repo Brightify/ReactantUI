@@ -44,6 +44,8 @@ public class ReactantLiveUIWorker {
     private let forceReapplyTrigger = PublishSubject<AnyObject>()
     private let definitionsSubject = ReplaySubject<[String: (definition: ComponentDefinition, loaded: Date, xmlPath: String)]>.create(bufferSize: 1)
 
+    private var appliers: [UIView: ReactantLiveUIApplier] = [:]
+
     private(set) var context: ReactantLiveUIWorker.Context {
         didSet {
             resetErrors()
@@ -176,7 +178,8 @@ public class ReactantLiveUIWorker {
 
     private func apply(definition: ComponentDefinition, view: UIView, setConstraint: @escaping (String, SnapKit.Constraint) -> Bool) throws {
         let componentContext = ComponentContext(globalContext: context.globalContext, component: definition)
-        try ReactantLiveUIApplier(workerContext: context, context: componentContext, commonStyles: commonStyles, instance: view, setConstraint: setConstraint).apply()
+        let uiApplier = appliers[view, default: ReactantLiveUIApplier(workerContext: context)]
+        try uiApplier.apply(context: componentContext, commonStyles: commonStyles, view: view, setConstraint: setConstraint)
         if let invalidable = view as? Invalidable {
             invalidable.invalidate()
         }
