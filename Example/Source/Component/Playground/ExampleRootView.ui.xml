@@ -249,7 +249,8 @@
         layout:id="buttonko"
         layout:fillHorizontally="super"
         layout:below="id:stacko"
-        layout:height="60">
+        layout:height="60"
+        isSelected="true">
         <attributedTitle
             state="selected|highlighted"
             style="bandaska">
