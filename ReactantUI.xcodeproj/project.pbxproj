@@ -200,6 +200,7 @@
 		2284DAED1FAC96BE00D231D3 /* GeneratedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2284DAEC1FAC96BE00D231D3 /* GeneratedUI.swift */; };
 		2284DAEF1FAC971900D231D3 /* TestView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2284DAEE1FAC971900D231D3 /* TestView.ui.xml */; };
 		22957E3C207235E20088C09E /* StackViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22957E3B207235E20088C09E /* StackViewRootView.ui.xml */; };
+		22D6749F2121C34200CB97FD /* Array+distinctLast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22D6749C2121C32E00CB97FD /* Array+distinctLast.swift */; };
 		58836BDBAF0F10A4A5E31625 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7139F67D20934D6E009EA7F4 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */; };
 		5B1333D6A201F8A50D8697D9 /* Pods_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1AAC4CA06239D481C4E7F9D /* Pods_Example.framework */; };
 		680DD2EC2111E59B00069A82 /* ProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224F04EA2085134000C48268 /* ProgressViewController.swift */; };
@@ -533,6 +534,7 @@
 		22957E37207235C40088C09E /* StackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackViewController.swift; sourceTree = "<group>"; };
 		22957E39207235D00088C09E /* StackViewRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackViewRootView.swift; sourceTree = "<group>"; };
 		22957E3B207235E20088C09E /* StackViewRootView.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = StackViewRootView.ui.xml; sourceTree = "<group>"; };
+		22D6749C2121C32E00CB97FD /* Array+distinctLast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+distinctLast.swift"; sourceTree = "<group>"; };
 		34D6F4260245D9C7942B5C54 /* Pods_Example_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Example_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		56598844EFA13DD7B4A3302A /* Pods-Example-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Example-tvOS/Pods-Example-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
 		5A946519C18AE694A9F16B15 /* Pods-LiveUI-LiveUI-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveUI-LiveUI-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-LiveUI-LiveUI-iOS/Pods-LiveUI-LiveUI-iOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -1050,6 +1052,7 @@
 				184491D7209223A70080B743 /* StringUtils.swift */,
 				184491D8209223A70080B743 /* Swift+Compatibility.swift */,
 				184491D9209223A70080B743 /* TokenizationError.swift */,
+				22D6749C2121C32E00CB97FD /* Array+distinctLast.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1863,6 +1866,7 @@
 				1844924E209223A70080B743 /* TextBorderStyle.swift in Sources */,
 				184491ED209223A70080B743 /* Button.swift in Sources */,
 				1844923A209223A70080B743 /* UIColorPropertyType.swift in Sources */,
+				22D6749F2121C34200CB97FD /* Array+distinctLast.swift in Sources */,
 				18449231209223A70080B743 /* Point.swift in Sources */,
 				1844914520921F150080B743 /* Watcher.swift in Sources */,
 				1844921A209223A70080B743 /* ControlStatePropertyDescription.swift in Sources */,

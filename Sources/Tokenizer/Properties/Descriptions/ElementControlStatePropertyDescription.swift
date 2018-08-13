@@ -56,7 +56,7 @@ public struct ElementControlStatePropertyDescription<T: ElementSupportedProperty
     }
 
     private func parseState(from attributeName: String) -> [ControlState] {
-        return attributeName.components(separatedBy: "|").dropFirst(namespace.count + 1).compactMap(ControlState.init)
+        return attributeName.components(separatedBy: "|").compactMap(ControlState.init)
     }
 }
 
