@@ -63,11 +63,18 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, UIElem
 
     public init(node: XMLElement, type: String) throws {
         self.type = type
-        isRootView = node.value(ofAttribute: "rootView") ?? false
         styles = try node.singleOrNoElement(named: "styles")?.xmlChildren.compactMap { try $0.value() as Style } ?? []
         stylesName = try node.singleOrNoElement(named: "styles")?.attribute(by: "name")?.text ?? "Styles"
         children = try View.deserialize(nodes: node.xmlChildren)
-        edgesForExtendedLayout = (node.attribute(by: "extend")?.text).map(RectEdge.parse) ?? []
+        isRootView = node.value(ofAttribute: "rootView") ?? false
+        if isRootView {
+            edgesForExtendedLayout = (node.attribute(by: "extend")?.text).map(RectEdge.parse) ?? []
+        } else {
+            if node.attribute(by: "extend") != nil {
+                Logger.instance.warning("Using `extend` without specifying `rootView=true` is redundant.")
+            }
+            edgesForExtendedLayout = []
+        }
         isAnonymous = node.value(ofAttribute: "anonymous") ?? false
         if let modifier = node.value(ofAttribute: "accessModifier") as String? {
             self.modifier = AccessModifier(rawValue: modifier) ?? .internal
@@ -85,7 +92,7 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, UIElem
             let nextIndex = index + 1
             guard nextIndex < fields.count else { break }
             if field == fields[nextIndex] {
-                Logger.instance.warning("Duplicate constraint names for name \(field). The project will be compilable, but the behavior might be unexpected.")
+                Logger.instance.warning("Duplicate constraint names for name \"\(field)\". The project will be compilable, but the behavior might be unexpected.")
             }
         }
     }
