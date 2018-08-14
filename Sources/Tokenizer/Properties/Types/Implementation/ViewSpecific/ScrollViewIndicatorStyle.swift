@@ -26,11 +26,11 @@ public enum ScrollViewIndicatorStyle: String, EnumPropertyType, AttributeSupport
         public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .default:
-                return UIScrollViewIndicatorStyle.default.rawValue
+                return UIScrollView.IndicatorStyle.default.rawValue
             case .black:
-                return UIScrollViewIndicatorStyle.black.rawValue
+                return UIScrollView.IndicatorStyle.black.rawValue
             case .white:
-                return UIScrollViewIndicatorStyle.white.rawValue
+                return UIScrollView.IndicatorStyle.white.rawValue
             }
         }
     }

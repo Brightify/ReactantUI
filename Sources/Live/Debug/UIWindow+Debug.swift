@@ -16,7 +16,7 @@ extension UIWindow {
     override open var keyCommands: [UIKeyCommand]? {
         return [
             UIKeyCommand(input: "d", modifierFlags: .command, action: #selector(openLiveUIDebugMenu), discoverabilityTitle: "Open Debug Menu"),
-            UIKeyCommand(input: UIKeyInputEscape, modifierFlags: [], action: #selector(dismissErrorView), discoverabilityTitle: "Dismiss error"),
+            UIKeyCommand(input: UIKeyCommand.inputEscape, modifierFlags: [], action: #selector(dismissErrorView), discoverabilityTitle: "Dismiss error"),
         ]
     }
 

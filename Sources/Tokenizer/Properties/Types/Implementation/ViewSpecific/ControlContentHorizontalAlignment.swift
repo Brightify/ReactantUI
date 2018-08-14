@@ -100,22 +100,22 @@ public enum ControlContentHorizontalAlignment: Int, EnumPropertyType, AttributeS
         public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .center:
-                return UIControlContentHorizontalAlignment.center.rawValue
+                return UIControl.ContentHorizontalAlignment.center.rawValue
             case .left:
-                return UIControlContentHorizontalAlignment.left.rawValue
+                return UIControl.ContentHorizontalAlignment.left.rawValue
             case .right:
-                return UIControlContentHorizontalAlignment.right.rawValue
+                return UIControl.ContentHorizontalAlignment.right.rawValue
             case .fill:
-                return UIControlContentHorizontalAlignment.fill.rawValue
+                return UIControl.ContentHorizontalAlignment.fill.rawValue
             case .leading:
                 if #available(iOS 11.0, tvOS 11.0, *) {
-                    return UIControlContentHorizontalAlignment.leading.rawValue
+                    return UIControl.ContentHorizontalAlignment.leading.rawValue
                 } else {
                     return nil
                 }
             case .trailing:
                 if #available(iOS 11.0, tvOS 11.0, *) {
-                    return UIControlContentHorizontalAlignment.trailing.rawValue
+                    return UIControl.ContentHorizontalAlignment.trailing.rawValue
                 } else {
                     return nil
                 }

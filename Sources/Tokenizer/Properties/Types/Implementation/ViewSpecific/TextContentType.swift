@@ -55,51 +55,51 @@ public enum TextContentType: String, EnumPropertyType, AttributeSupportedPropert
                 case .none:
                     return nil
                 case .URL:
-                    return UITextContentType(UITextContentType.URL.rawValue)
+                    return UITextContentType.URL
                 case .addressCity:
-                    return UITextContentType(UITextContentType.addressCity.rawValue)
+                    return UITextContentType.addressCity
                 case .addressCityAndState:
-                    return UITextContentType(UITextContentType.addressCityAndState.rawValue)
+                    return UITextContentType.addressCityAndState
                 case .addressState:
-                    return UITextContentType(UITextContentType.addressState.rawValue)
+                    return UITextContentType.addressState
                 case .countryName:
-                    return UITextContentType(UITextContentType.countryName.rawValue)
+                    return UITextContentType.countryName
                 case .creditCardNumber:
-                    return UITextContentType(UITextContentType.creditCardNumber.rawValue)
+                    return UITextContentType.creditCardNumber
                 case .emailAddress:
-                    return UITextContentType(UITextContentType.emailAddress.rawValue)
+                    return UITextContentType.emailAddress
                 case .familyName:
-                    return UITextContentType(UITextContentType.familyName.rawValue)
+                    return UITextContentType.familyName
                 case .fullStreetAddress:
-                    return UITextContentType(UITextContentType.fullStreetAddress.rawValue)
+                    return UITextContentType.fullStreetAddress
                 case .givenName:
-                    return UITextContentType(UITextContentType.givenName.rawValue)
+                    return UITextContentType.givenName
                 case .jobTitle:
-                    return UITextContentType(UITextContentType.jobTitle.rawValue)
+                    return UITextContentType.jobTitle
                 case .location:
-                    return UITextContentType(UITextContentType.location.rawValue)
+                    return UITextContentType.location
                 case .middleName:
-                    return UITextContentType(UITextContentType.middleName.rawValue)
+                    return UITextContentType.middleName
                 case .name:
-                    return UITextContentType(UITextContentType.name.rawValue)
+                    return UITextContentType.name
                 case .namePrefix:
-                    return UITextContentType(UITextContentType.namePrefix.rawValue)
+                    return UITextContentType.namePrefix
                 case .nameSuffix:
-                    return UITextContentType(UITextContentType.nameSuffix.rawValue)
+                    return UITextContentType.nameSuffix
                 case .nickname:
-                    return UITextContentType(UITextContentType.nickname.rawValue)
+                    return UITextContentType.nickname
                 case .organizationName:
-                    return UITextContentType(UITextContentType.organizationName.rawValue)
+                    return UITextContentType.organizationName
                 case .postalCode:
-                    return UITextContentType(UITextContentType.postalCode.rawValue)
+                    return UITextContentType.postalCode
                 case .streetAddressLine1:
-                    return UITextContentType(UITextContentType.streetAddressLine1.rawValue)
+                    return UITextContentType.streetAddressLine1
                 case .streetAddressLine2:
-                    return UITextContentType(UITextContentType.streetAddressLine2.rawValue)
+                    return UITextContentType.streetAddressLine2
                 case .sublocality:
-                    return UITextContentType(UITextContentType.sublocality.rawValue)
+                    return UITextContentType.sublocality
                 case .telephoneNumber:
-                    return UITextContentType(UITextContentType.telephoneNumber.rawValue)
+                    return UITextContentType.telephoneNumber
 //                case .username:
 //                    if #available(iOS 11.0, *) {
 //                        return UITextContentType(UITextContentType.username.rawValue)

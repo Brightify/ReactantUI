@@ -77,7 +77,7 @@ public class SimulatedSeparatorTableView: View, ComponentDefinitionContainer {
             CellWrapper(wrapped: createCell())
         }).with(state: .items(Array(repeating: (), count: exampleCount)))
 
-        tableView.tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.tableView.rowHeight = UITableView.automaticDimension
 
         return tableView
     }

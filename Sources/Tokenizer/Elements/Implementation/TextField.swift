@@ -10,7 +10,7 @@ import Foundation
 
 #if canImport(UIKit)
 import UIKit
-//import Reactant
+import Reactant
 #endif
 
 public class TextField: View {

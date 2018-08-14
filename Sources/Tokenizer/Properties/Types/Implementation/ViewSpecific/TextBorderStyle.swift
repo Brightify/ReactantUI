@@ -27,13 +27,13 @@ public enum TextBorderStyle: String, EnumPropertyType, AttributeSupportedPropert
         public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .none:
-                return UITextBorderStyle.none.rawValue
+                return UITextField.BorderStyle.none.rawValue
             case .line:
-                return UITextBorderStyle.line.rawValue
+                return UITextField.BorderStyle.line.rawValue
             case .bezel:
-                return UITextBorderStyle.bezel.rawValue
+                return UITextField.BorderStyle.bezel.rawValue
             case .roundedRect:
-                return UITextBorderStyle.roundedRect.rawValue
+                return UITextField.BorderStyle.roundedRect.rawValue
             }
         }
     }

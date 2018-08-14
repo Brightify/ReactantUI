@@ -36,31 +36,31 @@ extension ContentMode {
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         switch self {
         case .scaleToFill:
-            return UIViewContentMode.scaleToFill.rawValue
+            return UIView.ContentMode.scaleToFill.rawValue
         case .scaleAspectFill:
-            return UIViewContentMode.scaleAspectFill.rawValue
+            return UIView.ContentMode.scaleAspectFill.rawValue
         case .scaleAspectFit:
-            return UIViewContentMode.scaleAspectFit.rawValue
+            return UIView.ContentMode.scaleAspectFit.rawValue
         case .redraw:
-            return UIViewContentMode.redraw.rawValue
+            return UIView.ContentMode.redraw.rawValue
         case .center:
-            return UIViewContentMode.center.rawValue
+            return UIView.ContentMode.center.rawValue
         case .top:
-            return UIViewContentMode.top.rawValue
+            return UIView.ContentMode.top.rawValue
         case .bottom:
-            return UIViewContentMode.bottom.rawValue
+            return UIView.ContentMode.bottom.rawValue
         case .left:
-            return UIViewContentMode.left.rawValue
+            return UIView.ContentMode.left.rawValue
         case .right:
-            return UIViewContentMode.right.rawValue
+            return UIView.ContentMode.right.rawValue
         case .topLeft:
-            return UIViewContentMode.topLeft.rawValue
+            return UIView.ContentMode.topLeft.rawValue
         case .topRight:
-            return UIViewContentMode.topRight.rawValue
+            return UIView.ContentMode.topRight.rawValue
         case .bottomLeft:
-            return UIViewContentMode.bottomLeft.rawValue
+            return UIView.ContentMode.bottomLeft.rawValue
         case .bottomRight:
-            return UIViewContentMode.bottomRight.rawValue
+            return UIView.ContentMode.bottomRight.rawValue
         }
     }
 }

@@ -7,9 +7,8 @@
 
 import Foundation
 
-public protocol EnumPropertyType: RawRepresentable, SupportedPropertyType {
+public protocol EnumPropertyType: RawRepresentable, SupportedPropertyType, CaseIterable {
     static var enumName: String { get }
-    static var allValues: [Self] { get }
 }
 
 extension EnumPropertyType where Self.RawValue == String {
@@ -18,7 +17,7 @@ extension EnumPropertyType where Self.RawValue == String {
     }
 
     public static var xsdType: XSDType {
-        let values = Set(Self.allValues.map { $0.rawValue })
+        let values = Set(Self.allCases.map { $0.rawValue })
         return .enumeration(EnumerationXSDType(name: Self.enumName, base: .string, values: values))
     }
 }

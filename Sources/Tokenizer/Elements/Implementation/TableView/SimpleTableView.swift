@@ -116,9 +116,9 @@ public class SimpleTableView: View, ComponentDefinitionContainer {
                                                               items: Array(repeating: (), count: itemCount)),
                                                               count: sectionCount)))
 
-        tableView.tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.tableView.sectionHeaderHeight = UITableViewAutomaticDimension
-        tableView.tableView.sectionFooterHeight = UITableViewAutomaticDimension
+        tableView.tableView.rowHeight = UITableView.automaticDimension
+        tableView.tableView.sectionHeaderHeight = UITableView.automaticDimension
+        tableView.tableView.sectionFooterHeight = UITableView.automaticDimension
 
         return tableView
     }

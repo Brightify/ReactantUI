@@ -18,8 +18,8 @@ public class AnonymousLiveComponent: ViewBase<Void, Void>, Anonymous {
     fileprivate let _xmlPath: String
     fileprivate let _worker: ReactantLiveUIWorker
     fileprivate var _properties: [String: Any] = [:]
-    fileprivate var _selectionStyle: UITableViewCellSelectionStyle = .default
-    fileprivate var _focusStyle: UITableViewCellFocusStyle = .default
+    fileprivate var _selectionStyle: UITableViewCell.SelectionStyle = .default
+    fileprivate var _focusStyle: UITableViewCell.FocusStyle = .default
 
     public init(typeName: String, xmlPath: String, worker: ReactantLiveUIWorker) {
         _xmlPath = xmlPath
@@ -95,7 +95,7 @@ extension AnonymousComponent: RootView {
 }
 
 extension AnonymousComponent: TableViewCell {
-    public var selectionStyle: UITableViewCellSelectionStyle {
+    public var selectionStyle: UITableViewCell.SelectionStyle {
         get {
             return _selectionStyle
         }
@@ -104,7 +104,7 @@ extension AnonymousComponent: TableViewCell {
         }
     }
 
-    public var focusStyle: UITableViewCellFocusStyle {
+    public var focusStyle: UITableViewCell.FocusStyle {
         get {
             return _focusStyle
         }

@@ -43,7 +43,7 @@ public enum RowHeight: AttributeSupportedPropertyType {
         case .value(let value):
             return value.generate(context: context.child(for: value))
         case .automatic:
-            return "UITableViewAutomaticDimension"
+            return "UITableView.automaticDimension"
         }
     }
 
@@ -72,7 +72,7 @@ public enum RowHeight: AttributeSupportedPropertyType {
         case .value(let value):
             return value
         case .automatic:
-            return UITableViewAutomaticDimension
+            return UITableView.automaticDimension
         }
     }
     #endif

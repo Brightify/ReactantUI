@@ -24,9 +24,9 @@ public enum TableViewCellSeparatorStyle: String, EnumPropertyType, AttributeSupp
             #if os(iOS)
             switch self {
             case .none:
-                return UITableViewCellSeparatorStyle.none.rawValue
+                return UITableViewCell.SeparatorStyle.none.rawValue
             case .singleLine:
-                return UITableViewCellSeparatorStyle.singleLine.rawValue
+                return UITableViewCell.SeparatorStyle.singleLine.rawValue
             }
             #else
                 fatalError("UITableViewCellSeparatorStyle is not available on tvOS")

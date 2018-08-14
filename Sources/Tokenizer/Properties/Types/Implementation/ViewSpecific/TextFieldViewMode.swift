@@ -28,13 +28,13 @@ public enum TextFieldViewMode: String, EnumPropertyType, AttributeSupportedPrope
         public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .never:
-                return UITextFieldViewMode.never.rawValue
+                return UITextField.ViewMode.never.rawValue
             case .whileEditing:
-                return UITextFieldViewMode.whileEditing.rawValue
+                return UITextField.ViewMode.whileEditing.rawValue
             case .unlessEditing:
-                return UITextFieldViewMode.unlessEditing.rawValue
+                return UITextField.ViewMode.unlessEditing.rawValue
             case .always:
-                return UITextFieldViewMode.always.rawValue
+                return UITextField.ViewMode.always.rawValue
             }
         }
     }

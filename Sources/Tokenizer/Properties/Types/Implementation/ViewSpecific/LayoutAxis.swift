@@ -27,9 +27,9 @@ public enum LayoutAxis: String, EnumPropertyType, AttributeSupportedPropertyType
         public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .vertical:
-                return UILayoutConstraintAxis.vertical.rawValue
+                return NSLayoutConstraint.Axis.vertical.rawValue
             case .horizontal:
-                return UILayoutConstraintAxis.horizontal.rawValue
+                return NSLayoutConstraint.Axis.horizontal.rawValue
             }
         }
     }

@@ -10,22 +10,18 @@ import Foundation
 import UIKit
 #endif
 
-public enum UnderlineStyle: String, EnumPropertyType, AttributeSupportedPropertyType {
+public enum UnderlineStyle: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
     public static let enumName = "NSUnderlineStyle"
 
-    case styleNone
-    case styleSingle
-    case styleThick
-    case styleDouble
+    case none
+    case single
+    case thick
+    case double
     case patternDot
     case patternDash
     case patternDashDot
     case patternDashDotDot
     case byWord
-
-    public static let allValues: [UnderlineStyle] = [.styleNone, .styleSingle, .styleThick, .styleDouble,
-                                           .patternDot, .patternDash, .patternDashDot, .patternDashDotDot,
-                                           .byWord]
 }
 
 #if canImport(UIKit)
@@ -35,14 +31,14 @@ extension UnderlineStyle {
 
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         switch self {
-        case .styleNone:
-            return NSUnderlineStyle.styleNone.rawValue
-        case .styleSingle:
-            return NSUnderlineStyle.styleSingle.rawValue
-        case .styleThick:
-            return NSUnderlineStyle.styleThick.rawValue
-        case .styleDouble:
-            return NSUnderlineStyle.styleDouble.rawValue
+        case .none:
+            return ([] as NSUnderlineStyle).rawValue
+        case .single:
+            return NSUnderlineStyle.single.rawValue
+        case .thick:
+            return NSUnderlineStyle.thick.rawValue
+        case .double:
+            return NSUnderlineStyle.double.rawValue
         case .patternDot:
             return NSUnderlineStyle.patternDot.rawValue
         case .patternDash:

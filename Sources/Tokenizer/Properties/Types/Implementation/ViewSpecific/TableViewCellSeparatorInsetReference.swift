@@ -25,12 +25,12 @@ public enum TableViewCellSeparatorInsetReference: String, EnumPropertyType, Attr
             switch self {
             case .fromCellEdges:
                 if #available(iOS 11.0, tvOS 11.0, *) {
-                    return UITableViewSeparatorInsetReference.fromCellEdges.rawValue
+                    return UITableView.SeparatorInsetReference.fromCellEdges.rawValue
                 }
                 return nil
             case .fromAutomaticInsets:
                 if #available(iOS 11.0, tvOS 11.0, *) {
-                    return UITableViewSeparatorInsetReference.fromAutomaticInsets.rawValue
+                    return UITableView.SeparatorInsetReference.fromAutomaticInsets.rawValue
                 }
                 return nil
             }

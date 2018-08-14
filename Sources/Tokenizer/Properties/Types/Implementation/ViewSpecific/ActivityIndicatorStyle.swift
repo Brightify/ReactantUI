@@ -35,11 +35,11 @@ public enum ActivityIndicatorStyle: String, EnumPropertyType, AttributeSupported
             #else
                 switch self {
                 case .whiteLarge:
-                    return UIActivityIndicatorViewStyle.whiteLarge.rawValue
+                    return UIActivityIndicatorView.Style.whiteLarge.rawValue
                 case .white:
-                    return UIActivityIndicatorViewStyle.white.rawValue
+                    return UIActivityIndicatorView.Style.white.rawValue
                 case .gray:
-                    return UIActivityIndicatorViewStyle.gray.rawValue
+                    return UIActivityIndicatorView.Style.gray.rawValue
                 }
             #endif
         }

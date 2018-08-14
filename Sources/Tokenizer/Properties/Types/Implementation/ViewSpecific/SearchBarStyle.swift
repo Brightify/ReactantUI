@@ -26,11 +26,11 @@ public enum SearchBarStyle: String, EnumPropertyType, AttributeSupportedProperty
         public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .`default`:
-                return UISearchBarStyle.default.rawValue
+                return UISearchBar.Style.default.rawValue
             case .minimal:
-                return UISearchBarStyle.minimal.rawValue
+                return UISearchBar.Style.minimal.rawValue
             case .prominent:
-                return UISearchBarStyle.prominent.rawValue
+                return UISearchBar.Style.prominent.rawValue
             }
         }
     }

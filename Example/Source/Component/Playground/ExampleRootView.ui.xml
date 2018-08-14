@@ -27,7 +27,7 @@
         </attributedTextStyle>
         <attributedTextStyle name="bandasnik" extend="common:globalko">
             <b font=":light@40" backgroundColor="green" foregroundColor="#f5f5f5@fadedOut(by: 0.3)@desaturated(25%)" />
-            <i font=":bold@4" underlineStyle="styleSingle" underlineColor="black@alpha(at: 50%)@alpha(0.1)" />
+            <i font=":bold@4" underlineStyle="single" underlineColor="black@alpha(at: 50%)@alpha(0.1)" />
             <base foregroundColor="white" backgroundColor="black" />
         </attributedTextStyle>
         <attributedTextStyle

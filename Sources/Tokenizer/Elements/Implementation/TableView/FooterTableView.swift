@@ -94,8 +94,8 @@ public class FooterTableView: View, ComponentDefinitionContainer {
             })
             .with(state: .items(Array(repeating: SectionModel(model: (), items: Array(repeating: (), count: itemCount)), count: sectionCount)))
 
-        tableView.tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.tableView.sectionFooterHeight = UITableViewAutomaticDimension
+        tableView.tableView.rowHeight = UITableView.automaticDimension
+        tableView.tableView.sectionFooterHeight = UITableView.automaticDimension
 
         return tableView
     }

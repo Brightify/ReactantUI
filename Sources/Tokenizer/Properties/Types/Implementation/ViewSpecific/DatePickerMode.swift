@@ -30,13 +30,13 @@ extension DatePickerMode {
         #else
         switch self {
         case .time:
-            return UIDatePickerMode.time.rawValue
+            return UIDatePicker.Mode.time.rawValue
         case .date:
-            return UIDatePickerMode.date.rawValue
+            return UIDatePicker.Mode.date.rawValue
         case .dateAndTime:
-            return UIDatePickerMode.dateAndTime.rawValue
+            return UIDatePicker.Mode.dateAndTime.rawValue
         case .countDownTimer:
-            return UIDatePickerMode.countDownTimer.rawValue
+            return UIDatePicker.Mode.countDownTimer.rawValue
         }
         #endif
     }

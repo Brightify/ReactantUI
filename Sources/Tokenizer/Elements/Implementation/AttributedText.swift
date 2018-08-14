@@ -62,27 +62,27 @@ public struct AttributedText: ElementSupportedPropertyType {
 
 extension AttributedText {
     static let attributeKeys = [
-        "font": NSAttributedStringKey.font,
-        "foregroundColor": NSAttributedStringKey.foregroundColor,
-        "backgroundColor": NSAttributedStringKey.backgroundColor,
-        "ligature": NSAttributedStringKey.ligature,
-        "kern": NSAttributedStringKey.kern,
-        "underlineStyle": NSAttributedStringKey.underlineStyle,
-        "underlineColor": NSAttributedStringKey.underlineColor,
-        "striketroughStyle": NSAttributedStringKey.strikethroughStyle,
-        "strikethroughColor": NSAttributedStringKey.strikethroughColor,
-        "strokeColor": NSAttributedStringKey.strokeColor,
-        "strokeWidth": NSAttributedStringKey.strokeWidth,
-        "shadow": NSAttributedStringKey.shadow,
-        "attachmentImage": NSAttributedStringKey.attachment,
-        "link": NSAttributedStringKey.link,
-        "baselineOffset": NSAttributedStringKey.baselineOffset,
-        "obliqueness": NSAttributedStringKey.obliqueness,
-        "expansion": NSAttributedStringKey.expansion,
-        "writingDirection": NSAttributedStringKey.writingDirection,
-        "verticalGlyphForm": NSAttributedStringKey.verticalGlyphForm,
-        "paragraphStyle": NSAttributedStringKey.paragraphStyle,
-        ] as [String: NSAttributedStringKey]
+        "font": NSAttributedString.Key.font,
+        "foregroundColor": NSAttributedString.Key.foregroundColor,
+        "backgroundColor": NSAttributedString.Key.backgroundColor,
+        "ligature": NSAttributedString.Key.ligature,
+        "kern": NSAttributedString.Key.kern,
+        "underlineStyle": NSAttributedString.Key.underlineStyle,
+        "underlineColor": NSAttributedString.Key.underlineColor,
+        "striketroughStyle": NSAttributedString.Key.strikethroughStyle,
+        "strikethroughColor": NSAttributedString.Key.strikethroughColor,
+        "strokeColor": NSAttributedString.Key.strokeColor,
+        "strokeWidth": NSAttributedString.Key.strokeWidth,
+        "shadow": NSAttributedString.Key.shadow,
+        "attachmentImage": NSAttributedString.Key.attachment,
+        "link": NSAttributedString.Key.link,
+        "baselineOffset": NSAttributedString.Key.baselineOffset,
+        "obliqueness": NSAttributedString.Key.obliqueness,
+        "expansion": NSAttributedString.Key.expansion,
+        "writingDirection": NSAttributedString.Key.writingDirection,
+        "verticalGlyphForm": NSAttributedString.Key.verticalGlyphForm,
+        "paragraphStyle": NSAttributedString.Key.paragraphStyle,
+        ] as [String: NSAttributedString.Key]
 
     public static func materialize(from element: XMLElement) throws -> AttributedText {
         let styleName = element.value(ofAttribute: "style") as StyleName?
@@ -244,7 +244,7 @@ extension AttributedText {
                 guard let transformedText = transformedText.runtimeValue(context: context.child(for: transformedText)) as? String
                     else { return [] }
 
-                let attributes = Dictionary(keyValueTuples: inheritedAttributes.compactMap { attribute -> (NSAttributedStringKey, Any)? in
+                let attributes = Dictionary(keyValueTuples: inheritedAttributes.compactMap { attribute -> (NSAttributedString.Key, Any)? in
                     guard let attributeValue = attribute.anyValue.runtimeValue(context: context.child(for: attribute.anyValue)),
                         let key = AttributedText.attributeKeys[attribute.name] else { return nil }
                     return (key, attributeValue)

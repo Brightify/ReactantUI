@@ -8,7 +8,7 @@
 import Foundation
 
 public enum ControlContentVerticalAlignment: Int, EnumPropertyType, AttributeSupportedPropertyType {
-    public static let enumName = "UIControlContentVerticalAlignment"
+    public static let enumName = "UIControl.ContentVerticalAlignment"
     
     case center
     case top
@@ -20,13 +20,13 @@ public enum ControlContentVerticalAlignment: Int, EnumPropertyType, AttributeSup
     public func generate(context: SupportedPropertyTypeContext) -> String {
         switch self {
         case .center:
-            return "UIControlContentVerticalAlignment.center"
+            return "UIControl.ContentVerticalAlignment.center"
         case .top:
-            return "UIControlContentVerticalAlignment.top"
+            return "UIControl.ContentVerticalAlignment.top"
         case .bottom:
-            return "UIControlContentVerticalAlignment.bottom"
+            return "UIControl.ContentVerticalAlignment.bottom"
         case .fill:
-            return "UIControlContentVerticalAlignment.fill"
+            return "UIControl.ContentVerticalAlignment.fill"
         }
     }
     
@@ -78,13 +78,13 @@ public enum ControlContentVerticalAlignment: Int, EnumPropertyType, AttributeSup
         public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .center:
-                return UIControlContentVerticalAlignment.center.rawValue
+                return UIControl.ContentVerticalAlignment.center.rawValue
             case .top:
-                return UIControlContentVerticalAlignment.top.rawValue
+                return UIControl.ContentVerticalAlignment.top.rawValue
             case .bottom:
-                return UIControlContentVerticalAlignment.bottom.rawValue
+                return UIControl.ContentVerticalAlignment.bottom.rawValue
             case .fill:
-                return UIControlContentVerticalAlignment.fill.rawValue
+                return UIControl.ContentVerticalAlignment.fill.rawValue
             }
         }
     }

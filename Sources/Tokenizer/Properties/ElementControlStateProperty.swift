@@ -40,7 +40,7 @@ public struct ElementControlStateProperty<T: ElementSupportedPropertyType>: Type
      */
     public func application(on target: String, context: PropertyContext) -> String {
         let state = parseState(from: attributeName) as [ControlState]
-        let stringState = state.map { "UIControlState.\($0.rawValue)" }.joined(separator: ", ")
+        let stringState = state.map { "UIControl.State.\($0.rawValue)" }.joined(separator: ", ")
         let namespacedTarget = namespace.resolvedSwiftName(target: target)
         return "\(namespacedTarget).set\(description.key.capitalizingFirstLetter())(\(value.generate(context: context.child(for: value))), for: [\(stringState)])"
     }
@@ -71,7 +71,7 @@ public struct ElementControlStateProperty<T: ElementSupportedPropertyType>: Type
         }
         let signature = target.method(for: selector)
 
-        typealias setValueForControlStateIMP = @convention(c) (AnyObject, Selector, AnyObject, UIControlState) -> Void
+        typealias setValueForControlStateIMP = @convention(c) (AnyObject, Selector, AnyObject, UIControl.State) -> Void
         let method = unsafeBitCast(signature, to: setValueForControlStateIMP.self)
         method(target, selector, resolvedValue as AnyObject, parseState(from: attributeName).resolveUnion())
     }

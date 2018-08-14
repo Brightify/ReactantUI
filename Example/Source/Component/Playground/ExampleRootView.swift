@@ -85,7 +85,7 @@ extension ExampleRootView {
 extension UIButton {
 
     @objc(setBackgroundColor:forState:)
-    public func setBackgroundColor(_ color: UIColor, for state: UIControlState) {
+    public func setBackgroundColor(_ color: UIColor, for state: UIControl.State) {
         let rectangle = CGRect(origin: CGPoint.zero, size: CGSize(width: 1, height: 1))
         UIGraphicsBeginImageContext(rectangle.size)
 

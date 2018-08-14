@@ -9,7 +9,7 @@
 import Foundation
 
 public enum LayoutAlignment: String, EnumPropertyType, AttributeSupportedPropertyType {
-    public static let enumName = "UIStackViewAlignment"
+    public static let enumName = "UIStackView.Alignment"
 
     case fill
     case firstBaseline
@@ -29,17 +29,17 @@ public enum LayoutAlignment: String, EnumPropertyType, AttributeSupportedPropert
         public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .center:
-                return UIStackViewAlignment.center.rawValue
+                return UIStackView.Alignment.center.rawValue
             case .fill:
-                return UIStackViewAlignment.fill.rawValue
+                return UIStackView.Alignment.fill.rawValue
             case .firstBaseline:
-                return UIStackViewAlignment.firstBaseline.rawValue
+                return UIStackView.Alignment.firstBaseline.rawValue
             case .lastBaseline:
-                return UIStackViewAlignment.lastBaseline.rawValue
+                return UIStackView.Alignment.lastBaseline.rawValue
             case .leading:
-                return UIStackViewAlignment.leading.rawValue
+                return UIStackView.Alignment.leading.rawValue
             case .trailing:
-                return UIStackViewAlignment.trailing.rawValue
+                return UIStackView.Alignment.trailing.rawValue
             }
         }
     }

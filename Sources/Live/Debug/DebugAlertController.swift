@@ -81,7 +81,7 @@ class DebugAlertController: UIAlertController {
         }
         controller.addAction(preview)
 
-        controller.addAction(UIAlertAction(title: "Close menu", style: UIAlertActionStyle.cancel))
+        controller.addAction(UIAlertAction(title: "Close menu", style: UIAlertAction.Style.cancel))
         return controller
     }
 }

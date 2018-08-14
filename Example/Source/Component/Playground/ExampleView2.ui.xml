@@ -41,7 +41,7 @@
                 layout:bottom="super inset(20)">
                 <attributedTitle
                     foregroundColor="brown"
-                    underlineStyle="styleSingle"
+                    underlineStyle="single"
                     underlineColor="white">
                     :uppercased(Forgotten passwordko?)
                 </attributedTitle>

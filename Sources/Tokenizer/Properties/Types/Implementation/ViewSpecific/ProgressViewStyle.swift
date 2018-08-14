@@ -24,9 +24,9 @@ extension ProgressViewStyle {
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         switch self {
         case .default:
-            return UIProgressViewStyle.default.rawValue
+            return UIProgressView.Style.default.rawValue
         case .bar:
-            return UIProgressViewStyle.bar.rawValue
+            return UIProgressView.Style.bar.rawValue
         }
     }
 }

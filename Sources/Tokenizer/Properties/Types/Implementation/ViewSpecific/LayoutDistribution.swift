@@ -28,15 +28,15 @@ public enum LayoutDistribution: String, EnumPropertyType, AttributeSupportedProp
         public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .equalCentering:
-                return UIStackViewDistribution.equalCentering.rawValue
+                return UIStackView.Distribution.equalCentering.rawValue
             case .equalSpacing:
-                return UIStackViewDistribution.equalSpacing.rawValue
+                return UIStackView.Distribution.equalSpacing.rawValue
             case .fill:
-                return UIStackViewDistribution.fill.rawValue
+                return UIStackView.Distribution.fill.rawValue
             case .fillEqually:
-                return UIStackViewDistribution.fillEqually.rawValue
+                return UIStackView.Distribution.fillEqually.rawValue
             case .fillProportionaly:
-                return UIStackViewDistribution.fillProportionally.rawValue
+                return UIStackView.Distribution.fillProportionally.rawValue
             }
         }
     }

@@ -100,7 +100,7 @@ import UIKit
 extension EdgeInsets {
 
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
-        return UIEdgeInsetsMake(top.cgFloat, left.cgFloat, bottom.cgFloat, right.cgFloat)
+        return UIEdgeInsets(top: top.cgFloat, left: left.cgFloat, bottom: bottom.cgFloat, right: right.cgFloat)
     }
 }
 #endif

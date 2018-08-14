@@ -7,7 +7,7 @@
 //
 
 public enum ControlState: String, EnumPropertyType {
-    public static let enumName = "UIControlState"
+    public static let enumName = "UIControl.State"
 
     case normal
     case highlighted
@@ -52,15 +52,15 @@ extension ControlState {
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         switch self {
         case .normal:
-            return UIControlState.normal.rawValue
+            return UIControl.State.normal.rawValue
         case .highlighted:
-            return UIControlState.highlighted.rawValue
+            return UIControl.State.highlighted.rawValue
         case .disabled:
-            return UIControlState.disabled.rawValue
+            return UIControl.State.disabled.rawValue
         case .selected:
-            return UIControlState.selected.rawValue
+            return UIControl.State.selected.rawValue
         case .focused:
-            return UIControlState.focused.rawValue
+            return UIControl.State.focused.rawValue
         }
     }
 }
@@ -79,7 +79,7 @@ public extension Sequence where Element == ControlState {
 import UIKit
 
 extension ControlState: OptionSetValue {
-    var value: UIControlState {
+    var value: UIControl.State {
         switch self {
         case .normal:
             return .normal
