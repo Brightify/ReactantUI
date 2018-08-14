@@ -10,6 +10,9 @@ import Foundation
 import UIKit
 #endif
 
+/**
+ * Context connected to a property's type.
+ */
 public struct SupportedPropertyTypeContext: DataContext {
     public let parentContext: DataContext
     public let value: SupportedPropertyType
@@ -20,11 +23,7 @@ public struct SupportedPropertyTypeContext: DataContext {
     }
 }
 
-extension SupportedPropertyTypeContext: HasParentContext {
-//    public var parentContext: PropertyContext {
-//        return propertyContext
-//    }
-}
+extension SupportedPropertyTypeContext: HasParentContext {}
 
 extension PropertyContext {
     public func child(for value: SupportedPropertyType) -> SupportedPropertyTypeContext {

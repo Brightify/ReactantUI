@@ -136,6 +136,7 @@ public class ViewProperties: PropertyContainer {
     public let tag: AssignablePropertyDescription<Int>
     public let canBecomeFocused: AssignablePropertyDescription<Bool>
     public let visibility: AssignablePropertyDescription<ViewVisibility>
+    public let collapseAxis: AssignablePropertyDescription<ViewCollapseAxis>
     public let frame: AssignablePropertyDescription<Rect>
     public let bounds: AssignablePropertyDescription<Rect>
     public let layoutMargins: AssignablePropertyDescription<EdgeInsets>
@@ -160,6 +161,7 @@ public class ViewProperties: PropertyContainer {
         tag = configuration.property(name: "tag")
         canBecomeFocused = configuration.property(name: "canBecomeFocused")
         visibility = configuration.property(name: "visibility")
+        collapseAxis = configuration.property(name: "collapseAxis")
         frame = configuration.property(name: "frame")
         bounds = configuration.property(name: "bounds")
         layoutMargins = configuration.property(name: "layoutMargins")

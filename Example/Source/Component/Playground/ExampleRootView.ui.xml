@@ -51,13 +51,14 @@
                         [false] :gte 10"
         layout:top="safeAreaLayoutGuide.top"
         layout:width="100"
-        layout:height="50"/>
+        layout:height="50" />
     <View
+        collapseAxis="horizontal"
         backgroundColor="red"
         layout:leading="super"
         layout:top="id:test.bottom offset(10)"
         layout:width="100"
-        layout:height="50"/>
+        layout:height="50" />
 
     <!-- <View> <Label/> </View> -->
     <View/>
@@ -69,7 +70,7 @@
         clipsToBounds="true"
         layout:compressionPriority="high"
         layout:huggingPriority="low"
-        contentMode="scaleAspectFill"/>
+        contentMode="scaleAspectFill" />
 
       <!--  <VisualEffectView
             effect="blur:light"
@@ -79,7 +80,7 @@
             layout:id="picker"
             mode="time"
             layout:top="super"
-            layout:fillHorizontally="super inset(20)"/>
+            layout:fillHorizontally="super inset(20)" />
 
         <NavigationBar
             barTintColor="blue"
@@ -97,7 +98,7 @@
             style=":common:map"
             layout:fillHorizontally="super inset(20)"
             layout:below="id:picker"
-            layout:height="testConstraint = 200"/>
+            layout:height="testConstraint = 200" />
         <Switch
             layout:id="switch"
             layout:leading="inset(20)"
@@ -106,7 +107,7 @@
         <Slider
             layout:id="slider"
             layout:below="id:switch"
-            layout:fillHorizontally="super inset(20)"/>
+            layout:fillHorizontally="super inset(20)" />
         <Stepper
             layout:below="id:slider"
             layout:id="stepper"
@@ -114,7 +115,7 @@
             minimumValue="0"
             maximumValue="100"
             stepValue="5"
-            layout:fillHorizontally="super inset(20)"/> -->
+            layout:fillHorizontally="super inset(20)" /> -->
         <StackView
             axis="vertical"
             backgroundColor="black"
@@ -122,7 +123,7 @@
             layout:id="stacko"
             layout:top="super inset(20)"
             layout:fillHorizontally="readableContentGuide inset(20)">
-            <Component type="ExampleView2" layout:width="dudegr=350" />
+            <Component type="ExampleView2" layout:width="dudegr=370" />
             <Component type="ExampleView2" />
         </StackView>
 
@@ -131,7 +132,7 @@
             layout:edges="super"
             layout:width="super">
 
-            <ActivityIndicator indicatorStyle="white"/>
+            <ActivityIndicator indicatorStyle="white" />
 
             <Label
                 layout:id="helloWorldLabel"
@@ -142,7 +143,7 @@
                 style="astyle"
                 textAlignment="center"
                 layout:fillHorizontally="super inset(20)"
-                layout:top="super offset(61)"/>
+                layout:top="super offset(61)" />
 
             <TextView
                 layout:id="textView"
@@ -150,7 +151,7 @@
                 textColor="black"
                 layout:below="id:helloWorldLabel"
                 layout:height="50"
-                layout:fillHorizontally="super"/>
+                layout:fillHorizontally="super" />
 
             <Label
                 layout:id="please"
@@ -162,7 +163,7 @@
                 clipsToBounds="true"
                 backgroundColor="red"
                 layout:below="id:textView offset(10)"
-                layout:centerX="super"/>
+                layout:centerX="super" />
 
             <TextField
                 placeholder="E-mail"
@@ -198,7 +199,7 @@
                 style="buttona"
                 layout:fillHorizontally="super inset(60)"
                 layout:height="50"
-                layout:below="send offset(70)"/>
+                layout:below="send offset(70)" />
             <StackView
                 axis="vertical"
                 backgroundColor="black"
@@ -246,10 +247,12 @@
     </Label>
 
     <Button
+        collapseAxis="vertical"
         layout:id="buttonko"
         layout:fillHorizontally="super"
         layout:below="id:stacko"
-        layout:height="60">
+        layout:height="60"
+        isSelected="true">
         <attributedTitle
             state="selected|highlighted"
             style="bandaska">
@@ -262,9 +265,10 @@
     </Button>
 
     <Label
+        collapseAxis="both"
+        numberOfLines="0"
         layout:below="id:buttonko"
-        layout:fillHorizontally="super inset(20)"
-        numberOfLines="0">
+        layout:fillHorizontally="super inset(20)">
         <attributedText
             style="attributko">
             <base>Django Freeman</base>

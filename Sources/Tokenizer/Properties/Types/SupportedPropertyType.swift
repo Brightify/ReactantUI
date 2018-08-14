@@ -25,7 +25,7 @@ public protocol SupportedPropertyType {
     // We would then use this to know how is the type called for generating.
     // static var runtimeType: String { get }
 
-    // FIXME Has to be put into `AttributeSupportedPropertyType
+    // FIXME Has to be put into `AttributeSupportedPropertyType`
     static var xsdType: XSDType { get }
 }
 

@@ -177,13 +177,20 @@ extension AttributedText {
                 let generatedTransformedText = transformedText.generate(context: context.sibling(for: transformedText))
                 let generatedParentStyles = parentElements.compactMap { elementName in
                     style.map { context.resolvedStyleName(named: $0) + ".\(elementName)" }
-                }
+                }.distinctLast()
+
                 let attributesString = (generatedParentStyles + ["[\(generatedAttributes)]"]).joined(separator: " + ")
                 return [(generatedTransformedText, attributesString)]
             case .attributed(let attributedStyle, let attributedTexts):
+                let resolvedAttributes: Set<String>
+                if let styleName = style {
+                    resolvedAttributes = Set(resolvedExtensions(of: attributedStyle, from: [styleName], in: context).map { $0.name })
+                } else {
+                    resolvedAttributes = []
+                }
                 // the order of appending is important because the `distinct(where:)` keeps the first element of the duplicates
                 let lowerAttributes = attributedStyle.properties
-                    .arrayByAppending(inheritedAttributes)
+                    .arrayByAppending(inheritedAttributes.filter { !resolvedAttributes.contains($0.name) })
                     .distinct(where: { $0.name == $1.name })
                 let newParentElements = parentElements + [attributedStyle.name]
 
@@ -213,6 +220,16 @@ extension AttributedText {
         """
     }
 
+    private func resolvedExtensions(of style: AttributedTextStyle, from styleNames: [StyleName], in context: SupportedPropertyTypeContext) -> [Property] {
+        return styleNames.flatMap { styleName -> [Property] in
+            guard let resolvedStyle = context.style(named: styleName),
+                case .attributedText(let styles) = resolvedStyle.type,
+                let extendedAttributeStyle = styles.first(where: { $0.name == style.name }) else { return [] }
+
+            return extendedAttributeStyle.properties.arrayByAppending(resolvedExtensions(of: style, from: resolvedStyle.extend, in: context))
+        }
+    }
+
     #if SanAndreas
     public func dematerialize(context: SupportedPropertyTypeContext) -> String {
         fatalError("Implement me!")
@@ -235,25 +252,16 @@ extension AttributedText {
                 return [NSAttributedString(string: transformedText, attributes: attributes)]
 
             case .attributed(let attributedStyle, let attributedTexts):
-                var resolvedAttributes: [Property]?
-
-                func resolvedExtensions(from styleNames: [StyleName]) -> [Property] {
-                    return styleNames.flatMap { styleName -> [Property] in
-                        guard let resolvedStyle = context.style(named: styleName),
-                            case .attributedText(let styles) = resolvedStyle.type,
-                            let extendedAttributeStyle = styles.first(where: { $0.name == attributedStyle.name }) else { return [] }
-
-                        return extendedAttributeStyle.properties.arrayByAppending(resolvedExtensions(from: resolvedStyle.extend))
-                    }
-                }
-
+                let resolvedAttributes: [Property]
                 if let styleName = style {
-                    resolvedAttributes = resolvedExtensions(from: [styleName])
+                    resolvedAttributes = resolvedExtensions(of: attributedStyle, from: [styleName], in: context)
+                } else {
+                    resolvedAttributes = []
                 }
 
                 // the order of appending is important because the `distinct(where:)` keeps the first element of the duplicates
                 let lowerAttributes = attributedStyle.properties
-                    .arrayByAppending(resolvedAttributes ?? [])
+                    .arrayByAppending(resolvedAttributes)
                     .arrayByAppending(inheritedAttributes)
                     .distinct(where: { $0.name == $1.name })
 

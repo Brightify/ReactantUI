@@ -4,6 +4,10 @@
 //
 //  Created by Matouš Hýbl on 16/02/2018.
 //
+
+#if canImport(Common)
+import Common
+#endif
 import Generator
 import Tokenizer
 import Foundation
@@ -96,9 +100,14 @@ class GenerateCommand: Command {
         if let applicationDescriptionPath = applicationDescriptionPath {
             let applicationDescriptionData = try Data(contentsOf: URL(fileURLWithPath: applicationDescriptionPath))
             let xml = SWXMLHash.parse(applicationDescriptionData)
-            // FIXME Ugly force unwrapping
-            let node = xml["Application"].element!
-            applicationDescription = try ApplicationDescription(node: node)
+            if let node = xml["Application"].element {
+                applicationDescription = try ApplicationDescription(node: node)
+            } else {
+                print("warning: ReactantUIGenerator: No <Application> element inside the application path!")
+                return
+                // FIXME: uncomment and delete the above when merged with `feature/logger` branch
+//                Logger.instance.warning("Application file path does not contain the <Application> element.")
+            }
         } else {
             applicationDescription = ApplicationDescription()
         }

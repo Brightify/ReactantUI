@@ -10,6 +10,9 @@
 import UIKit
 #endif
 
+/**
+ * Base protocol for UI element properties.
+ */
 public protocol Property {
     var name: String { get set }
     

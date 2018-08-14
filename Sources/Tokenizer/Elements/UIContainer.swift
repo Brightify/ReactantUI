@@ -10,6 +10,9 @@
     import UIKit
 #endif
 
+/**
+ * Basic container view protocol. If your UI element is capable of containing children, it should conform to this.
+ */
 public protocol UIContainer {
     var children: [UIElement] { get set }
 

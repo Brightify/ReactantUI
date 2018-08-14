@@ -12,6 +12,10 @@ private func +=(lhs: inout [String], rhs: String) {
     lhs.append(rhs)
 }
 
+/**
+ * Representative of a `SnapKit.Constraint` along with an optional condition which must be true
+ * in order to apply the constraint.
+ */
 public struct Constraint {
     public var field: String?
     public var condition: Condition?
@@ -37,13 +41,23 @@ public struct Constraint {
         self.relation = relation
         self.priority = priority
     }
-    
+
+    /**
+     * Deserializes a single XML attribute (i.e. a field inside an XML element) into an array of constraints.
+     * - parameter name: name of the constraint (e.g. top, bottom, leading)
+     * - parameter attribute: XML attribute to be parsed
+     * - returns: array of deserialized constraints (there can be multiple constraints in one attribute separated by a special symbol)
+     */
     public static func constraints(name: String, attribute: XMLAttribute) throws -> [Constraint] {
         let layoutAttributes = try LayoutAttribute.deserialize(name)
         let tokens = Lexer.tokenize(input: attribute.text)
         return try layoutAttributes.flatMap { try ConstraintParser(tokens: tokens, layoutAttribute: $0).parse() }
     }
-    
+
+    /**
+     * Serializes the constraint into an XML attribute.
+     * - returns: XML attribute containing the XML representation of the constraint
+     */
     func serialize() -> XMLSerializableAttribute {
         var value = [] as [String]
         

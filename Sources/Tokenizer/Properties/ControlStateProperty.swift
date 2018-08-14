@@ -10,6 +10,10 @@
 import UIKit
 #endif
 
+/**
+ * Typed property obtained from several XML attributes.
+ * It's used for properties that react to `ControlState`.
+ */
 public struct ControlStateProperty<T: AttributeSupportedPropertyType>: TypedProperty {
     public var namespace: [PropertyContainer.Namespace]
     public var name: String
@@ -27,6 +31,11 @@ public struct ControlStateProperty<T: AttributeSupportedPropertyType>: TypedProp
         }
     }
 
+    /**
+     * - parameter target: UI element to be targetted with the property
+     * - parameter context: property context to use
+     * - returns: Swift `String` representation of the property application on the target
+     */
     public func application(on target: String, context: PropertyContext) -> String {
         let state = parseState(from: attributeName) as [ControlState]
         let stringState = state.map { "UIControlState.\($0.rawValue)" }.joined(separator: ", ")
@@ -41,6 +50,11 @@ public struct ControlStateProperty<T: AttributeSupportedPropertyType>: TypedProp
     #endif
 
     #if canImport(UIKit)
+    /**
+     * Try to apply the property on an object using the passed property context.
+     * - parameter object: UI element to apply the property to
+     * - parameter context: property context to use
+     */
     public func apply(on object: AnyObject, context: PropertyContext) throws {
         let key = description.key
         let selector = Selector("set\(key.capitalizingFirstLetter()):forState:")
