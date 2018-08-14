@@ -15,14 +15,6 @@ public enum ViewCollapseAxis: String, EnumPropertyType, AttributeSupportedProper
     case both
 
     public static var allValues: [ViewCollapseAxis] = [.horizontal, .vertical, .both]
-
-    public static var runtimeType: String = "Reactant.CollapseAxis"
-
-    public static var xsdType: XSDType {
-        let values = Set(ViewCollapseAxis.allValues.map { $0.rawValue })
-
-        return .enumeration(EnumerationXSDType(name: ViewCollapseAxis.enumName, base: .string, values: values))
-    }
 }
 
 #if canImport(UIKit)

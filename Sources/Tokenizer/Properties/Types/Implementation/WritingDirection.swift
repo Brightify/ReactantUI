@@ -14,13 +14,7 @@ public enum WritingDirection: String, EnumPropertyType, AttributeSupportedProper
     case leftToRight
     case rightToLeft
 
-    static let allValues: [WritingDirection] = [.natural, .leftToRight, .rightToLeft]
-
-    public static var xsdType: XSDType {
-        let values = Set(WritingDirection.allValues.map { $0.rawValue })
-
-        return .enumeration(EnumerationXSDType(name: WritingDirection.enumName, base: .string, values: values))
-    }
+    public static let allValues: [WritingDirection] = [.natural, .leftToRight, .rightToLeft]
 }
 
 #if canImport(UIKit)

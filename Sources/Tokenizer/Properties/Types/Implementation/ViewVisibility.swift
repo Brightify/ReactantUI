@@ -18,22 +18,12 @@ public enum ViewVisibility: String, EnumPropertyType, AttributeSupportedProperty
     public static let allValues: [ViewVisibility] = [.visible, .hidden, .collapsed]
 }
 
-public enum ViewCollapseAxis: String, EnumPropertyType {
-    public static let enumName = "CollapseAxis"
-
-    case horizontal
-    case vertical
-    case both
-
-    public static let allValues: [ViewCollapseAxis] = [.horizontal, .vertical, .both]
-}
-
 #if ReactantRuntime
     import Reactant
 
     extension ViewVisibility {
 
-        public var runtimeValue: Any? {
+        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
             switch self {
             case .visible:
                 return Visibility.visible.rawValue
@@ -44,22 +34,4 @@ public enum ViewCollapseAxis: String, EnumPropertyType {
             }
         }
     }
-#endif
-
-#if ReactantRuntime
-
-    extension ViewCollapseAxis {
-
-        public var runtimeValue: Any? {
-            switch self {
-            case .both:
-                return CollapseAxis.both.rawValue
-            case .horizontal:
-                return CollapseAxis.horizontal.rawValue
-            case .vertical:
-                return CollapseAxis.vertical.rawValue
-            }
-        }
-    }
-}
 #endif

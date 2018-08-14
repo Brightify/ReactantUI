@@ -23,15 +23,9 @@ public enum UnderlineStyle: String, EnumPropertyType, AttributeSupportedProperty
     case patternDashDotDot
     case byWord
 
-    static let allValues: [UnderlineStyle] = [.styleNone, .styleSingle, .styleThick, .styleDouble,
+    public static let allValues: [UnderlineStyle] = [.styleNone, .styleSingle, .styleThick, .styleDouble,
                                            .patternDot, .patternDash, .patternDashDot, .patternDashDotDot,
                                            .byWord]
-
-    public static var xsdType: XSDType {
-        let values = Set(UnderlineStyle.allValues.map { $0.rawValue })
-
-        return .enumeration(EnumerationXSDType(name: UnderlineStyle.enumName, base: .string, values: values))
-    }
 }
 
 #if canImport(UIKit)
