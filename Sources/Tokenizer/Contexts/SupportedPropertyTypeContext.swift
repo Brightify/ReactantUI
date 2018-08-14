@@ -13,7 +13,7 @@ import UIKit
 /**
  * Context connected to a property's type.
  */
-public struct SupportedPropertyTypeContext: DataContext {
+public struct SupportedPropertyTypeContext: DataContext, HasParentContext {
     public let parentContext: DataContext
     public let value: SupportedPropertyType
 
@@ -23,8 +23,6 @@ public struct SupportedPropertyTypeContext: DataContext {
     }
 }
 
-extension SupportedPropertyTypeContext: HasParentContext {}
-
 extension PropertyContext {
     public func child(for value: SupportedPropertyType) -> SupportedPropertyTypeContext {
         return SupportedPropertyTypeContext(parentContext: self, value: value)
@@ -32,7 +30,7 @@ extension PropertyContext {
 }
 
 extension SupportedPropertyTypeContext {
-    public func sibling(for value: SupportedPropertyType) -> SupportedPropertyTypeContext {
+    public func child(for value: SupportedPropertyType) -> SupportedPropertyTypeContext {
         return SupportedPropertyTypeContext(parentContext: self, value: value)
     }
 }

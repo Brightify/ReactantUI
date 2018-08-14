@@ -18,18 +18,18 @@ public struct CGColorPropertyType: AttributeSupportedPropertyType {
     }
 
     public func generate(context: SupportedPropertyTypeContext) -> String {
-        return "\(color.generate(context: context.sibling(for: color))).cgColor"
+        return "\(color.generate(context: context.child(for: color))).cgColor"
     }
 
     #if SanAndreas
     public func dematerialize(context: SupportedPropertyTypeContext) -> String {
-        return color.dematerialize(context: context.sibling(for: color))
+        return color.dematerialize(context: context.child(for: color))
     }
     #endif
 
     #if canImport(UIKit)
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
-        return (color.runtimeValue(context: context.sibling(for: color)) as? UIColor)?.cgColor
+        return (color.runtimeValue(context: context.child(for: color)) as? UIColor)?.cgColor
     }
     #endif
 

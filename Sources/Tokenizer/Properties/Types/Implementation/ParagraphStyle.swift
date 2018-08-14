@@ -14,7 +14,7 @@ public struct ParagraphStyle: MultipleAttributeSupportedPropertyType {
         return """
         {
             let p = NSMutableParagraphStyle()
-            \(properties.map { "p.\($0.name) = \($0.anyValue.generate(context: context.sibling(for: $0.anyValue)))" }.joined(separator: "\n"))
+            \(properties.map { "p.\($0.name) = \($0.anyValue.generate(context: context.child(for: $0.anyValue)))" }.joined(separator: "\n"))
             return p
         }()
         """
@@ -45,7 +45,7 @@ extension ParagraphStyle {
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
         let paragraphStyle = NSMutableParagraphStyle()
         for property in properties {
-            let value = property.anyValue.runtimeValue(context: context.sibling(for: property.anyValue))
+            let value = property.anyValue.runtimeValue(context: context.child(for: property.anyValue))
             paragraphStyle.setValue(value, forKey: property.name)
         }
         return paragraphStyle

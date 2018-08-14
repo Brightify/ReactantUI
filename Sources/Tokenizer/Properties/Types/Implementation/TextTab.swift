@@ -26,8 +26,8 @@ public struct TextTab: AttributeSupportedPropertyType {
     }
 
     public func generate(context: SupportedPropertyTypeContext) -> String {
-        let generatedTextAlignment = textAlignment.generate(context: context.sibling(for: textAlignment))
-        let generatedLocation = location.generate(context: context.sibling(for: location))
+        let generatedTextAlignment = textAlignment.generate(context: context.child(for: textAlignment))
+        let generatedLocation = location.generate(context: context.child(for: location))
         return "NSTextTab(textAlignment: \(generatedTextAlignment), location: \(generatedLocation))"
     }
 
@@ -48,7 +48,7 @@ import UIKit
 
 extension TextTab {
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
-        guard let textAlignmentRawValue = textAlignment.runtimeValue(context: context.sibling(for: textAlignment)) as? Int,
+        guard let textAlignmentRawValue = textAlignment.runtimeValue(context: context.child(for: textAlignment)) as? Int,
            let textAlignmentValue = NSTextAlignment(rawValue: textAlignmentRawValue) else { return nil }
         return NSTextTab(textAlignment: textAlignmentValue, location: CGFloat(location))
     }

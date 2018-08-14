@@ -1,6 +1,6 @@
 //
-//  HyperdriveApp.swift
-//  Example
+//  ApplicationDescription.swift
+//  ReactantUI
 //
 //  Created by Tadeas Kriz on 6/18/18.
 //

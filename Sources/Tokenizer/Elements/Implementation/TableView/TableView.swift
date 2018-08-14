@@ -41,7 +41,7 @@ public enum RowHeight: AttributeSupportedPropertyType {
     public func generate(context: SupportedPropertyTypeContext) -> String {
         switch self {
         case .value(let value):
-            return value.generate(context: context.sibling(for: value))
+            return value.generate(context: context.child(for: value))
         case .automatic:
             return "UITableViewAutomaticDimension"
         }
@@ -51,7 +51,7 @@ public enum RowHeight: AttributeSupportedPropertyType {
     public func dematerialize(context: SupportedPropertyTypeContext) -> String {
         switch self {
         case .value(let value):
-            return value.dematerialize(context: context.sibling(for: value))
+            return value.dematerialize(context: context.child(for: value))
         case .automatic:
             return RowHeight.automaticIdentifier
         }

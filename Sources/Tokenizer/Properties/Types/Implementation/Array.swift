@@ -9,18 +9,18 @@ import Foundation
 
 extension Array: SupportedPropertyType where Iterator.Element: SupportedPropertyType {
     public func generate(context: SupportedPropertyTypeContext) -> String {
-        return "[" + map { $0.generate(context: context.sibling(for: $0)) }.joined(separator: ", ") + "]"
+        return "[" + map { $0.generate(context: context.child(for: $0)) }.joined(separator: ", ") + "]"
     }
 
     #if canImport(UIKit)
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
-        return map { $0.runtimeValue(context: context.sibling(for: $0)) }
+        return map { $0.runtimeValue(context: context.child(for: $0)) }
     }
     #endif
 
     #if SanAndreas
     public func dematerialize(context: SupportedPropertyTypeContext) -> String {
-        return map { $0.dematerialize(context: context.sibling(for: $0)) }.joined(separator: ";")
+        return map { $0.dematerialize(context: context.child(for: $0)) }.joined(separator: ";")
     }
     #endif
 

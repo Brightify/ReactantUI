@@ -74,7 +74,7 @@ public enum Font: AttributeSupportedPropertyType {
                 return UIFont(name, CGFloat(size))
             case .themed(let name):
                 guard let themedFont = context.themed(font: name) else { return nil }
-                return themedFont.runtimeValue(context: context.sibling(for: themedFont))
+                return themedFont.runtimeValue(context: context.child(for: themedFont))
             }
         }
     }

@@ -60,7 +60,7 @@ public enum UIColorPropertyType: AttributeSupportedPropertyType {
             return UIColor.value(forKeyPath: "\(name)Color") as? UIColor
         case .themed(let name):
             guard let themedColor = context.themed(color: name) else { return nil }
-            return themedColor.runtimeValue(context: context.sibling(for: themedColor))
+            return themedColor.runtimeValue(context: context.child(for: themedColor))
         }
     }
     #endif

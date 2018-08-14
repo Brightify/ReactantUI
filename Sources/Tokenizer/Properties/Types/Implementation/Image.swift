@@ -41,7 +41,7 @@ public enum Image: AttributeSupportedPropertyType {
             return UIImage(named: name)
         case .themed(let name):
             guard let themedImage = context.themed(image: name) else { return nil }
-            return themedImage.runtimeValue(context: context.sibling(for: themedImage))
+            return themedImage.runtimeValue(context: context.child(for: themedImage))
         }
     }
     #endif

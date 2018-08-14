@@ -13,9 +13,9 @@ public struct Shadow: MultipleAttributeSupportedPropertyType {
     public let color: UIColorPropertyType?
 
     public func generate(context: SupportedPropertyTypeContext) -> String {
-        let generatedOffset = offset.generate(context: context.sibling(for: offset))
-        let generatedBlurRadius = blurRadius.generate(context: context.sibling(for: blurRadius))
-        let generatedColor = color.map { $0.generate(context: context.sibling(for: $0)) } ?? "nil"
+        let generatedOffset = offset.generate(context: context.child(for: offset))
+        let generatedBlurRadius = blurRadius.generate(context: context.child(for: blurRadius))
+        let generatedColor = color.map { $0.generate(context: context.child(for: $0)) } ?? "nil"
         return "NSShadow(offset: \(generatedOffset), blurRadius: \(generatedBlurRadius), color: \(generatedColor))"
     }
 
@@ -44,8 +44,8 @@ import UIKit
 
 extension Shadow {
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
-        let offsetValue = offset.runtimeValue(context: context.sibling(for: offset)).flatMap { $0 as? CGSize }
-        let colorValue = color.flatMap { $0.runtimeValue(context: context.sibling(for: $0)) }.flatMap { $0 as? UIColor }
+        let offsetValue = offset.runtimeValue(context: context.child(for: offset)).flatMap { $0 as? CGSize }
+        let colorValue = color.flatMap { $0.runtimeValue(context: context.child(for: $0)) }.flatMap { $0 as? UIColor }
 
         let shadow = NSShadow()
         if let offset = offsetValue {

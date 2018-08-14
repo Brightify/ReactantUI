@@ -172,9 +172,9 @@ extension AttributedText {
             switch part {
             case .transform(let transformedText):
                 let generatedAttributes = inheritedAttributes.map {
-                    ".\($0.name)(\($0.anyValue.generate(context: context.sibling(for: $0.anyValue))))"
+                    ".\($0.name)(\($0.anyValue.generate(context: context.child(for: $0.anyValue))))"
                 }.joined(separator: ", ")
-                let generatedTransformedText = transformedText.generate(context: context.sibling(for: transformedText))
+                let generatedTransformedText = transformedText.generate(context: context.child(for: transformedText))
                 let generatedParentStyles = parentElements.compactMap { elementName in
                     style.map { context.resolvedStyleName(named: $0) + ".\(elementName)" }
                 }.distinctLast()
@@ -241,11 +241,11 @@ extension AttributedText {
         func resolveAttributes(part: AttributedText.Part, inheritedAttributes: [Property]) -> [NSAttributedString] {
             switch part {
             case .transform(let transformedText):
-                guard let transformedText = transformedText.runtimeValue(context: context.sibling(for: transformedText)) as? String
+                guard let transformedText = transformedText.runtimeValue(context: context.child(for: transformedText)) as? String
                     else { return [] }
 
                 let attributes = Dictionary(keyValueTuples: inheritedAttributes.compactMap { attribute -> (NSAttributedStringKey, Any)? in
-                    guard let attributeValue = attribute.anyValue.runtimeValue(context: context.sibling(for: attribute.anyValue)),
+                    guard let attributeValue = attribute.anyValue.runtimeValue(context: context.child(for: attribute.anyValue)),
                         let key = AttributedText.attributeKeys[attribute.name] else { return nil }
                     return (key, attributeValue)
                 })
