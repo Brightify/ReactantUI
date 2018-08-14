@@ -15,13 +15,7 @@ public enum KeyboardAppearance: String, EnumPropertyType, AttributeSupportedProp
     case dark
     case light
 
-    static var allValues: [KeyboardAppearance] = [.`default`, .dark, .light]
-
-    public static var xsdType: XSDType {
-        let values = Set(KeyboardAppearance.allValues.map { $0.rawValue })
-
-        return .enumeration(EnumerationXSDType(name: KeyboardAppearance.enumName, base: .string, values: values))
-    }
+    public static let allValues: [KeyboardAppearance] = [.`default`, .dark, .light]
 }
 
 #if canImport(UIKit)

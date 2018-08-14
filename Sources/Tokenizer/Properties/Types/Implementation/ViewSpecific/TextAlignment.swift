@@ -15,13 +15,7 @@ public enum TextAlignment: String, EnumPropertyType, AttributeSupportedPropertyT
     case justified
     case natural
 
-    static var allValues: [TextAlignment] = [.left, .right, .center, .justified, .natural]
-
-    public static var xsdType: XSDType {
-        let values = Set(TextAlignment.allValues.map { $0.rawValue })
-
-        return .enumeration(EnumerationXSDType(name: TextAlignment.enumName, base: .string, values: values))
-    }
+    public static let allValues: [TextAlignment] = [.left, .right, .center, .justified, .natural]
 }
 
 #if canImport(UIKit)

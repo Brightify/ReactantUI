@@ -26,7 +26,7 @@ public class TableView: View {
     }
 
     #if canImport(UIKit)
-    public override func initialize() -> UIView {
+    public override func initialize(context: ReactantLiveUIWorker.Context) -> UIView {
         return UITableView()
     }
     #endif
@@ -76,6 +76,8 @@ public enum RowHeight: AttributeSupportedPropertyType {
         }
     }
     #endif
+
+    public static var runtimeType: String = "CGFloat"
 
     public static var xsdType: XSDType {
         let valueType = Float.xsdType

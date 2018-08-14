@@ -24,7 +24,8 @@ public class XSDSerializer {
     }
 
     public func serialize() -> String {
-        var element = root.serialize()
+        let context = GlobalContext()
+        var element = root.serialize(context: context)
 
         var builder = XMLAttributeBuilder()
 
@@ -45,7 +46,7 @@ public class XSDSerializer {
                                                  XMLSerializableAttribute(name: "schemaLocation", value: "layout.xsd")],
                                     children: [])
         element.children.insert(`import`, at: 0)
-        element.children.insert(XSDComponentRootElement().serialize(), at: 1)
+        element.children.insert(XSDComponentRootElement().serialize(context: context), at: 1)
 
         serialize(element: element)
 

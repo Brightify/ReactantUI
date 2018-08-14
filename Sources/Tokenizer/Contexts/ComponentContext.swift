@@ -7,6 +7,10 @@
 
 import Foundation
 
+/**
+ * The "file"'s context. This context is available throughout a Component's file.
+ * It's used to resolve local styles and delegate global style resolving to global context.
+ */
 public struct ComponentContext: DataContext {
     public let globalContext: GlobalContext
     public let component: ComponentDefinition

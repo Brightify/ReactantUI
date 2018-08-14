@@ -22,12 +22,12 @@ public enum VisualEffect: AttributeSupportedPropertyType {
     }
     
     #if SanAndreas
-    public func dematerialize() -> String {
+    public func dematerialize(context: SupportedPropertyTypeContext) -> String {
         switch self {
         case .blur(let effect):
-            return effect.rawValue
+            return "blur:\(effect.rawValue)"
         case .vibrancy(let effect):
-            return effect.rawValue
+            return "vibrancy:\(effect.rawValue)"
         }
     }
     #endif

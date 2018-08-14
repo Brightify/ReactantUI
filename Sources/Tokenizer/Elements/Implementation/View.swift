@@ -45,7 +45,7 @@ public class View: XMLElementDeserializable, UIElement {
     }
 
     #if canImport(UIKit)
-    public func initialize() throws -> UIView {
+    public func initialize(context: ReactantLiveUIWorker.Context) throws -> UIView {
         return UIView()
     }
     #endif
@@ -91,7 +91,7 @@ public class View: XMLElementDeserializable, UIElement {
         }
     }
 
-    public func serialize() -> XMLSerializableElement {
+    public func serialize(context: DataContext) -> XMLSerializableElement {
         var builder = XMLAttributeBuilder()
         if let field = field {
             builder.attribute(name: "field", value: field)
@@ -102,8 +102,13 @@ public class View: XMLElementDeserializable, UIElement {
         }
         
         #if SanAndreas
-            properties.map { $0.dematerialize() }.forEach { builder.add(attribute: $0) }
-            toolingProperties.map { _, property in property.dematerialize() }.forEach { builder.add(attribute: $0) }
+        (properties + toolingProperties.values)
+            .map {
+                $0.dematerialize(context: PropertyContext(parentContext: context, property: $0))
+            }
+            .forEach {
+                builder.add(attribute: $0)
+            }
         #endif
         
         layout.serialize().forEach { builder.add(attribute: $0) }
@@ -131,6 +136,7 @@ public class ViewProperties: PropertyContainer {
     public let tag: AssignablePropertyDescription<Int>
     public let canBecomeFocused: AssignablePropertyDescription<Bool>
     public let visibility: AssignablePropertyDescription<ViewVisibility>
+    public let collapseAxis: AssignablePropertyDescription<ViewCollapseAxis>
     public let frame: AssignablePropertyDescription<Rect>
     public let bounds: AssignablePropertyDescription<Rect>
     public let layoutMargins: AssignablePropertyDescription<EdgeInsets>
@@ -155,6 +161,7 @@ public class ViewProperties: PropertyContainer {
         tag = configuration.property(name: "tag")
         canBecomeFocused = configuration.property(name: "canBecomeFocused")
         visibility = configuration.property(name: "visibility")
+        collapseAxis = configuration.property(name: "collapseAxis")
         frame = configuration.property(name: "frame")
         bounds = configuration.property(name: "bounds")
         layoutMargins = configuration.property(name: "layoutMargins")
@@ -235,7 +242,7 @@ public struct PreferredSize: SupportedPropertyType {
     }
 
     #if SanAndreas
-    public func dematerialize() -> String {
+    public func dematerialize(context: SupportedPropertyTypeContext) -> String {
         if width == height {
             return "\(width.stringValue)"
         }

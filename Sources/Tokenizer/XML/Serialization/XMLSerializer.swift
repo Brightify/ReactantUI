@@ -21,8 +21,8 @@ public class XMLSerializer {
         self.root = root
     }
 
-    public func serialize() -> String {
-        var element = root.serialize()
+    public func serialize(context: DataContext) -> String {
+        var element = root.serialize(context: context)
 
         var builder = XMLAttributeBuilder()
         l("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>")

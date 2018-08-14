@@ -63,14 +63,14 @@ public class ComponentReference: View, ComponentDefinitionContainer {
     }
 
     #if canImport(UIKit)
-    public override func initialize() throws -> UIView {
+    public override func initialize(context: ReactantLiveUIWorker.Context) throws -> UIView {
         guard let type = type else { throw LiveUIError(message: "Should never initialize when type is undefined.") }
-        return try ReactantLiveUIManager.shared.componentInstantiation(named: type)()
+        return try context.componentInstantiation(named: type)()
     }
     #endif
     
-    public override func serialize() -> XMLSerializableElement {
-        var serialized = super.serialize()
+    public override func serialize(context: DataContext) -> XMLSerializableElement {
+        var serialized = super.serialize(context: context)
         if let type = type {
             serialized.attributes.insert(XMLSerializableAttribute(name: "type", value: type), at: 0)
         }

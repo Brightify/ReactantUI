@@ -10,7 +10,7 @@ import Reactant
 
 final class PreviewListController: ControllerBase<Void, PreviewListRootView> {
     struct Dependencies {
-        let manager: ReactantLiveUIManager
+        let worker: ReactantLiveUIWorker
     }
     struct Reactions {
         let preview: (String) -> Void
@@ -37,14 +37,14 @@ final class PreviewListController: ControllerBase<Void, PreviewListRootView> {
     }
 
     override func update() {
-        let items = dependencies.manager.allRegisteredDefinitionNames
+        let items = Array(dependencies.worker.allRegisteredDefinitionNames)
         rootView.componentState = .items(items)
     }
 
     override func act(on action: PlainTableViewAction<PreviewListCell>) {
         switch action {
         case .refresh:
-            dependencies.manager.reloadFiles()
+            dependencies.worker.reloadFiles()
             invalidate()
         case .selected(let path):
             reactions.preview(path)

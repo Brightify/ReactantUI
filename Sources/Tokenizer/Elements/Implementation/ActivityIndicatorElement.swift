@@ -26,7 +26,7 @@ public class ActivityIndicatorElement: View {
     }
 
     #if canImport(UIKit)
-    public override func initialize() -> UIView {
+    public override func initialize(context: ReactantLiveUIWorker.Context) -> UIView {
         return UIActivityIndicatorView()
     }
     #endif

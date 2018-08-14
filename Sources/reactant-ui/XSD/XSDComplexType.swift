@@ -24,8 +24,8 @@ extension XSDComplexChoiceType: Hashable {
 }
 
 extension XSDComplexChoiceType: XMLElementSerializable {
-    func serialize() -> XMLSerializableElement {
-        let elements = self.elements.map { $0.serialize() }
+    func serialize(context: DataContext) -> XMLSerializableElement {
+        let elements = self.elements.map { $0.serialize(context: context) }
 
         let choice = XMLSerializableElement(name: "xs:choice",
                                             attributes: [XMLSerializableAttribute(name: "maxOccurs", value: "unbounded"),

@@ -61,15 +61,15 @@ public class PlainTableView: View, ComponentDefinitionContainer {
         try super.init(node: node)
     }
 
-    public override func serialize() -> XMLSerializableElement {
-        var element = super.serialize()
+    public override func serialize(context: DataContext) -> XMLSerializableElement {
+        var element = super.serialize(context: context)
         element.attributes.append(XMLSerializableAttribute(name: "cell", value: cellType))
         return element
     }
 
     #if canImport(UIKit)
-    public override func initialize() throws -> UIView {
-        let createCell = try ReactantLiveUIManager.shared.componentInstantiation(named: cellType)
+    public override func initialize(context: ReactantLiveUIWorker.Context) throws -> UIView {
+        let createCell = try context.componentInstantiation(named: cellType)
         let exampleCount = ToolingProperties.plainTableView.exampleCount.get(from: self.toolingProperties) ?? 5
         let tableView =  Reactant.PlainTableView<CellWrapper>(cellFactory: {
             CellWrapper(wrapped: createCell())

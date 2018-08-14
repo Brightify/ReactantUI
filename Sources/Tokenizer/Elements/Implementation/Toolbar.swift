@@ -26,7 +26,7 @@ public class Toolbar: View {
     }
 
     #if canImport(UIKit)
-    public override func initialize() -> UIView {
+    public override func initialize(context: ReactantLiveUIWorker.Context) -> UIView {
         #if os(tvOS)
             fatalError("View not available in tvOS")
         #else

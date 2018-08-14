@@ -9,10 +9,14 @@
 import UIKit
 #endif
 
+/**
+ * Typed property obtained from an XML attribute.
+ * The most basic typed property. Just sets the property using the parsed value.
+ */
 public struct ValueProperty<T: AttributeSupportedPropertyType>: TypedProperty {
-    public let namespace: [PropertyContainer.Namespace]
-    public let name: String
-    public let description: ValuePropertyDescription<T>
+    public var namespace: [PropertyContainer.Namespace]
+    public var name: String
+    public var description: ValuePropertyDescription<T>
     public var value: T
 
     public var attributeName: String {
@@ -26,7 +30,7 @@ public struct ValueProperty<T: AttributeSupportedPropertyType>: TypedProperty {
 
     #if SanAndreas
     public func dematerialize(context: PropertyContext) -> XMLSerializableAttribute {
-        return XMLSerializableAttribute(name: attributeName, value: value.dematerialize())
+        return XMLSerializableAttribute(name: attributeName, value: value.dematerialize(context: context.child(for: value)))
     }
     #endif
 

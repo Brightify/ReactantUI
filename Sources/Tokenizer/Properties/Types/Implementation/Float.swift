@@ -20,8 +20,8 @@ extension Float: AttributeSupportedPropertyType {
     #endif
 
     #if SanAndreas
-    public func dematerialize() -> String {
-        return generated
+    public func dematerialize(context: SupportedPropertyTypeContext) -> String {
+        return generate(context: context)
     }
     #endif
 
@@ -31,6 +31,8 @@ extension Float: AttributeSupportedPropertyType {
         }
         return materialized
     }
+
+    public static var runtimeType: String = "Float"
 
     public static var xsdType: XSDType {
         return .builtin(.decimal)

@@ -8,5 +8,6 @@
 import Foundation
 
 public protocol XMLElementSerializable {
-    func serialize() -> XMLSerializableElement
+    // FIXME This should not be used for serialization of Components because it brings DataContext to XSD
+    func serialize(context: DataContext) -> XMLSerializableElement
 }

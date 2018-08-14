@@ -24,14 +24,8 @@ public enum KeyboardType: String, EnumPropertyType, AttributeSupportedPropertyTy
     case webSearch
     case asciiCapableNumberPad
 
-    static var allValues: [KeyboardType] = [.`default`, .asciiCapable, .numbersAndPunctuation, .URL, .numberPad,
-                                            .phonePad, .namePhonePad, .emailAddress, .decimalPad, .twitter, .webSearch, .asciiCapableNumberPad]
-
-    public static var xsdType: XSDType {
-        let values = Set(KeyboardType.allValues.map { $0.rawValue })
-
-        return .enumeration(EnumerationXSDType(name: KeyboardType.enumName, base: .string, values: values))
-    }
+    public static let allValues: [KeyboardType] = [.`default`, .asciiCapable, .numbersAndPunctuation, .URL, .numberPad,
+                                                   .phonePad, .namePhonePad, .emailAddress, .decimalPad, .twitter, .webSearch, .asciiCapableNumberPad]
 }
 
 #if canImport(UIKit)

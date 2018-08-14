@@ -27,6 +27,7 @@ abstract_target 'LiveUI' do
             pod 'Nimble', '~> 7.0'
             pod 'RxNimble'
             pod 'RxTest'
+            pod 'iOSSnapshotTestCase'
         end
     end
 

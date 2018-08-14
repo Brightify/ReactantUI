@@ -27,7 +27,7 @@ extension Array {
 extension Sequence {
     fileprivate func distinct(where comparator: (_ lhs: Iterator.Element, _ rhs: Iterator.Element) -> Bool) -> [Iterator.Element] {
         var result: [Iterator.Element] = []
-        for item in self where result.contains(where: { comparator(item, $0) }) == false {
+        for item in self where !result.contains(where: { comparator(item, $0) }) {
             result.append(item)
         }
         return result
@@ -39,9 +39,24 @@ public struct AttributedText: ElementSupportedPropertyType {
     public let localProperties: [Property]
     public let parts: [AttributedText.Part]
 
+    public var requiresTheme: Bool {
+        return localProperties.contains(where: { $0.anyValue.requiresTheme }) ||
+            parts.contains(where: { $0.requiresTheme })
+    }
+
     public enum Part {
         case transform(TransformedText)
         indirect case attributed(AttributedTextStyle, [AttributedText.Part])
+
+        var requiresTheme: Bool {
+            switch self {
+            case .transform:
+                return false
+            case .attributed(let style, let innerText):
+                return style.properties.contains(where: { $0.anyValue.requiresTheme }) ||
+                    innerText.contains(where: { $0.requiresTheme })
+            }
+        }
     }
 }
 
@@ -162,13 +177,20 @@ extension AttributedText {
                 let generatedTransformedText = transformedText.generate(context: context.sibling(for: transformedText))
                 let generatedParentStyles = parentElements.compactMap { elementName in
                     style.map { context.resolvedStyleName(named: $0) + ".\(elementName)" }
-                }
+                }.distinctLast()
+
                 let attributesString = (generatedParentStyles + ["[\(generatedAttributes)]"]).joined(separator: " + ")
                 return [(generatedTransformedText, attributesString)]
             case .attributed(let attributedStyle, let attributedTexts):
+                let resolvedAttributes: Set<String>
+                if let styleName = style {
+                    resolvedAttributes = Set(resolvedExtensions(of: attributedStyle, from: [styleName], in: context).map { $0.name })
+                } else {
+                    resolvedAttributes = []
+                }
                 // the order of appending is important because the `distinct(where:)` keeps the first element of the duplicates
                 let lowerAttributes = attributedStyle.properties
-                    .arrayByAppending(inheritedAttributes)
+                    .arrayByAppending(inheritedAttributes.filter { !resolvedAttributes.contains($0.name) })
                     .distinct(where: { $0.name == $1.name })
                 let newParentElements = parentElements + [attributedStyle.name]
 
@@ -181,46 +203,36 @@ extension AttributedText {
         let optimizedStringParts = parts.flatMap {
             resolveAttributes(part: $0, inheritedAttributes: localProperties, parentElements: [])
         }.reduce([]) { current, stringPart in
-            // getting rid of quotes at the beginning and end because `TransformedText` encloses its output with them
-            let startIndex = stringPart.text.index(after: stringPart.text.startIndex)
-            let endIndex = stringPart.text.index(before: stringPart.text.endIndex)
-            let trimmedStringPart = (text: String(stringPart.text[startIndex..<endIndex]), attributes: stringPart.attributes)
             guard let lastStringPart = current.last, lastStringPart.attributes == stringPart.attributes else {
-                return current.arrayByAppending(trimmedStringPart)
+                return current.arrayByAppending(stringPart)
             }
             var mutableCurrent = current
-            mutableCurrent[mutableCurrent.endIndex - 1] = (text: lastStringPart.text + trimmedStringPart.text, attributes: lastStringPart.attributes)
+            mutableCurrent[mutableCurrent.endIndex - 1] = (text: "\(lastStringPart.text) + \(stringPart.text)", attributes: lastStringPart.attributes)
             return mutableCurrent
         } as [(text: String, attributes: String)]
 
         return """
         {
             let s = NSMutableAttributedString()
-            \(optimizedStringParts.map { "s.append(\"\($0.text)\".attributed(\($0.attributes)))" }.joined(separator: "\n"))
+            \(optimizedStringParts.map { "s.append((\($0.text)).attributed(\($0.attributes)))" }.joined(separator: "\n"))
             return s
         }()
         """
     }
 
-    #if SanAndreas
-    public func dematerialize() -> String {
-        func resolveTransformations(text: AttributedText) -> String {
-            switch text {
-            case .transform(.uppercased, let inner):
-                return ":uppercased(\(resolveTransformations(text: inner)))"
-            case .transform(.lowercased, let inner):
-                return ":lowercased(\(resolveTransformations(text: inner)))"
-            case .transform(.localized, let inner):
-                return ":localized(\(resolveTransformations(text: inner)))"
-            case .transform(.capitalized, let inner):
-                return ":capitalized(\(resolveTransformations(text: inner)))"
-            case .text(let value):
-                return value.replacingOccurrences(of: "\"", with: "&quot;")
-                    .replacingOccurrences(of: "\n", with: "\\n")
-                    .replacingOccurrences(of: "\r", with: "\\r")
-            }
+    private func resolvedExtensions(of style: AttributedTextStyle, from styleNames: [StyleName], in context: SupportedPropertyTypeContext) -> [Property] {
+        return styleNames.flatMap { styleName -> [Property] in
+            guard let resolvedStyle = context.style(named: styleName),
+                case .attributedText(let styles) = resolvedStyle.type,
+                let extendedAttributeStyle = styles.first(where: { $0.name == style.name }) else { return [] }
+
+            return extendedAttributeStyle.properties.arrayByAppending(resolvedExtensions(of: style, from: resolvedStyle.extend, in: context))
         }
-        return resolveTransformations(text: self)
+    }
+
+    #if SanAndreas
+    public func dematerialize(context: SupportedPropertyTypeContext) -> String {
+        fatalError("Implement me!")
     }
     #endif
 
@@ -240,25 +252,16 @@ extension AttributedText {
                 return [NSAttributedString(string: transformedText, attributes: attributes)]
 
             case .attributed(let attributedStyle, let attributedTexts):
-                var resolvedAttributes: [Property]?
-
-                func resolvedExtensions(from styleNames: [StyleName]) -> [Property] {
-                    return styleNames.flatMap { styleName -> [Property] in
-                        guard let resolvedStyle = context.style(named: styleName),
-                            case .attributedText(let styles) = resolvedStyle.type,
-                            let extendedAttributeStyle = styles.first(where: { $0.name == attributedStyle.name }) else { return [] }
-
-                        return extendedAttributeStyle.properties.arrayByAppending(resolvedExtensions(from: resolvedStyle.extend))
-                    }
-                }
-
+                let resolvedAttributes: [Property]
                 if let styleName = style {
-                    resolvedAttributes = resolvedExtensions(from: [styleName])
+                    resolvedAttributes = resolvedExtensions(of: attributedStyle, from: [styleName], in: context)
+                } else {
+                    resolvedAttributes = []
                 }
 
                 // the order of appending is important because the `distinct(where:)` keeps the first element of the duplicates
                 let lowerAttributes = attributedStyle.properties
-                    .arrayByAppending(resolvedAttributes ?? [])
+                    .arrayByAppending(resolvedAttributes)
                     .arrayByAppending(inheritedAttributes)
                     .distinct(where: { $0.name == $1.name })
 

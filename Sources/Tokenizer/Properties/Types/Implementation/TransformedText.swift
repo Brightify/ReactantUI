@@ -28,7 +28,7 @@ extension TransformedText: AttributeSupportedPropertyType {
             case .transform(.lowercased, let inner):
                 return resolveTransformations(text: inner) + ".lowercased()"
             case .transform(.localized, let inner):
-                return "NSLocalizedString(\(resolveTransformations(text: inner)), comment: \"\")"
+                return "NSLocalizedString(\(resolveTransformations(text: inner)), bundle: __resourceBundle, comment: \"\")"
             case .transform(.capitalized, let inner):
                 return resolveTransformations(text: inner) + ".capitalized"
             case .text(let value):
@@ -45,7 +45,7 @@ extension TransformedText: AttributeSupportedPropertyType {
     }
 
     #if SanAndreas
-    public func dematerialize() -> String {
+    public func dematerialize(context: SupportedPropertyTypeContext) -> String {
         func resolveTransformations(text: TransformedText) -> String {
             switch text {
             case .transform(.uppercased, let inner):
@@ -76,7 +76,7 @@ extension TransformedText: AttributeSupportedPropertyType {
             case .transform(.lowercased, let inner):
                 return resolveTransformations(text: inner).lowercased()
             case .transform(.localized, let inner):
-                return NSLocalizedString(resolveTransformations(text: inner), comment: "")
+                return NSLocalizedString(resolveTransformations(text: inner), bundle: context.resourceBundle ?? Bundle.main, comment: "")
             case .transform(.capitalized, let inner):
                 return resolveTransformations(text: inner).capitalized
             case .text(let value):

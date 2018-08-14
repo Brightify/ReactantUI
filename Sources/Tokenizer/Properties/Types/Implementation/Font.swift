@@ -11,6 +11,16 @@ import Foundation
 public enum Font: AttributeSupportedPropertyType {
     case system(weight: SystemFontWeight, size: Float)
     case named(String, size: Float)
+    case themed(String)
+
+    public var requiresTheme: Bool {
+        switch self {
+        case .system, .named:
+            return false
+        case .themed:
+            return true
+        }
+    }
 
     public func generate(context: SupportedPropertyTypeContext) -> String {
         switch self {
@@ -18,6 +28,8 @@ public enum Font: AttributeSupportedPropertyType {
             return "UIFont.systemFont(ofSize: \(size), weight: \(weight.name))"
         case .named(let name, let size):
             return "UIFont(\"\(name)\", \(size))"
+        case .themed(let name):
+            return "theme.fonts.\(name)"
         }
     }
     
@@ -33,9 +45,15 @@ public enum Font: AttributeSupportedPropertyType {
     #endif
 
     public static func materialize(from value: String) throws -> Font {
-        let tokens = Lexer.tokenize(input: value, keepWhitespace: true)
-        return try FontParser(tokens: tokens).parseSingle()
+        if let themedName = ApplicationDescription.themedValueName(value: value) {
+            return .themed(themedName)
+        } else {
+            let tokens = Lexer.tokenize(input: value, keepWhitespace: true)
+            return try FontParser(tokens: tokens).parseSingle()
+        }
     }
+
+    public static var runtimeType: String = "UIFont"
 
     public static var xsdType: XSDType {
         return .builtin(.string)
@@ -54,6 +72,9 @@ public enum Font: AttributeSupportedPropertyType {
                 return UIFont.systemFont(ofSize: CGFloat(size), weight: UIFont.Weight(rawValue: weight.value))
             case .named(let name, let size):
                 return UIFont(name, CGFloat(size))
+            case .themed(let name):
+                guard let themedFont = context.themed(font: name) else { return nil }
+                return themedFont.runtimeValue(context: context.sibling(for: themedFont))
             }
         }
     }

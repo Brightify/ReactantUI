@@ -4,6 +4,10 @@
 //
 //  Created by Matouš Hýbl on 16/02/2018.
 //
+
+#if canImport(Common)
+import Common
+#endif
 import Generator
 import Tokenizer
 import Foundation
@@ -13,11 +17,14 @@ import SwiftCLI
 public enum GenerateCommandError: Error, LocalizedError {
     case inputPathInvalid
     case ouputFileInvalid
+    case applicationDescriptionFileInvalid
     case XCodeProjectPathInvalid
     case cannotReadXCodeProj
     case invalidType(String)
     case tokenizationError(path: String, error: Error)
     case invalidSwiftVersion
+    case themedItemNotFound(theme: String, item: String)
+    case invalidAccessModifier
 
     public var localizedDescription: String {
         switch self {
@@ -25,6 +32,8 @@ public enum GenerateCommandError: Error, LocalizedError {
             return "Input path is invalid."
         case .ouputFileInvalid:
             return "Output file path is invalid."
+        case .applicationDescriptionFileInvalid:
+            return "Application description file path is invalid."
         case .XCodeProjectPathInvalid:
             return "xcodeproj path is invalid."
         case .cannotReadXCodeProj:
@@ -35,6 +44,10 @@ public enum GenerateCommandError: Error, LocalizedError {
             return "Tokenization error in file: \(path), error: \(error)"
         case .invalidSwiftVersion:
             return "Invalid Swift version"
+        case .themedItemNotFound(let theme, let item):
+            return "Missing item `\(item) in theme \(theme)."
+        case .invalidAccessModifier:
+            return "Invalid access modifier"
         }
     }
 
@@ -55,7 +68,10 @@ class GenerateCommand: Command {
     let xcodeProjectPath = Key<String>("--xcodeprojPath")
     let inputPath = Key<String>("--inputPath")
     let outputFile = Key<String>("--outputFile")
+    let applicationDescriptionFile = Key<String>("--description", description: "Path to an XML file with Application Description.")
     let swiftVersionParameter = Key<String>("--swift")
+    let defaultAccessModifier = Key<String>("--defaultAccessModifier")
+    let generateDisposableHelper = Flag("--generate-disposable-helper")
 
     public func execute() throws {
         var output: [String] = []
@@ -71,6 +87,29 @@ class GenerateCommand: Command {
         let rawSwiftVersion = swiftVersionParameter.value ?? "4.1" // use 4.1 as default
         guard let swiftVersion = SwiftVersion(raw: rawSwiftVersion) else {
             throw GenerateCommandError.invalidSwiftVersion
+        }
+
+        let rawModifier = defaultAccessModifier.value ?? AccessModifier.internal.rawValue
+        guard let accessModifier = AccessModifier(rawValue: rawModifier) else {
+            throw GenerateCommandError.invalidAccessModifier
+        }
+
+        // ApplicationDescription is not required. We can work with default values and it makes it backward compatible.
+        let applicationDescription: ApplicationDescription
+        let applicationDescriptionPath = applicationDescriptionFile.value
+        if let applicationDescriptionPath = applicationDescriptionPath {
+            let applicationDescriptionData = try Data(contentsOf: URL(fileURLWithPath: applicationDescriptionPath))
+            let xml = SWXMLHash.parse(applicationDescriptionData)
+            if let node = xml["Application"].element {
+                applicationDescription = try ApplicationDescription(node: node)
+            } else {
+                print("warning: ReactantUIGenerator: No <Application> element inside the application path!")
+                return
+                // FIXME: uncomment and delete the above when merged with `feature/logger` branch
+//                Logger.instance.warning("Application file path does not contain the <Application> element.")
+            }
+        } else {
+            applicationDescription = ApplicationDescription()
         }
 
         let minimumDeploymentTarget = try self.minimumDeploymentTarget()
@@ -96,12 +135,15 @@ class GenerateCommand: Command {
             stylePaths.append(path)
         }
 
-        let globalContext = GlobalContext(styleSheets: globalContextFiles.map { $0.group })
+        let globalContext = GlobalContext(applicationDescription: applicationDescription,
+                                          currentTheme: applicationDescription.defaultTheme,
+                                          styleSheets: globalContextFiles.map { $0.group })
         for (offset: index, element: (path: path, group: group)) in globalContextFiles.enumerated() {
             let configuration = GeneratorConfiguration(minimumMajorVersion: minimumDeploymentTarget,
                                                        localXmlPath: path,
                                                        isLiveEnabled: enableLive.value,
-                                                       swiftVersion: swiftVersion)
+                                                       swiftVersion: swiftVersion,
+                                                       defaultModifier: accessModifier)
             let styleContext = StyleGroupContext(globalContext: globalContext, group: group)
             output.append(try StyleGenerator(context: styleContext, configuration: configuration).generate(imports: index == 0))
         }
@@ -141,24 +183,35 @@ class GenerateCommand: Command {
               import SnapKit
               """)
 
+        try output.append(theme(context: globalContext, swiftVersion: swiftVersion))
+
         if enableLive.value {
-            output.append(ifSimulator(swiftVersion: swiftVersion, commands: "import ReactantLiveUI"))
+            output.append(ifSimulator(swiftVersion: swiftVersion, ifClause: "import ReactantLiveUI"))
         }
         for imp in imports {
             output.append("import \(imp)")
         }
 
+        output.append("""
+        private final class __ReactantUIBundleToken { }
+        private let __resourceBundle = Bundle(for: __ReactantUIBundleToken.self)
+        """)
+
         for (path, rootDefinition) in componentDefinitions {
             output.append("// Generated from \(path)")
-            let configuration = GeneratorConfiguration(minimumMajorVersion: minimumDeploymentTarget, localXmlPath: path, isLiveEnabled: enableLive.value, swiftVersion: swiftVersion)
+            let configuration = GeneratorConfiguration(minimumMajorVersion: minimumDeploymentTarget,
+                                                       localXmlPath: path,
+                                                       isLiveEnabled: enableLive.value,
+                                                       swiftVersion: swiftVersion,
+                                                       defaultModifier: accessModifier)
             for definition in rootDefinition.componentDefinitions {
                 let componentContext = ComponentContext(globalContext: globalContext, component: definition)
                 output.append(try UIGenerator(componentContext: componentContext, configuration: configuration).generate(imports: false))
             }
         }
 
-
         if enableLive.value {
+            let generatedApplicationDescriptionPath = applicationDescriptionPath.map { "\"\($0)\"" } ?? "nil"
             if swiftVersion < .swift4_1 {
                 output.append("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
             } else {
@@ -166,7 +219,9 @@ class GenerateCommand: Command {
             }
             output.append("""
                       struct GeneratedReactantLiveUIConfiguration: ReactantLiveUIConfiguration {
+                      let applicationDescriptionPath: String? = \(generatedApplicationDescriptionPath)
                       let rootDir = \"\(inputPath)\"
+                      let resourceBundle: Bundle = __resourceBundle
                       let commonStylePaths: [String] = [
                   """)
             for path in stylePaths {
@@ -190,13 +245,125 @@ class GenerateCommand: Command {
                   """)
         }
 
-        output.append("func activateLiveReload(in window: UIWindow) {")
+        output.append(ifSimulator(swiftVersion: swiftVersion, ifClause: "\nlet bundleWorker = ReactantLiveUIWorker(configuration: GeneratedReactantLiveUIConfiguration())\n"))
+
+        output.append("public func activateLiveReload(in window: UIWindow) {")
         if enableLive.value {
-            output.append(ifSimulator(swiftVersion: swiftVersion, commands:"     ReactantLiveUIManager.shared.activate(in: window, configuration: GeneratedReactantLiveUIConfiguration())"))
+            let liveUIActivation = """
+                ReactantLiveUIManager.shared.activate(in: window, worker: bundleWorker)
+                ApplicationTheme.selector.register(target: bundleWorker, listener: { theme in
+                    bundleWorker.setSelectedTheme(name: theme.name)
+                })
+            """
+
+            output.append(ifSimulator(swiftVersion: swiftVersion, ifClause: liveUIActivation))
         }
         output.append("}")
 
         try output.joined(separator: "\n").write(to: outputPathURL, atomically: true, encoding: .utf8)
+    }
+
+    private func theme(context: GlobalContext, swiftVersion: SwiftVersion) throws -> String {
+        let description = context.applicationDescription
+        func allCases<T>(item: String, from container: ThemeContainer<T>) throws -> String {
+            return try description.themes.map { theme in
+                guard let themedItem = container[theme: theme, item: item] else {
+                    throw GenerateCommandError.themedItemNotFound(theme: theme, item: item)
+                }
+                let typeContext = SupportedPropertyTypeContext(parentContext: context, value: themedItem)
+                return "case .\(theme): return \(themedItem.generate(context: typeContext))"
+            }.joined(separator: "\n")
+        }
+
+        let cases = description.themes.map {
+            "    case \($0)"
+        }.joined(separator: "\n")
+
+        let allColorsSorted = try description.colors.allItemNames.sorted().map { """
+            public var \($0): UIColor {
+                switch theme {
+                \(try allCases(item: $0, from: description.colors))
+                }
+            }
+            """
+        }
+        let allImagesSorted = try description.images.allItemNames.sorted().map { """
+            public var \($0): UIImage? {
+                switch theme {
+                \(try allCases(item: $0, from: description.images))
+                }
+            }
+            """
+        }
+        let allFontsSorted = try description.fonts.allItemNames.sorted().map { """
+            public var \($0): UIFont {
+                switch theme {
+                \(try allCases(item: $0, from: description.fonts))
+                }
+            }
+            """
+        }
+
+        let rxSwiftShim: String
+        // canImport is only available from 4.1 and above
+        if swiftVersion >= .swift4_1 && generateDisposableHelper.value {
+            rxSwiftShim = """
+            #if canImport(RxSwift)
+            import RxSwift
+
+            extension ReactantThemeSelector.ListenerToken: Disposable {
+                public func dispose() {
+                    cancel()
+                }
+            }
+            #endif
+            """
+        } else {
+            rxSwiftShim = ""
+        }
+
+        return """
+
+        public enum ApplicationTheme: String, ReactantThemeDefinition {
+            public static var current: ApplicationTheme {
+                return selector.currentTheme
+            }
+
+            public static let selector = ReactantThemeSelector<ApplicationTheme>(defaultTheme: .\(description.defaultTheme))
+
+        \(cases)
+
+            public struct Colors {
+                fileprivate let theme: ApplicationTheme
+
+            \(allColorsSorted.joined(separator: "\n"))
+            }
+            public struct Images {
+                fileprivate let theme: ApplicationTheme
+
+            \(allImagesSorted.joined(separator: "\n"))
+            }
+            public struct Fonts {
+                fileprivate let theme: ApplicationTheme
+
+            \(allFontsSorted.joined(separator: "\n"))
+            }
+
+            public var colors: Colors {
+                return Colors(theme: self)
+            }
+
+            public var images: Images {
+                return Images(theme: self)
+            }
+
+            public var fonts: Fonts {
+                return Fonts(theme: self)
+            }
+        }
+
+        \(rxSwiftShim)
+        """
     }
 
     private func minimumDeploymentTarget() throws -> Int {
@@ -219,17 +386,29 @@ class GenerateCommand: Command {
         }
     }
 
-    private func ifSimulator(swiftVersion: SwiftVersion, commands: String) -> String {
+    private func ifSimulator(swiftVersion: SwiftVersion, ifClause: String, elseClause: String? = nil) -> String {
+        let elseCode: String
+        if let elseClause = elseClause {
+            elseCode = """
+            #else
+            \(elseClause)
+            """
+        } else {
+            elseCode = ""
+        }
+
         if swiftVersion >= .swift4_1 {
             return """
             #if targetEnvironment(simulator)
-            \(commands)
+            \(ifClause)
+            \(elseCode)
             #endif
             """
         } else {
             return """
             #if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))
-            \(commands)
+            \(ifClause)
+            \(elseCode)
             #endif
             """
         }

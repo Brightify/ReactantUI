@@ -30,15 +30,57 @@ class DebugAlertController: UIAlertController {
         controller.popoverPresentationController?.sourceView = window
         controller.popoverPresentationController?.sourceRect = window.bounds
 
-        let reloadFiles = UIAlertAction(title: "Reload files", style: .default) { _ in
-            manager.reloadFiles()
+        let hasMultipleThemes = manager.workers.contains { $0.context.globalContext.applicationDescription.themes.count > 1 }
+        let hasMultipleWorkers = manager.workers.count > 1
+
+        if hasMultipleThemes {
+            let switchTheme = UIAlertAction(title: "Switch theme ..", style: .default) { [weak window] _ in
+                guard let controller = window?.rootViewController else { return }
+                if hasMultipleWorkers {
+                    manager.presentWorkerSelection(in: controller) { selection in
+                        guard case .worker(let worker) = selection else { return }
+
+                        worker.presentThemeSelection(in: controller)
+                    }
+                } else if let worker = manager.workers.first {
+                    worker.presentThemeSelection(in: controller)
+                }
+            }
+
+            controller.addAction(switchTheme)
+        }
+
+        let reloadFiles = UIAlertAction(title: "Reload files\(hasMultipleWorkers ? " .." : "")", style: .default) { [weak window] _ in
+            guard let controller = window?.rootViewController else { return }
+            if hasMultipleWorkers {
+                manager.presentWorkerSelection(in: controller, allowAll: true) { selection in
+                    switch selection {
+                    case .all:
+                        manager.reloadFiles()
+                    case .worker(let worker):
+                        worker.reloadFiles()
+                    }
+                }
+            } else if let worker = manager.workers.first {
+                worker.reloadFiles()
+            }
         }
         controller.addAction(reloadFiles)
+
         let preview = UIAlertAction(title: "Preview ..", style: .default) { [weak window] _ in
             guard let controller = window?.rootViewController else { return }
-            manager.presentPreview(in: controller)
+            if hasMultipleWorkers {
+                manager.presentWorkerSelection(in: controller) { selection in
+                    guard case .worker(let worker) = selection else { return }
+
+                    worker.presentPreview(in: controller)
+                }
+            } else if let worker = manager.workers.first {
+                worker.presentPreview(in: controller)
+            }
         }
         controller.addAction(preview)
+
         controller.addAction(UIAlertAction(title: "Close menu", style: UIAlertActionStyle.cancel))
         return controller
     }

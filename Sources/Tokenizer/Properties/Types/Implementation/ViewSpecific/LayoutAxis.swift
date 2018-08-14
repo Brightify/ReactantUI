@@ -11,26 +11,13 @@ import Foundation
     import UIKit
 #endif
 
-public enum LayoutAxis: String, AttributeSupportedPropertyType {
+public enum LayoutAxis: String, EnumPropertyType, AttributeSupportedPropertyType {
+    public static let enumName = "UILayoutConstraintAxis"
+
     case vertical
     case horizontal
 
-    public func generate(context: SupportedPropertyTypeContext) -> String {
-        switch self {
-        case .vertical:
-            return "UILayoutConstraintAxis.vertical"
-        case .horizontal:
-            return "UILayoutConstraintAxis.horizontal"
-        }
-    }
-
-    static var allValues: [LayoutAxis] = [.vertical, .horizontal]
-
-    public static var xsdType: XSDType {
-        let values = Set(LayoutAxis.allValues.map { $0.rawValue })
-
-        return .enumeration(EnumerationXSDType(name: "LayoutAxis", base: .string, values: values))
-    }
+    public static let allValues: [LayoutAxis] = [.vertical, .horizontal]
 }
 
 #if canImport(UIKit)

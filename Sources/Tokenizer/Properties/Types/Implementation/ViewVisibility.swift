@@ -15,32 +15,10 @@ public enum ViewVisibility: String, EnumPropertyType, AttributeSupportedProperty
     case hidden
     case collapsed
 
-    static var allValues: [ViewVisibility] = [.visible, .hidden, .collapsed]
-
-    public static var xsdType: XSDType {
-        let values = Set(ViewVisibility.allValues.map { $0.rawValue })
-
-        return .enumeration(EnumerationXSDType(name: ViewVisibility.enumName, base: .string, values: values))
-    }
+    public static let allValues: [ViewVisibility] = [.visible, .hidden, .collapsed]
 }
 
-public enum ViewCollapseAxis: String, EnumPropertyType {
-    public static let enumName = "CollapseAxis"
-
-    case horizontal
-    case vertical
-    case both
-
-    static var allValues: [ViewCollapseAxis] = [.horizontal, .vertical, .both]
-
-    public static var xsdType: XSDType {
-        let values = Set(ViewCollapseAxis.allValues.map { $0.rawValue })
-
-        return .enumeration(EnumerationXSDType(name: ViewCollapseAxis.enumName, base: .string, values: values))
-    }
-}
-
-#if canImport(UIKit)
+#if ReactantRuntime
     import Reactant
 
     extension ViewVisibility {
@@ -53,23 +31,6 @@ public enum ViewCollapseAxis: String, EnumPropertyType {
                 return Visibility.collapsed.rawValue
             case .hidden:
                 return Visibility.hidden.rawValue
-            }
-        }
-    }
-#endif
-
-#if canImport(UIKit)
-
-    extension ViewCollapseAxis {
-
-        public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
-            switch self {
-            case .both:
-                return CollapseAxis.both.rawValue
-            case .horizontal:
-                return CollapseAxis.horizontal.rawValue
-            case .vertical:
-                return CollapseAxis.vertical.rawValue
             }
         }
     }

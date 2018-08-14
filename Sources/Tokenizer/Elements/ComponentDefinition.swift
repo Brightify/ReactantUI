@@ -17,6 +17,14 @@ public protocol ComponentDefinitionContainer {
     var componentDefinitions: [ComponentDefinition] { get }
 }
 
+public enum AccessModifier: String {
+    case `public`
+    case `internal`
+}
+
+/**
+ * Contains the structure of a Component's file.
+ */
 public struct ComponentDefinition: XMLElementDeserializable, UIContainer, UIElementBase, StyleContainer, ComponentDefinitionContainer {
     public var type: String
     public var isRootView: Bool
@@ -25,6 +33,7 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, UIElem
     public var children: [UIElement]
     public var edgesForExtendedLayout: [RectEdge]
     public var isAnonymous: Bool
+    public var modifier: AccessModifier
 
     public var properties: [Property]
     public var toolingProperties: [String: Property]
@@ -50,6 +59,11 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, UIElem
     }
 
     #if canImport(UIKit)
+    /**
+     * **[LiveUI]** Adds a `UIView` to the passed self.
+     * - parameter subview: view to be added as a subview
+     * - parameter toInstanceOfSelf: parent to which the view should be added
+     */
     public func add(subview: UIView, toInstanceOfSelf: UIView) {
         toInstanceOfSelf.addSubview(subview)
     }
@@ -63,11 +77,21 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, UIElem
         children = try View.deserialize(nodes: node.xmlChildren)
         edgesForExtendedLayout = (node.attribute(by: "extend")?.text).map(RectEdge.parse) ?? []
         isAnonymous = node.value(ofAttribute: "anonymous") ?? false
+        if let modifier = node.value(ofAttribute: "accessModifier") as String? {
+            self.modifier = AccessModifier(rawValue: modifier) ?? .internal
+        } else {
+            self.modifier = .internal
+        }
 
         toolingProperties = try PropertyHelper.deserializeToolingProperties(properties: ToolingProperties.componentDefinition.allProperties, in: node)
         properties = try PropertyHelper.deserializeSupportedProperties(properties: View.availableProperties, in: node)
     }
 
+    /**
+     * Try to deserialize a `ComponentDefinition` from an XML element.
+     * - parameter node: XML element to try to parse
+     * - returns: if not thrown, then the `ComponentDefinition` representing the XML element passed
+     */
     public static func deserialize(_ node: SWXMLHash.XMLElement) throws -> ComponentDefinition {
         return try ComponentDefinition(node: node, type: node.value(ofAttribute: "type"))
     }

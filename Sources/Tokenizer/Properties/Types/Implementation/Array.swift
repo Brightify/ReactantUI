@@ -18,6 +18,12 @@ extension Array: SupportedPropertyType where Iterator.Element: SupportedProperty
     }
     #endif
 
+    #if SanAndreas
+    public func dematerialize(context: SupportedPropertyTypeContext) -> String {
+        return map { $0.dematerialize(context: context.sibling(for: $0)) }.joined(separator: ";")
+    }
+    #endif
+
     public static var xsdType: XSDType {
         return .builtin(.string)
     }

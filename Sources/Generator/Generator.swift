@@ -28,12 +28,18 @@ public struct GeneratorConfiguration {
     public let localXmlPath: String
     public let isLiveEnabled: Bool
     public let swiftVersion: SwiftVersion
+    public let defaultModifier: AccessModifier
     
-    public init(minimumMajorVersion: Int, localXmlPath: String, isLiveEnabled: Bool, swiftVersion: SwiftVersion) {
+    public init(minimumMajorVersion: Int,
+                localXmlPath: String,
+                isLiveEnabled: Bool,
+                swiftVersion: SwiftVersion,
+                defaultModifier: AccessModifier) {
         self.minimumMajorVersion = minimumMajorVersion
         self.localXmlPath = localXmlPath
         self.isLiveEnabled = isLiveEnabled
         self.swiftVersion = swiftVersion
+        self.defaultModifier = defaultModifier
     }
 }
 
@@ -50,6 +56,39 @@ public struct GeneratorError: Error, LocalizedError {
 }
 
 public class Generator {
+    public enum Encapsulation {
+        case none
+        case parentheses
+        case brackets
+        case braces
+
+        var open: String {
+            switch self {
+            case .none:
+                return ""
+            case .parentheses:
+                return "("
+            case .brackets:
+                return "["
+            case .braces:
+                // FIXME Let's think about the space here, do we want to remove it?
+                return " {"
+            }
+        }
+
+        var close: String {
+            switch self {
+            case .none:
+                return ""
+            case .parentheses:
+                return ")"
+            case .brackets:
+                return "]"
+            case .braces:
+                return "}"
+            }
+        }
+    }
 
     let configuration: GeneratorConfiguration
 
@@ -69,20 +108,12 @@ public class Generator {
         l(fakeLine: line)
     }
 
-    func l(_ line: String = "", _ f: () throws -> Void) throws {
-        l(fakeLine: line + " {")
+    func l(_ line: String = "", encapsulateIn encapsulation: Encapsulation = .braces, _ f: () throws -> Void) rethrows {
+        l(fakeLine: line + encapsulation.open)
         nestLevel += 1
         try f()
         nestLevel -= 1
-        l("}")
-    }
-
-    func l(_ line: String = "", _ f: () -> Void) {
-        l(fakeLine: line + " {")
-        nestLevel += 1
-        f()
-        nestLevel -= 1
-        l("}")
+        l(encapsulation.close)
     }
 
     private func l(fakeLine: String) {

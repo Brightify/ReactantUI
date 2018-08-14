@@ -15,13 +15,7 @@ public enum ActivityIndicatorStyle: String, EnumPropertyType, AttributeSupported
     case white
     case gray
 
-    static var allValues: [ActivityIndicatorStyle] = [.whiteLarge, .white, .gray]
-
-    public static var xsdType: XSDType {
-        let values = Set(ActivityIndicatorStyle.allValues.map { $0.rawValue })
-
-        return .enumeration(EnumerationXSDType(name: ActivityIndicatorStyle.enumName, base: .string, values: values))
-    }
+    public static let allValues: [ActivityIndicatorStyle] = [.whiteLarge, .white, .gray]
 }
 
 #if canImport(UIKit)

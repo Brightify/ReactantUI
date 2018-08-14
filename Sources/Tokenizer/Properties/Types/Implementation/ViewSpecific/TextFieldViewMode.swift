@@ -16,13 +16,7 @@ public enum TextFieldViewMode: String, EnumPropertyType, AttributeSupportedPrope
     case unlessEditing
     case always
 
-    static var allValues: [TextFieldViewMode] = [.never, .whileEditing, .unlessEditing, .always]
-
-    public static var xsdType: XSDType {
-        let values = Set(TextFieldViewMode.allValues.map { $0.rawValue })
-
-        return .enumeration(EnumerationXSDType(name: TextFieldViewMode.enumName, base: .string, values: values))
-    }
+    public static let allValues: [TextFieldViewMode] = [.never, .whileEditing, .unlessEditing, .always]
 }
 
 

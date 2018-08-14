@@ -8,7 +8,6 @@
 import Foundation
 
 public enum ControlContentHorizontalAlignment: Int, EnumPropertyType, AttributeSupportedPropertyType {
-
     public static let enumName = "UIControlContentHorizontalAlignment"
     
     case center
@@ -17,6 +16,8 @@ public enum ControlContentHorizontalAlignment: Int, EnumPropertyType, AttributeS
     case fill
     case leading
     case trailing
+
+    public static let allValues: [ControlContentHorizontalAlignment] = [.center, .left, .right, .fill, .leading, .trailing]
     
     public func generate(context: SupportedPropertyTypeContext) -> String {
         switch self {
@@ -45,7 +46,7 @@ public enum ControlContentHorizontalAlignment: Int, EnumPropertyType, AttributeS
     
     #if SanAndreas
 
-    public func dematerialize() -> String {
+    public func dematerialize(context: SupportedPropertyTypeContext) -> String {
         switch self {
             case .center:
                 return "center"

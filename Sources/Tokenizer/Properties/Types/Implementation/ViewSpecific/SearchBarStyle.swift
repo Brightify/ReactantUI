@@ -15,13 +15,7 @@ public enum SearchBarStyle: String, EnumPropertyType, AttributeSupportedProperty
     case minimal
     case prominent
 
-    static var allValues: [SearchBarStyle] = [.`default`, .minimal, .prominent]
-
-    public static var xsdType: XSDType {
-        let values = Set(SearchBarStyle.allValues.map { $0.rawValue })
-
-        return .enumeration(EnumerationXSDType(name: SearchBarStyle.enumName, base: .string, values: values))
-    }
+    public static let allValues: [SearchBarStyle] = [.`default`, .minimal, .prominent]
 }
 
 #if canImport(UIKit)

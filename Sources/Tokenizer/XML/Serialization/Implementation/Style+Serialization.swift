@@ -8,7 +8,7 @@
 import Foundation
 
 extension Style: XMLElementSerializable {
-    public func serialize() -> XMLSerializableElement {
+    public func serialize(context: DataContext) -> XMLSerializableElement {
         var builder = XMLAttributeBuilder()
         builder.attribute(name: "name", value: name.name)
         let extendedStyles = extend.map { $0.serialize() }.joined(separator: " ")
@@ -16,7 +16,13 @@ extension Style: XMLElementSerializable {
             builder.attribute(name: "extend", value: extendedStyles)
         }
         #if SanAndreas
-            properties.map { $0.dematerialize() }.forEach { builder.add(attribute: $0) }
+            properties
+                .map {
+                    $0.dematerialize(context: PropertyContext(parentContext: context, property: $0))
+                }
+                .forEach {
+                    builder.add(attribute: $0)
+                }
         #endif
 
         return XMLSerializableElement(name: "\(type.styleType)Style", attributes: builder.attributes, children: [])

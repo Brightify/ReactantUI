@@ -9,6 +9,8 @@
 import Foundation
 
 public protocol SupportedPropertyType {
+    var requiresTheme: Bool { get }
+
     func generate(context: SupportedPropertyTypeContext) -> String
 
     #if SanAndreas
@@ -19,8 +21,18 @@ public protocol SupportedPropertyType {
     func runtimeValue(context: SupportedPropertyTypeContext) -> Any?
     #endif
 
-    // FIXME Has to be put into `AttributeSupportedPropertyType
+    // FIXME Although it's not needed for POC of Themes, it should be implemented so that more things can be themed.
+    // We would then use this to know how is the type called for generating.
+    // static var runtimeType: String { get }
+
+    // FIXME Has to be put into `AttributeSupportedPropertyType`
     static var xsdType: XSDType { get }
+}
+
+public extension SupportedPropertyType {
+    public var requiresTheme: Bool {
+        return false
+    }
 }
 
 public protocol AttributeSupportedPropertyType: SupportedPropertyType {

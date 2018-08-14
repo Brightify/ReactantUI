@@ -38,16 +38,10 @@ public enum TextContentType: String, EnumPropertyType, AttributeSupportedPropert
 //    case username
 //    case password
 
-    static var allValues: [TextContentType] = [.none, .URL, .addressCity, .addressCityAndState, .addressState, .countryName,
-                                               .creditCardNumber, .emailAddress, .familyName, .fullStreetAddress, .givenName, .jobTitle,
-                                               .location, .middleName, .name, .namePrefix, .nameSuffix, .nickname, .organizationName,
-                                               .postalCode, .streetAddressLine1, .streetAddressLine2, .sublocality, .telephoneNumber]
-
-    public static var xsdType: XSDType {
-        let values = Set(TextContentType.allValues.map { $0.rawValue })
-
-        return .enumeration(EnumerationXSDType(name: TextContentType.enumName, base: .string, values: values))
-    }
+    public static let allValues: [TextContentType] = [.none, .URL, .addressCity, .addressCityAndState, .addressState, .countryName,
+                                                      .creditCardNumber, .emailAddress, .familyName, .fullStreetAddress, .givenName, .jobTitle,
+                                                      .location, .middleName, .name, .namePrefix, .nameSuffix, .nickname, .organizationName,
+                                                      .postalCode, .streetAddressLine1, .streetAddressLine2, .sublocality, .telephoneNumber]
 }
 
 #if canImport(UIKit)

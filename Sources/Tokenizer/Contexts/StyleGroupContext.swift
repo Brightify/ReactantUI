@@ -7,6 +7,9 @@
 
 import Foundation
 
+/**
+ * Context connected to a style group either in a component or in the global scope.
+ */
 public struct StyleGroupContext: DataContext {
     public let globalContext: GlobalContext
     public let group: StyleGroup

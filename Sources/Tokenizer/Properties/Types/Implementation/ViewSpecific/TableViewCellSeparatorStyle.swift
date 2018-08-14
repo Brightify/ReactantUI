@@ -13,13 +13,7 @@ public enum TableViewCellSeparatorStyle: String, EnumPropertyType, AttributeSupp
     case none
     case singleLine
 
-    static var allValues: [TableViewCellSeparatorStyle] = [.none, .singleLine]
-
-    public static var xsdType: XSDType {
-        let values = Set(TableViewCellSeparatorStyle.allValues.map { $0.rawValue })
-
-        return .enumeration(EnumerationXSDType(name: TableViewCellSeparatorStyle.enumName, base: .string, values: values))
-    }
+    public static let allValues: [TableViewCellSeparatorStyle] = [.none, .singleLine]
 }
 
 #if canImport(UIKit)

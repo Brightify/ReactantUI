@@ -19,7 +19,7 @@ public class UITraitHelper {
     }
 
     public var isHorizontal: Bool {
-        guard let window = UIApplication.shared.keyWindow else { return false }
+        guard let window = view.window else { return false }
         return window.bounds.width > window.bounds.height
     }
 

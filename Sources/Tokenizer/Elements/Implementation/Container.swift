@@ -46,16 +46,17 @@ public class Container: View, UIContainer {
     }
     
     
-    public override func serialize() -> XMLSerializableElement {
-        var viewElement = super.serialize()
-        
-        viewElement.children.append(contentsOf: children.map { $0.serialize() })
+    public override func serialize(context: DataContext) -> XMLSerializableElement {
+        var viewElement = super.serialize(context: context)
+
+        // FIXME We should create an intermediate context
+        viewElement.children.append(contentsOf: children.map { $0.serialize(context: context) })
         
         return viewElement
     }
 
     #if canImport(UIKit)
-    public override func initialize() -> UIView {
+    public override func initialize(context: ReactantLiveUIWorker.Context) -> UIView {
         return ContainerView()
     }
     #endif

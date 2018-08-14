@@ -10,83 +10,47 @@ import UIKit
 import SnapKit
 import Reactant
 
-private func findView(named name: String, in array: [(name: String, element: UIElement, view: UIView)]) -> UIView? {
+private func findView(named name: String, in array: [ReactantLiveUIViewApplier.ViewTuple]) -> UIView? {
     return array.first(where: { $0.name == name })?.view
 }
 
-public class ReactantLiveUIApplier {
-    private let componentContext: ComponentContext
-    let definition: ComponentDefinition
-    let instance: UIView
-    let commonStyles: [Style]
-    let setConstraint: (String, SnapKit.Constraint) -> Bool
-    private let onApplied: ((ComponentDefinition, UIView) -> Void)?
+public class ReactantLiveUIViewApplier {
+    private let workerContext: ReactantLiveUIWorker.Context
+    private let parentContext: DataContext
+    private let findViewByFieldName: (String, UIElement) throws -> UIView
+    private let resolveStyle: (UIElement) throws -> [Property]
+    private let setConstraint: (String, SnapKit.Constraint) -> Bool
 
-    private var appliedConstraints: [SnapKit.Constraint] = []
+    public typealias ViewTuple = (name: String, element: UIElement, view: UIView)
 
-    public init(context: ComponentContext,
-                commonStyles: [Style],
-                instance: UIView,
-                setConstraint: @escaping (String, SnapKit.Constraint) -> Bool,
-                onApplied: ((ComponentDefinition, UIView) -> Void)?) {
-        self.definition = context.component
-        self.commonStyles = commonStyles
-        self.instance = instance
+    public init(workerContext: ReactantLiveUIWorker.Context,
+                parentContext: DataContext,
+                findViewByFieldName: @escaping (String, UIElement) throws -> UIView,
+                resolveStyle: @escaping (UIElement) throws -> [Property],
+                setConstraint: @escaping (String, SnapKit.Constraint) -> Bool) {
+        self.workerContext = workerContext
+        self.parentContext = parentContext
+        self.findViewByFieldName = findViewByFieldName
+        self.resolveStyle = resolveStyle
         self.setConstraint = setConstraint
-        self.onApplied = onApplied
-        self.componentContext = context
     }
 
-    public func apply() throws {
-        defer { onApplied?(definition, instance) }
-        for property in definition.properties {
-            let propertyContext = PropertyContext(parentContext: componentContext, property: property)
-            try property.apply(on: instance, context: propertyContext)
-        }
-        instance.subviews.forEach { $0.removeFromSuperview() }
-        let views = try definition.children.flatMap {
-            try apply(element: $0, superview: instance, containedIn: definition)
-        }
-
-        for constraint in appliedConstraints {
-            constraint.deactivate()
-        }
-
-        appliedConstraints = []
-
-        try definition.children.forEach { element in
-            try applyConstraints(views: views, element: element, superview: instance)
-        }
-    }
-
-    private func apply(element: UIElement, superview: UIView, containedIn: UIContainer) throws -> [(String, UIElement, UIView)] {
+    public func apply(element: UIElement, superview: UIView?, containedIn: UIContainer?) throws -> [ViewTuple] {
         let name: String
         let view: UIView
         if let field = element.field {
             name = "\(field)"
-            if instance is Anonymous {
-                view = (try? element.initialize()) ?? UIView()
-                instance.setValue(view, forUndefinedKey: field)
-            } else if instance.responds(to: Selector("\(field)")) {
-                guard let targetView = instance.value(forKey: field) as? UIView else {
-                    throw LiveUIError(message: "Undefined field \(field)")
-                }
-                view = targetView
-            } else if let mirrorView = Mirror(reflecting: instance).children.first(where: { $0.label == name })?.value as? UIView {
-                view = mirrorView
-            } else {
-                throw LiveUIError(message: "Undefined field \(field)")
-            }
+            view = try findViewByFieldName(field, element)
         } else if let layoutId = element.layout.id {
             name = "named_\(layoutId)"
-            view = try element.initialize()
+            view = try element.initialize(context: workerContext)
         } else {
             name = "temp_\(type(of: element))_\(UUID().uuidString)"
-            view = try element.initialize()
+            view = try element.initialize(context: workerContext)
         }
 
-        for property in try (commonStyles + definition.styles).resolveStyle(for: element) {
-            let propertyContext = PropertyContext(parentContext: componentContext, property: property)
+        for property in try resolveStyle(element) {
+            let propertyContext = PropertyContext(parentContext: parentContext, property: property)
             try property.apply(on: view, context: propertyContext)
         }
 
@@ -95,7 +59,9 @@ public class ReactantLiveUIApplier {
             view.applierTag = "applier-generated-view"
         }
 
-        containedIn.add(subview: view, toInstanceOfSelf: superview)
+        if let superview = superview, let containedIn = containedIn {
+            containedIn.add(subview: view, toInstanceOfSelf: superview)
+        }
 
         if let container = element as? UIContainer {
             // remove views that were previously created by applier
@@ -115,11 +81,12 @@ public class ReactantLiveUIApplier {
         }
     }
 
-    private func applyConstraints(views: [(name: String, element: UIElement, view: UIView)], element: UIElement, superview: UIView) throws {
+    func applyConstraints(views: [ViewTuple], element: UIElement, superview: UIView) throws -> [SnapKit.Constraint] {
         let elementType = type(of: element)
-        guard let name = views.first(where: { $0.element === element })?.name else {
+        guard let viewTuple = views.first(where: { $0.element === element }) else {
             fatalError("Inconsistency of name-element-view triples occured")
         }
+        let name = viewTuple.name
 
         guard let view = findView(named: name, in: views) else {
             throw LiveUIError(message: "Couldn't find view with name \(name) in view hierarchy")
@@ -151,6 +118,7 @@ public class ReactantLiveUIApplier {
 
         var error: LiveUIError?
 
+        var appliedConstraints = [] as [SnapKit.Constraint]
         view.snp.makeConstraints { make in
             let traits = UITraitHelper(for: view)
 
@@ -217,6 +185,8 @@ public class ReactantLiveUIApplier {
                         } else {
                             targetView = superview.fallback_safeAreaLayoutGuide.snp
                         }
+                    case .readableContentGuide:
+                        targetView = superview.readableContentGuide.snp
                     }
 
                     if targetDefinition.targetAnchor != constraint.anchor {
@@ -301,10 +271,73 @@ public class ReactantLiveUIApplier {
         }
 
         if let container = element as? UIContainer {
-            try container.children.forEach { try applyConstraints(views: views, element: $0, superview: view) }
+            appliedConstraints.append(contentsOf: try container.children.flatMap { try applyConstraints(views: views, element: $0, superview: view) })
         }
+
+        return appliedConstraints
+    }
+}
+
+public class ReactantLiveUIApplier {
+    private let workerContext: ReactantLiveUIWorker.Context
+
+    private var appliedConstraints: [SnapKit.Constraint] = []
+
+    public init(workerContext: ReactantLiveUIWorker.Context) {
+        self.workerContext = workerContext
     }
 
+    public func apply(context: ComponentContext, commonStyles: [Style], view instance: UIView, setConstraint: @escaping (String, SnapKit.Constraint) -> Bool) throws {
+        let definition = context.component
+        func findViewByFieldName(field: String, element: UIElement) throws -> UIView {
+            let view: UIView
+            if instance is Anonymous {
+                view = (try? element.initialize(context: workerContext)) ?? UIView()
+                instance.setValue(view, forUndefinedKey: field)
+            } else if instance.responds(to: Selector("\(field)")) {
+                guard let targetView = instance.value(forKey: field) as? UIView else {
+                    throw LiveUIError(message: "Undefined field \(field)")
+                }
+                view = targetView
+            } else if let mirrorView = Mirror(reflecting: instance).children.first(where: { $0.label == field })?.value as? UIView {
+                view = mirrorView
+            } else {
+                throw LiveUIError(message: "Undefined field \(field)")
+            }
+            return view
+        }
+
+        func resolveStyle(element: UIElement) throws -> [Property] {
+            return try (commonStyles + context.component.styles).resolveStyle(for: element)
+        }
+
+        let viewApplier = ReactantLiveUIViewApplier(
+            workerContext: workerContext,
+            parentContext: context,
+            findViewByFieldName: findViewByFieldName,
+            resolveStyle: resolveStyle,
+            setConstraint: setConstraint
+        )
+
+        instance.subviews.forEach { $0.removeFromSuperview() }
+        for constraint in appliedConstraints {
+            constraint.deactivate()
+        }
+        appliedConstraints = []
+
+        for property in definition.properties {
+            let propertyContext = PropertyContext(parentContext: context, property: property)
+            try property.apply(on: instance, context: propertyContext)
+        }
+
+        let views = try definition.children.flatMap {
+            try viewApplier.apply(element: $0, superview: instance, containedIn: definition)
+        }
+
+        appliedConstraints = try definition.children.flatMap { element in
+            try viewApplier.applyConstraints(views: views, element: element, superview: instance)
+        }
+    }
 }
 
 extension UIView {

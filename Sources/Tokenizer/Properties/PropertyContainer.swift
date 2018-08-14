@@ -24,8 +24,8 @@ public extension Array where Element == PropertyContainer.Namespace {
 
 public class PropertyContainer {
     public struct Namespace {
-        let name: String
-        let isOptional: Bool
+        public let name: String
+        public let isOptional: Bool
     }
     
     public final class Configuration {

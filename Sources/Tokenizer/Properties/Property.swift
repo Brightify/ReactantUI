@@ -10,12 +10,15 @@
 import UIKit
 #endif
 
+/**
+ * Base protocol for UI element properties.
+ */
 public protocol Property {
-    var name: String { get }
+    var name: String { get set }
     
     var attributeName: String { get }
     
-    var namespace: [PropertyContainer.Namespace] { get }
+    var namespace: [PropertyContainer.Namespace] { get set }
 
     var anyValue: SupportedPropertyType { get }
 

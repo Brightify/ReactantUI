@@ -24,7 +24,7 @@ extension XSDAttribute: Equatable, Hashable {
 }
 
 extension XSDAttribute: XMLElementSerializable {
-    func serialize() -> XMLSerializableElement {
+    func serialize(context: DataContext) -> XMLSerializableElement {
         return XMLSerializableElement(name: "xs:attribute",
                             attributes: [XMLSerializableAttribute(name: "name", value: name),
                                          XMLSerializableAttribute(name: "type", value: typeName)],

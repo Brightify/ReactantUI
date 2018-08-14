@@ -12,6 +12,11 @@ import Reactant
 import RxSwift
 import RxCocoa
 
+public enum WorkerSelection {
+    case all
+    case worker(ReactantLiveUIWorker)
+}
+
 /**
  * A class to be used as singleton - `ReactantLiveUIManager.shared`.
  *
@@ -20,38 +25,7 @@ import RxCocoa
 public class ReactantLiveUIManager {
     /// Shared instance of the `ReactantLiveUIManager`.
     public static let shared = ReactantLiveUIManager()
-
-    private var configuration: ReactantLiveUIConfiguration?
-    private var watchers: [String: (watcher: Watcher, viewCount: Int)] = [:]
-    private var styleWatchers: [String: Watcher] = [:]
-    private var extendedEdges: [String: UIRectEdge] = [:]
-    private var runtimeDefinitions: [String: String] = [:]
-    private var definitions: [String: (definition: ComponentDefinition, loaded: Date, xmlPath: String)] = [:] {
-        didSet {
-            definitionsSubject.onNext(definitions)
-        }
-    }
-    private let forceReapplyTrigger = PublishSubject<AnyObject>()
-    private let definitionsSubject = ReplaySubject<[String: (definition: ComponentDefinition, loaded: Date, xmlPath: String)]>.create(bufferSize: 1)
-
-    /// Closure to be called right after applying new constraints to Live UI.
-    public var onApplied: ((ComponentDefinition, UIView) -> Void)?
-
-    private var globalContext: GlobalContext = GlobalContext(styleSheets: [])
-
-    private var styles: [String: StyleGroup] = [:] {
-        didSet {
-            resetErrors()
-            let now = Date()
-            var definitionsCopy = definitions
-            for key in definitionsCopy.keys {
-                definitionsCopy[key]?.loaded = now
-            }
-            definitions = definitionsCopy
-
-            globalContext = GlobalContext(styleSheetDictionary: self.styles)
-        }
-    }
+    private(set) var workers = Set<ReactantLiveUIWorker>()
 
     private let errorView = LiveUIErrorMessage().with(state: [:])
     private let disposeBag = DisposeBag()
@@ -62,258 +36,82 @@ public class ReactantLiveUIManager {
         errorView.action
             .filter { $0 == .dismiss }
             .subscribe(onNext: { [weak self] _ in
-                self?.resetErrors()
+                guard let `self` = self else { return }
+                for worker in self.workers {
+                    worker.resetErrors()
+                }
             })
             .disposed(by: disposeBag)
     }
 
-    public var commonStyles: [Style] {
-        return styles.values.flatMap { $0.styles }
-    }
+    /// Activates a worker and makes him ready for use.
+    public func activate(in window: UIWindow, worker: ReactantLiveUIWorker) {
+        workers.insert(worker)
 
-    var allRegisteredDefinitionNames: [String] {
-        let configurationNames: Set<String>
-        if let configuration = configuration {
-            configurationNames = Set(configuration.componentTypes.keys)
-        } else {
-            configurationNames = []
-        }
-        return configurationNames.union(runtimeDefinitions.keys).sorted()
-    }
-
-    /// Prepares the manager for use.
-    public func activate(in window: UIWindow, configuration: ReactantLiveUIConfiguration) {
-        self.configuration = configuration
-        self.activeWindow = window
         errorView.removeFromSuperview()
         errorView.translatesAutoresizingMaskIntoConstraints = true
         window.addSubview(errorView)
         errorView.frame = window.bounds
 
-        loadStyles(configuration.commonStylePaths)
-    }
+        worker.activate()
 
-    /**
-     * Method for checking view's extendedEdges field as `UIRectEdge`.
-     * - parameter view: `ReactantUI` view to be checked.
-     * - returns: `UIRectEdge` (can be empty if no edges are found)
-     */
-    public func extendedEdges<UI: UIView>(of view: UI) -> UIRectEdge where UI: ReactantUI {
-        return extendedEdges[view.__rui.xmlPath] ?? []
-    }
-
-    /// Provided the root directory is set, it reloads the component definitions from all `ui.xml` files, including subfolders.
-    public func reloadFiles() {
-        guard let rootDir = configuration?.rootDir else { return }
-        guard let enumerator = FileManager.default.enumerator(atPath: rootDir) else { return }
-        for file in enumerator {
-            guard let fileName = file as? String, fileName.hasSuffix(".ui.xml") else { continue }
-            let path = rootDir + "/" + fileName
-            if let configuration = configuration, configuration.componentTypes.keys.contains(path) { continue }
-            do {
-                let definitions = try self.definitions(in: path)
-                for definition in definitions {
-                    runtimeDefinitions[definition.type] = path
-                }
-            } catch let error {
-                logError(error, in: path)
-            }
-        }
-    }
-
-    /**
-     * Presents the passed controller.
-     * - parameter controller: `UIViewController` to be presented
-     */
-    public func presentPreview(in controller: UIViewController) {
-        let navigation = UINavigationController()
-        let dependencies = PreviewListController.Dependencies(manager: self)
-        let reactions = PreviewListController.Reactions(
-            preview: { name in
-                navigation.push(controller: self.preview(for: name))
-            },
-            close: {
-                navigation.dismiss(animated: true)
+        worker.updateObservable
+            .subscribe(onNext: { [weak self] in
+                guard let `self` = self else { return }
+                self.activeWindow?.topViewController()?.updateViewConstraints()
             })
-        let previewList = PreviewListController(dependencies: dependencies, reactions: reactions)
-        navigation.push(controller: previewList)
-        controller.present(controller: navigation)
-    }
+            .disposed(by: disposeBag)
 
-    private func preview(for name: String) -> PreviewController {
-        let parameters = PreviewController.Parameters(
-            typeName: name,
-            // FIXME handle possible errors
-            view: try! componentInstantiation(named: name)())
-        return PreviewController(parameters: parameters)
-
-    }
-
-    private func definitions(in file: String) throws -> [ComponentDefinition] {
-        let url = URL(fileURLWithPath: file)
-        guard let data = try? Data(contentsOf: url, options: .uncached) else {
-            throw LiveUIError(message: "ERROR: file not found")
-        }
-        let xml = SWXMLHash.parse(data)
-
-        guard let node = xml["Component"].element else { throw LiveUIError(message: "ERROR: Node is not Component") }
-        var rootDefinition: ComponentDefinition
-
-        if let type: String = xml["Component"].value(ofAttribute: "type") {
-            rootDefinition = try ComponentDefinition(node: node, type: type)
-        } else {
-            rootDefinition = try ComponentDefinition(node: node, type: componentType(from: file))
-        }
-
-        if rootDefinition.isRootView {
-            extendedEdges[file] = rootDefinition.edgesForExtendedLayout.resolveUnion()
-        } else {
-            extendedEdges.removeValue(forKey: file)
-        }
-
-        return rootDefinition.componentDefinitions
-    }
-
-    private func registerDefinitions(in file: String) throws {
-        let definitions = try self.definitions(in: file)
-        register(definitions: definitions, in: file)
-    }
-
-    internal func type(named name: String) -> UIView.Type? {
-        return configuration?.componentTypes[name]
-    }
-
-    internal func componentInstantiation(named name: String) throws -> () -> UIView {
-        if let precompiledType = configuration?.componentTypes[name] {
-            return precompiledType.init
-        } else if let definition = definitions[name] {
-            return {
-                AnonymousComponent(typeName: definition.definition.type, xmlPath: definition.xmlPath)
-            }
-        } else {
-            throw TokenizationError(message: "Couldn't find type mapping for \(name)")
-        }
-    }
-
-    internal func observeDefinition(for type: String) -> Observable<ComponentDefinition> {
-        return definitionsSubject.map { $0[type] }
-            .distinctUntilChanged { $0?.loaded == $1?.loaded }
-            .filter { $0 != nil }.map { $0!.definition }
-
-    }
-
-    /**
-     * Method for registering a new view to Watchlist. It will get updated as its `ui.xml` file changes.
-     * - parameter view: `ReactantUI` view to be registered
-     * - parameter setConstraint: Closure to be called when constraining the view
-     */
-    public func register<UI: UIView>(_ view: UI, setConstraint: @escaping (String, SnapKit.Constraint) -> Bool = { _, _ in false }) where UI: ReactantUI {
-        let xmlPath = view.__rui.xmlPath
-        if !watchers.keys.contains(xmlPath) {
-            let watcher: Watcher
-            do {
-                watcher = try Watcher(path: xmlPath)
-            } catch let error {
-                logError(error, in: xmlPath)
-                return
-            }
-
-            watchers[xmlPath] = (watcher: watcher, viewCount: 1)
-
-            watcher.watch()
-                .startWith(xmlPath)
-                .subscribe(onNext: { path in
-                    self.resetError(for: path)
-                    do {
-                        try self.registerDefinitions(in: path)
-
-                        self.activeWindow?.topViewController()?.updateViewConstraints()
-                    } catch let error {
-                        self.logError(error, in: path)
-                    }
-                })
-                .disposed(by: disposeBag)
-
-
-        } else {
-            watchers[xmlPath]?.viewCount += 1
-        }
-        let reapplyTrigger = forceReapplyTrigger.filter { $0 === view }
-        observeDefinition(for: view.__rui.typeName)
-            .flatMapLatest {
-                Observable.concat(.just($0), reapplyTrigger.rewrite(with: $0))
-            }
-            .observeOn(MainScheduler.instance)
-            .takeUntil((view as UIView).rx.deallocated)
-            .subscribe(onNext: { [weak view] definition in
-                guard let view = view else { return }
-                do {
-                    try self.apply(definition: definition, view: view, setConstraint: setConstraint)
-                } catch let error {
-                    self.logError(error, in: xmlPath)
-                }
+        worker.errorsObservable
+            .subscribe(onNext: { [weak self] errors in
+                guard let `self` = self else { return }
+                self.errorView.componentState = Dictionary(keyValueTuples: errors.map { ($0.path, $0.message) })
             })
             .disposed(by: disposeBag)
     }
 
-    public func reapply<UI: UIView>(_ view: UI) where UI: ReactantUI {
-        forceReapplyTrigger.onNext(view)
+    /// Provided the root directory is set, it reloads the component definitions from all `ui.xml` files, including subfolders for a bundle.
+    public func reloadFiles(for bundle: Bundle) {
+        guard let worker = workers.first(where: { $0.configuration.resourceBundle == bundle }) else { return }
+        worker.reloadFiles()
     }
 
-    /**
-     * Method used to unregister a view from Watchlist.
-     * - parameter ui: `ReactantUI` view to be unregistered
-     */
-    public func unregister<UI: UIView>(_ ui: UI) where UI: ReactantUI {
-        let xmlPath = ui.__rui.xmlPath
-        guard let watcher = watchers[xmlPath] else {
-            logError("ERROR: attempting to remove not registered UI", in: xmlPath)
-            return
-        }
-        if watcher.viewCount == 1 {
-            watchers.removeValue(forKey: xmlPath)
-        } else {
-            watchers[xmlPath]?.viewCount -= 1
-        }
+    /// Provided the root directory is set, it reloads the component definitions from all `ui.xml` files, including subfolders.
+    public func reloadFiles() {
+        workers.forEach { $0.reloadFiles() }
     }
 
-    private func loadStyles(_ stylePaths: [String]) {
-        for path in stylePaths {
-            if styleWatchers.keys.contains(path) == false {
-
-            let watcher: Watcher
-            do {
-                watcher = try Watcher(path: path)
-            } catch let error {
-                logError(error, in: path)
-                return
-            }
-
-            watcher
-                .watch()
-                .startWith(path)
-                .subscribe(onNext: { path in
-                    self.resetError(for: path)
-                    let url = URL(fileURLWithPath: path)
-                    guard let data = try? Data(contentsOf: url, options: .uncached) else {
-                        self.logError("ERROR: file not found", in: path)
-                        return
-                    }
-                    let xml = SWXMLHash.parse(data)
-                    do {
-                        var oldStyles = self.styles
-                        let group: StyleGroup = try xml["styleGroup"].value()
-                        oldStyles[group.name] = group
-                        self.styles = oldStyles
-                    } catch let error {
-                        self.logError(error, in: path)
-                    }
-                })
-                .disposed(by: disposeBag)
-
-                styleWatchers[path] = watcher
-            }
+    public func presentWorkerSelection(in controller: UIViewController, allowAll: Bool = false, handler: @escaping (WorkerSelection) -> Void) {
+        let alertController = UIAlertController(title: "Select worker", message: nil, preferredStyle: .alert)
+        if allowAll {
+            let allWorkersAction = UIAlertAction(title: "All bundles", style: .default) { _ in handler(.all) }
+            alertController.addAction(allWorkersAction)
         }
+
+        let sortedWorkers = workers.sorted {
+            guard $0.configuration.resourceBundle != Bundle.main else { return true }
+            guard let bundle1Name = $0.configuration.resourceBundle.displayName,
+                let bundle2Name = $1.configuration.resourceBundle.displayName
+                else { return false }
+            return bundle1Name < bundle2Name
+        }
+        for worker in sortedWorkers {
+            let bundleName = worker.configuration.resourceBundle.displayName ??
+                (worker.configuration.resourceBundle.bundlePath as NSString).lastPathComponent.components(separatedBy: ".")[0]
+            let actionTitle: String
+            if worker.configuration.resourceBundle == Bundle.main {
+                actionTitle = "\(bundleName) (main)"
+            } else {
+                actionTitle = bundleName
+            }
+            let workerAction = UIAlertAction(title: actionTitle, style: .default) { _ in handler(.worker(worker)) }
+            alertController.addAction(workerAction)
+        }
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in }
+        alertController.addAction(cancelAction)
+
+        controller.present(controller: alertController)
     }
 
     /**
@@ -324,9 +122,15 @@ public class ReactantLiveUIManager {
         errorView.componentState.removeValue(forKey: path)
     }
 
+    /// Removes all errors for all paths for a bundle.
+    public func resetErrors(for bundle: Bundle) {
+        guard let worker = workers.first(where: { $0.configuration.resourceBundle == bundle }) else { return }
+        worker.resetErrors()
+    }
+
     /// Removes all errors for all paths.
     public func resetErrors() {
-        errorView.componentState.removeAll()
+        workers.forEach { $0.resetErrors() }
     }
 
     /**
@@ -351,6 +155,8 @@ public class ReactantLiveUIManager {
             case .unexpectedToken(let unexpectedToken):
                 logError("Unexpected token `\(unexpectedToken)` encountered while parsing constraints", in: path)
             }
+        case let wrappedError as ReactantLiveUIWorker.ErrorWrapper:
+            logError(wrappedError.error, in: wrappedError.path)
         default:
             logError(error.localizedDescription, in: path)
         }
@@ -369,22 +175,6 @@ public class ReactantLiveUIManager {
             errorView.componentState[path] = error
         } else {
             errorView.componentState.removeValue(forKey: path)
-        }
-    }
-
-    private func register(definitions: [ComponentDefinition], in file: String) {
-        var currentDefinitions = self.definitions
-        for definition in definitions {
-            currentDefinitions[definition.type] = (definition, Date(), file)
-        }
-        self.definitions = currentDefinitions
-    }
-
-    private func apply(definition: ComponentDefinition, view: UIView, setConstraint: @escaping (String, SnapKit.Constraint) -> Bool) throws {
-        let componentContext = ComponentContext(globalContext: globalContext, component: definition)
-        try ReactantLiveUIApplier(context: componentContext, commonStyles: commonStyles, instance: view, setConstraint: setConstraint, onApplied: onApplied).apply()
-        if let invalidable = view as? Invalidable {
-            invalidable.invalidate()
         }
     }
 }

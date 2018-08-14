@@ -6,6 +6,9 @@
 //  Copyright © 2017 Brightify. All rights reserved.
 //
 
+/**
+ * UI element types that have their representative type along with all the necessary conformations and implementation.
+ */
 public struct ElementMapping {
     public static let mapping: [String: View.Type] = [
         "View": View.self,

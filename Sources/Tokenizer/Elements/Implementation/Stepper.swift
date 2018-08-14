@@ -26,7 +26,7 @@ public class Stepper: View {
     }
 
     #if canImport(UIKit)
-    public override func initialize() throws -> UIView {
+    public override func initialize(context: ReactantLiveUIWorker.Context) throws -> UIView {
         #if os(tvOS)
             throw TokenizationError.unsupportedElementError(element: Stepper.self)
         #else

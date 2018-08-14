@@ -19,8 +19,8 @@ extension Double: AttributeSupportedPropertyType {
     #endif
 
     #if SanAndreas
-    public func dematerialize() -> String {
-        return generated
+    public func dematerialize(context: SupportedPropertyTypeContext) -> String {
+        return generate(context: context)
     }
     #endif
 
@@ -30,6 +30,8 @@ extension Double: AttributeSupportedPropertyType {
         }
         return materialized
     }
+
+    public static var runtimeType: String = "Double"
 
     public static var xsdType: XSDType {
         return .builtin(.decimal)

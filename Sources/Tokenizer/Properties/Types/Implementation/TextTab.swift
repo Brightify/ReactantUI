@@ -32,9 +32,9 @@ public struct TextTab: AttributeSupportedPropertyType {
     }
 
     #if SanAndreas
-    public func dematerialize() -> String {
+    public func dematerialize(context: SupportedPropertyTypeContext) -> String {
         // TODO: format - "center@4"
-        return ""
+        fatalError("Implement me!")
     }
     #endif
 

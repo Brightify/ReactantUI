@@ -13,13 +13,7 @@ public enum TableViewCellSeparatorInsetReference: String, EnumPropertyType, Attr
     case fromCellEdges
     case fromAutomaticInsets
 
-    static var allValues: [TableViewCellSeparatorInsetReference] = [.fromCellEdges, .fromAutomaticInsets]
-
-    public static var xsdType: XSDType {
-        let values = Set(TableViewCellSeparatorInsetReference.allValues.map { $0.rawValue })
-
-        return .enumeration(EnumerationXSDType(name: TableViewCellSeparatorInsetReference.enumName, base: .string, values: values))
-    }
+    public static let allValues: [TableViewCellSeparatorInsetReference] = [.fromCellEdges, .fromAutomaticInsets]
 }
 
 #if canImport(UIKit)
