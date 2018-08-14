@@ -19,7 +19,7 @@ public extension ReactantThemeDefinition where Self: RawRepresentable, Self.RawV
 
 public class ReactantThemeSelector<THEME: ReactantThemeDefinition> where THEME: Equatable {
     public typealias Listener = (THEME) -> Void
-    fileprivate enum ListenerKey: Hashable {
+    internal enum ListenerKey: Hashable {
         case object(ObjectIdentifier)
         case uuid(UUID)
     }
@@ -27,7 +27,7 @@ public class ReactantThemeSelector<THEME: ReactantThemeDefinition> where THEME: 
         private let key: ListenerKey
         private let cancelation: () -> Void
 
-        fileprivate init(key: ListenerKey, cancel: @escaping () -> Void) {
+        internal init(key: ListenerKey, cancel: @escaping () -> Void) {
             self.key = key
             self.cancelation = cancel
         }

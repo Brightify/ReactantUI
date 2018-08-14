@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1814E6B5212232F000957367 /* ReactantLiveUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18448FAC2092041B0080B743 /* ReactantLiveUI.framework */; };
+		1814E6B6212232F000957367 /* ReactantLiveUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 18448FAC2092041B0080B743 /* ReactantLiveUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1814E6B9212232F000957367 /* ReactantUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689FA0CC209CD7B000B39225 /* ReactantUI.framework */; };
+		1814E6BA212232F000957367 /* ReactantUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 689FA0CC209CD7B000B39225 /* ReactantUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		182B688D1EAF7641007CC668 /* ATest.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 182B687D1EAF7641007CC668 /* ATest.ui.xml */; };
 		182B688E1EAF7641007CC668 /* CommonStyles.styles.xml in Resources */ = {isa = PBXBuildFile; fileRef = 182B687E1EAF7641007CC668 /* CommonStyles.styles.xml */; };
 		182B688F1EAF7641007CC668 /* ExampleCell.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 182B687F1EAF7641007CC668 /* ExampleCell.ui.xml */; };
@@ -180,10 +184,7 @@
 		18449275209223A70080B743 /* XMLSerializableElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184491E7209223A70080B743 /* XMLSerializableElement.swift */; };
 		18449276209223A70080B743 /* XMLSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184491E8209223A70080B743 /* XMLSerializer.swift */; };
 		18449277209223A70080B743 /* XMLElement+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184491E9209223A70080B743 /* XMLElement+Utils.swift */; };
-		18449279209225BE0080B743 /* ReactantLiveUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 184492782092255A0080B743 /* ReactantLiveUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		1844928120922AE20080B743 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1844927C20922AE10080B743 /* Info.plist */; };
 		1844928220922AE20080B743 /* LabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1844927D20922AE10080B743 /* LabelTests.swift */; };
-		1844928320922AE20080B743 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1844927F20922AE10080B743 /* Info.plist */; };
 		1844928420922AE20080B743 /* Tokenizer_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1844928020922AE10080B743 /* Tokenizer_iOSTests.swift */; };
 		18758FE420D980FF004C6690 /* Example.hyperdrive.xml in Resources */ = {isa = PBXBuildFile; fileRef = 18758FE320D980FF004C6690 /* Example.hyperdrive.xml */; };
 		18758FE620D9BBB0004C6690 /* ReactantThemeSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18758FE520D9BBB0004C6690 /* ReactantThemeSelector.swift */; };
@@ -283,6 +284,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		1814E6B7212232F000957367 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 182B685D1EAF7530007CC668 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 18448FAB2092041B0080B743;
+			remoteInfo = "LiveUI-iOS";
+		};
+		1814E6BB212232F000957367 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 182B685D1EAF7530007CC668 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 689FA0CB209CD7B000B39225;
+			remoteInfo = ReactantUI;
+		};
 		18448FB62092041B0080B743 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 182B685D1EAF7530007CC668 /* Project object */;
@@ -314,6 +329,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		1814E6BD212232F000957367 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				1814E6BA212232F000957367 /* ReactantUI.framework in Embed Frameworks */,
+				1814E6B6212232F000957367 /* ReactantLiveUI.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		18448FA52091F5350080B743 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -511,7 +538,7 @@
 		184491E7209223A70080B743 /* XMLSerializableElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLSerializableElement.swift; sourceTree = "<group>"; };
 		184491E8209223A70080B743 /* XMLSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XMLSerializer.swift; sourceTree = "<group>"; };
 		184491E9209223A70080B743 /* XMLElement+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XMLElement+Utils.swift"; sourceTree = "<group>"; };
-		184492782092255A0080B743 /* ReactantLiveUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReactantLiveUI.h; sourceTree = "<group>"; };
+		184492782092255A0080B743 /* ReactantLiveUI-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ReactantLiveUI-Bridging-Header.h"; sourceTree = "<group>"; };
 		1844927C20922AE10080B743 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1844927D20922AE10080B743 /* LabelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelTests.swift; sourceTree = "<group>"; };
 		1844927F20922AE10080B743 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -647,7 +674,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1814E6B5212232F000957367 /* ReactantLiveUI.framework in Frameworks */,
 				BA1D32AF765F430AA225944F /* Pods_Example_tvOS.framework in Frameworks */,
+				1814E6B9212232F000957367 /* ReactantUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -743,7 +772,7 @@
 			children = (
 				68CA17BF20C9781B005654B0 /* Common */,
 				689FA0B6209CB29000B39225 /* Runtime */,
-				184492782092255A0080B743 /* ReactantLiveUI.h */,
+				184492782092255A0080B743 /* ReactantLiveUI-Bridging-Header.h */,
 				18449147209223A70080B743 /* Tokenizer */,
 				1844911820921F150080B743 /* Live */,
 			);
@@ -1413,7 +1442,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				18449279209225BE0080B743 /* ReactantLiveUI.h in Headers */,
 				1844914320921F150080B743 /* RUIExceptionCatcher.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1457,9 +1485,9 @@
 			buildConfigurationList = 18448FC32092041B0080B743 /* Build configuration list for PBXNativeTarget "LiveUI-iOS" */;
 			buildPhases = (
 				423FA0CC4E936AFF372262FF /* [CP] Check Pods Manifest.lock */,
+				18448FA92092041B0080B743 /* Headers */,
 				18448FA72092041B0080B743 /* Sources */,
 				18448FA82092041B0080B743 /* Frameworks */,
-				18448FA92092041B0080B743 /* Headers */,
 				18448FAA2092041B0080B743 /* Resources */,
 			);
 			buildRules = (
@@ -1502,10 +1530,13 @@
 				2284DAD61FAC855E00D231D3 /* Frameworks */,
 				2284DAD71FAC855E00D231D3 /* Resources */,
 				D0B222E610B405469097B9A5 /* [CP] Embed Pods Frameworks */,
+				1814E6BD212232F000957367 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				1814E6B8212232F000957367 /* PBXTargetDependency */,
+				1814E6BC212232F000957367 /* PBXTargetDependency */,
 			);
 			name = "Example-tvOS";
 			productName = "Example-tvOS";
@@ -1537,7 +1568,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0920;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1000;
 				TargetAttributes = {
 					182B68661EAF7589007CC668 = {
 						CreatedOnToolsVersion = 8.3.1;
@@ -1546,6 +1577,7 @@
 					};
 					18448FAB2092041B0080B743 = {
 						CreatedOnToolsVersion = 9.2;
+						DevelopmentTeam = Z4J75M6GAC;
 						ProvisioningStyle = Automatic;
 					};
 					18448FB32092041B0080B743 = {
@@ -1561,6 +1593,7 @@
 					};
 					689FA0CB209CD7B000B39225 = {
 						CreatedOnToolsVersion = 9.3;
+						DevelopmentTeam = Z4J75M6GAC;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -1621,8 +1654,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1844928320922AE20080B743 /* Info.plist in Resources */,
-				1844928120922AE20080B743 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1701,7 +1732,6 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-Example/Pods-Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Differentiator-iOS/Differentiator.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher-iOS/Kingfisher.framework",
-				"${BUILT_PRODUCTS_DIR}/Reactant-iOS/Reactant.framework",
 				"${BUILT_PRODUCTS_DIR}/Result-iOS/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa-iOS/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxDataSources-iOS/RxDataSources.framework",
@@ -1713,7 +1743,6 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differentiator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reactant.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxDataSources.framework",
@@ -1789,19 +1818,25 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-Example-tvOS/Pods-Example-tvOS-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Differentiator-tvOS/Differentiator.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher-tvOS/Kingfisher.framework",
-				"${BUILT_PRODUCTS_DIR}/Reactant-tvOS/Reactant.framework",
 				"${BUILT_PRODUCTS_DIR}/Result-tvOS/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa-tvOS/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxDataSources-tvOS/RxDataSources.framework",
 				"${BUILT_PRODUCTS_DIR}/RxOptional-tvOS/RxOptional.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift-tvOS/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit-tvOS/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Differentiator-iOS/Differentiator.framework",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher-iOS/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/Result-iOS/Result.framework",
+				"${BUILT_PRODUCTS_DIR}/RxCocoa-iOS/RxCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/RxDataSources-iOS/RxDataSources.framework",
+				"${BUILT_PRODUCTS_DIR}/RxOptional-iOS/RxOptional.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift-iOS/RxSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit-iOS/SnapKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differentiator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reactant.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxDataSources.framework",
@@ -1823,7 +1858,6 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests/Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Differentiator-iOS/Differentiator.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher-iOS/Kingfisher.framework",
-				"${BUILT_PRODUCTS_DIR}/Reactant-iOS/Reactant.framework",
 				"${BUILT_PRODUCTS_DIR}/Result-iOS/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa-iOS/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxDataSources-iOS/RxDataSources.framework",
@@ -1841,7 +1875,6 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differentiator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reactant.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxDataSources.framework",
@@ -2141,6 +2174,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		1814E6B8212232F000957367 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 18448FAB2092041B0080B743 /* LiveUI-iOS */;
+			targetProxy = 1814E6B7212232F000957367 /* PBXContainerItemProxy */;
+		};
+		1814E6BC212232F000957367 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 689FA0CB209CD7B000B39225 /* ReactantUI */;
+			targetProxy = 1814E6BB212232F000957367 /* PBXContainerItemProxy */;
+		};
 		18448FB72092041B0080B743 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 18448FAB2092041B0080B743 /* LiveUI-iOS */;
@@ -2213,6 +2256,8 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
@@ -2245,6 +2290,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
@@ -2306,7 +2352,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2361,7 +2406,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -2383,14 +2427,14 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = Z4J75M6GAC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -2413,11 +2457,12 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG ReactantRuntime";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Sources/ReactantLiveUI-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USE_HEADERMAP = NO;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -2438,14 +2483,14 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = Z4J75M6GAC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -2463,11 +2508,12 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = ReactantRuntime;
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Sources/ReactantLiveUI-Bridging-Header.h";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "$(SWIFT_MODULE_NAME)-Swift.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				USE_HEADERMAP = NO;
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -2512,7 +2558,6 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example.app/Example";
@@ -2551,7 +2596,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Example.app/Example";
@@ -2563,6 +2607,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 56598844EFA13DD7B4A3302A /* Pods-Example-tvOS.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -2619,7 +2664,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 11.0;
@@ -2630,6 +2674,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5F1124193368C79B42B1596B /* Pods-Example-tvOS.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -2678,7 +2723,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.brightify.Example-tvOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 11.0;
@@ -2701,14 +2745,14 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = Z4J75M6GAC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -2731,7 +2775,6 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2754,14 +2797,14 @@
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = Z4J75M6GAC;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -2778,7 +2821,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
