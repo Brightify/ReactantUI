@@ -180,6 +180,8 @@ public class ReactantLiveUIViewApplier {
                         } else {
                             targetView = superview.fallback_safeAreaLayoutGuide.snp
                         }
+                    case .readableContentGuide:
+                        targetView = superview.readableContentGuide.snp
                     }
 
                     if targetDefinition.targetAnchor != constraint.anchor {

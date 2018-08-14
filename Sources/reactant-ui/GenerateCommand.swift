@@ -20,6 +20,7 @@ public enum GenerateCommandError: Error, LocalizedError {
     case tokenizationError(path: String, error: Error)
     case invalidSwiftVersion
     case themedItemNotFound(theme: String, item: String)
+    case invalidAccessModifier
 
     public var localizedDescription: String {
         switch self {
@@ -41,6 +42,8 @@ public enum GenerateCommandError: Error, LocalizedError {
             return "Invalid Swift version"
         case .themedItemNotFound(let theme, let item):
             return "Missing item `\(item) in theme \(theme)."
+        case .invalidAccessModifier:
+            return "Invalid access modifier"
         }
     }
 
@@ -63,6 +66,8 @@ class GenerateCommand: Command {
     let outputFile = Key<String>("--outputFile")
     let applicationDescriptionFile = Key<String>("--description", description: "Path to an XML file with Application Description.")
     let swiftVersionParameter = Key<String>("--swift")
+    let defaultAccessModifier = Key<String>("--defaultAccessModifier")
+    let generateDisposableHelper = Flag("--generate-disposable-helper")
 
     public func execute() throws {
         var output: [String] = []
@@ -78,6 +83,11 @@ class GenerateCommand: Command {
         let rawSwiftVersion = swiftVersionParameter.value ?? "4.1" // use 4.1 as default
         guard let swiftVersion = SwiftVersion(raw: rawSwiftVersion) else {
             throw GenerateCommandError.invalidSwiftVersion
+        }
+
+        let rawModifier = defaultAccessModifier.value ?? AccessModifier.internal.rawValue
+        guard let accessModifier = AccessModifier(rawValue: rawModifier) else {
+            throw GenerateCommandError.invalidAccessModifier
         }
 
         // ApplicationDescription is not required. We can work with default values and it makes it backward compatible.
@@ -123,7 +133,8 @@ class GenerateCommand: Command {
             let configuration = GeneratorConfiguration(minimumMajorVersion: minimumDeploymentTarget,
                                                        localXmlPath: path,
                                                        isLiveEnabled: enableLive.value,
-                                                       swiftVersion: swiftVersion)
+                                                       swiftVersion: swiftVersion,
+                                                       defaultModifier: accessModifier)
             let styleContext = StyleGroupContext(globalContext: globalContext, group: group)
             output.append(try StyleGenerator(context: styleContext, configuration: configuration).generate(imports: index == 0))
         }
@@ -174,7 +185,11 @@ class GenerateCommand: Command {
 
         for (path, rootDefinition) in componentDefinitions {
             output.append("// Generated from \(path)")
-            let configuration = GeneratorConfiguration(minimumMajorVersion: minimumDeploymentTarget, localXmlPath: path, isLiveEnabled: enableLive.value, swiftVersion: swiftVersion)
+            let configuration = GeneratorConfiguration(minimumMajorVersion: minimumDeploymentTarget,
+                                                       localXmlPath: path,
+                                                       isLiveEnabled: enableLive.value,
+                                                       swiftVersion: swiftVersion,
+                                                       defaultModifier: accessModifier)
             for definition in rootDefinition.componentDefinitions {
                 let componentContext = ComponentContext(globalContext: globalContext, component: definition)
                 output.append(try UIGenerator(componentContext: componentContext, configuration: configuration).generate(imports: false))
@@ -275,7 +290,7 @@ class GenerateCommand: Command {
 
         let rxSwiftShim: String
         // canImport is only available from 4.1 and above
-        if swiftVersion >= .swift4_1 {
+        if swiftVersion >= .swift4_1 && generateDisposableHelper.value {
             rxSwiftShim = """
             #if canImport(RxSwift)
             import RxSwift

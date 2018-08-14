@@ -116,6 +116,8 @@ class ConstraintParser: BaseParser<Constraint> {
             return .this
         } else if identifier == "safeAreaLayoutGuide" {
             return .safeAreaLayoutGuide
+        } else if identifier == "readableContentGuide" {
+            return .readableContentGuide
         } else {
             return .field(identifier)
         }

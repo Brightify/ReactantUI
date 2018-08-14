@@ -5,6 +5,7 @@
     xsi:schemaLocation="http://schema.reactant.tech/ui ../../../../Schema/ui.xsd
                         http://schema.reactant.tech/layout http://schema.reactant.tech/layout.xsd"
     type="ExampleView2"
+    accessModifier="public"
     backgroundColor="theme.overlayBackground">
 <!--    <styles>-->
 <!--        <style type="UILabel">-->

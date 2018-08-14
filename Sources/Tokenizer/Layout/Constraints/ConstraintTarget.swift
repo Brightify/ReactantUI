@@ -13,6 +13,7 @@ public enum ConstraintTarget {
     case parent
     case this
     case safeAreaLayoutGuide
+    case readableContentGuide
 }
 
 extension ConstraintTarget: Equatable {
@@ -22,7 +23,7 @@ extension ConstraintTarget: Equatable {
             return lhsField == rhsField
         case (.layoutId(let lhsId), .layoutId(let rhsId)):
             return lhsId == rhsId
-        case (.parent, .parent), (.this, .this), (.safeAreaLayoutGuide, .safeAreaLayoutGuide):
+        case (.parent, .parent), (.this, .this), (.safeAreaLayoutGuide, .safeAreaLayoutGuide), (.readableContentGuide, .readableContentGuide):
             return true
         default:
             return false
