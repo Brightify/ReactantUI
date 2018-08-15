@@ -11,7 +11,9 @@ PODS:
   - Reactant (1.2.0):
     - Reactant/Core (= 1.2.0)
     - Reactant/Result (= 1.2.0)
-  - Reactant/Configuration (1.2.0)
+  - Reactant/Configuration (1.2.0):
+    - RxSwift (~> 4.0)
+    - SnapKit (~> 4.0)
   - Reactant/Core (1.2.0):
     - Reactant/Configuration
     - RxCocoa (~> 4.0)

@@ -58,6 +58,14 @@ public class TextFieldProperties: ControlProperties {
     public let keyboardAppearance: AssignablePropertyDescription<KeyboardAppearance>
     public let contentType: AssignablePropertyDescription<TextContentType>
     public let returnKey: AssignablePropertyDescription<ReturnKeyType>
+
+    public let enablesReturnKeyAutomatically: AssignablePropertyDescription<Bool>
+    public let autocapitalizationType: AssignablePropertyDescription<AutocapitalizationType>
+    public let autocorrectionType: AssignablePropertyDescription<AutocorrectionType>
+    public let spellCheckingType: AssignablePropertyDescription<SpellCheckingType>
+    public let smartQuotesType: AssignablePropertyDescription<SmartQuotesType>
+    public let smartDashesType: AssignablePropertyDescription<SmartDashesType>
+    public let smartInsertDeleteType: AssignablePropertyDescription<SmartInsertDeleteType>
     
     public required init(configuration: Configuration) {
         text = configuration.property(name: "text")
@@ -84,8 +92,16 @@ public class TextFieldProperties: ControlProperties {
         keyboardAppearance = configuration.property(name: "keyboardAppearance")
         contentType = configuration.property(name: "contentType")
         returnKey = configuration.property(name: "returnKey")
+        enablesReturnKeyAutomatically = configuration.property(name: "enablesReturnKeyAutomatically")
+        autocapitalizationType = configuration.property(name: "autocapitalizationType")
+        autocorrectionType = configuration.property(name: "autocorrectionType")
+        spellCheckingType = configuration.property(name: "spellCheckingType")
+        smartQuotesType = configuration.property(name: "smartQuotesType")
+        smartDashesType = configuration.property(name: "smartDashesType")
+        smartInsertDeleteType = configuration.property(name: "smartInsertDeleteType")
         
         super.init(configuration: configuration)
     }
     
 }
+
