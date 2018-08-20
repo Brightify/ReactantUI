@@ -23,13 +23,13 @@ public class FooterTableView: View, ComponentDefinitionContainer {
         return ToolingProperties.footerTableView.allProperties
     }
 
-    public var cellType: String
-    public var footerType: String
+    public var cellType: String?
+    public var footerType: String?
     public var cellDefinition: ComponentDefinition?
     public var footerDefinition: ComponentDefinition?
 
     public var componentTypes: [String] {
-        return (cellDefinition?.componentTypes ?? [cellType]) + (footerDefinition?.componentTypes ?? [footerType])
+        return (cellDefinition?.componentTypes ?? [cellType].compactMap { $0 }) + (footerDefinition?.componentTypes ?? [footerType].compactMap { $0 })
     }
 
     public var isAnonymous: Bool {
@@ -49,22 +49,39 @@ public class FooterTableView: View, ComponentDefinitionContainer {
     }
 
     public override func initialization() -> String {
+        guard let cellType = cellType, let footerType = footerType else {
+            return "Initialization should never happen as the view was referenced via field."
+        }
         return "FooterTableView<\(footerType), \(cellType)>()"
     }
 
     public required init(node: SWXMLHash.XMLElement) throws {
-        cellType = try node.value(ofAttribute: "cell")
-        footerType = try node.value(ofAttribute: "footer")
-        if let cellElement = try node.singleOrNoElement(named: "cell") {
-            cellDefinition = try ComponentDefinition(node: cellElement, type: cellType)
-        } else {
+        if let field = node.value(ofAttribute: "field") as String?, !field.isEmpty {
+            cellType = nil
             cellDefinition = nil
-        }
-
-        if let footerElement = try node.singleOrNoElement(named: "footer") {
-            footerDefinition = try ComponentDefinition(node: footerElement, type: footerType)
-        } else {
             footerDefinition = nil
+        } else {
+            guard let cellType = node.value(ofAttribute: "cell") as String? else {
+                throw TokenizationError(message: "cell for FooterTableView was not defined.")
+            }
+            self.cellType = cellType
+
+            guard let footerType = node.value(ofAttribute: "footer") as String? else {
+                throw TokenizationError(message: "Footer for FooterTableView was not defined.")
+            }
+            self.footerType = footerType
+
+            if let cellElement = try node.singleOrNoElement(named: "cell") {
+                cellDefinition = try ComponentDefinition(node: cellElement, type: cellType)
+            } else {
+                cellDefinition = nil
+            }
+
+            if let footerElement = try node.singleOrNoElement(named: "footer") {
+                footerDefinition = try ComponentDefinition(node: footerElement, type: footerType)
+            } else {
+                footerDefinition = nil
+            }
         }
 
         try super.init(node: node)
@@ -72,8 +89,10 @@ public class FooterTableView: View, ComponentDefinitionContainer {
 
     public override func serialize(context: DataContext) -> XMLSerializableElement {
         var element = super.serialize(context: context)
-        element.attributes.append(XMLSerializableAttribute(name: "cell", value: cellType))
-        element.attributes.append(XMLSerializableAttribute(name: "footer", value: footerType))
+        if let cellType = cellType, let footerType = footerType {
+            element.attributes.append(XMLSerializableAttribute(name: "cell", value: cellType))
+            element.attributes.append(XMLSerializableAttribute(name: "footer", value: footerType))
+        }
 
         // FIXME serialize footer and cell definition
         return element
@@ -81,6 +100,9 @@ public class FooterTableView: View, ComponentDefinitionContainer {
 
     #if canImport(UIKit)
     public override func initialize(context: ReactantLiveUIWorker.Context) throws -> UIView {
+        guard let cellType = cellType, let footerType = footerType else {
+            throw LiveUIError(message: "cell or footer for FooterTableView was not defined.")
+        }
         let createCell = try context.componentInstantiation(named: cellType)
         let createFooter = try context.componentInstantiation(named: footerType)
         let sectionCount = ToolingProperties.footerTableView.sectionCount.get(from: self.toolingProperties) ?? 5

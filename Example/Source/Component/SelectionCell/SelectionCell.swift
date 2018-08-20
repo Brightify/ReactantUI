@@ -10,6 +10,10 @@ import RxSwift
 
 enum ExampleType: CaseIterable {
     case plainTableView
+    case headerTableView
+    case footerTableView
+    case simpleTableView
+    case simulatedSeparatorTableView
     case playground
     case stackView
     case progressView
@@ -18,6 +22,14 @@ enum ExampleType: CaseIterable {
         switch self {
         case .plainTableView:
             return "Plain table view"
+        case .headerTableView:
+            return "Header table view"
+        case .footerTableView:
+            return "Footer table view"
+        case .simpleTableView:
+            return "Simple table view"
+        case .simulatedSeparatorTableView:
+            return "Simulated separator table view"
         case .playground:
             return "Playground"
         case .stackView:

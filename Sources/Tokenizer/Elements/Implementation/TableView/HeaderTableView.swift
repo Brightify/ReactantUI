@@ -23,13 +23,13 @@ public class HeaderTableView: View, ComponentDefinitionContainer {
         return ToolingProperties.headerTableView.allProperties
     }
 
-    public var cellType: String
-    public var headerType: String
+    public var cellType: String?
+    public var headerType: String?
     public var cellDefinition: ComponentDefinition?
     public var headerDefinition: ComponentDefinition?
 
     public var componentTypes: [String] {
-        return (cellDefinition?.componentTypes ?? [cellType]) + (headerDefinition?.componentTypes ?? [headerType])
+        return (cellDefinition?.componentTypes ?? [cellType].compactMap { $0 }) + (headerDefinition?.componentTypes ?? [headerType].compactMap { $0 })
     }
 
     public var isAnonymous: Bool {
@@ -49,22 +49,40 @@ public class HeaderTableView: View, ComponentDefinitionContainer {
     }
 
     public override func initialization() -> String {
+        guard let headerType = headerType, let cellType = cellType else {
+            return "Initialization should never happen as the view was referenced via field."
+        }
         return "HeaderTableView<\(headerType), \(cellType)>()"
     }
 
     public required init(node: SWXMLHash.XMLElement) throws {
-        cellType = try node.value(ofAttribute: "cell")
-        headerType = try node.value(ofAttribute: "header")
-        if let cellElement = try node.singleOrNoElement(named: "cell") {
-            cellDefinition = try ComponentDefinition(node: cellElement, type: cellType)
-        } else {
+        if let field = node.value(ofAttribute: "field") as String?, !field.isEmpty {
+            cellType = nil
+            headerType = nil
             cellDefinition = nil
-        }
-
-        if let headerElement = try node.singleOrNoElement(named: "header") {
-            headerDefinition = try ComponentDefinition(node: headerElement, type: headerType)
-        } else {
             headerDefinition = nil
+        } else {
+            guard let cellType = node.value(ofAttribute: "cell") as String? else {
+                throw TokenizationError(message: "cell for HeaderTableView was not defined.")
+            }
+            self.cellType = cellType
+
+            guard let headerType = node.value(ofAttribute: "header") as String? else {
+                throw TokenizationError(message: "header for HeaderTableView was not defined.")
+            }
+            self.headerType = headerType
+
+            if let cellElement = try node.singleOrNoElement(named: "cell") {
+                cellDefinition = try ComponentDefinition(node: cellElement, type: cellType)
+            } else {
+                cellDefinition = nil
+            }
+
+            if let headerElement = try node.singleOrNoElement(named: "header") {
+                headerDefinition = try ComponentDefinition(node: headerElement, type: headerType)
+            } else {
+                headerDefinition = nil
+            }
         }
 
         try super.init(node: node)
@@ -72,8 +90,10 @@ public class HeaderTableView: View, ComponentDefinitionContainer {
 
     public override func serialize(context: DataContext) -> XMLSerializableElement {
         var element = super.serialize(context: context)
-        element.attributes.append(XMLSerializableAttribute(name: "cell", value: cellType))
-        element.attributes.append(XMLSerializableAttribute(name: "header", value: headerType))
+        if let headerType = headerType, let cellType = cellType {
+            element.attributes.append(XMLSerializableAttribute(name: "cell", value: cellType))
+            element.attributes.append(XMLSerializableAttribute(name: "header", value: headerType))
+        }
 
         // FIXME serialize anonymous cell and header
         return element
@@ -81,6 +101,9 @@ public class HeaderTableView: View, ComponentDefinitionContainer {
 
     #if canImport(UIKit)
     public override func initialize(context: ReactantLiveUIWorker.Context) throws -> UIView {
+        guard let cellType = cellType, let headerType = headerType else {
+            throw LiveUIError(message: "cell or header for HeaderTableView was not defined.")
+        }
         let createCell = try context.componentInstantiation(named: cellType)
         let createHeader = try context.componentInstantiation(named: headerType)
         let sectionCount = ToolingProperties.headerTableView.sectionCount.get(from: self.toolingProperties) ?? 5

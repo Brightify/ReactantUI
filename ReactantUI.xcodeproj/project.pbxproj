@@ -178,6 +178,22 @@
 		2284DAED1FAC96BE00D231D3 /* GeneratedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2284DAEC1FAC96BE00D231D3 /* GeneratedUI.swift */; };
 		2284DAEF1FAC971900D231D3 /* TestView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2284DAEE1FAC971900D231D3 /* TestView.ui.xml */; };
 		22957E3C207235E20088C09E /* StackViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22957E3B207235E20088C09E /* StackViewRootView.ui.xml */; };
+		22BF2755212AD8C70024B1A4 /* HeaderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF2754212AD8C70024B1A4 /* HeaderTableViewController.swift */; };
+		22BF2757212AD8D30024B1A4 /* HeaderTableViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF2756212AD8D30024B1A4 /* HeaderTableViewRootView.swift */; };
+		22BF2759212AD8EF0024B1A4 /* HeaderTableViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22BF2758212AD8EF0024B1A4 /* HeaderTableViewRootView.ui.xml */; };
+		22BF275C212AD9A00024B1A4 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF275B212AD9A00024B1A4 /* HeaderView.swift */; };
+		22BF275F212ADA000024B1A4 /* FooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF275E212ADA000024B1A4 /* FooterView.swift */; };
+		22BF2761212ADA1A0024B1A4 /* HeaderView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22BF2760212ADA1A0024B1A4 /* HeaderView.ui.xml */; };
+		22BF2763212ADAAF0024B1A4 /* FooterView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22BF2762212ADAAF0024B1A4 /* FooterView.ui.xml */; };
+		22BF2765212ADAF80024B1A4 /* FooterTableViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF2764212ADAF80024B1A4 /* FooterTableViewRootView.swift */; };
+		22BF2767212ADB090024B1A4 /* FooterTableViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22BF2766212ADB090024B1A4 /* FooterTableViewRootView.ui.xml */; };
+		22BF2769212ADB860024B1A4 /* FooterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF2768212ADB860024B1A4 /* FooterTableViewController.swift */; };
+		22BF276B212ADC350024B1A4 /* SimpleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF276A212ADC350024B1A4 /* SimpleTableViewController.swift */; };
+		22BF276D212ADC400024B1A4 /* SimpleTableViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF276C212ADC400024B1A4 /* SimpleTableViewRootView.swift */; };
+		22BF276F212ADC4F0024B1A4 /* SimpleTableViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22BF276E212ADC4F0024B1A4 /* SimpleTableViewRootView.ui.xml */; };
+		22BF2771212ADCAE0024B1A4 /* SimulatedSeparatorTableViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF2770212ADCAE0024B1A4 /* SimulatedSeparatorTableViewRootView.swift */; };
+		22BF2773212ADCBF0024B1A4 /* SimulatedSeparatorTableViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22BF2772212ADCBF0024B1A4 /* SimulatedSeparatorTableViewRootView.ui.xml */; };
+		22BF2775212ADCCC0024B1A4 /* SimulatedSeparatorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF2774212ADCCC0024B1A4 /* SimulatedSeparatorTableViewController.swift */; };
 		22BF2671212ABCFD0024B1A4 /* InterfaceIdiom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D71F6921147410005CC92A /* InterfaceIdiom.swift */; };
 		22BF2672212ABD080024B1A4 /* InterfaceSizeClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D71F6B21147433005CC92A /* InterfaceSizeClass.swift */; };
 		22BF2673212ABD210024B1A4 /* InterfaceState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D71F642114733B005CC92A /* InterfaceState.swift */; };
@@ -803,6 +819,22 @@
 		22957E37207235C40088C09E /* StackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackViewController.swift; sourceTree = "<group>"; };
 		22957E39207235D00088C09E /* StackViewRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackViewRootView.swift; sourceTree = "<group>"; };
 		22957E3B207235E20088C09E /* StackViewRootView.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = StackViewRootView.ui.xml; sourceTree = "<group>"; };
+		22BF2754212AD8C70024B1A4 /* HeaderTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderTableViewController.swift; sourceTree = "<group>"; };
+		22BF2756212AD8D30024B1A4 /* HeaderTableViewRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderTableViewRootView.swift; sourceTree = "<group>"; };
+		22BF2758212AD8EF0024B1A4 /* HeaderTableViewRootView.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = HeaderTableViewRootView.ui.xml; sourceTree = "<group>"; };
+		22BF275B212AD9A00024B1A4 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		22BF275E212ADA000024B1A4 /* FooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterView.swift; sourceTree = "<group>"; };
+		22BF2760212ADA1A0024B1A4 /* HeaderView.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = HeaderView.ui.xml; sourceTree = "<group>"; };
+		22BF2762212ADAAF0024B1A4 /* FooterView.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = FooterView.ui.xml; sourceTree = "<group>"; };
+		22BF2764212ADAF80024B1A4 /* FooterTableViewRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterTableViewRootView.swift; sourceTree = "<group>"; };
+		22BF2766212ADB090024B1A4 /* FooterTableViewRootView.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = FooterTableViewRootView.ui.xml; sourceTree = "<group>"; };
+		22BF2768212ADB860024B1A4 /* FooterTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterTableViewController.swift; sourceTree = "<group>"; };
+		22BF276A212ADC350024B1A4 /* SimpleTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleTableViewController.swift; sourceTree = "<group>"; };
+		22BF276C212ADC400024B1A4 /* SimpleTableViewRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleTableViewRootView.swift; sourceTree = "<group>"; };
+		22BF276E212ADC4F0024B1A4 /* SimpleTableViewRootView.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SimpleTableViewRootView.ui.xml; sourceTree = "<group>"; };
+		22BF2770212ADCAE0024B1A4 /* SimulatedSeparatorTableViewRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatedSeparatorTableViewRootView.swift; sourceTree = "<group>"; };
+		22BF2772212ADCBF0024B1A4 /* SimulatedSeparatorTableViewRootView.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SimulatedSeparatorTableViewRootView.ui.xml; sourceTree = "<group>"; };
+		22BF2774212ADCCC0024B1A4 /* SimulatedSeparatorTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatedSeparatorTableViewController.swift; sourceTree = "<group>"; };
 		22D274F8212AB1FF00F30115 /* Example-tvOS.hyperdrive.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Example-tvOS.hyperdrive.xml"; sourceTree = "<group>"; };
 		22D27508212AB4C200F30115 /* ReactantUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReactantUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		22D2751C212AB7C400F30115 /* ReactantLiveUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReactantLiveUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1500,6 +1532,10 @@
 		22141C982052B45500205F56 /* Examples */ = {
 			isa = PBXGroup;
 			children = (
+				22BF2752212AD8A10024B1A4 /* SimulatedSeparatorTableView */,
+				22BF2751212AD8980024B1A4 /* SimpleTableView */,
+				22BF2750212AD88D0024B1A4 /* FooterTableView */,
+				22BF274F212AD8840024B1A4 /* HeaderTableView */,
 				224F04E92085132D00C48268 /* ProgressView */,
 				22957E36207235B30088C09E /* StackView */,
 				22141C992052B45D00205F56 /* PlainTableView */,
@@ -1599,6 +1635,66 @@
 				22957E3B207235E20088C09E /* StackViewRootView.ui.xml */,
 			);
 			path = StackView;
+			sourceTree = "<group>";
+		};
+		22BF274F212AD8840024B1A4 /* HeaderTableView */ = {
+			isa = PBXGroup;
+			children = (
+				22BF275A212AD98F0024B1A4 /* Header */,
+				22BF2754212AD8C70024B1A4 /* HeaderTableViewController.swift */,
+				22BF2756212AD8D30024B1A4 /* HeaderTableViewRootView.swift */,
+				22BF2758212AD8EF0024B1A4 /* HeaderTableViewRootView.ui.xml */,
+			);
+			path = HeaderTableView;
+			sourceTree = "<group>";
+		};
+		22BF2750212AD88D0024B1A4 /* FooterTableView */ = {
+			isa = PBXGroup;
+			children = (
+				22BF275D212AD9F40024B1A4 /* Footer */,
+				22BF2768212ADB860024B1A4 /* FooterTableViewController.swift */,
+				22BF2764212ADAF80024B1A4 /* FooterTableViewRootView.swift */,
+				22BF2766212ADB090024B1A4 /* FooterTableViewRootView.ui.xml */,
+			);
+			path = FooterTableView;
+			sourceTree = "<group>";
+		};
+		22BF2751212AD8980024B1A4 /* SimpleTableView */ = {
+			isa = PBXGroup;
+			children = (
+				22BF276A212ADC350024B1A4 /* SimpleTableViewController.swift */,
+				22BF276C212ADC400024B1A4 /* SimpleTableViewRootView.swift */,
+				22BF276E212ADC4F0024B1A4 /* SimpleTableViewRootView.ui.xml */,
+			);
+			path = SimpleTableView;
+			sourceTree = "<group>";
+		};
+		22BF2752212AD8A10024B1A4 /* SimulatedSeparatorTableView */ = {
+			isa = PBXGroup;
+			children = (
+				22BF2774212ADCCC0024B1A4 /* SimulatedSeparatorTableViewController.swift */,
+				22BF2770212ADCAE0024B1A4 /* SimulatedSeparatorTableViewRootView.swift */,
+				22BF2772212ADCBF0024B1A4 /* SimulatedSeparatorTableViewRootView.ui.xml */,
+			);
+			path = SimulatedSeparatorTableView;
+			sourceTree = "<group>";
+		};
+		22BF275A212AD98F0024B1A4 /* Header */ = {
+			isa = PBXGroup;
+			children = (
+				22BF275B212AD9A00024B1A4 /* HeaderView.swift */,
+				22BF2760212ADA1A0024B1A4 /* HeaderView.ui.xml */,
+			);
+			path = Header;
+			sourceTree = "<group>";
+		};
+		22BF275D212AD9F40024B1A4 /* Footer */ = {
+			isa = PBXGroup;
+			children = (
+				22BF275E212ADA000024B1A4 /* FooterView.swift */,
+				22BF2762212ADAAF0024B1A4 /* FooterView.ui.xml */,
+			);
+			path = Footer;
 			sourceTree = "<group>";
 		};
 		687822E920CFF67700838C96 /* ReactantUI */ = {
@@ -1972,18 +2068,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				182B688D1EAF7641007CC668 /* ATest.ui.xml in Resources */,
+				22BF2761212ADA1A0024B1A4 /* HeaderView.ui.xml in Resources */,
 				182B68981EAF7641007CC668 /* Localizable.strings in Resources */,
 				182B688F1EAF7641007CC668 /* ExampleCell.ui.xml in Resources */,
 				182B68961EAF7641007CC668 /* LaunchScreen.storyboard in Resources */,
+				22BF2759212AD8EF0024B1A4 /* HeaderTableViewRootView.ui.xml in Resources */,
 				22141CA42052B55E00205F56 /* PlainCell.ui.xml in Resources */,
 				182B68911EAF7641007CC668 /* ExampleRootView.ui.xml in Resources */,
+				22BF2773212ADCBF0024B1A4 /* SimulatedSeparatorTableViewRootView.ui.xml in Resources */,
 				22957E3C207235E20088C09E /* StackViewRootView.ui.xml in Resources */,
 				18758FE420D980FF004C6690 /* Example.hyperdrive.xml in Resources */,
 				182B688E1EAF7641007CC668 /* CommonStyles.styles.xml in Resources */,
 				182B68951EAF7641007CC668 /* Assets.xcassets in Resources */,
+				22BF2763212ADAAF0024B1A4 /* FooterView.ui.xml in Resources */,
+				22BF276F212ADC4F0024B1A4 /* SimpleTableViewRootView.ui.xml in Resources */,
 				182B68931EAF7641007CC668 /* ExampleView2.ui.xml in Resources */,
 				22141C922052B0A400205F56 /* ExampleSelectionRootView.ui.xml in Resources */,
 				22141C9F2052B49E00205F56 /* PlainTableViewRootView.ui.xml in Resources */,
+				22BF2767212ADB090024B1A4 /* FooterTableViewRootView.ui.xml in Resources */,
 				22141C972052B0FD00205F56 /* SelectionCell.ui.xml in Resources */,
 				224F04EF2085136400C48268 /* ProgressViewRootView.ui.xml in Resources */,
 			);
@@ -2281,12 +2383,22 @@
 				680DD2F92111E59B00069A82 /* MainWireframe.swift in Sources */,
 				680DD2F62111E59B00069A82 /* ExampleRootView.swift in Sources */,
 				680DD2FA2111E59B00069A82 /* AppDelegate.swift in Sources */,
+				22BF276D212ADC400024B1A4 /* SimpleTableViewRootView.swift in Sources */,
 				680DD2EE2111E59B00069A82 /* StackViewController.swift in Sources */,
+				22BF2775212ADCCC0024B1A4 /* SimulatedSeparatorTableViewController.swift in Sources */,
+				22BF2757212AD8D30024B1A4 /* HeaderTableViewRootView.swift in Sources */,
+				22BF276B212ADC350024B1A4 /* SimpleTableViewController.swift in Sources */,
+				22BF2769212ADB860024B1A4 /* FooterTableViewController.swift in Sources */,
+				22BF275C212AD9A00024B1A4 /* HeaderView.swift in Sources */,
 				680DD2F52111E59B00069A82 /* ExampleSelectionRootView.swift in Sources */,
 				680DD2ED2111E59B00069A82 /* ProgressViewRootView.swift in Sources */,
+				22BF2765212ADAF80024B1A4 /* FooterTableViewRootView.swift in Sources */,
+				22BF2755212AD8C70024B1A4 /* HeaderTableViewController.swift in Sources */,
 				680DD2F02111E59B00069A82 /* PlainCell.swift in Sources */,
 				680DD2F72111E59B00069A82 /* ExampleView2.swift in Sources */,
-				71FF9820216638BC00B617E4 /* GeneratedUI.swift in Sources */,
+				680DD2FB2111E5C300069A82 /* GeneratedUI.swift in Sources */,
+				22BF275F212ADA000024B1A4 /* FooterView.swift in Sources */,
+				22BF2771212ADCAE0024B1A4 /* SimulatedSeparatorTableViewRootView.swift in Sources */,
 				680DD2F32111E59B00069A82 /* SelectionCell.swift in Sources */,
 				680DD2F82111E59B00069A82 /* ViewController.swift in Sources */,
 				680DD2F42111E59B00069A82 /* ExampleSelectionController.swift in Sources */,

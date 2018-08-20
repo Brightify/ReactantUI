@@ -22,6 +22,14 @@ final class MainWireframe: Wireframe {
                         provider.navigation?.push(controller: self.playground())
                     case .plainTableView:
                         provider.navigation?.push(controller: self.plainTableViewController())
+                    case .headerTableView:
+                        provider.navigation?.push(controller: self.headerTableView())
+                    case .footerTableView:
+                        provider.navigation?.push(controller: self.footerTableView())
+                    case .simpleTableView:
+                        provider.navigation?.push(controller: self.simpleTableView())
+                    case .simulatedSeparatorTableView:
+                        provider.navigation?.push(controller: self.simulatedSeparatorTableView())
                     case .stackView:
                         provider.navigation?.push(controller: self.stackViewController())
                     case .progressView:
@@ -40,6 +48,22 @@ final class MainWireframe: Wireframe {
 
     private func plainTableViewController() -> PlainTableViewController {
         return PlainTableViewController()
+    }
+
+    private func headerTableView() -> UIViewController {
+        return HeaderTableViewController()
+    }
+
+    private func footerTableView() -> UIViewController {
+        return FooterTableViewController()
+    }
+
+    private func simpleTableView() -> UIViewController {
+        return SimpleTableViewController()
+    }
+
+    private func simulatedSeparatorTableView() -> UIViewController {
+        return SimulatedSeparatorTableViewController()
     }
 
     private func stackViewController() -> StackViewController {
