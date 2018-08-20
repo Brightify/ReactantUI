@@ -1,6 +1,6 @@
 <styleGroup name="common">
     <LabelStyle name="whiteLabel" textColor="white" numberOfLines="0" />
-    <attributedTextStyle name="globalko">
+    <attributedTextStyle name="globalko" accessModifier="public">
         <i foregroundColor="red" font=":bold@20" />
         <base font=":bold@30" foregroundColor="white" backgroundColor="black" />
     </attributedTextStyle>

@@ -445,7 +445,7 @@ public class UIGenerator: Generator {
             }
 
             for childStyle in styles {
-                l("static let \(childStyle.name): [Reactant.Attribute] = ", encapsulateIn: .none) {
+                l("\(modifier) static let \(childStyle.name): [Reactant.Attribute] = ", encapsulateIn: .none) {
 
                     // extended styles generation
                     // currently O(n^3 * m) where m is the extension depth level

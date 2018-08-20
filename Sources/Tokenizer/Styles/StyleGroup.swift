@@ -15,6 +15,7 @@ public struct StyleGroup: XMLElementDeserializable {
         return name.capitalizingFirstLetter() + "Styles"
     }
     public var name: String
+    public var accessModifier: AccessModifier
     public var styles: [Style]
 
     /**
@@ -24,8 +25,15 @@ public struct StyleGroup: XMLElementDeserializable {
      */
     public static func deserialize(_ node: XMLElement) throws -> StyleGroup {
         let groupName = try node.value(ofAttribute: "name") as String
+        let accessModifier: AccessModifier
+        if let modifier = node.value(ofAttribute: "accessModifier") as String? {
+            accessModifier = AccessModifier(rawValue: modifier) ?? .internal
+        } else {
+            accessModifier = .internal
+        }
         return try StyleGroup(
             name: groupName,
+            accessModifier: accessModifier,
             styles: node.xmlChildren.compactMap { try Style(node: $0, groupName: groupName) })
     }
 }

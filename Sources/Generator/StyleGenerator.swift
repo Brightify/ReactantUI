@@ -37,13 +37,27 @@ public class StyleGenerator: Generator {
             l("import \(styleImport)")
         }
         l()
-        try l("struct \(group.swiftName)") {
+        let groupAccessModifier: AccessModifier
+        if group.accessModifier == .public || group.styles.contains(where: { $0.accessModifier == .public }) {
+            groupAccessModifier = .public
+        } else {
+            groupAccessModifier = .internal
+        }
+
+        func styleAccessModifier(style: Style) -> AccessModifier {
+            if group.accessModifier == .public {
+                return .public
+            }
+            return style.accessModifier
+        }
+
+        try l("\(groupAccessModifier.rawValue) struct \(group.swiftName)") {
             for style in group.styles {
                 switch style.type {
                 case .attributedText(let styles):
-                    try generate(attributeTextStyle: style, styles: styles)
+                    try generate(modifier: styleAccessModifier(style: style).rawValue, attributeTextStyle: style, styles: styles)
                 case .view(let type):
-                    try generate(viewStyle: style, type: type)
+                    try generate(modifier: styleAccessModifier(style: style).rawValue, viewStyle: style, type: type)
                 }
             }
         }
@@ -52,7 +66,7 @@ public class StyleGenerator: Generator {
     }
 
     // DISCLAIMER: This method is identical to a method with the same signature in `UIGenerator.swift`. If you're changing the functionality of this method, you most likely want to bring the functionality changes over to that method as well.
-    private func generate(attributeTextStyle style: Style, styles: [AttributedTextStyle]) throws {
+    private func generate(modifier: String, attributeTextStyle style: Style, styles: [AttributedTextStyle]) throws {
         func generate(attributes array: [Property]) {
             for property in array {
                 let propertyContext = PropertyContext(parentContext: context, property: property)
@@ -60,7 +74,7 @@ public class StyleGenerator: Generator {
             }
         }
 
-        l("struct \(style.name.name)") {
+        l("\(modifier) struct \(style.name.name)") {
             if !style.properties.isEmpty {
                 l("private static let ___sharedProperties___: [Reactant.Attribute] = ", encapsulateIn: .brackets) {
                     generate(attributes: style.properties)
@@ -68,7 +82,7 @@ public class StyleGenerator: Generator {
             }
 
             for childStyle in styles {
-                l("static let \(childStyle.name): [Reactant.Attribute] = ", encapsulateIn: .none) {
+                l("\(modifier) static let \(childStyle.name): [Reactant.Attribute] = ", encapsulateIn: .none) {
 
                     // extended styles generation
                     // currently O(n^3 * m) where m is the extension depth level
@@ -98,7 +112,7 @@ public class StyleGenerator: Generator {
     }
 
     // DISCLAIMER: This method is identical to a method with the same signature in `UIGenerator.swift`. If you're changing the functionality of this method, you most likely want to bring the functionality changes over to that method as well.
-    private func generate(viewStyle style: Style, type: String) throws {
+    private func generate(modifier: String, viewStyle style: Style, type: String) throws {
         guard let mapping = ElementMapping.mapping[type] else {
             throw GeneratorError(message: "Mapping for type \(type) does not exist")
         }
@@ -119,7 +133,7 @@ public class StyleGenerator: Generator {
         }
 
         if style.requiresTheme(context: context) {
-            l("static func \(style.name.name)(theme: ApplicationTheme) -> (_ view: \(try mapping.runtimeType())) -> Void") {
+            l("\(modifier) static func \(style.name.name)(theme: ApplicationTheme) -> (_ view: \(try mapping.runtimeType())) -> Void") {
                 l("return { view in", encapsulateIn: .none) {
                     styleApplication()
                 }
@@ -127,7 +141,7 @@ public class StyleGenerator: Generator {
             }
 
         } else {
-            l("static func \(style.name.name)(_ view: \(try mapping.runtimeType()))") {
+            l("\(modifier) static func \(style.name.name)(_ view: \(try mapping.runtimeType()))") {
                 styleApplication()
             }
         }

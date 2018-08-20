@@ -104,6 +104,7 @@ extension StyleName: Equatable {
 public struct Style: XMLAttributeDeserializable, XMLElementDeserializable {
     public var name: StyleName
     public var extend: [StyleName]
+    public var accessModifier: AccessModifier
     public var parentModuleImport: String
     public var properties: [Property]
     public var type: StyleType
@@ -111,6 +112,11 @@ public struct Style: XMLAttributeDeserializable, XMLElementDeserializable {
     init(node: XMLElement, groupName: String?) throws {
         let name = try node.value(ofAttribute: "name") as String
         let extendedStyles = try node.value(ofAttribute: "extend", defaultValue: []) as [StyleName]
+        if let modifier = node.value(ofAttribute: "accessModifier") as String? {
+            accessModifier = AccessModifier(rawValue: modifier) ?? .internal
+        } else {
+            accessModifier = .internal
+        }
         if let groupName = groupName {
             self.name = .global(group: groupName, name: name)
             self.extend = extendedStyles.map {
@@ -187,10 +193,16 @@ public enum StyleType {
  */
 public struct AttributedTextStyle: XMLElementDeserializable {
     public var name: String
+    public var accessModifier: AccessModifier
     public var properties: [Property]
 
     init(node: XMLElement) throws {
         name = node.name
+        if let modifier = node.value(ofAttribute: "accessModifier") as String? {
+            accessModifier = AccessModifier(rawValue: modifier) ?? .internal
+        } else {
+            accessModifier = .internal
+        }
         properties = try PropertyHelper.deserializeSupportedProperties(properties: Properties.attributedText.allProperties, in: node) as [Property]
     }
 
