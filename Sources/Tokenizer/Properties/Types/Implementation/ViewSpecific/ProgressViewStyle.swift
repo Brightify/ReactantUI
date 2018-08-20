@@ -24,7 +24,11 @@ extension ProgressViewStyle {
         case .default:
             return UIProgressView.Style.default.rawValue
         case .bar:
+            #if os(iOS)
             return UIProgressView.Style.bar.rawValue
+            #else
+            return nil
+            #endif
         }
     }
 }

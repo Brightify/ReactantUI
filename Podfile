@@ -31,6 +31,10 @@ abstract_target 'LiveUI' do
         end
     end
 
+    target 'LiveUI-tvOS' do
+        platform :tvos, '9.2'
+    end
+
 end
 
 target 'Example' do

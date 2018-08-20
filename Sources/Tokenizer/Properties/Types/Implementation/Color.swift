@@ -206,7 +206,7 @@ extension Color {
     }
 
     private func getColorComponents(hue: inout CGFloat, saturation: inout CGFloat, brightness: inout CGFloat, alpha: inout CGFloat) -> Bool {
-        #if os(iOS)
+        #if os(iOS) || os(tvOS)
         guard color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha) else { return false }
         #else
         guard let colorSpacedColor = color.usingColorSpace(.deviceRGB) else { return false }
