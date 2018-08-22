@@ -218,6 +218,14 @@ extension Condition {
         }
     }
 
+    public func generateSwiftEnclosing(viewName: String, _ ifBody: @autoclosure () -> String) -> String {
+        return """
+        if \(generateSwift(viewName: viewName)) {
+            \(ifBody())
+        }
+        """
+    }
+
     // MARK: - XML condition generators
     public func generateXML() -> String {
         switch self {
@@ -235,6 +243,67 @@ extension Condition {
     }
 }
 
+extension Optional where Wrapped == Condition {
+    /**
+     * Generates an `if-clause` around the passed property string if there is a value present, otherwise just returns the property string.
+     * - parameter viewName: name of the view that the condition should use when generating
+     * - parameter ifBody: line (or multiple) of Swift code that are to be included inside the `if-clause` generated
+     * - returns: String containing the `if-clause` with the generated condition with the passed property string within the body
+     */
+    public func generateSwiftEnclosingIfPresent(viewName: String, _ ifBody: @autoclosure () -> String) -> String {
+        if let condition = self {
+            return condition.generateSwiftEnclosing(viewName: viewName, ifBody)
+        } else {
+            return ifBody()
+        }
+    }
+}
+
+extension ConditionStatement {
+    public func generateSwift(viewName: String) -> String {
+        switch self {
+        case .trueStatement:
+            return "true"
+        case .falseStatement:
+            return "false"
+        case .sizeClass(let sizeClassType, let viewInterfaceSize):
+            return "\(viewName).traits.size(\(sizeClassType.description): .\(viewInterfaceSize.description))"
+        case .interfaceIdiom(let interfaceIdiom):
+            return "\(viewName).traits.device(.\(interfaceIdiom.description))"
+        case .orientation(let orientation):
+            return "\(viewName).traits.orientation(.\(orientation.description))"
+        case .number(let number):
+            return String(number)
+        case .dimensionType(let dimensionType):
+            return "\(viewName).traits.viewRootSize(.\(dimensionType.description))"
+        case .interfaceSizeClass:
+            fatalError("Swift condition code generation reached an undefined point.")
+        }
+    }
+
+    public func generateXML() -> String {
+        switch self {
+        case .trueStatement:
+            return "true"
+        case .falseStatement:
+            return "false"
+        case .sizeClass(let sizeClassType, let viewInterfaceSize):
+            return "\(sizeClassType.description) == \(viewInterfaceSize.description)"
+        case .interfaceIdiom(let interfaceIdiom):
+            return interfaceIdiom.description
+        case .orientation(let orientation):
+            return orientation.description
+        case .number(let number):
+            return String(number)
+        case .dimensionType(let dimensionType):
+            return dimensionType.description
+        case .interfaceSizeClass:
+            fatalError("XML condition code generation reached an undefined point.")
+        }
+    }
+}
+
+// MARK: - Helper extensions for generating code
 extension ConditionBinaryOperation {
     var swiftRepresentation: String {
         switch self {

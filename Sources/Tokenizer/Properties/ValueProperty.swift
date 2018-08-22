@@ -18,8 +18,6 @@ public struct ValueProperty<T: AttributeSupportedPropertyType>: TypedProperty {
     public var name: String
     public var description: ValuePropertyDescription<T>
     public var value: T
-
-    // TODO
     public let condition: Condition? = nil
 
     public var attributeName: String {
@@ -28,11 +26,13 @@ public struct ValueProperty<T: AttributeSupportedPropertyType>: TypedProperty {
 
     public func application(on target: String, context: PropertyContext) -> String {
         let namespacedTarget = namespace.resolvedSwiftName(target: target)
-        return "\(namespacedTarget).\(description.name) = \(value.generate(context: context.child(for: value)))"
+        let applicationString = "\(namespacedTarget).\(description.name) = \(value.generate(context: context.child(for: value)))"
+        return condition.generateSwiftEnclosingIfPresent(viewName: namespacedTarget, applicationString)
     }
 
     #if SanAndreas
     public func dematerialize(context: PropertyContext) -> XMLSerializableAttribute {
+        // TODO: conditions
         return XMLSerializableAttribute(name: attributeName, value: value.dematerialize(context: context.child(for: value)))
     }
     #endif

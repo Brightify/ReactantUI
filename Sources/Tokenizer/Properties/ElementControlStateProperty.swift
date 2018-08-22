@@ -23,8 +23,6 @@ public struct ElementControlStateProperty<T: ElementSupportedPropertyType>: Type
 
     public var description: ElementControlStatePropertyDescription<T>
     public var value: T
-
-    // TODO
     public let condition: Condition? = nil
 
     public var attributeName: String {
@@ -45,11 +43,13 @@ public struct ElementControlStateProperty<T: ElementSupportedPropertyType>: Type
         let state = parseState(from: attributeName) as [ControlState]
         let stringState = state.map { "UIControlState.\($0.rawValue)" }.joined(separator: ", ")
         let namespacedTarget = namespace.resolvedSwiftName(target: target)
-        return "\(namespacedTarget).set\(description.key.capitalizingFirstLetter())(\(value.generate(context: context.child(for: value))), for: [\(stringState)])"
+        let applicationString = "\(namespacedTarget).set\(description.key.capitalizingFirstLetter())(\(value.generate(context: context.child(for: value))), for: [\(stringState)])"
+        return condition.generateSwiftEnclosingIfPresent(viewName: namespacedTarget, applicationString)
     }
 
     #if SanAndreas
     public func dematerialize(context: PropertyContext) -> XMLSerializableAttribute {
+        // TODO: conditions
         return XMLSerializableAttribute(name: attributeName, value: value.dematerialize(context: context.child(for: value)))
     }
     #endif
@@ -72,6 +72,14 @@ public struct ElementControlStateProperty<T: ElementSupportedPropertyType>: Type
         guard let resolvedValue = value.runtimeValue(context: context.child(for: value)) else {
             throw LiveUIError(message: "!! Value `\(value)` couldn't be resolved in runtime for key `\(key)`")
         }
+
+        if let condition = condition, let view = target as? UIView {
+            let traits = UITraitHelper(for: view)
+            if try condition.evaluate(from: traits, in: view) == false {
+                return
+            }
+        }
+
         let signature = target.method(for: selector)
 
         typealias setValueForControlStateIMP = @convention(c) (AnyObject, Selector, AnyObject, UIControlState) -> Void

@@ -10,6 +10,7 @@ import Foundation
 
 #if canImport(UIKit)
 import UIKit
+import Reactant
 #endif
 
 /**
@@ -33,19 +34,13 @@ public struct AssignableProperty<T: AttributeSupportedPropertyType>: TypedProper
      */
     public func application(on target: String, context: PropertyContext) -> String {
         let namespacedTarget = namespace.resolvedSwiftName(target: target)
-        if let condition = condition {
-            return """
-            if \(condition.generateSwift(viewName: namespacedTarget)) {
-                \(namespacedTarget).\(description.swiftName) = \(value.generate(context: context.child(for: value)))
-            }
-            """
-        } else {
-            return "\(namespacedTarget).\(description.swiftName) = \(value.generate(context: context.child(for: value)))"
-        }
+        let applicationString = "\(namespacedTarget).\(description.swiftName) = \(value.generate(context: context.child(for: value)))"
+        return condition.generateSwiftEnclosingIfPresent(viewName: namespacedTarget, applicationString)
     }
     
     #if SanAndreas
     public func dematerialize(context: PropertyContext) -> XMLSerializableAttribute {
+        // TODO: conditions
         return XMLSerializableAttribute(name: attributeName, value: value.dematerialize(context: context.child(for: value)))
     }
     #endif
@@ -67,6 +62,13 @@ public struct AssignableProperty<T: AttributeSupportedPropertyType>: TypedProper
         }
         guard let resolvedValue = value.runtimeValue(context: context.child(for: value)) else {
             throw LiveUIError(message: "!! Value `\(value)` couldn't be resolved in runtime for key `\(key)`")
+        }
+
+        if let condition = condition, let view = target as? UIView {
+            let traits = UITraitHelper(for: view)
+            if try condition.evaluate(from: traits, in: view) == false {
+                return
+            }
         }
 
         do {
