@@ -19,7 +19,8 @@ public enum Color {
 
     /// Accepted formats: "#RRGGBB" and "#RRGGBBAA".
     init?(hex: String) {
-        // make the pound sign optional
+        guard !hex.isEmpty else { return nil }
+        // the pound sign is optional
         let hexNumber = hex[hex.startIndex] == "#" ? String(hex.dropFirst()) : hex
         let length = hexNumber.count
         guard length == 6 || length == 8 else {
