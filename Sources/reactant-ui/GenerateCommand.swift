@@ -72,13 +72,15 @@ class GenerateCommand: Command {
     public func execute() throws {
         var output: [String] = []
 
-        guard let inputPath = inputPath.value, let inputPathURL = URL(string: "file://\(inputPath)") else {
+        guard let inputPath = inputPath.value else {
             throw GenerateCommandError.inputPathInvalid
         }
-
-        guard let outputFile = outputFile.value, let outputPathURL = URL(string: "file://\(outputFile)") else {
+        let inputPathURL = URL(fileURLWithPath: inputPath)
+        
+        guard let outputFile = outputFile.value else {
             throw GenerateCommandError.ouputFileInvalid
         }
+        let outputPathURL = URL(fileURLWithPath: outputFile)
 
         let rawSwiftVersion = swiftVersionParameter.value ?? "4.1" // use 4.1 as default
         guard let swiftVersion = SwiftVersion(raw: rawSwiftVersion) else {
@@ -351,9 +353,10 @@ class GenerateCommand: Command {
     }
 
     private func minimumDeploymentTarget() throws -> Int {
-        guard let xcodeProjectPathsString = xcodeProjectPath.value, let xcprojpath = URL(string: xcodeProjectPathsString) else {
+        guard let xcodeProjectPathsString = xcodeProjectPath.value else {
             throw GenerateCommandError.XCodeProjectPathInvalid
         }
+        let xcprojpath = URL(fileURLWithPath: xcodeProjectPathsString)
 
         guard let project = try? XcodeProj(pathString: xcprojpath.absoluteURL.path) else {
             throw GenerateCommandError.cannotReadXCodeProj
