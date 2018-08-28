@@ -29,19 +29,20 @@ public class ReactantLiveUIManager {
 
     private let errorView = LiveUIErrorMessage().with(state: [:])
     private let disposeBag = DisposeBag()
+    private let tokenTracker = ObservationTokenTracker()
 
     private weak var activeWindow: UIWindow?
 
     private init() {
-        errorView.action
-            .filter { $0 == .dismiss }
-            .subscribe(onNext: { [weak self] _ in
-                guard let `self` = self else { return }
-                for worker in self.workers {
+        errorView
+            .observeAction { [weak self] action in
+                guard action == .dismiss, let s = self else { return }
+
+                for worker in s.workers {
                     worker.resetErrors()
                 }
-            })
-            .disposed(by: disposeBag)
+            }
+            .track(in: tokenTracker)
     }
 
     /// Activates a worker and makes him ready for use.
@@ -111,7 +112,7 @@ public class ReactantLiveUIManager {
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in }
         alertController.addAction(cancelAction)
 
-        controller.present(controller: alertController)
+        controller.present(alertController, animated: true)
     }
 
     /**

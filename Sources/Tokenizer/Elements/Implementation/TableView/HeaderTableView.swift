@@ -91,7 +91,8 @@ public class HeaderTableView: View, ComponentDefinitionContainer {
             },
             headerFactory: {
                 CellWrapper(wrapped: createHeader())
-            })
+            },
+            options: [])
             .with(state: .items(Array(repeating: SectionModel(model: (), items: Array(repeating: (), count: itemCount)), count: sectionCount)))
 
         tableView.tableView.rowHeight = UITableView.automaticDimension

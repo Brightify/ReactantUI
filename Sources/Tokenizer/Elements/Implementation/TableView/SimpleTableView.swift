@@ -111,7 +111,8 @@ public class SimpleTableView: View, ComponentDefinitionContainer {
             },
             footerFactory: {
                 CellWrapper(wrapped: createFooter())
-            })
+            },
+            options: [])
             .with(state: .items(Array(repeating: SectionModel(model: (header: (), footer: ()),
                                                               items: Array(repeating: (), count: itemCount)),
                                                               count: sectionCount)))

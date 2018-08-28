@@ -17,8 +17,8 @@ final class PreviewListRootView: Reactant.PlainTableView<PreviewListCell>, RootV
     init() {
         super.init(
             cellFactory: PreviewListCell.init,
-            reloadable: true)
-
+            options: .reloadable)
+        
         rowHeight = UITableView.automaticDimension
         backgroundColor = .white
     }

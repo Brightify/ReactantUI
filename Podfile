@@ -4,11 +4,11 @@ inhibit_all_warnings!
 project 'ReactantUI.xcodeproj'
 
 def shared
-    pod 'RxSwift', '~> 4.0'
-    pod 'RxCocoa', '~> 4.0'
-    pod 'RxDataSources', '~> 3.0'
+    pod 'RxSwift', :git => 'https://github.com/ReactiveX/RxSwift.git', :branch => 'master' # '~> 4.0'
+    pod 'RxCocoa', :git => 'https://github.com/ReactiveX/RxSwift.git', :branch => 'master' # '~> 4.0'
+    pod 'RxDataSources', :git => 'https://github.com/Vkt0r/RxDataSources.git', :branch => 'xcode10' # '~> 3.0'
     pod 'RxOptional', '~> 3.0'
-    pod 'SnapKit', '~> 4.0'
+    pod 'SnapKit', :git => 'https://github.com/SnapKit/SnapKit.git', :branch => 'develop' # '~> 4.0'
     pod 'Kingfisher', '~> 4.0'
     pod 'Result', '~> 3.0'
     pod 'Reactant', :path => '../Reactant'

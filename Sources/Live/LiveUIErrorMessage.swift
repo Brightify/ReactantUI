@@ -19,16 +19,8 @@ final class LiveUIErrorMessage: ViewBase<[String: String], LiveUIErrorMessageIte
         return button
     }
 
-    override var actions: [Observable<LiveUIErrorMessageItemAction>] {
-        #if os(tvOS)
-        return [
-            button.rx.primaryAction.rewrite(with: .dismiss)
-        ]
-        #else
-        return [
-            button.rx.tap.rewrite(with: .dismiss)
-        ]
-        #endif
+    override func actionMapping(mapper: ActionMapper<LiveUIErrorMessageItemAction>) {
+        mapper.map(control: button, to: .dismiss)
     }
 
     private let scrollView = UIScrollView()

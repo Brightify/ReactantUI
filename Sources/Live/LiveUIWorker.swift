@@ -130,8 +130,8 @@ public class ReactantLiveUIWorker {
 
         let reapplyTrigger = forceReapplyTrigger.filter { $0 === view }
         observeDefinition(for: view.__rui.typeName)
-            .flatMapLatest {
-                Observable.concat(.just($0), reapplyTrigger.rewrite(with: $0))
+            .flatMapLatest { definition in
+                Observable.concat(.just(definition), reapplyTrigger.map { _ in definition })
             }
             .observeOn(MainScheduler.instance)
             .takeUntil((view as UIView).rx.deallocated)
@@ -339,8 +339,9 @@ public class ReactantLiveUIWorker {
         return definitionsSubject
             .map { $0[type] }
             .distinctUntilChanged { $0?.loaded == $1?.loaded }
-            .filterNil()
-            .map { $0.definition }
+            .flatMap {
+                $0.map { Observable.just($0.definition) } ?? .empty()
+            }
     }
 
     func presentThemeSelection(in controller: UIViewController) {
@@ -362,7 +363,7 @@ public class ReactantLiveUIWorker {
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in }
         alertController.addAction(cancelAction)
 
-        controller.present(controller: alertController)
+        controller.present(alertController, animated: true)
     }
 
     /**
@@ -381,7 +382,7 @@ public class ReactantLiveUIWorker {
         })
         let previewList = PreviewListController(dependencies: dependencies, reactions: reactions)
         navigation.push(controller: previewList)
-        controller.present(controller: navigation)
+        controller.present(navigation, animated: true)
     }
 
     private func preview(for name: String) -> PreviewController {

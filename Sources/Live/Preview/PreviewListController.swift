@@ -31,9 +31,9 @@ final class PreviewListController: ControllerBase<Void, PreviewListRootView> {
 
     override func afterInit() {
         navigationItem.leftBarButtonItem = closeButton
-        closeButton.rx.tap
-            .subscribe(onNext: reactions.close)
-            .disposed(by: lifetimeDisposeBag)
+
+        closeButton.target = self
+        closeButton.action = #selector(close)
     }
 
     override func update() {
@@ -51,5 +51,10 @@ final class PreviewListController: ControllerBase<Void, PreviewListRootView> {
         case .rowAction:
             break
         }
+    }
+
+    @objc
+    internal func close() {
+        reactions.close()
     }
 }

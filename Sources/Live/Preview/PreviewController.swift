@@ -27,11 +27,9 @@ final class PreviewController: ControllerBase<Void, PreviewRootView> {
 
     override func afterInit() {
         navigationItem.leftBarButtonItem = closeButton
-        closeButton.rx.tap
-            .subscribe(onNext: { [weak self] _ in
-                self?.dismiss()
-            })
-            .disposed(by: lifetimeDisposeBag)
+
+        closeButton.target = self
+        closeButton.action = #selector(close)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -46,5 +44,10 @@ final class PreviewController: ControllerBase<Void, PreviewRootView> {
         #if os(iOS)
         navigationController?.hidesBarsOnTap = false
         #endif
+    }
+
+    @objc
+    internal func close() {
+        dismiss(animated: true, completion: { })
     }
 }

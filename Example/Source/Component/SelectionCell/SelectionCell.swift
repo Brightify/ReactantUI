@@ -30,12 +30,15 @@ enum ExampleType {
     static let allValues: [ExampleType] = [.plainTableView, .playground, .stackView, .progressView]
 }
 
-final class SelectionCell: ButtonBase<ExampleType, ExampleType> {
-    override var actions: [Observable<ExampleType>] {
-        return [
-            rx.controlEvent(.touchUpInside).withLatestFrom(observableState)
-        ]
+final class SelectionCell: ControlBase<ExampleType, ExampleType> {
+    override func actionMapping(mapper: ActionMapper<ExampleType>) {
+        mapper.map(control: self, to: self.componentState)
     }
+//    override var actions: [Observable<ExampleType>] {
+//        return [
+//            rx.controlEvent(.touchUpInside).withLatestFrom(observableState)
+//        ]
+//    }
 
     let name = UILabel()
 

@@ -23,7 +23,7 @@ extension UIWindow {
     @objc
     func openLiveUIDebugMenu() {
         let controller = DebugAlertController.create(manager: ReactantLiveUIManager.shared, window: self)
-        self.rootViewController?.present(controller: controller)
+        self.rootViewController?.present(controller, animated: true)
     }
 
     @objc
