@@ -42,49 +42,120 @@ public struct EdgeInsets: AttributeSupportedPropertyType {
     public static func materialize(from value: String) throws -> EdgeInsets {
         let tokens = Lexer.tokenize(input: value)
         let dimensions = try DimensionParser(tokens: tokens).parse()
-        if let allDimension = dimensions.first, dimensions.count == 1, allDimension.identifier == "all" || allDimension.identifier == nil {
-            return EdgeInsets(horizontal: allDimension.value, vertical: allDimension.value)
-        } else if dimensions.count == 2 {
-            let horizontal = (dimensions.first(where: { $0.identifier == "horizontal" }) ?? dimensions[0]).value
-            let vertical = (dimensions.first(where: { $0.identifier == "vertical" }) ?? dimensions[1]).value
 
-            return EdgeInsets(horizontal: horizontal, vertical: vertical)
-        } else if dimensions.count == 4 && (dimensions.filter { $0.identifier == nil }).count == 4 { // all are without labels
-            let top = dimensions[0].value
-            let left = dimensions[1].value
-            let bottom = dimensions[2].value
-            let right = dimensions[3].value
+        struct OptionalDimensions {
+            var top: Float?
+            var left: Float?
+            var bottom: Float?
+            var right: Float?
 
-            return EdgeInsets(top: top, left: left, bottom: bottom, right: right)
-        } else if dimensions.count == 4 && (dimensions.filter { $0.identifier != nil }).count == 4 { // all have labels
-            guard let top = dimensions.first(where: { $0.identifier == "top" })?.value,
-                let left = dimensions.first(where: { $0.identifier == "left" })?.value,
-                let bottom = dimensions.first(where: { $0.identifier == "bottom" })?.value,
-                let right = dimensions.first(where: { $0.identifier == "right" })?.value else {
-                    throw PropertyMaterializationError.unknownValue(value)
+            init(top: Float? = nil, left: Float? = nil, bottom: Float? = nil, right: Float? = nil) {
+                self.top = top
+                self.left = left
+                self.bottom = bottom
+                self.right = right
+            }
+
+            func toEdgeInsets() -> EdgeInsets {
+                return EdgeInsets(
+                    top: top ?? 0,
+                    left: left ?? 0,
+                    bottom: bottom ?? 0,
+                    right: right ?? 0)
+            }
+
+            mutating func setDimensions(top: Float? = nil, left: Float? = nil, bottom: Float? = nil, right: Float? = nil) throws {
+                if let top = top {
+                    if self.top != nil {
+                        throw TokenizationError(message: "Duplicate \"top\" dimension in Edge Insets.")
+                    }
+                    self.top = top
                 }
-
-            return EdgeInsets(top: top, left: left, bottom: bottom, right: right)
-        } else {
-            if let horizontal = dimensions.first(where: { $0.identifier == "horizontal" })?.value {
-                let top = dimensions.first(where: { $0.identifier == "top" })?.value ?? 0
-                let bottom = dimensions.first(where: { $0.identifier == "bottom" })?.value ?? 0
-
-                return EdgeInsets(top: top, left: horizontal, bottom: bottom, right: horizontal)
-            } else if let vertical = dimensions.first(where: { $0.identifier == "vertical" })?.value {
-                let left = dimensions.first(where: { $0.identifier == "left" })?.value ?? 0
-                let right = dimensions.first(where: { $0.identifier == "right" })?.value ?? 0
-
-                return EdgeInsets(top: vertical, left: left, bottom: vertical, right: right)
-            } else {
-                let top = dimensions.first(where: { $0.identifier == "top" })?.value ?? 0
-                let bottom = dimensions.first(where: { $0.identifier == "bottom" })?.value ?? 0
-                let left = dimensions.first(where: { $0.identifier == "left" })?.value ?? 0
-                let right = dimensions.first(where: { $0.identifier == "right" })?.value ?? 0
-
-                return EdgeInsets(top: top, left: left, bottom: bottom, right: right)
+                if let left = left {
+                    if self.left != nil {
+                        throw TokenizationError(message: "Duplicate \"left\" dimension in Edge Insets.")
+                    }
+                    self.left = left
+                }
+                if let bottom = bottom {
+                    if self.bottom != nil {
+                        throw TokenizationError(message: "Duplicate \"bottom\" dimension in Edge Insets.")
+                    }
+                    self.bottom = bottom
+                }
+                if let right = right {
+                    if self.right != nil {
+                        throw TokenizationError(message: "Duplicate \"right\" dimension in Edge Insets.")
+                    }
+                    self.right = right
+                }
             }
         }
+
+        let finalDimensions = try dimensions.enumerated().reduce(OptionalDimensions()) { currentDimensions, dimensionData -> OptionalDimensions in
+            var mutableCurrentDimensions = currentDimensions
+            let (index, dimension) = dimensionData
+
+            switch dimension.identifier {
+            case "all"?:
+                try mutableCurrentDimensions.setDimensions(top: dimension.value, left: dimension.value, bottom: dimension.value, right: dimension.value)
+            case "horizontal"?:
+                try mutableCurrentDimensions.setDimensions(left: dimension.value, right: dimension.value)
+            case "vertical"?:
+                try mutableCurrentDimensions.setDimensions(top: dimension.value, bottom: dimension.value)
+            case "top"?:
+                try mutableCurrentDimensions.setDimensions(top: dimension.value)
+            case "left"?:
+                try mutableCurrentDimensions.setDimensions(left: dimension.value)
+            case "bottom"?:
+                try mutableCurrentDimensions.setDimensions(bottom: dimension.value)
+            case "right"?:
+                try mutableCurrentDimensions.setDimensions(right: dimension.value)
+            default:
+                if let dimensionIdentifier = dimension.identifier {
+                    throw ParseError.message("Edge Insets identifier \(dimensionIdentifier) is invalid. Choose from: ['all', 'horizontal', 'vertical', 'top', 'left', 'bottom', 'right'].")
+                }
+
+                if dimensions.count == 1 {
+                    // all sides
+                    try mutableCurrentDimensions.setDimensions(top: dimension.value, left: dimension.value, bottom: dimension.value, right: dimension.value)
+                } else if dimensions.count == 2 {
+                    switch index {
+                    case 0:
+                        // horizontal
+                        try mutableCurrentDimensions.setDimensions(left: dimension.value, right: dimension.value)
+                    case 1:
+                        // vertical
+                        try mutableCurrentDimensions.setDimensions(top: dimension.value, bottom: dimension.value)
+                    default:
+                        fatalError("The IF condition should prevent this from happening.")
+                    }
+                } else if dimensions.count == 4 {
+                    switch index {
+                    case 0:
+                        // top
+                        try mutableCurrentDimensions.setDimensions(top: dimension.value)
+                    case 1:
+                        // left
+                        try mutableCurrentDimensions.setDimensions(left: dimension.value)
+                    case 2:
+                        // bottom
+                        try mutableCurrentDimensions.setDimensions(bottom: dimension.value)
+                    case 3:
+                        // right
+                        try mutableCurrentDimensions.setDimensions(right: dimension.value)
+                    default:
+                        fatalError("The IF condition should prevent this from happening.")
+                    }
+                } else {
+                    throw ParseError.message("Invalid unnamed dimension count for Edge Insets. Either use 1 (all), 2 (horizontal, vertical), or 4 (top, left, bottom, right).")
+                }
+            }
+
+            return mutableCurrentDimensions
+        }
+
+        return finalDimensions.toEdgeInsets()
     }
 
     public static var runtimeType: String = "UIEdgeInsets"
