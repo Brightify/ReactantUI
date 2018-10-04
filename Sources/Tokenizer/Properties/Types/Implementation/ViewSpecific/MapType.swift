@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum MapType: String, EnumPropertyType, AttributeSupportedPropertyType {
+public enum MapType: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
     public static let enumName = "MKMapType"
 
     case standard
@@ -16,8 +16,6 @@ public enum MapType: String, EnumPropertyType, AttributeSupportedPropertyType {
     case hybrid
     case satelliteFlyover
     case hybridFlyover
-
-    public static let allValues: [MapType] = [.standard, .satellite, .hybrid, .satelliteFlyover, .hybridFlyover]
 }
 
 #if canImport(UIKit)

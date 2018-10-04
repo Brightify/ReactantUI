@@ -7,13 +7,11 @@
 
 import Foundation
 
-public enum TableViewCellSeparatorStyle: String, EnumPropertyType, AttributeSupportedPropertyType {
+public enum TableViewCellSeparatorStyle: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
     public static let enumName = "UITableViewCellSeparatorStyle"
 
     case none
     case singleLine
-
-    public static let allValues: [TableViewCellSeparatorStyle] = [.none, .singleLine]
 }
 
 #if canImport(UIKit)

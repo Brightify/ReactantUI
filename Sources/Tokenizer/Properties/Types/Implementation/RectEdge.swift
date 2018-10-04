@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum RectEdge: String {
+public enum RectEdge: String, CaseIterable {
     case top
     case left
     case bottom
@@ -23,10 +23,8 @@ public enum RectEdge: String {
         return "[\(array.map { "UIRectEdge.\($0.rawValue)" }.joined(separator: ", "))]"
     }
 
-    static var allValues: [RectEdge] = [.top, .left, .bottom, .right, .all]
-
     public static var xsdType: XSDType {
-        let values = Set(RectEdge.allValues.map { $0.rawValue })
+        let values = Set(RectEdge.allCases.map { $0.rawValue })
 
         return .enumeration(EnumerationXSDType(name: "UIRectEdge", base: .string, values: values))
     }

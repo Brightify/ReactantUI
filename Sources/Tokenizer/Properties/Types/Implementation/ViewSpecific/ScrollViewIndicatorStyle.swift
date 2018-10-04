@@ -8,14 +8,12 @@
 
 import Foundation
 
-public enum ScrollViewIndicatorStyle: String, EnumPropertyType, AttributeSupportedPropertyType {
+public enum ScrollViewIndicatorStyle: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
     public static let enumName = "UIScrollViewIndicatorStyle"
 
     case `default`
     case black
     case white
-
-    public static let allValues: [ScrollViewIndicatorStyle] = [.`default`, .black, .white]
 }
 
 #if canImport(UIKit)

@@ -8,14 +8,12 @@
 
 import Foundation
 
-public enum SearchBarStyle: String, EnumPropertyType, AttributeSupportedPropertyType {
+public enum SearchBarStyle: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
     public static let enumName = "UISearchBarStyle"
 
     case `default`
     case minimal
     case prominent
-
-    public static let allValues: [SearchBarStyle] = [.`default`, .minimal, .prominent]
 }
 
 #if canImport(UIKit)

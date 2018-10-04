@@ -8,14 +8,12 @@
 
 import Foundation
 
-public enum ActivityIndicatorStyle: String, EnumPropertyType, AttributeSupportedPropertyType {
+public enum ActivityIndicatorStyle: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
     public static let enumName = "UIActivityIndicatorViewStyle"
 
     case whiteLarge
     case white
     case gray
-
-    public static let allValues: [ActivityIndicatorStyle] = [.whiteLarge, .white, .gray]
 }
 
 #if canImport(UIKit)

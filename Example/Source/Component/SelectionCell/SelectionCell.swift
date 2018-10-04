@@ -8,7 +8,7 @@
 import Reactant
 import RxSwift
 
-enum ExampleType {
+enum ExampleType: CaseIterable {
     case plainTableView
     case playground
     case stackView
@@ -26,8 +26,6 @@ enum ExampleType {
             return "Progress view"
         }
     }
-
-    static let allValues: [ExampleType] = [.plainTableView, .playground, .stackView, .progressView]
 }
 
 final class SelectionCell: ButtonBase<ExampleType, ExampleType> {

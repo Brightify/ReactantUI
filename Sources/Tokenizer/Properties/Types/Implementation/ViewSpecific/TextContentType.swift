@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum TextContentType: String, EnumPropertyType, AttributeSupportedPropertyType {
+public enum TextContentType: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
     public static let enumName = "UITextContentType"
 
     case none
@@ -37,11 +37,6 @@ public enum TextContentType: String, EnumPropertyType, AttributeSupportedPropert
     case telephoneNumber
 //    case username
 //    case password
-
-    public static let allValues: [TextContentType] = [.none, .URL, .addressCity, .addressCityAndState, .addressState, .countryName,
-                                                      .creditCardNumber, .emailAddress, .familyName, .fullStreetAddress, .givenName, .jobTitle,
-                                                      .location, .middleName, .name, .namePrefix, .nameSuffix, .nickname, .organizationName,
-                                                      .postalCode, .streetAddressLine1, .streetAddressLine2, .sublocality, .telephoneNumber]
 }
 
 #if canImport(UIKit)

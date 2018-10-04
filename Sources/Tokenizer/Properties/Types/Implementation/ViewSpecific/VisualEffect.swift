@@ -55,7 +55,7 @@ public enum VisualEffect: AttributeSupportedPropertyType {
         return parts.first == "blur" ? .blur(effect) : .vibrancy(effect)
     }
 
-    static var allValues: [VisualEffect] = BlurEffect.allValues.map(VisualEffect.blur) + BlurEffect.allValues.map(VisualEffect.vibrancy)
+    static var allValues: [VisualEffect] = BlurEffect.allCases.map(VisualEffect.blur) + BlurEffect.allCases.map(VisualEffect.vibrancy)
 
     public static var xsdType: XSDType {
         let values = Set(VisualEffect.allValues.map { masterEffect -> String in
@@ -71,14 +71,12 @@ public enum VisualEffect: AttributeSupportedPropertyType {
     }
 }
 
-public enum BlurEffect: String {
+public enum BlurEffect: String, CaseIterable {
     case extraLight
     case light
     case dark
     case prominent
     case regular
-
-    static let allValues: [BlurEffect] = [.extraLight, .light, .dark, .prominent, .regular]
 }
 
 #if canImport(UIKit)

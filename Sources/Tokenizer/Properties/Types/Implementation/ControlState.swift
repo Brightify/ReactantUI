@@ -6,7 +6,7 @@
 //  Copyright © 2017 Brightify. All rights reserved.
 //
 
-public enum ControlState: String, EnumPropertyType {
+public enum ControlState: String, EnumPropertyType, CaseIterable {
     public static let enumName = "UIControl.State"
 
     case normal
@@ -31,14 +31,12 @@ public enum ControlState: String, EnumPropertyType {
             return nil
         }
     }
-
-    public static let allValues: [ControlState] = [.normal, .highlighted, .disabled, .selected, .focused]
-
+    
     fileprivate static let allValuesDictionary: [ControlState: Int] =
-        Dictionary(uniqueKeysWithValues: ControlState.allValues.enumerated().map { ($1, $0) })
+        Dictionary(uniqueKeysWithValues: ControlState.allCases.enumerated().map { ($1, $0) })
 
     public static var xsdType: XSDType {
-        let values = Set(ControlState.allValues.map { $0.rawValue })
+        let values = Set(ControlState.allCases.map { $0.rawValue })
 
         return .enumeration(EnumerationXSDType(name: ControlState.enumName, base: .string, values: values))
     }

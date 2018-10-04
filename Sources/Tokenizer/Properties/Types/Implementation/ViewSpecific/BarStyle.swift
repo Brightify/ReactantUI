@@ -8,14 +8,12 @@
 
 import Foundation
 
-public enum BarStyle: String, EnumPropertyType, AttributeSupportedPropertyType {
+public enum BarStyle: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
     public static let enumName = "UIBarStyle"
 
     case `default`
     case black
     case blackTranslucent
-
-    public static let allValues: [BarStyle] = [.`default`, .black, .blackTranslucent]
 }
 
 #if canImport(UIKit)

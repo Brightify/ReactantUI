@@ -7,13 +7,11 @@
 
 import Foundation
 
-public enum TableViewCellSeparatorInsetReference: String, EnumPropertyType, AttributeSupportedPropertyType {
+public enum TableViewCellSeparatorInsetReference: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
     public static let enumName = "UITableViewSeparatorInsetReference"
 
     case fromCellEdges
     case fromAutomaticInsets
-
-    public static let allValues: [TableViewCellSeparatorInsetReference] = [.fromCellEdges, .fromAutomaticInsets]
 }
 
 #if canImport(UIKit)

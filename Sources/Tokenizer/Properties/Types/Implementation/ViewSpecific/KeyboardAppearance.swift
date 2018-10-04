@@ -8,14 +8,12 @@
 
 import Foundation
 
-public enum KeyboardAppearance: String, EnumPropertyType, AttributeSupportedPropertyType {
+public enum KeyboardAppearance: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
     public static let enumName = "UIKeyboardAppearance"
 
     case `default`
     case dark
     case light
-
-    public static let allValues: [KeyboardAppearance] = [.`default`, .dark, .light]
 }
 
 #if canImport(UIKit)

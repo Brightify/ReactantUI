@@ -11,11 +11,7 @@ import Foundation
     import UIKit
 #endif
 
-public enum SystemFontWeight: String {
-    public static let allValues: [SystemFontWeight] = [
-        .thin, .ultralight, .light, .regular, .medium, .semibold, .bold, .heavy, .black
-    ]
-
+public enum SystemFontWeight: String, CaseIterable {
     case ultralight
     case thin
     case light

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum LayoutDistribution: String, EnumPropertyType, AttributeSupportedPropertyType {
+public enum LayoutDistribution: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
     public static let enumName = "UIStackViewDistribution"
 
     case fill
@@ -16,8 +16,6 @@ public enum LayoutDistribution: String, EnumPropertyType, AttributeSupportedProp
     case fillProportionaly
     case equalCentering
     case equalSpacing
-
-    public static let allValues: [LayoutDistribution] = [.fill, .fillEqually, .fillProportionaly, .equalCentering, .equalSpacing]
 }
 
 #if canImport(UIKit)

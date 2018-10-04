@@ -8,15 +8,13 @@
 
 import Foundation
 
-public enum DatePickerMode: String, EnumPropertyType, AttributeSupportedPropertyType {
+public enum DatePickerMode: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
     public static let enumName = "UIDatePickerMode"
 
     case date
     case time
     case dateAndTime
     case countDownTimer
-
-    public static let allValues: [DatePickerMode] = [.date, .time, .dateAndTime, .countDownTimer]
 }
 
 #if canImport(UIKit)

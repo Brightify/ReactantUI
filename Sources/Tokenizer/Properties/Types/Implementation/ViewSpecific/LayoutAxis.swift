@@ -11,13 +11,11 @@ import Foundation
     import UIKit
 #endif
 
-public enum LayoutAxis: String, EnumPropertyType, AttributeSupportedPropertyType {
+public enum LayoutAxis: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
     public static let enumName = "UILayoutConstraintAxis"
 
     case vertical
     case horizontal
-
-    public static let allValues: [LayoutAxis] = [.vertical, .horizontal]
 }
 
 #if canImport(UIKit)

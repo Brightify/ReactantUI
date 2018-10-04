@@ -8,14 +8,12 @@
 
 import Foundation
 
-public enum ViewVisibility: String, EnumPropertyType, AttributeSupportedPropertyType {
+public enum ViewVisibility: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
     public static let enumName = "Visibility"
 
     case visible
     case hidden
     case collapsed
-
-    public static let allValues: [ViewVisibility] = [.visible, .hidden, .collapsed]
 }
 
 #if ReactantRuntime

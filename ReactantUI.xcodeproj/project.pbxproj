@@ -219,7 +219,6 @@
 		680DD2F82111E59B00069A82 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B68841EAF7641007CC668 /* ViewController.swift */; };
 		680DD2F92111E59B00069A82 /* MainWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141C8A2052B02F00205F56 /* MainWireframe.swift */; };
 		680DD2FA2111E59B00069A82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B687B1EAF7641007CC668 /* AppDelegate.swift */; };
-		680DD2FB2111E5C300069A82 /* GeneratedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B689A1EAF870E007CC668 /* GeneratedUI.swift */; };
 		68130651211828DD007DB5F2 /* StringTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68130650211828DD007DB5F2 /* StringTemplate.swift */; };
 		68130658211834D8007DB5F2 /* TestLiveUIConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68130657211834D8007DB5F2 /* TestLiveUIConfiguration.swift */; };
 		6813065C21183D38007DB5F2 /* ViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6813065B21183D38007DB5F2 /* ViewTests.swift */; };
@@ -278,6 +277,7 @@
 		7139F67920934BC2009EA7F4 /* Condition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7139F67720934BBB009EA7F4 /* Condition.swift */; };
 		71BAEAB720972E1600D56639 /* ConditionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BAEAB520972DFD00D56639 /* ConditionParser.swift */; };
 		71D94EC420935F8E007D83A1 /* ConstraintConditionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D94EC320935F8E007D83A1 /* ConstraintConditionTests.swift */; };
+		71FF9820216638BC00B617E4 /* GeneratedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FF981F216638BC00B617E4 /* GeneratedUI.swift */; };
 		7ECD13670B984D98A5FCD87D /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 887500E4E5E1BF9478D7EFFD /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */; };
 		8843F0C7B69C4B4D90D21F24 /* Pods_LiveUI_LiveUI_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 105120706C0623FA651A558C /* Pods_LiveUI_LiveUI_iOS.framework */; };
 		BA1D32AF765F430AA225944F /* Pods_Example_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34D6F4260245D9C7942B5C54 /* Pods_Example_tvOS.framework */; };
@@ -372,7 +372,6 @@
 		182B68881EAF7641007CC668 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		182B68891EAF7641007CC668 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		182B688A1EAF7641007CC668 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
-		182B689A1EAF870E007CC668 /* GeneratedUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneratedUI.swift; sourceTree = "<group>"; };
 		18448FAC2092041B0080B743 /* ReactantLiveUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ReactantLiveUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		18448FB42092041B0080B743 /* LiveUI-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "LiveUI-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1844911920921F150080B743 /* AnonymousComponent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnonymousComponent.swift; sourceTree = "<group>"; };
@@ -634,6 +633,7 @@
 		7139F67D20934D6E009EA7F4 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		71BAEAB520972DFD00D56639 /* ConditionParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionParser.swift; sourceTree = "<group>"; };
 		71D94EC320935F8E007D83A1 /* ConstraintConditionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstraintConditionTests.swift; sourceTree = "<group>"; };
+		71FF981F216638BC00B617E4 /* GeneratedUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneratedUI.swift; sourceTree = "<group>"; };
 		887500E4E5E1BF9478D7EFFD /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B091EE37DE710BCF6CF0B49 /* Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests/Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		D1AAC4CA06239D481C4E7F9D /* Pods_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -762,7 +762,7 @@
 		182B688B1EAF7641007CC668 /* Generated */ = {
 			isa = PBXGroup;
 			children = (
-				182B689A1EAF870E007CC668 /* GeneratedUI.swift */,
+				71FF981F216638BC00B617E4 /* GeneratedUI.swift */,
 			);
 			path = Generated;
 			sourceTree = "<group>";
@@ -1692,7 +1692,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "pushd $PROJECT_DIR\nenv -i HOME=$HOME PATH=$PATH swift build\npopd\n# --enable-live\n$PROJECT_DIR/.build/debug/reactant-ui generate \\\n  --enable-live \\\n  --inputPath=$PROJECT_DIR/Example/ \\\n  --outputFile=$PROJECT_DIR/Example/Generated/GeneratedUI.swift \\\n  --description=$PROJECT_DIR/Example/Source/Example.hyperdrive.xml \\\n  --xcodeprojPath=$PROJECT_DIR/ReactantUI.xcodeproj\n#pushd $PROJECT_DIR/Example\n#$PROJECT_DIR/.build/debug/reactant-ui --enable-live > $PROJECT_DIR/Example/Generated/GeneratedUI.swift\n#popd\n";
+			shellScript = "#env -i HOME=$HOME PATH=$PATH swift build\n#popd\n# --enable-live\n\npushd \"$PROJECT_DIR\"\necho \"$PATH\"\nenv -i HOME=\"$HOME\" PATH=\"$PATH\" swift run reactant-ui generate \\\n  --enable-live \\\n  --inputPath=\"$PROJECT_DIR/Example/\" \\\n  --outputFile=\"$PROJECT_DIR/Example/Generated/GeneratedUI.swift\" \\\n  --description=\"$PROJECT_DIR/Example/Source/Example.hyperdrive.xml\" \\\n  --xcodeprojPath=\"$PROJECT_DIR/ReactantUI.xcodeproj\"\n#pushd $PROJECT_DIR/Example\n#$PROJECT_DIR/.build/debug/reactant-ui --enable-live > $PROJECT_DIR/Example/Generated/GeneratedUI.swift\n#popd\n";
 		};
 		2284DAE81FAC95B900D231D3 /* Generate Reactant UI */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1706,7 +1706,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "pushd $PROJECT_DIR\nenv -i HOME=$HOME PATH=$PATH swift build\npopd\n\n$PROJECT_DIR/.build/debug/reactant-ui generate --enable-live --inputPath=$PROJECT_DIR/Example-tvOS/ --outputFile=$PROJECT_DIR/Example-tvOS/Generated/GeneratedUI.swift --xcodeprojPath=$PROJECT_DIR/ReactantUI.xcodeproj\n\n#pushd $PROJECT_DIR/Example-tvOS\n#$PROJECT_DIR/.build/debug/reactant-ui --enable-live > $PROJECT_DIR/Example-tvOS/Generated/GeneratedUI.swift\n#popd";
+			shellScript = "pushd $PROJECT_DIR\nenv -i HOME=$HOME PATH=$PATH swift build\npopd\n\n$PROJECT_DIR/.build/debug/reactant-ui generate --enable-live --inputPath=$PROJECT_DIR/Example-tvOS/ --outputFile=$PROJECT_DIR/Example-tvOS/Generated/GeneratedUI.swift --xcodeprojPath=$PROJECT_DIR/ReactantUI.xcodeproj\n\n#pushd $PROJECT_DIR/Example-tvOS\n#$PROJECT_DIR/.build/debug/reactant-ui --enable-live > $PROJECT_DIR/Example-tvOS/Generated/GeneratedUI.swift\n#popd\n";
 		};
 		423FA0CC4E936AFF372262FF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1732,7 +1732,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Example/Pods-Example-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Example/Pods-Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Differentiator-iOS/Differentiator.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher-iOS/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/Reactant-iOS/Reactant.framework",
@@ -1757,7 +1757,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Example/Pods-Example-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Example/Pods-Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		8E2A90AA6E40518D7B753F0A /* [CP] Check Pods Manifest.lock */ = {
@@ -1820,7 +1820,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-Example-tvOS/Pods-Example-tvOS-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-Example-tvOS/Pods-Example-tvOS-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Differentiator-tvOS/Differentiator.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher-tvOS/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/Reactant-tvOS/Reactant.framework",
@@ -1854,7 +1854,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Example-tvOS/Pods-Example-tvOS-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Example-tvOS/Pods-Example-tvOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F43B5C19F6586BA1C5EA8D15 /* [CP] Embed Pods Frameworks */ = {
@@ -1863,7 +1863,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests/Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests/Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Differentiator-iOS/Differentiator.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher-iOS/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/Reactant-iOS/Reactant.framework",
@@ -1900,7 +1900,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests/Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests/Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1919,7 +1919,7 @@
 				680DD2ED2111E59B00069A82 /* ProgressViewRootView.swift in Sources */,
 				680DD2F02111E59B00069A82 /* PlainCell.swift in Sources */,
 				680DD2F72111E59B00069A82 /* ExampleView2.swift in Sources */,
-				680DD2FB2111E5C300069A82 /* GeneratedUI.swift in Sources */,
+				71FF9820216638BC00B617E4 /* GeneratedUI.swift in Sources */,
 				680DD2F32111E59B00069A82 /* SelectionCell.swift in Sources */,
 				680DD2F82111E59B00069A82 /* ViewController.swift in Sources */,
 				680DD2F42111E59B00069A82 /* ExampleSelectionController.swift in Sources */,
@@ -2362,6 +2362,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -2415,6 +2416,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};

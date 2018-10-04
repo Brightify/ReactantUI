@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum ReturnKeyType: String, EnumPropertyType, AttributeSupportedPropertyType {
+public enum ReturnKeyType: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
     public static let enumName = "UIReturnKeyType"
 
     case `default`
@@ -23,8 +23,6 @@ public enum ReturnKeyType: String, EnumPropertyType, AttributeSupportedPropertyT
     case done
     case emergencyCall
     case `continue`
-
-    public static let allValues: [ReturnKeyType] = [.`default`, .go, .google, .join, .next, .route, .search, .send, .yahoo, .done, .emergencyCall]
 }
 
 #if canImport(UIKit)

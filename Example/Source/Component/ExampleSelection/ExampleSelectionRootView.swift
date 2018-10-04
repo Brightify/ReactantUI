@@ -15,7 +15,7 @@ final class ExampleSelectionRootView: ViewBase<Void, ExampleType> {
     override func update() {
         stackView.arrangedSubviews.forEach { stackView.removeArrangedSubview($0) }
 
-        let selectionCells = ExampleType.allValues.map { SelectionCell().with(state: $0) }
+        let selectionCells = ExampleType.allCases.map { SelectionCell().with(state: $0) }
 
         Observable.merge(selectionCells.map { $0.action })
             .subscribe(onNext: { [weak self] in

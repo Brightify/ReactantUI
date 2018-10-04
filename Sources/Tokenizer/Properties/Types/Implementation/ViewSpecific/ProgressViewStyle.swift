@@ -7,13 +7,11 @@
 
 import Foundation
 
-public enum ProgressViewStyle: String, EnumPropertyType, AttributeSupportedPropertyType {
+public enum ProgressViewStyle: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
     public static let enumName = "UIProgressViewStyle"
 
     case `default`
     case bar
-
-    public static let allValues: [ProgressViewStyle] = [.default, .bar]
 }
 
 #if canImport(UIKit)

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum KeyboardType: String, EnumPropertyType, AttributeSupportedPropertyType {
+public enum KeyboardType: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
     public static let enumName = "UIKeyboardType"
 
     case `default`
@@ -23,9 +23,6 @@ public enum KeyboardType: String, EnumPropertyType, AttributeSupportedPropertyTy
     case twitter
     case webSearch
     case asciiCapableNumberPad
-
-    public static let allValues: [KeyboardType] = [.`default`, .asciiCapable, .numbersAndPunctuation, .URL, .numberPad,
-                                                   .phonePad, .namePhonePad, .emailAddress, .decimalPad, .twitter, .webSearch, .asciiCapableNumberPad]
 }
 
 #if canImport(UIKit)

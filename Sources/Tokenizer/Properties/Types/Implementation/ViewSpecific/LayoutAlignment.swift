@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum LayoutAlignment: String, EnumPropertyType, AttributeSupportedPropertyType {
+public enum LayoutAlignment: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
     public static let enumName = "UIStackView.Alignment"
 
     case fill
@@ -17,8 +17,6 @@ public enum LayoutAlignment: String, EnumPropertyType, AttributeSupportedPropert
     case leading
     case trailing
     case center
-
-    public static let allValues: [LayoutAlignment] = [.fill, .firstBaseline, .lastBaseline, .leading, .trailing, .center]
 }
 
 #if canImport(UIKit)

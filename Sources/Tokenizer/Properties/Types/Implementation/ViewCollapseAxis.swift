@@ -7,14 +7,12 @@
 
 import Foundation
 
-public enum ViewCollapseAxis: String, EnumPropertyType, AttributeSupportedPropertyType {
+public enum ViewCollapseAxis: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
     public static let enumName = "CollapseAxis"
 
     case horizontal
     case vertical
     case both
-
-    public static var allValues: [ViewCollapseAxis] = [.horizontal, .vertical, .both]
 }
 
 #if canImport(UIKit)

@@ -8,15 +8,13 @@
 
 import Foundation
 
-public enum TextFieldViewMode: String, EnumPropertyType, AttributeSupportedPropertyType {
+public enum TextFieldViewMode: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
     public static let enumName = "UITextFieldViewMode"
 
     case never
     case whileEditing
     case unlessEditing
     case always
-
-    public static let allValues: [TextFieldViewMode] = [.never, .whileEditing, .unlessEditing, .always]
 }
 
 

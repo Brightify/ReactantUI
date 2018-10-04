@@ -7,15 +7,13 @@
 
 import Foundation
 
-public enum ControlContentVerticalAlignment: Int, EnumPropertyType, AttributeSupportedPropertyType {
+public enum ControlContentVerticalAlignment: Int, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
     public static let enumName = "UIControl.ContentVerticalAlignment"
     
     case center
     case top
     case bottom
     case fill
-
-    public static let allValues: [ControlContentVerticalAlignment] = [.center, .top, .bottom, .fill]
     
     public func generate(context: SupportedPropertyTypeContext) -> String {
         switch self {

@@ -79,8 +79,8 @@ class XSDResolver {
 
             if property is ControlStatePropertyDescriptionMarker {
                 var variations: Set<Set<ControlState>> = []
-                for variationClass in 1..<ControlState.allValues.count {
-                    variations.formUnion(ControlState.allValues.variations(class: variationClass).map(Set.init))
+                for variationClass in 1..<ControlState.allCases.count {
+                    variations.formUnion(ControlState.allCases.variations(class: variationClass).map(Set.init))
                 }
 
                 for variation in variations {

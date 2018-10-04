@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum LineBreakMode: String, EnumPropertyType, AttributeSupportedPropertyType {
+public enum LineBreakMode: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
     public static let enumName = "NSLineBreakMode"
 
     case byWordWrapping
@@ -17,9 +17,6 @@ public enum LineBreakMode: String, EnumPropertyType, AttributeSupportedPropertyT
     case byTruncatingHead
     case byTruncatingTail
     case byTruncatingMiddle
-
-    public static let allValues: [LineBreakMode] = [.byWordWrapping, .byCharWrapping, .byClipping,
-                                                    .byTruncatingHead, .byTruncatingTail, .byTruncatingMiddle]
 }
 
 #if canImport(UIKit)

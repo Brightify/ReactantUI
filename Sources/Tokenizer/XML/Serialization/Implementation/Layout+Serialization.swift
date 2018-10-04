@@ -117,7 +117,7 @@ private enum ConstraintShortcutOrConstraint {
         var mutableConstraints = constraints
 
         var result = [] as [ConstraintShortcutOrConstraint]
-        for shortcut in ConstraintShortcut.allValues {
+        for shortcut in ConstraintShortcut.allCases {
             let constraintsForShortcut = mutableConstraints.filter { shortcut.attributes.contains($0.attribute) }
             guard constraintsForShortcut.count == shortcut.attributes.count else { continue }
             let grouped = constraintsForShortcut.groupBy { $0.serialize().value }
@@ -173,7 +173,7 @@ private enum ConstraintShortcutOrConstraint {
     }
 }
 
-private enum ConstraintShortcut: String {
+private enum ConstraintShortcut: String, CaseIterable {
     case edges
     case fillHorizontally
     case fillVertically
@@ -197,6 +197,4 @@ private enum ConstraintShortcut: String {
             return [.after]
         }
     }
-
-    static let allValues: [ConstraintShortcut] = [.edges, .fillHorizontally, .fillVertically, .center, .before, .after]
 }

@@ -8,15 +8,13 @@
 
 import Foundation
 
-public enum TextBorderStyle: String, EnumPropertyType, AttributeSupportedPropertyType {
+public enum TextBorderStyle: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
     public static let enumName = "UITextBorderStyle"
 
     case none
     case line
     case bezel
     case roundedRect
-
-    public static let allValues: [TextBorderStyle] = [.none, .line, .bezel, .roundedRect]
 }
 
 #if canImport(UIKit)

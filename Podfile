@@ -52,3 +52,29 @@ target 'Example-tvOS' do
 #    pod 'ReactantUI', :path => './'
 #    pod 'ReactantLiveUI', :path => './', :configuration => 'Debug'
 end
+
+post_install do |installer|
+    # Your list of targets here.
+    swift42targets = [
+        'Reactant-iOS', 'Reactant-tvOS'
+    ]
+    swift4targets = [
+        'Result-iOS', 'Result-tvOS', 'SnapKit-iOS', 'SnapKit-tvOS'
+    ]
+
+    installer.pods_project.targets.each do |target|
+        if swift42targets.include? target.name
+            target.build_configurations.each do |config|
+                config.build_settings['SWIFT_VERSION'] = '4.2'
+            end
+        elsif swift4targets.include? target.name
+            target.build_configurations.each do |config|
+                config.build_settings['SWIFT_VERSION'] = '4'
+            end
+        else
+            target.build_configurations.each do |config|
+                config.build_settings['SWIFT_VERSION'] = '3'
+            end
+        end
+    end
+end

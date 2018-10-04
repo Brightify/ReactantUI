@@ -6,7 +6,7 @@
 //  Copyright © 2017 Brightify. All rights reserved.
 //
 
-public enum ContentMode: String, EnumPropertyType, AttributeSupportedPropertyType {
+public enum ContentMode: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
     public static let enumName = "UIViewContentMode"
 
     case scaleToFill
@@ -22,10 +22,6 @@ public enum ContentMode: String, EnumPropertyType, AttributeSupportedPropertyTyp
     case topRight
     case bottomLeft
     case bottomRight
-
-    public static let allValues: [ContentMode] = [.scaleToFill, .scaleAspectFit, .scaleAspectFill,
-                                                  .redraw, .center, .top, .bottom, .left, .right,
-                                                  .topLeft, .topRight, .bottomLeft, .bottomRight]
 }
 
 #if canImport(UIKit)

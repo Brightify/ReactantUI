@@ -7,14 +7,12 @@
 
 import Foundation
 
-public enum WritingDirection: String, EnumPropertyType, AttributeSupportedPropertyType {
+public enum WritingDirection: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
     public static let enumName = "NSWritingDirection"
 
     case natural
     case leftToRight
     case rightToLeft
-
-    public static let allValues: [WritingDirection] = [.natural, .leftToRight, .rightToLeft]
 }
 
 #if canImport(UIKit)
