@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum DatePickerMode: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
+public enum DatePickerMode: String, EnumPropertyType, AttributeSupportedPropertyType {
     public static let enumName = "UIDatePickerMode"
 
     case date

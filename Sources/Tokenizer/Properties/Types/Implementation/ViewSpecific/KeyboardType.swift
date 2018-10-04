@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum KeyboardType: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
+public enum KeyboardType: String, EnumPropertyType, AttributeSupportedPropertyType {
     public static let enumName = "UIKeyboardType"
 
     case `default`

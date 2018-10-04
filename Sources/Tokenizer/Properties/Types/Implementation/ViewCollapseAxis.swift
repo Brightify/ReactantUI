@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum ViewCollapseAxis: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
+public enum ViewCollapseAxis: String, EnumPropertyType, AttributeSupportedPropertyType {
     public static let enumName = "CollapseAxis"
 
     case horizontal

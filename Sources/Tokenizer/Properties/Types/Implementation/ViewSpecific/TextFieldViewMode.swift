@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum TextFieldViewMode: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
+public enum TextFieldViewMode: String, EnumPropertyType, AttributeSupportedPropertyType {
     public static let enumName = "UITextFieldViewMode"
 
     case never

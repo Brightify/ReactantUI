@@ -11,7 +11,7 @@ import Foundation
     import UIKit
 #endif
 
-public enum LayoutAxis: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
+public enum LayoutAxis: String, EnumPropertyType, AttributeSupportedPropertyType {
     public static let enumName = "UILayoutConstraintAxis"
 
     case vertical

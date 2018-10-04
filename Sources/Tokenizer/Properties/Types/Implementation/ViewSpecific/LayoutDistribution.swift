@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum LayoutDistribution: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
+public enum LayoutDistribution: String, EnumPropertyType, AttributeSupportedPropertyType {
     public static let enumName = "UIStackViewDistribution"
 
     case fill

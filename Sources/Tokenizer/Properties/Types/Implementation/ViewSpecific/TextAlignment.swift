@@ -6,7 +6,7 @@
 //  Copyright © 2017 Brightify. All rights reserved.
 //
 
-public enum TextAlignment: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
+public enum TextAlignment: String, EnumPropertyType, AttributeSupportedPropertyType {
     public static let enumName = "NSTextAlignment"
 
     case left

@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 #endif
 
-public enum UnderlineStyle: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
+public enum UnderlineStyle: String, EnumPropertyType, AttributeSupportedPropertyType {
     public static let enumName = "NSUnderlineStyle"
 
     case none

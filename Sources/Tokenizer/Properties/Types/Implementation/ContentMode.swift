@@ -6,7 +6,7 @@
 //  Copyright © 2017 Brightify. All rights reserved.
 //
 
-public enum ContentMode: String, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
+public enum ContentMode: String, EnumPropertyType, AttributeSupportedPropertyType {
     public static let enumName = "UIViewContentMode"
 
     case scaleToFill

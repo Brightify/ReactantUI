@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum ControlContentHorizontalAlignment: Int, EnumPropertyType, AttributeSupportedPropertyType, CaseIterable {
+public enum ControlContentHorizontalAlignment: Int, EnumPropertyType, AttributeSupportedPropertyType {
     public static let enumName = "UIControlContentHorizontalAlignment"
     
     case center

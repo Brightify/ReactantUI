@@ -6,7 +6,7 @@
 //  Copyright © 2017 Brightify. All rights reserved.
 //
 
-public enum ControlState: String, EnumPropertyType, CaseIterable {
+public enum ControlState: String, EnumPropertyType {
     public static let enumName = "UIControl.State"
 
     case normal
