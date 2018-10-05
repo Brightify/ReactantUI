@@ -278,6 +278,7 @@
 		71BAEAB720972E1600D56639 /* ConditionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BAEAB520972DFD00D56639 /* ConditionParser.swift */; };
 		71D94EC420935F8E007D83A1 /* ConstraintConditionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D94EC320935F8E007D83A1 /* ConstraintConditionTests.swift */; };
 		71FF9820216638BC00B617E4 /* GeneratedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FF981F216638BC00B617E4 /* GeneratedUI.swift */; };
+		71FF9823216760A500B617E4 /* Template.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FF9821216760A100B617E4 /* Template.swift */; };
 		7ECD13670B984D98A5FCD87D /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 887500E4E5E1BF9478D7EFFD /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */; };
 		8843F0C7B69C4B4D90D21F24 /* Pods_LiveUI_LiveUI_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 105120706C0623FA651A558C /* Pods_LiveUI_LiveUI_iOS.framework */; };
 		BA1D32AF765F430AA225944F /* Pods_Example_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 34D6F4260245D9C7942B5C54 /* Pods_Example_tvOS.framework */; };
@@ -634,6 +635,7 @@
 		71BAEAB520972DFD00D56639 /* ConditionParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionParser.swift; sourceTree = "<group>"; };
 		71D94EC320935F8E007D83A1 /* ConstraintConditionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstraintConditionTests.swift; sourceTree = "<group>"; };
 		71FF981F216638BC00B617E4 /* GeneratedUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneratedUI.swift; sourceTree = "<group>"; };
+		71FF9821216760A100B617E4 /* Template.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Template.swift; sourceTree = "<group>"; };
 		887500E4E5E1BF9478D7EFFD /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B091EE37DE710BCF6CF0B49 /* Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests/Pods-LiveUI-LiveUI-iOS-LiveUI-iOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		D1AAC4CA06239D481C4E7F9D /* Pods_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -849,6 +851,7 @@
 				1844916F209223A70080B743 /* Layout */,
 				1844917A209223A70080B743 /* Properties */,
 				184491C4209223A70080B743 /* Styles */,
+				71FF9824216760A900B617E4 /* Templates */,
 				18F7988520D7D73500522E1E /* Themes */,
 				184491C8209223A70080B743 /* Util */,
 				184491DA209223A70080B743 /* XML */,
@@ -1435,6 +1438,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		71FF9824216760A900B617E4 /* Templates */ = {
+			isa = PBXGroup;
+			children = (
+				71FF9821216760A100B617E4 /* Template.swift */,
+			);
+			path = Templates;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -1942,6 +1953,7 @@
 				1844921F209223A70080B743 /* Property.swift in Sources */,
 				1844926D209223A70080B743 /* SWXMLHash.swift in Sources */,
 				18449254209223A70080B743 /* BuiltinXSDType.swift in Sources */,
+				71FF9823216760A500B617E4 /* Template.swift in Sources */,
 				1844926E209223A70080B743 /* ComponentDefinition+Serialization.swift in Sources */,
 				68D71F6A21147410005CC92A /* InterfaceIdiom.swift in Sources */,
 				18449260209223A70080B743 /* Dictionary+Merge.swift in Sources */,

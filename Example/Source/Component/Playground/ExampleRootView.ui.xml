@@ -42,6 +42,12 @@
         </attributedTextStyle>
     </styles>
 
+    <templates name="ReactantTemplates">
+        <attributedString style="attributko" name="superTemplate">
+            <b>Hello</b> <i>ups</i> {{name}}, {{foo}}
+        </attributedString>
+    </templates>
+
     <View
         backgroundColor="blue"
         layout:id="test"

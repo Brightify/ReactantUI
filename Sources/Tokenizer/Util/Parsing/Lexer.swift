@@ -26,6 +26,7 @@ struct Lexer {
         case bracketsOpen
         case bracketsClose
         case exclamation
+        case argument(String)
     }
 }
 
@@ -46,6 +47,8 @@ extension Lexer.Token: Equatable {
             return lhsOther == rhsOther
         case (.whitespace(let lhsWhitespace), .whitespace(let rhsWhitespace)):
             return lhsWhitespace == rhsWhitespace
+        case (.argument(let lhsArgument), .argument(let rhsArgument)):
+            return lhsArgument == rhsArgument
         default:
             return false
         }
@@ -70,6 +73,7 @@ extension Lexer {
         ("=", { _ in .assignment }),
         (",", { _ in .comma }),
         ("!", { _ in .exclamation }),
+        ("\\{\\{[a-zA-Z0-9]+\\}\\}", { argument in .argument(argument.argumentWithoutBrackets)})
     ]
 
     static func tokenize(input: String, keepWhitespace: Bool = false) -> [Token] {
@@ -130,5 +134,14 @@ private extension Bool {
         }
 
         self = equalityOperator == "=="
+    }
+}
+
+private extension String {
+    var argumentWithoutBrackets: String {
+        var copy = self
+        copy.removeFirst(2)
+        copy.removeLast(2)
+        return copy
     }
 }

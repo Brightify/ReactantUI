@@ -30,6 +30,8 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, UIElem
     public var isRootView: Bool
     public var styles: [Style]
     public var stylesName: String
+    public var templates: [Template]
+    public var templatesName: String
     public var children: [UIElement]
     public var edgesForExtendedLayout: [RectEdge]
     public var isAnonymous: Bool
@@ -73,6 +75,8 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, UIElem
         self.type = type
         styles = try node.singleOrNoElement(named: "styles")?.xmlChildren.compactMap { try $0.value() as Style } ?? []
         stylesName = try node.singleOrNoElement(named: "styles")?.attribute(by: "name")?.text ?? "Styles"
+        templates = try node.singleOrNoElement(named: "templates")?.xmlChildren.compactMap { try $0.value() as Template } ?? []
+        templatesName = try node.singleOrNoElement(named: "templates")?.attribute(by: "name")?.text ?? "Templates"
         children = try View.deserialize(nodes: node.xmlChildren)
         isRootView = node.value(ofAttribute: "rootView") ?? false
         if isRootView {

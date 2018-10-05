@@ -14,7 +14,7 @@ import Reactant
 /**
  * Style identifier used to resolve the style name.
  */
-public enum StyleName: XMLAttributeDeserializable {
+public enum StyleName: XMLAttributeDeserializable, XMLAttributeName {
     case local(name: String)
     case global(group: String, name: String)
 
@@ -84,18 +84,6 @@ extension StyleName: Equatable {
     }
 }
 
-extension Array: XMLAttributeDeserializable where Iterator.Element == StyleName {
-    public static func deserialize(_ attribute: XMLAttribute) throws -> [StyleName] {
-        let styleNames = attribute.text.components(separatedBy: CharacterSet.whitespacesAndNewlines).filter {
-            !$0.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).isEmpty
-        }
-
-        return try styleNames.map {
-            try StyleName(from: $0)
-        }
-    }
-}
-
 /**
  * Structure representing an XML style.
  *
@@ -113,7 +101,7 @@ extension Array: XMLAttributeDeserializable where Iterator.Element == StyleName 
  * </styles>
  * ```
  */
-public struct Style: XMLElementDeserializable {
+public struct Style: XMLAttributeDeserializable, XMLElementDeserializable {
     public var name: StyleName
     public var extend: [StyleName]
     public var parentModuleImport: String

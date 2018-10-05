@@ -439,6 +439,10 @@ extension ReactantLiveUIWorker {
             return globalContext.style(named: styleName)
         }
 
+        public func template(named templateName: TemplateName) -> Template? {
+            return globalContext.template(named: templateName)
+        }
+
         public func themed(image name: String) -> Image? {
             return globalContext.themed(image: name)
         }

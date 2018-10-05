@@ -24,6 +24,8 @@ public protocol DataContext {
 
     func style(named styleName: StyleName) -> Style?
 
+    func template(named templateName: TemplateName) -> Template?
+
     func themed(image name: String) -> Image?
 
     func themed(color name: String) -> UIColorPropertyType?
@@ -63,6 +65,10 @@ extension DataContext where Self: HasParentContext, Self.ParentContext: DataCont
         return parentContext.style(named: styleName)
     }
 
+    public func template(named templateName: TemplateName) -> Template? {
+        return parentContext.template(named: templateName)
+    }
+
     public func themed(image name: String) -> Image? {
         return parentContext.themed(image: name)
     }
@@ -90,6 +96,10 @@ extension DataContext where Self: HasParentContext, Self.ParentContext == DataCo
 
     public func style(named styleName: StyleName) -> Style? {
         return parentContext.style(named: styleName)
+    }
+
+    public func template(named templateName: TemplateName) -> Template? {
+        return parentContext.template(named: templateName)
     }
 
     public func themed(image name: String) -> Image? {

@@ -82,7 +82,7 @@ extension AttributedText {
         "writingDirection": NSAttributedString.Key.writingDirection,
         "verticalGlyphForm": NSAttributedString.Key.verticalGlyphForm,
         "paragraphStyle": NSAttributedString.Key.paragraphStyle,
-        ] as [String: NSAttributedString.Key]
+    ] as [String: NSAttributedString.Key]
 
     public static func materialize(from element: XMLElement) throws -> AttributedText {
         let styleName = element.value(ofAttribute: "style") as StyleName?

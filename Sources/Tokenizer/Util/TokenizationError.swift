@@ -29,4 +29,8 @@ extension TokenizationError {
     public static func invalidStyleName(text: String) -> TokenizationError {
         return TokenizationError(message: "Entered value: <\(text)> isn't valid style name.")
     }
+
+    public static func invalidTemplateName(text: String) -> TokenizationError {
+        return TokenizationError(message: "Entered value: <\(text)> isn't valid template name.")
+    }
 }

@@ -27,11 +27,13 @@ extension Dictionary {
  */
 public struct GlobalContext: DataContext {
     private typealias StyleSheets = [String: [String: Style]]
+    private typealias TemplateSheets = [String: [String: Template]]
 
     public var applicationDescription: ApplicationDescription
     public var currentTheme: ApplicationDescription.ThemeName
     public var resourceBundle: Bundle?
     private var styles: StyleSheets = [:]
+    private var templates: TemplateSheets = [:]
 
     public init() {
         self.applicationDescription = ApplicationDescription()
@@ -73,6 +75,11 @@ public struct GlobalContext: DataContext {
     public func style(named styleName: StyleName) -> Style? {
         guard case .global(let groupName, let name) = styleName else { return nil }
         return styles[groupName]?[name]
+    }
+
+    public func template(named templateName: TemplateName) -> Template? {
+        guard case .global(let groupName, let name) = templateName else { return nil }
+        return templates[groupName]?[name]
     }
 
     public func themed(image name: String) -> Image? {

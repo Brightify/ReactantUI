@@ -82,7 +82,7 @@ public class View: XMLElementDeserializable, UIElement {
         return try nodes.compactMap { node -> UIElement? in
             if let elementType = ElementMapping.mapping[node.name] {
                 return try elementType.init(node: node)
-            } else if node.name == "styles" {
+            } else if node.name == "styles" || node.name == "templates" {
                 // Intentionally ignored as these are parsed directly
                 return nil
             } else {
