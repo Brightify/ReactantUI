@@ -69,7 +69,7 @@ class TextParser: BaseParser<TransformedText> {
             case .exclamation:
                 components.append("!")
             case .argument(let original):
-                components.append("{{\(original)}}")
+                components.append("\\(\(original))")
             }
         }
         return .text(components.joined())

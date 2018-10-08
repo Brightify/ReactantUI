@@ -38,7 +38,9 @@ public struct ElementControlStateProperty<T: ElementSupportedPropertyType>: Type
      * - parameter context: property context to use
      * - returns: Swift `String` representation of the property application on the target
      */
-    public func application(on target: String, context: PropertyContext) -> String {
+    public func application(on target: String?, context: PropertyContext) -> String {
+        guard let target = target else { fatalError("Currently supported only with specified target") }
+
         let state = parseState(from: attributeName) as [ControlState]
         let stringState = state.map { "UIControl.State.\($0.rawValue)" }.joined(separator: ", ")
         let namespacedTarget = namespace.resolvedSwiftName(target: target)

@@ -397,16 +397,34 @@ public class UIGenerator: Generator {
     private func generateTemplates(modifier: String) throws {
         try l("\(modifier)struct \(root.templatesName)") {
             for template in root.templates {
-                switch template.type {
-                case .attributedString(let template):
-                    try generate(modifier: modifier, template: template)
-                }
+                try generate(modifier: modifier, template: template)
             }
         }
     }
 
-    private func generate(modifier: String, template: String) throws {
-        l("let text = \"\(template)\"")
+    private func generate(modifier: String, template: Template) throws {
+        func generate(arguments: [String]) -> String {
+            var result = ""
+            for argument in arguments {
+                result.append("\(argument): String")
+
+                if argument != arguments.last {
+                    result.append(", ")
+                }
+            }
+
+            return result
+        }
+
+        switch template.type {
+        case .attributedText(let attributedTextTemplate):
+            l("public static func \(template.name.name)(\(generate(arguments: attributedTextTemplate.arguments))) -> NSMutableAttributedString") {
+                let property = attributedTextTemplate.attributedText
+                let propertyContext = PropertyContext(parentContext: componentContext, property: property)
+
+                l(property.application(on: nil, context: propertyContext))
+            }
+        }
     }
 
     // DISCLAIMER: This method is identical to a method with the same signature in `StyleGenerator.swift`. If you're changing the functionality of this method, you most likely want to bring the functionality changes over to that method as well.

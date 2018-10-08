@@ -138,9 +138,7 @@ public struct Template: XMLElementDeserializable {
         if node.name == "attributedString" {
             parentModuleImport = "Reactant"
             properties = try PropertyHelper.deserializeSupportedProperties(properties: Properties.attributedText.allProperties, in: node) as [Property]
-            type = .attributedString(string: node.xmlChildren.reduce("", { result, element in
-                result + (element.text ?? "")
-            }))
+            type = .attributedText(template: try AttributedTextTemplate(node: node))
         } else {
             throw TokenizationError(message: "Unknown template \(node.name). (\(node))")
         }
@@ -159,9 +157,9 @@ public struct Template: XMLElementDeserializable {
     }
 
     /**
-     * Tries to create the `Style` structure from an XML element.
+     * Tries to create the `Template` structure from an XML element.
      * - parameter element: XML element to parse
-     * - returns: if not thrown, `Style` obtained from the passed XML element
+     * - returns: if not thrown, `Template` obtained from the passed XML element
      */
     public static func deserialize(_ element: XMLElement) throws -> Template {
         return try Template(node: element, groupName: nil)
@@ -174,32 +172,37 @@ public struct Template: XMLElementDeserializable {
  * - attributedString: attributed string styling allowing multiple attributed style tags with custom arguments to be defined within it
  */
 public enum TemplateType {
-    case attributedString(string: String)
+    case attributedText(template: AttributedTextTemplate)
 
     public var styleType: String {
         switch self {
-        case .attributedString:
-            return "attributedString"
+        case .attributedText:
+            return "attributedText"
         }
     }
 }
 
-/**
- * Structure representing a single tag inside an <attributedTextStyle> element within `StyleGroup` (<styles>).
- */
-public struct AttributedTextTemplate: XMLElementDeserializable {
-    // TODO
+public struct AttributedTextTemplate {
+    public var attributedText: ElementAssignableProperty<AttributedText>
+    public var arguments: [String]
 
-//    public var name: String
-//    public var styles: [AttributedTextStyle]
-//    public var properties: [Property]
-//
     init(node: XMLElement) throws {
-//        name = node.name
-//        properties = try PropertyHelper.deserializeSupportedProperties(properties: Properties.attributedText.allProperties, in: node) as [Property]
-    }
+        let text = try AttributedText.materialize(from: node)
+        attributedText = ElementAssignableProperty(namespace: [],
+                                                   name: "attributedText",
+                                                   description: ElementAssignablePropertyDescription(
+                                                    namespace: [], name: "attributedText",
+                                                    swiftName: "attributedText", key: "attributedText"),
+                                                   value: text)
+        arguments = []
 
-    public static func deserialize(_ element: XMLElement) throws -> AttributedTextTemplate {
-        return try AttributedTextTemplate(node: element)
+        node.children.forEach {
+            let tokens = Lexer.tokenize(input: $0.description)
+            tokens.forEach { token in
+                if case .argument(let argument) = token {
+                    arguments.append(argument)
+                }
+            }
+        }
     }
 }

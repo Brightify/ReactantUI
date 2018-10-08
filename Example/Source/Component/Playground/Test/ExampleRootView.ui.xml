@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Component
+    xmlns="http://schema.reactant.tech/ui"
+    xmlns:layout="http://schema.reactant.tech/layout"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://schema.reactant.tech/ui http://schema.reactant.tech/ui.xsd
+    http://schema.reactant.tech/layout http://schema.reactant.tech/layout.xsd"
+    rootView="true"
+    backgroundColor="black">
+
+    <styles name="ReactantStyles">
+        <LabelStyle name="base" backgroundColor="white" />
+        <LabelStyle name="black" backgroundColor="black" textColor="#ff0000" />
+        <LabelStyle name="astyle" extend="black" />
+        <ButtonStyle name="buttona"
+        backgroundColor.highlighted="white"
+        isUserInteractionEnabled="true" />
+        <attributedTextStyle name="bandaska" extend="common:globalko">
+            <i font=":bold@20" />
+            <base foregroundColor="white" />
+        </attributedTextStyle>
+        <attributedTextStyle name="attributko" extend="bandaska bandasnik">
+            <b font=":bold@40" backgroundColor="green@fadedOut(by: 30%)@fadedIn(20%)" foregroundColor="#f5f5f5" />
+            <i font=":light@20" backgroundColor="red" foregroundColor="#f5f5f5" />
+            <base font=":light@20" backgroundColor="red@darker(by: 40%)@desaturated(by: 40%)" />
+            <basko font=":light@20" backgroundColor="red@desaturated(40%)@saturated(40%)" foregroundColor="#f5f5f5" />
+        </attributedTextStyle>
+        <attributedTextStyle name="bandasnik" extend="common:globalko">
+            <b font=":light@40" backgroundColor="green" foregroundColor="#f5f5f5@fadedOut(by: 0.3)@desaturated(25%)" />
+            <i font=":bold@4" underlineStyle="single" underlineColor="black@alpha(at: 50%)@alpha(0.1)" />
+            <base foregroundColor="white" backgroundColor="black" />
+        </attributedTextStyle>
+        <attributedTextStyle
+            name="CenterButton"
+            foregroundColor="white"
+            paragraphStyle.alignment="center">
+
+            <plus
+            font=":light@72" />
+            <text
+            font=":light@24" />
+        </attributedTextStyle>
+    </styles>
+
+    <templates name="ReactantTemplates">
+        <attributedString style="attributko" name="superTemplate">
+            <b>Hello {{name}}</b> <i>ups</i> {{foo}}
+        </attributedString>
+    </templates>
+
+    <View
+    backgroundColor="blue"
+    layout:id="test"
+    layout:leading="[!(horizontal == compact) and (vertical == regular) and pad or width :lt 100] coolConstraint = super;
+    [(horizontal == compact or vertical == compact or pad) and height :gte 20] coolConstraint = self;
+    [false] uniqueConstraint = :gte 10"
+    layout:top="safeAreaLayoutGuide.top"
+    layout:width="100"
+    layout:height="50" />
+    <View
+    collapseAxis="horizontal"
+    backgroundColor="red"
+    layout:leading="super"
+    layout:top="id:test.bottom offset(10)"
+    layout:width="100"
+    layout:height="50" />
+
+    <View/>
+    <ImageView
+    layout:edges="super"
+    layoutMargins="10,10,10,10"
+    image="theme.falcon"
+    visibility="visible"
+    clipsToBounds="true"
+    layout:compressionPriority="high"
+    layout:huggingPriority="low"
+    contentMode="scaleAspectFill" />
+
+    <!--  <VisualEffectView
+     effect="blur:light"
+     layout:edges="super" />
+
+     <DatePicker
+     layout:id="picker"
+     mode="time"
+     layout:top="super"
+     layout:fillHorizontally="super inset(20)" />
+
+     <NavigationBar
+     barTintColor="blue"
+     layout:fillHorizontally="super inset(20)"
+     layout:height="50" />
+
+     <PageControl
+     numberOfPages="5"
+     pageIndicatorTintColor="red"
+     layout:fillHorizontally="super inset(20)"
+     layout:height="50" />
+
+     <MapView
+     layout:id="map"
+     style=":common:map"
+     layout:fillHorizontally="super inset(20)"
+     layout:below="id:picker"
+     layout:height="testConstraint = 200" />
+     <Switch
+     layout:id="switch"
+     layout:leading="inset(20)"
+     layout:trailing=":lt inset(20)"
+     layout:below="id:map"/>
+     <Slider
+     layout:id="slider"
+     layout:below="id:switch"
+     layout:fillHorizontally="super inset(20)" />
+     <Stepper
+     layout:below="id:slider"
+     layout:id="stepper"
+     value="10"
+     minimumValue="0"
+     maximumValue="100"
+     stepValue="5"
+     layout:fillHorizontally="super inset(20)" /> -->
+    <StackView
+        axis="vertical"
+        backgroundColor="black"
+        spacing="10"
+        layout:id="stacko"
+        layout:top="super inset(20)"
+        layout:fillHorizontally="readableContentGuide inset(20)">
+        <Component type="ExampleView2" layout:width="dudegr=370" />
+        <Component type="ExampleView2" />
+    </StackView>
+
+    <!-- <ScrollView layout:edges="super">
+     <Container
+     layout:edges="super"
+     layout:width="super">
+
+     <ActivityIndicator indicatorStyle="white" />
+
+     <Label
+     layout:id="helloWorldLabel"
+     textColor="white"
+     text="localizable(NAME.NAME)"
+     font=":bold@30"
+     numberOfLines="0"
+     style="astyle"
+     textAlignment="center"
+     layout:fillHorizontally="super inset(20)"
+     layout:top="super offset(61)" />
+
+     <TextView
+     layout:id="textView"
+     text="text"
+     textColor="black"
+     layout:below="id:helloWorldLabel"
+     layout:height="50"
+     layout:fillHorizontally="super" />
+
+     <Label
+     layout:id="please"
+     text="Keep your rocket safes"
+     font=":regular@14"
+     style=":common:whiteLabel"
+     numberOfLines="0"
+     textAlignment="center"
+     clipsToBounds="true"
+     backgroundColor="red"
+     layout:below="id:textView offset(10)"
+     layout:centerX="super" />
+
+     <TextField
+     placeholder="E-mail"
+     field="email"
+     textColor="white"
+     layout:below="id:please offset(50)"
+     layout:above="send offset(-50)"
+     layout:fillHorizontally="super inset(50)" />
+
+     <Button
+     title="Register now"
+     titleColor="white"
+     titleColor.highlighted="black"
+     font=":medium@20"
+     numberOfLines="1"
+     backgroundColor="black"
+     backgroundColor.highlighted="white"
+     field="send"
+     clipsToBounds="true"
+     layer.cornerRadius="4"
+     layer.borderWidth="3"
+     layer.borderColor="red"
+     layout:leading="buttonLeadingConstraint = super inset(40)"
+     layout:trailing="super inset(40)"
+     layout:height="buttonHeightConstraint = 50" />
+
+     <Button
+     layout:id="neco"
+     title="Forgotten password?"
+     backgroundColor="#FFddaa"
+     layer.cornerRadius="10"
+     clipsToBounds="true"
+     style="buttona"
+     layout:fillHorizontally="super inset(60)"
+     layout:height="50"
+     layout:below="send offset(70)" />
+     <StackView
+     axis="vertical"
+     backgroundColor="black"
+     layout:below="id:neco offset(0)"
+     layout:fillHorizontally="super inset(20)"
+     layout:bottom="super inset(20)">
+     <Component type="ExampleCell" />
+     <Component type="AnonymousTestView" anonymous="true" backgroundColor="white">
+     <Label text="Anon" layout:edges="super inset(20)" />
+     </Component>
+     <Component type="ExampleCell" />
+     <Component type="ExampleView2" />
+     <Component type="ExampleView2" />
+     <Component type="ExampleView2" />
+     <Component type="ExampleView2" />
+     <Component type="ExampleView2" />
+     <Component type="ExampleView2" />
+     <Component type="ExampleView2" />
+     <Component type="ExampleView2" />
+     <Component type="ExampleView2" />
+     <Component type="ExampleView2" />
+     <Component type="ExampleView2" />
+     </StackView>
+     </Container>
+     </ScrollView> -->
+
+    <Label
+        layout:edges="super inset(20)"
+        numberOfLines="0"
+        alpha="0">
+        <attributedText
+            style="attributko"
+            font="light@17"
+            foregroundColor="white"
+            backgroundColor="black"
+            paragraphStyle.tabStops="15; 50"
+            paragraphStyle.defaultTabInterval="15"
+            paragraphStyle.firstLineHeadIndent="0"
+            paragraphStyle.headIndent="15"
+            paragraphStyle.minimumLineHeight="30"
+            paragraphStyle.maximumLineHeight="30"
+            paragraphStyle.paragraphSpacing="10">
+            •\tCase Pearls for insight to specific tips or set-up for pediatric cases.\n•\tPatient Reference provides typical vitals signs and equipment sizes.\n•\tCritical Pathway Checklist helps you learn and cover the essentials in a crisis.\n•\tBe Prepared and Keep Your Pedi Safe!
+        </attributedText>
+    </Label>
+
+    <Button
+        collapseAxis="vertical"
+        layout:id="buttonko"
+        layout:fillHorizontally="super"
+        layout:below="id:stacko"
+        layout:height="60"
+        isSelected="true">
+        <attributedTitle
+            state="selected|highlighted"
+            style="bandaska">
+            <i foregroundColor="red"><i>lolanda </i><base><i>nope.avi</i>more textko</base></i>
+        </attributedTitle>
+        <attributedTitle
+            style="bandaska">
+            <i>lolanda</i><base> <i>nope.avi</i>more textko</base>
+        </attributedTitle>
+    </Button>
+
+    <Label
+        field="django"
+        collapseAxis="both"
+        numberOfLines="0"
+        layout:below="id:buttonko"
+        layout:fillHorizontally="super inset(20)">
+    </Label>
+
+    <Label
+        layout:bottom="safeAreaLayoutGuide inset(10)"
+        layout:fillHorizontally="super inset(20)"
+        numberOfLines="0">
+        <attributedText
+            style="attributko"
+            font=":light@17"
+            foregroundColor="white"
+            backgroundColor="black">
+            <b font=":bold@24">Django Freeman</b>
+            Keep Your Pedi Safe!
+            The D is silent.
+        </attributedText>
+    </Label>
+</Component>

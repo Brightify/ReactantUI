@@ -1272,8 +1272,7 @@
 				182B687D1EAF7641007CC668 /* ATest.ui.xml */,
 				182B687E1EAF7641007CC668 /* CommonStyles.styles.xml */,
 				182B687F1EAF7641007CC668 /* ExampleCell.ui.xml */,
-				182B68801EAF7641007CC668 /* ExampleRootView.swift */,
-				182B68811EAF7641007CC668 /* ExampleRootView.ui.xml */,
+				71EE07FE216B54B80096E25E /* Test */,
 				182B68821EAF7641007CC668 /* ExampleView2.swift */,
 				182B68831EAF7641007CC668 /* ExampleView2.ui.xml */,
 				182B68841EAF7641007CC668 /* ViewController.swift */,
@@ -1436,6 +1435,15 @@
 				887500E4E5E1BF9478D7EFFD /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		71EE07FE216B54B80096E25E /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				182B68801EAF7641007CC668 /* ExampleRootView.swift */,
+				182B68811EAF7641007CC668 /* ExampleRootView.ui.xml */,
+			);
+			path = Test;
 			sourceTree = "<group>";
 		};
 		71FF9824216760A900B617E4 /* Templates */ = {

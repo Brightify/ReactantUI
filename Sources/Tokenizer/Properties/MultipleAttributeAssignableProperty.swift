@@ -30,7 +30,9 @@ public struct MultipleAttributeAssignableProperty<T: MultipleAttributeSupportedP
      * - parameter context: property context to use
      * - returns: Swift `String` representation of the property application on the target
      */
-    public func application(on target: String, context: PropertyContext) -> String {
+    public func application(on target: String?, context: PropertyContext) -> String {
+        guard let target = target else { fatalError("Currently supported only with specified target") }
+
         let namespacedTarget = namespace.resolvedSwiftName(target: target)
         return "\(namespacedTarget).\(description.swiftName) = \(value.generate(context: context.child(for: value)))"
     }

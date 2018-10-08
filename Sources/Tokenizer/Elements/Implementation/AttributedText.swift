@@ -168,6 +168,24 @@ extension AttributedText {
     }
 
     public func generate(context: SupportedPropertyTypeContext) -> String {
+        return """
+        {
+            let s = NSMutableAttributedString()
+            \(generateStringParts(context: context).map { "s.append((\($0.text)).attributed(\($0.attributes)))" }.joined(separator: "\n"))
+            return s
+        }()
+        """
+    }
+
+    public func generateBody(context: SupportedPropertyTypeContext) -> String {
+        return """
+            let s = NSMutableAttributedString()
+            \(generateStringParts(context: context).map { "s.append((\($0.text)).attributed(\($0.attributes)))" }.joined(separator: "\n\t"))
+            return s
+        """
+    }
+
+    private func generateStringParts(context: SupportedPropertyTypeContext) -> [(text: String, attributes: String)] {
         func resolveAttributes(part: AttributedText.Part, inheritedAttributes: [Property], parentElements: [String]) -> [(text: String, attributes: String)] {
             switch part {
             case .transform(let transformedText):
@@ -200,24 +218,16 @@ extension AttributedText {
             }
         }
 
-        let optimizedStringParts = parts.flatMap {
+        return parts.flatMap {
             resolveAttributes(part: $0, inheritedAttributes: localProperties, parentElements: [])
-        }.reduce([]) { current, stringPart in
-            guard let lastStringPart = current.last, lastStringPart.attributes == stringPart.attributes else {
-                return current.arrayByAppending(stringPart)
-            }
-            var mutableCurrent = current
-            mutableCurrent[mutableCurrent.endIndex - 1] = (text: "\(lastStringPart.text) + \(stringPart.text)", attributes: lastStringPart.attributes)
-            return mutableCurrent
+            }.reduce([]) { current, stringPart in
+                guard let lastStringPart = current.last, lastStringPart.attributes == stringPart.attributes else {
+                    return current.arrayByAppending(stringPart)
+                }
+                var mutableCurrent = current
+                mutableCurrent[mutableCurrent.endIndex - 1] = (text: "\(lastStringPart.text) + \(stringPart.text)", attributes: lastStringPart.attributes)
+                return mutableCurrent
         } as [(text: String, attributes: String)]
-
-        return """
-        {
-            let s = NSMutableAttributedString()
-            \(optimizedStringParts.map { "s.append((\($0.text)).attributed(\($0.attributes)))" }.joined(separator: "\n"))
-            return s
-        }()
-        """
     }
 
     private func resolvedExtensions(of style: AttributedTextStyle, from styleNames: [StyleName], in context: SupportedPropertyTypeContext) -> [Property] {
