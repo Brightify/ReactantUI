@@ -259,50 +259,6 @@ extension Optional where Wrapped == Condition {
     }
 }
 
-extension ConditionStatement {
-    public func generateSwift(viewName: String) -> String {
-        switch self {
-        case .trueStatement:
-            return "true"
-        case .falseStatement:
-            return "false"
-        case .sizeClass(let sizeClassType, let viewInterfaceSize):
-            return "\(viewName).traits.size(\(sizeClassType.description): .\(viewInterfaceSize.description))"
-        case .interfaceIdiom(let interfaceIdiom):
-            return "\(viewName).traits.device(.\(interfaceIdiom.description))"
-        case .orientation(let orientation):
-            return "\(viewName).traits.orientation(.\(orientation.description))"
-        case .number(let number):
-            return String(number)
-        case .dimensionType(let dimensionType):
-            return "\(viewName).traits.viewRootSize(.\(dimensionType.description))"
-        case .interfaceSizeClass:
-            fatalError("Swift condition code generation reached an undefined point.")
-        }
-    }
-
-    public func generateXML() -> String {
-        switch self {
-        case .trueStatement:
-            return "true"
-        case .falseStatement:
-            return "false"
-        case .sizeClass(let sizeClassType, let viewInterfaceSize):
-            return "\(sizeClassType.description) == \(viewInterfaceSize.description)"
-        case .interfaceIdiom(let interfaceIdiom):
-            return interfaceIdiom.description
-        case .orientation(let orientation):
-            return orientation.description
-        case .number(let number):
-            return String(number)
-        case .dimensionType(let dimensionType):
-            return dimensionType.description
-        case .interfaceSizeClass:
-            fatalError("XML condition code generation reached an undefined point.")
-        }
-    }
-}
-
 // MARK: - Helper extensions for generating code
 extension ConditionBinaryOperation {
     var swiftRepresentation: String {
