@@ -37,7 +37,7 @@ public class LabelProperties: ViewProperties {
     public let textAlignment: AssignablePropertyDescription<TextAlignment>
     public let isEnabled: AssignablePropertyDescription<Bool>
     public let adjustsFontSizeToFitWidth: AssignablePropertyDescription<Bool>
-    public let allowsDefaultTighteningBeforeTruncation: AssignablePropertyDescription<Bool>
+    public let allowsDefaultTighteningForTruncation: AssignablePropertyDescription<Bool>
     public let minimumScaleFactor: AssignablePropertyDescription<Float>
     public let isHighlighted: AssignablePropertyDescription<Bool>
     public let shadowOffset: AssignablePropertyDescription<Size>
@@ -55,7 +55,7 @@ public class LabelProperties: ViewProperties {
         textAlignment = configuration.property(name: "textAlignment")
         isEnabled = configuration.property(name: "isEnabled", key: "enabled")
         adjustsFontSizeToFitWidth = configuration.property(name: "adjustsFontSizeToFitWidth")
-        allowsDefaultTighteningBeforeTruncation = configuration.property(name: "allowsDefaultTighteningBeforeTruncation")
+        allowsDefaultTighteningForTruncation = configuration.property(name: "allowsDefaultTighteningForTruncation")
         minimumScaleFactor = configuration.property(name: "minimumScaleFactor")
         isHighlighted = configuration.property(name: "isHighlighted", key: "highlighted")
         shadowOffset = configuration.property(name: "shadowOffset")
