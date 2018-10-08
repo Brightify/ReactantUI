@@ -263,7 +263,7 @@
     </Button>
 
     <Label
-        collapseAxis="both"
+        collapseAxis="[phone] both"
         numberOfLines="0"
         layout:below="id:buttonko"
         layout:fillHorizontally="super inset(20)">

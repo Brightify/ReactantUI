@@ -42,7 +42,7 @@ public enum ConditionBinaryOperation {
 
     public var requiresComparable: Bool {
         switch self {
-        case .and, .or:
+        case .and, .or, .equal:
             return false
         default:
             return true
@@ -102,7 +102,7 @@ public indirect enum Condition {
 
         case .unary(.negation, let condition):
             // Negating a comparable value is invalid
-            guard !condition.isComparable, case .statement = condition else {
+            guard !condition.isComparable else {
                 throw TokenizationError(message: "Negating `\(condition.generateXML())` is not valid.")
             }
             conditionsToValidate = [condition]
@@ -144,31 +144,31 @@ public indirect enum Condition {
     }
 
     #if canImport(UIKit)
-    func evaluate(from traits: UITraitHelper, in view: UIView) throws -> Bool {
+    func evaluate(from traits: TraitHelper) throws -> Bool {
         switch self {
         case .statement(let statement):
             return try statement.evaluate(from: traits)
         case .unary(let operation, let condition):
-            return try condition.evaluate(from: traits, in: view) == (operation != .negation)
+            return try condition.evaluate(from: traits) == (operation != .negation)
         case .binary(let operation, let lhsCondition, let rhsCondition):
             switch operation {
             case .and:
-                return try lhsCondition.evaluate(from: traits, in: view) && rhsCondition.evaluate(from: traits, in: view)
+                return try lhsCondition.evaluate(from: traits) && rhsCondition.evaluate(from: traits)
             case .or:
-                return try lhsCondition.evaluate(from: traits, in: view) || rhsCondition.evaluate(from: traits, in: view)
+                return try lhsCondition.evaluate(from: traits) || rhsCondition.evaluate(from: traits)
             case .equal where lhsCondition.isComparable && rhsCondition.isComparable:
-                return try compare(from: traits, in: view)
+                return try compare(from: traits)
             case .equal where !lhsCondition.isComparable && !rhsCondition.isComparable:
-                return try lhsCondition.evaluate(from: traits, in: view) == rhsCondition.evaluate(from: traits, in: view)
+                return try lhsCondition.evaluate(from: traits) == rhsCondition.evaluate(from: traits)
             case .equal:
-                throw ConditionError("Can't chech equality ")
+                throw ConditionError("Can't check equality between '\(lhsCondition.generateXML())' and '\(rhsCondition.generateXML())'.")
             case .less, .lessEqual, .greater, .greaterEqual:
-                return try compare(from: traits, in: view)
+                return try compare(from: traits)
             }
         }
     }
 
-    func compare(from traits: UITraitHelper, in view: UIView) throws -> Bool {
+    func compare(from traits: TraitHelper) throws -> Bool {
         guard case .binary(let operation, let lhsCondition, let rhsCondition) = self else {
             fatalError("Comparation evaluation somehow got called with a nonbinary condition.")
         }
@@ -218,6 +218,14 @@ extension Condition {
         }
     }
 
+    public func generateSwiftEnclosing(viewName: String, _ ifBody: @autoclosure () -> String) -> String {
+        return """
+        if \(generateSwift(viewName: viewName)) {
+            \(ifBody())
+        }
+        """
+    }
+
     // MARK: - XML condition generators
     public func generateXML() -> String {
         switch self {
@@ -235,6 +243,23 @@ extension Condition {
     }
 }
 
+extension Optional where Wrapped == Condition {
+    /**
+     * Generates an `if-clause` around the passed property string if there is a value present, otherwise just returns the property string.
+     * - parameter viewName: name of the view that the condition should use when generating
+     * - parameter ifBody: line (or multiple) of Swift code that are to be included inside the `if-clause` generated
+     * - returns: String containing the `if-clause` with the generated condition with the passed property string within the body
+     */
+    public func generateSwiftEnclosingIfPresent(viewName: String, _ ifBody: @autoclosure () -> String) -> String {
+        if let condition = self {
+            return condition.generateSwiftEnclosing(viewName: viewName, ifBody)
+        } else {
+            return ifBody()
+        }
+    }
+}
+
+// MARK: - Helper extensions for generating code
 extension ConditionBinaryOperation {
     var swiftRepresentation: String {
         switch self {

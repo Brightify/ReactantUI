@@ -46,7 +46,18 @@ public struct PropertyHelper {
             guard let propertyDescription = properties.first(where: { $0.matches(attributeName: attributeName) }) else {
                 return nil
             }
-            return try propertyDescription.materialize(attributeName: attributeName, value: attribute)
+
+            if let startConditionIndex = attribute.index(of: "["),
+                let endConditionIndex = attribute.index(of: "]") {
+                let subrange = attribute[attribute.index(after: startConditionIndex)..<endConditionIndex]
+                let tokens = Lexer.tokenize(input: String(subrange))
+                let condition = try ConditionParser(tokens: tokens).parseSingle()
+
+                let modifiedAttribute = String(attribute[attribute.index(after: endConditionIndex)...]).trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+                return try propertyDescription.materialize(attributeName: attributeName, value: modifiedAttribute, condition: condition)
+            } else {
+                return try propertyDescription.materialize(attributeName: attributeName, value: attribute, condition: nil)
+            }
         }
     }
 
@@ -59,10 +70,9 @@ public struct PropertyHelper {
             guard let propertyDescription = attributeProperties.first(where: { $0.matches(attributeName: attributeName) }) else {
                 continue
             }
-            let property = try propertyDescription.materialize(attributeName: attributeName, value: attribute.text)
+            let property = try propertyDescription.materialize(attributeName: attributeName, value: attribute.text, condition: nil)
             result[attributeName] = property
         }
         return result
     }
-
 }

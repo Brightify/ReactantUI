@@ -9,7 +9,24 @@
 import Foundation
 import UIKit
 
-public class UITraitHelper {
+public enum TraitDimensionType {
+    case width
+    case height
+}
+
+public protocol TraitHelper {
+    var horizontalSize: UIUserInterfaceSizeClass { get }
+    var verticalSize: UIUserInterfaceSizeClass { get }
+    var isHorizontal: Bool { get }
+    var isVertical: Bool { get }
+    func size(horizontal sizeClass: UIUserInterfaceSizeClass) -> Bool
+    func size(vertical sizeClass: UIUserInterfaceSizeClass) -> Bool
+    func device(_ deviceType: UIUserInterfaceIdiom) -> Bool
+    func orientation(_ orientation: ViewOrientation) -> Bool
+    func viewRootSize(_ dimensionType: TraitDimensionType) -> Float
+}
+
+public class UITraitHelper: TraitHelper {
     public var horizontalSize: UIUserInterfaceSizeClass {
         return view.traitCollection.horizontalSizeClass
     }
@@ -53,12 +70,7 @@ public class UITraitHelper {
         return rootViewOrientation == orientation
     }
 
-    public enum DimensionType {
-        case width
-        case height
-    }
-
-    public func viewRootSize(_ dimensionType: DimensionType) -> Float {
+    public func viewRootSize(_ dimensionType: TraitDimensionType) -> Float {
         switch dimensionType {
         case .width:
             return Float(rootView.frame.width)

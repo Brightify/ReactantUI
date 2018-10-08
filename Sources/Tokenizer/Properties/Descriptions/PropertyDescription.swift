@@ -29,9 +29,10 @@ public protocol AttributePropertyDescription: PropertyDescription {
      * Tries to create a `Property` using the passed attribute name and value.
      * - parameter attributeName: XML attribute name to check when materializing the property
      * - parameter value: attribute's right hand side, the value to use
+     * - parameter condition: condition that encloses this property
      * - returns: if not thrown, materialized `Property`
      */
-    func materialize(attributeName: String, value: String) throws -> Property
+    func materialize(attributeName: String, value: String, condition: Condition?) throws -> Property
 
     /**
      * Checks whether the property description can handle the passed attributeName.

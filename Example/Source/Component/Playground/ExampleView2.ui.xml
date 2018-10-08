@@ -21,7 +21,7 @@
             layout:id="label"
             font=":regular@20"
             numberOfLines="0"
-            textAlignment="center"
+            textAlignment="[phone] center"
             layout:top="super inset(10)"
             layout:centerX="super"
             layout:leading=":gte super inset(10)"

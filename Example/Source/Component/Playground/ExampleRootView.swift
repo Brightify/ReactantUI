@@ -16,7 +16,6 @@ final class ExampleRootView: ViewBase<(test: String, Int, test2: (a: Int, b: Str
     let send = UIButton()
 
     override func update() {
-
         // Test that constraints work
 //        if let testConstraint = rui.constraints.testConstraint {
 //            testConstraint.update(offset: 100)

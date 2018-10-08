@@ -21,6 +21,7 @@ public struct ControlStateProperty<T: AttributeSupportedPropertyType>: TypedProp
     
     public var description: ControlStatePropertyDescription<T>
     public var value: T
+    public let condition: Condition?
     
     public var attributeName: String {
         let namespacedName = namespace.resolvedAttributeName(name: name)
@@ -40,11 +41,13 @@ public struct ControlStateProperty<T: AttributeSupportedPropertyType>: TypedProp
         let state = parseState(from: attributeName) as [ControlState]
         let stringState = state.map { "UIControlState.\($0.rawValue)" }.joined(separator: ", ")
         let namespacedTarget = namespace.resolvedSwiftName(target: target)
-        return "\(namespacedTarget).set\(description.key.capitalizingFirstLetter())(\(value.generate(context: context.child(for: value))), for: [\(stringState)])"
+        let applicationString = "\(namespacedTarget).set\(description.key.capitalizingFirstLetter())(\(value.generate(context: context.child(for: value))), for: [\(stringState)])"
+        return condition.generateSwiftEnclosingIfPresent(viewName: namespacedTarget, applicationString)
     }
     
     #if SanAndreas
     public func dematerialize(context: PropertyContext) -> XMLSerializableAttribute {
+        // TODO: condition
         return XMLSerializableAttribute(name: attributeName, value: value.dematerialize(context: context.child(for: value)))
     }
     #endif
@@ -67,6 +70,14 @@ public struct ControlStateProperty<T: AttributeSupportedPropertyType>: TypedProp
         guard let resolvedValue = value.runtimeValue(context: context.child(for: value)) else {
             throw LiveUIError(message: "!! Value `\(value)` couldn't be resolved in runtime for key `\(key)`")
         }
+
+        if let condition = condition, let view = target as? UIView {
+            let traits = UITraitHelper(for: view)
+            if try condition.evaluate(from: traits) == false {
+                return
+            }
+        }
+
         let signature = target.method(for: selector)
 
         typealias setValueForControlStateIMP = @convention(c) (AnyObject, Selector, AnyObject, UIControlState) -> Void

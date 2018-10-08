@@ -39,7 +39,7 @@ public struct ElementAssignablePropertyDescription<T: ElementSupportedPropertyTy
         if let storedProperty = getProperty(from: properties) {
             property = storedProperty
         } else {
-            property = ElementAssignableProperty(namespace: namespace, name: name, description: self, value: value)
+            property = ElementAssignableProperty(namespace: namespace, name: name, description: self, value: value, condition: nil)
         }
         property.value = value
         setProperty(property, to: &properties)
@@ -72,6 +72,6 @@ extension ElementAssignablePropertyDescription: ElementPropertyDescription {
     public func materialize(element: XMLElement) throws -> Property {
         let materializedValue = try T.materialize(from: element)
 
-        return ElementAssignableProperty(namespace: namespace, name: name, description: self, value: materializedValue)
+        return ElementAssignableProperty(namespace: namespace, name: name, description: self, value: materializedValue, condition: nil)
     }
 }
