@@ -4,259 +4,210 @@
 //
 //  Created by Robin Krenecky on 27/04/2018.
 //
-//
-//import XCTest
-//@testable import ReactantLiveUI
-//
-//class ConstraintConditionTests: XCTestCase {
-//
-//    lazy var interfaceState1: InterfaceState = {
-//        return InterfaceState(interfaceIdiom: .phone, horizontalSizeClass: .compact, verticalSizeClass: .regular, deviceOrientation: .landscape)
-//    }()
-//
-//    lazy var interfaceState2: InterfaceState = {
-//        return InterfaceState(interfaceIdiom: .pad, horizontalSizeClass: .regular, verticalSizeClass: .compact, deviceOrientation: .portrait)
-//    }()
-//
-//    lazy var interfaceState3: InterfaceState = {
-//        return InterfaceState(interfaceIdiom: .phone, horizontalSizeClass: .compact, verticalSizeClass: .compact, deviceOrientation: .portrait)
-//    }()
-//
-//    var allInterfaceStates: [InterfaceState] {
-//        return [interfaceState1, interfaceState2, interfaceState3]
-//    }
-//
-//    private func parseInput(_ input: String) throws -> Condition? {
-//        return try ConstraintParser(tokens: Lexer.tokenize(input: "\(input) super inset"), layoutAttribute: LayoutAttribute.above).parseSingle().condition
-//    }
-//
-//    func testSimpleStatements() throws {
-//        let input1 = "[iphone != true]"
-//        let input2 = "[ipad == true]"
-//        let input3 = "[ipad == false]"
-//        let input4 = "[!ipad]"
-//        let input5 = "[vertical == compact]"
-//        let input6 = "[vertical == compact == false]"
-//        let input7 = "[landscape]"
-//        let input8 = "[vertical != compact]"
-//        let input9 = "[vertical != regular == false]"
-//        let input10 = "[!(vertical != regular) != false]"
-//
-//
-//        if let result1 = try parseInput(input1),
-//            let result2 = try parseInput(input2),
-//            let result3 = try parseInput(input3),
-//            let result4 = try parseInput(input4),
-//            let result5 = try parseInput(input5),
-//            let result6 = try parseInput(input6),
-//            let result7 = try parseInput(input7),
-//            let result8 = try parseInput(input8),
-//            let result9 = try parseInput(input9),
-//            let result10 = try parseInput(input10) {
-//
-//            XCTAssertFalse(result1.evaluate(from: interfaceState1))
-//            XCTAssertTrue(result1.evaluate(from: interfaceState2))
-//            XCTAssertFalse(result1.evaluate(from: interfaceState3))
-//
-//            XCTAssertFalse(result2.evaluate(from: interfaceState1))
-//            XCTAssertTrue(result2.evaluate(from: interfaceState2))
-//            XCTAssertFalse(result2.evaluate(from: interfaceState3))
-//
-//            XCTAssertTrue(result3.evaluate(from: interfaceState1))
-//            XCTAssertFalse(result3.evaluate(from: interfaceState2))
-//            XCTAssertTrue(result3.evaluate(from: interfaceState3))
-//
-//            XCTAssertTrue(result4.evaluate(from: interfaceState1))
-//            XCTAssertFalse(result4.evaluate(from: interfaceState2))
-//            XCTAssertTrue(result4.evaluate(from: interfaceState3))
-//
-//            XCTAssertFalse(result5.evaluate(from: interfaceState1))
-//            XCTAssertTrue(result5.evaluate(from: interfaceState2))
-//            XCTAssertTrue(result5.evaluate(from: interfaceState3))
-//
-//            XCTAssertTrue(result6.evaluate(from: interfaceState1))
-//            XCTAssertFalse(result6.evaluate(from: interfaceState2))
-//            XCTAssertFalse(result6.evaluate(from: interfaceState3))
-//
-//            XCTAssertTrue(result7.evaluate(from: interfaceState1))
-//            XCTAssertFalse(result7.evaluate(from: interfaceState2))
-//            XCTAssertFalse(result7.evaluate(from: interfaceState3))
-//
-//            XCTAssertTrue(result8.evaluate(from: interfaceState1))
-//            XCTAssertFalse(result8.evaluate(from: interfaceState2))
-//            XCTAssertFalse(result8.evaluate(from: interfaceState3))
-//
-//            XCTAssertTrue(result9.evaluate(from: interfaceState1))
-//            XCTAssertFalse(result9.evaluate(from: interfaceState2))
-//            XCTAssertFalse(result9.evaluate(from: interfaceState3))
-//
-//            XCTAssertTrue(result10.evaluate(from: interfaceState1))
-//            XCTAssertFalse(result10.evaluate(from: interfaceState2))
-//            XCTAssertFalse(result10.evaluate(from: interfaceState3))
-//        }
-//    }
-//
-//    func testSimpleConjunctions() throws {
-//        let input1 = "[ipad and landscape]"
-//        let input2 = "[iphone and portrait]"
-//        let input3 = "[!ipad and vertical == compact]"
-//        let input4 = "[horizontal == compact and vertical == regular]"
-//        let input5 = "[horizontal == regular and vertical == compact and ipad and !landscape]"
-//        let input6 = "[horizontal != regular and vertical == compact and !ipad and !landscape]"
-//
-//        if let result1 = try parseInput(input1),
-//            let result2 = try parseInput(input2),
-//            let result3 = try parseInput(input3),
-//            let result4 = try parseInput(input4),
-//            let result5 = try parseInput(input5),
-//            let result6 = try parseInput(input6) {
-//
-//            XCTAssertFalse(result1.evaluate(from: interfaceState1))
-//            XCTAssertFalse(result1.evaluate(from: interfaceState2))
-//            XCTAssertFalse(result1.evaluate(from: interfaceState3))
-//
-//            XCTAssertFalse(result2.evaluate(from: interfaceState1))
-//            XCTAssertFalse(result2.evaluate(from: interfaceState2))
-//            XCTAssertTrue(result2.evaluate(from: interfaceState3))
-//
-//            XCTAssertFalse(result3.evaluate(from: interfaceState1))
-//            XCTAssertFalse(result3.evaluate(from: interfaceState2))
-//            XCTAssertTrue(result3.evaluate(from: interfaceState3))
-//
-//            XCTAssertTrue(result4.evaluate(from: interfaceState1))
-//            XCTAssertFalse(result4.evaluate(from: interfaceState2))
-//            XCTAssertFalse(result4.evaluate(from: interfaceState3))
-//
-//            XCTAssertFalse(result5.evaluate(from: interfaceState1))
-//            XCTAssertTrue(result5.evaluate(from: interfaceState2))
-//            XCTAssertFalse(result5.evaluate(from: interfaceState3))
-//
-//            XCTAssertFalse(result6.evaluate(from: interfaceState1))
-//            XCTAssertFalse(result6.evaluate(from: interfaceState2))
-//            XCTAssertTrue(result6.evaluate(from: interfaceState3))
-//        }
-//    }
-//
-//    func testSimpleDisjunctions() throws {
-//        let input1 = "[ipad or landscape]"
-//        let input2 = "[!ipad or vertical == compact]"
-//        let input3 = "[horizontal == regular or vertical == regular]"
-//        let input4 = "[horizontal == regular or vertical == compact or ipad]"
-//        let input5 = "[horizontal != regular or vertical == compact or !ipad]"
-//
-//        if let result1 = try parseInput(input1),
-//            let result2 = try parseInput(input2),
-//            let result3 = try parseInput(input3),
-//            let result4 = try parseInput(input4),
-//            let result5 = try parseInput(input5) {
-//
-//            XCTAssertTrue(result1.evaluate(from: interfaceState1))
-//            XCTAssertTrue(result1.evaluate(from: interfaceState2))
-//            XCTAssertFalse(result1.evaluate(from: interfaceState3))
-//
-//            XCTAssertTrue(result2.evaluate(from: interfaceState1))
-//            XCTAssertTrue(result2.evaluate(from: interfaceState2))
-//            XCTAssertTrue(result2.evaluate(from: interfaceState3))
-//
-//            XCTAssertTrue(result3.evaluate(from: interfaceState1))
-//            XCTAssertTrue(result3.evaluate(from: interfaceState2))
-//            XCTAssertFalse(result3.evaluate(from: interfaceState3))
-//
-//            XCTAssertFalse(result4.evaluate(from: interfaceState1))
-//            XCTAssertTrue(result4.evaluate(from: interfaceState2))
-//            XCTAssertTrue(result4.evaluate(from: interfaceState3))
-//
-//            XCTAssertTrue(result5.evaluate(from: interfaceState1))
-//            XCTAssertTrue(result5.evaluate(from: interfaceState2))
-//            XCTAssertTrue(result5.evaluate(from: interfaceState3))
-//        }
-//    }
-//
-//    func testComplexConditions() throws {
-//        let input1 = "[ipad and landscape or vertical == regular]"
-//        let input2 = "[iphone and portrait or ipad and landscape or vertical == regular]"
-//        let input3 = "[ipad or landscape and vertical == regular or !ipad and portrait != false]"
-//        let input4 = "[vertical != regular or portrait and !iphone and horizontal == regular]"
-//        let input5 = "[(iphone or landscape) and vertical == regular]"
-//        let input6 = "[(vertical == regular and horizontal == compact) or (ipad and portrait)]"
-//        let input7 = "[!(ipad and portrait) and !(horizontal == regular)]"
-//        let input8 = "[(!(vertical == regular) or !(horizontal == compact and landscape)) and iphone]"
-//        let input9 = "[(!(iphone == false and landscape) and horizontal == compact) and vertical != compact]"
-//
-//        if let result1 = try parseInput(input1),
-//            let result2 = try parseInput(input2),
-//            let result3 = try parseInput(input3),
-//            let result4 = try parseInput(input4),
-//            let result5 = try parseInput(input5),
-//            let result6 = try parseInput(input6),
-//            let result7 = try parseInput(input7),
-//            let result8 = try parseInput(input8),
-//            let result9 = try parseInput(input9) {
-//
-//            XCTAssertTrue(result1.evaluate(from: interfaceState1))
-//            XCTAssertFalse(result1.evaluate(from: interfaceState2))
-//            XCTAssertFalse(result1.evaluate(from: interfaceState3))
-//
-//            XCTAssertTrue(result2.evaluate(from: interfaceState1))
-//            XCTAssertFalse(result2.evaluate(from: interfaceState2))
-//            XCTAssertTrue(result2.evaluate(from: interfaceState3))
-//
-//            XCTAssertTrue(result3.evaluate(from: interfaceState1))
-//            XCTAssertTrue(result3.evaluate(from: interfaceState2))
-//            XCTAssertTrue(result3.evaluate(from: interfaceState3))
-//
-//            XCTAssertFalse(result4.evaluate(from: interfaceState1))
-//            XCTAssertTrue(result4.evaluate(from: interfaceState2))
-//            XCTAssertTrue(result4.evaluate(from: interfaceState3))
-//
-//            XCTAssertTrue(result5.evaluate(from: interfaceState1))
-//            XCTAssertFalse(result5.evaluate(from: interfaceState2))
-//            XCTAssertFalse(result5.evaluate(from: interfaceState3))
-//
-//            XCTAssertTrue(result6.evaluate(from: interfaceState1))
-//            XCTAssertTrue(result6.evaluate(from: interfaceState2))
-//            XCTAssertFalse(result6.evaluate(from: interfaceState3))
-//
-//            XCTAssertTrue(result7.evaluate(from: interfaceState1))
-//            XCTAssertFalse(result7.evaluate(from: interfaceState2))
-//            XCTAssertTrue(result7.evaluate(from: interfaceState3))
-//
-//            XCTAssertFalse(result8.evaluate(from: interfaceState1))
-//            XCTAssertFalse(result8.evaluate(from: interfaceState2))
-//            XCTAssertTrue(result8.evaluate(from: interfaceState3))
-//
-//            XCTAssertTrue(result9.evaluate(from: interfaceState1))
-//            XCTAssertFalse(result9.evaluate(from: interfaceState2))
-//            XCTAssertFalse(result9.evaluate(from: interfaceState3))
-//        }
-//    }
-//
-//    func testMoreConditions() throws {
-//        let input = [
-//            "[vertical == regular or (horizontal == compact or vertical == compact and pad)]",
-//            "[vertical == regular or (horizontal == compact and vertical == compact and pad)]",
-//            "[vertical == regular and (horizontal == compact and vertical == compact or phone)]",
-//        ]
-//
-//        let verifiers = [
-//            [true, true, true],
-//            [true, false, false],
-//            [true, false, false],
-//        ]
-//
-//        guard verifiers.index(where: { $0.count != allInterfaceStates.count }) == nil else {
-//            XCTFail("Some verifiers don't match the interface state count.")
-//            return
-//        }
-//
-//        let results = try input.flatMap { try parseInput($0) }.map { parsedInput in
-//            allInterfaceStates.map { parsedInput.evaluate(from: $0) }
-//        }
-//
-//        for (outerIndex, (result, verifier)) in zip(results, verifiers).enumerated() {
-//            for innerIndex in 0..<result.count {
-//                XCTAssertEqual(result[innerIndex], verifier[innerIndex], "element at indices [\(outerIndex)][\(innerIndex)]")
-//            }
-//        }
-//    }
-//}
+
+import XCTest
+@testable import ReactantLiveUI
+
+public class TestTraitHelper: TraitHelper {
+    public var horizontalSize: UIUserInterfaceSizeClass
+    public var verticalSize: UIUserInterfaceSizeClass
+    public var deviceType: UIUserInterfaceIdiom
+    public var dimensions: CGSize
+
+    init(horizontalSize: UIUserInterfaceSizeClass,
+         verticalSize: UIUserInterfaceSizeClass,
+         deviceType: UIUserInterfaceIdiom,
+         dimensions: CGSize) {
+        self.horizontalSize = horizontalSize
+        self.verticalSize = verticalSize
+        self.deviceType = deviceType
+        self.dimensions = dimensions
+    }
+
+    public var isHorizontal: Bool {
+        return dimensions.width > dimensions.height
+    }
+
+    public var isVertical: Bool {
+        return !isHorizontal
+    }
+
+    private var rootViewOrientation: ViewOrientation {
+        return ViewOrientation(size: dimensions)
+    }
+
+    public func size(horizontal sizeClass: UIUserInterfaceSizeClass) -> Bool {
+        return horizontalSize == sizeClass
+    }
+
+    public func size(vertical sizeClass: UIUserInterfaceSizeClass) -> Bool {
+        return verticalSize == sizeClass
+    }
+
+    public func device(_ deviceType: UIUserInterfaceIdiom) -> Bool {
+        return self.deviceType == deviceType
+    }
+
+    public func orientation(_ orientation: ViewOrientation) -> Bool {
+        return rootViewOrientation == orientation
+    }
+
+    public func viewRootSize(_ dimensionType: TraitDimensionType) -> Float {
+        switch dimensionType {
+        case .width:
+            return Float(dimensions.width)
+        case .height:
+            return Float(dimensions.height)
+        }
+    }
+}
+
+class ConstraintConditionTests: XCTestCase {
+    let traitHelper0 = TestTraitHelper(horizontalSize: .compact, verticalSize: .regular, deviceType: .phone, dimensions: CGSize(width: 736, height: 414))
+    let traitHelper1 = TestTraitHelper(horizontalSize: .compact, verticalSize: .compact, deviceType: .phone, dimensions: CGSize(width: 414, height: 736))
+    let traitHelper2 = TestTraitHelper(horizontalSize: .regular, verticalSize: .compact, deviceType: .pad,   dimensions: CGSize(width: 1366, height: 1024))
+    let traitHelper3 = TestTraitHelper(horizontalSize: .regular, verticalSize: .regular, deviceType: .tv,   dimensions: CGSize(width: 3840, height: 2160))
+
+    var allTraitHelpers: [TestTraitHelper] {
+        return [traitHelper0, traitHelper1, traitHelper2, traitHelper3]
+    }
+
+    private func testSuite(conditions: [String], verifiers: [[Bool]], traitHelperIndices: [Int] = [0, 1, 2, 3], file: StaticString = #file, function: StaticString = #function, line: UInt = #line) throws {
+        guard verifiers.count == conditions.count else {
+            XCTFail("Number of conditions is not equal to the number of verifiers.", file: file, line: line)
+            return
+        }
+        guard !verifiers.contains(where: { $0.count != traitHelperIndices.count }) else {
+            XCTFail("Some verifiers don't match the given trait helper indices count.", file: file, line: line)
+            return
+        }
+        guard !traitHelperIndices.contains(where: { $0 < 0 || $0 >= allTraitHelpers.count }) else {
+            XCTFail("Trait helper index is out of bounds [0, \(allTraitHelpers.count - 1)].", file: file, line: line)
+            return
+        }
+
+        let selectedHelpers = traitHelperIndices.map { allTraitHelpers[$0] }
+
+        let results = try conditions.compactMap { try parseInput($0) }.map { parsedCondition in
+            try selectedHelpers.map { try parsedCondition.evaluate(from: $0) }
+        }
+
+        for (outerIndex, (result, verifier)) in zip(results, verifiers).enumerated() {
+            for innerIndex in 0..<result.count {
+                XCTAssertEqual(result[innerIndex], verifier[innerIndex], "element at indices [\(outerIndex)][\(innerIndex)]", file: file, line: line)
+            }
+        }
+    }
+
+    private func parseInput(_ input: String) throws -> Condition? {
+        return try ConstraintParser(tokens: Lexer.tokenize(input: "\(input) super inset"), layoutAttribute: LayoutAttribute.above).parseSingle().condition
+    }
+
+    func testSimpleStatements() throws {
+        let input = [
+            "iphone != true",
+            "ipad == true",
+            "ipad == false",
+            "!ipad",
+            "tv",
+            "vertical == compact",
+            "vertical == compact == false",
+            "landscape",
+            "vertical != compact",
+            "vertical != regular == false",
+            "!(vertical != regular) != false",
+        ].map { "[\($0)]" }
+
+        let verifiers = [
+            [false, false, true, true],
+            [false, false, true, false],
+            [true, true, false, true],
+            [true, true, false, true],
+            [false, false, false, true],
+            [false, true, true, false],
+            [true, false, false, true],
+            [true, false, true, true],
+            [true, false, false, true],
+            [true, false, false, true],
+            [true, false, false, true],
+        ]
+
+        try testSuite(conditions: input, verifiers: verifiers)
+    }
+
+    func testSimpleConjunctions() throws {
+        let input = [
+            "ipad and landscape",
+            "iphone and portrait",
+            "!ipad and vertical == compact",
+            "horizontal == compact and vertical == regular",
+            "horizontal == regular and vertical == compact and ipad and !landscape",
+            "horizontal != regular and vertical == compact and !ipad and !landscape",
+        ].map { "[\($0)]" }
+
+        let verifiers = [
+            [false, false, true, false],
+            [false, true, false, false],
+            [false, true, false, false],
+            [true, false, false, false],
+            [false, false, false, false],
+            [false, true, false, false],
+        ]
+
+        try testSuite(conditions: input, verifiers: verifiers)
+    }
+
+    func testSimpleDisjunctions() throws {
+        let input = [
+            "ipad or landscape",
+            "!ipad or vertical == compact",
+            "horizontal == regular or vertical == regular",
+            "horizontal == regular or vertical == compact or ipad",
+            "horizontal != regular or vertical == compact or !ipad",
+        ].map { "[\($0)]" }
+
+        let verifiers = [
+            [true, false, true, true],
+            [true, true, true, true],
+            [true, false, true, true],
+            [false, true, true, true],
+            [true, true, true, true],
+        ]
+
+        try testSuite(conditions: input, verifiers: verifiers)
+    }
+
+    func testComplexConditions() throws {
+        let input = [
+            "ipad and landscape or vertical == regular",
+            "iphone and portrait or ipad and landscape or vertical == regular",
+            "ipad or landscape and vertical == regular or !ipad and portrait != false",
+            "vertical != regular or portrait and !iphone and horizontal == regular",
+            "(iphone or landscape) and vertical == regular",
+            "(vertical == regular and horizontal == compact) or (ipad and portrait)",
+            "!(ipad and portrait) and !(horizontal == regular)",
+            "(!(vertical == regular) or !(horizontal == compact and landscape)) and iphone",
+            "!(!(!(iphone == false and landscape) and horizontal == compact) and vertical != compact)",
+            "vertical == regular or (horizontal == compact or vertical == compact and pad)",
+            "vertical == regular or (horizontal == compact and vertical == compact and pad)",
+            "vertical == regular and (horizontal == compact and vertical == compact or phone)",
+        ].map { "[\($0)]" }
+
+        let verifiers = [
+            [true, false, true, true],
+            [true, true, true, true],
+            [true, true, true, true],
+            [false, true, true, false],
+            [true, false, false, true],
+            [true, false, false, false],
+            [true, true, false, false],
+            [false, true, false, false],
+            [true, true, true, false],
+            [true, true, true, true],
+            [true, false, false, true],
+            [true, false, false, false],
+        ]
+
+        try testSuite(conditions: input, verifiers: verifiers)
+    }
+}

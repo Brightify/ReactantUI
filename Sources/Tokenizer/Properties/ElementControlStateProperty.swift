@@ -75,7 +75,7 @@ public struct ElementControlStateProperty<T: ElementSupportedPropertyType>: Type
 
         if let condition = condition, let view = target as? UIView {
             let traits = UITraitHelper(for: view)
-            if try condition.evaluate(from: traits, in: view) == false {
+            if try condition.evaluate(from: traits) == false {
                 return
             }
         }

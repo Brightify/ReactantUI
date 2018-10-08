@@ -116,7 +116,7 @@ public class ReactantLiveUIViewApplier {
 
             for constraint in element.layout.constraints {
                 // FIXME: that `try!` is not looking good
-                if let condition = constraint.condition, try! !condition.evaluate(from: traits, in: view) { continue }
+                if let condition = constraint.condition, try! !condition.evaluate(from: traits) { continue }
 
                 let maker: ConstraintMakerExtendable
                 switch constraint.anchor {

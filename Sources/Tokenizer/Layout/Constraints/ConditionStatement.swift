@@ -85,7 +85,7 @@ public enum ConditionStatement {
     }
 
     #if canImport(UIKit)
-    func numberValue(from traits: UITraitHelper) -> Float {
+    func numberValue(from traits: TraitHelper) -> Float {
         switch self {
         case .interfaceIdiom, .sizeClass, .orientation, .trueStatement, .falseStatement, .interfaceSizeClass:
             fatalError("Requested `numberValue` from a logical condition statement.")
@@ -101,7 +101,7 @@ public enum ConditionStatement {
         }
     }
 
-    func evaluate(from traits: UITraitHelper) throws -> Bool {
+    func evaluate(from traits: TraitHelper) throws -> Bool {
         switch self {
         case .interfaceIdiom(let idiom):
             return traits.device(idiom.runtimeValue)
