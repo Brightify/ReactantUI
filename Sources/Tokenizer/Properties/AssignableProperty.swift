@@ -40,7 +40,7 @@ public struct AssignableProperty<T: AttributeSupportedPropertyType>: TypedProper
     
     #if SanAndreas
     public func dematerialize(context: PropertyContext) -> XMLSerializableAttribute {
-        // TODO: conditions
+        // TODO: condition
         return XMLSerializableAttribute(name: attributeName, value: value.dematerialize(context: context.child(for: value)))
     }
     #endif

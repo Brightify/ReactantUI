@@ -54,7 +54,7 @@ public struct ElementControlStatePropertyDescription<T: ElementSupportedProperty
         if let storedProperty = getProperty(from: properties, for: state) {
             property = storedProperty
         } else {
-            property = ElementControlStateProperty(namespace: namespace, name: name, state: state, description: self, value: value)
+            property = ElementControlStateProperty(namespace: namespace, name: name, state: state, description: self, value: value, condition: nil)
         }
         property.value = value
         setProperty(property, to: &properties, for: state)
@@ -103,6 +103,6 @@ extension ElementControlStatePropertyDescription: ElementPropertyDescription whe
         }
 
         let materializedValue = try T.materialize(from: element)
-        return ElementControlStateProperty(namespace: namespace, name: name, state: controlState, description: self, value: materializedValue)
+        return ElementControlStateProperty(namespace: namespace, name: name, state: controlState, description: self, value: materializedValue, condition: nil)
     }
 }

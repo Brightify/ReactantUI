@@ -60,7 +60,7 @@ public struct ControlStatePropertyDescription<T: AttributeSupportedPropertyType>
         if let storedProperty = getProperty(from: properties, for: state) {
             property = storedProperty
         } else {
-            property = ControlStateProperty(namespace: namespace, name: name, state: state, description: self, value: value)
+            property = ControlStateProperty(namespace: namespace, name: name, state: state, description: self, value: value, condition: nil)
         }
         property.value = value
         setProperty(property, to: &properties, for: state)
@@ -102,6 +102,12 @@ public struct ControlStatePropertyDescription<T: AttributeSupportedPropertyType>
 extension ControlStatePropertyDescription: AttributePropertyDescription where T: AttributeSupportedPropertyType {
     public func materialize(attributeName: String, value: String, condition: Condition?) throws -> Property {
         let materializedValue = try T.materialize(from: value)
-        return ControlStateProperty(namespace: namespace, name: name, state: parseState(from: attributeName), description: self, value: materializedValue)
+        return ControlStateProperty(
+            namespace: namespace,
+            name: name,
+            state: parseState(from: attributeName),
+            description: self,
+            value: materializedValue,
+            condition: condition)
     }
 }

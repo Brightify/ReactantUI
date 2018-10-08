@@ -18,7 +18,7 @@ class ConstraintParser: BaseParser<Constraint> {
     
     override func parseSingle() throws -> Constraint {
         // condition parsing
-        var condition: Condition? = nil
+        let condition: Condition?
         if try matchToken(.bracketsOpen) {
             var conditionTokens = [] as [Lexer.Token]
             // we're going on until `.bracketsClose` token is matched
@@ -34,6 +34,8 @@ class ConstraintParser: BaseParser<Constraint> {
 
             condition = try ConditionParser(tokens: conditionTokens).parseSingle()
             try condition?.validate()
+        } else {
+            condition = nil
         }
 
         let field = try parseField()

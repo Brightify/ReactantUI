@@ -23,7 +23,7 @@ public struct ElementControlStateProperty<T: ElementSupportedPropertyType>: Type
 
     public var description: ElementControlStatePropertyDescription<T>
     public var value: T
-    public let condition: Condition? = nil
+    public let condition: Condition?
 
     public var attributeName: String {
         let namespacedName = namespace.resolvedAttributeName(name: name)
@@ -49,7 +49,7 @@ public struct ElementControlStateProperty<T: ElementSupportedPropertyType>: Type
 
     #if SanAndreas
     public func dematerialize(context: PropertyContext) -> XMLSerializableAttribute {
-        // TODO: conditions
+        // TODO: condition
         return XMLSerializableAttribute(name: attributeName, value: value.dematerialize(context: context.child(for: value)))
     }
     #endif

@@ -18,7 +18,7 @@ public struct ValueProperty<T: AttributeSupportedPropertyType>: TypedProperty {
     public var name: String
     public var description: ValuePropertyDescription<T>
     public var value: T
-    public let condition: Condition? = nil
+    public let condition: Condition?
 
     public var attributeName: String {
         return namespace.resolvedAttributeName(name: name)
@@ -32,7 +32,7 @@ public struct ValueProperty<T: AttributeSupportedPropertyType>: TypedProperty {
 
     #if SanAndreas
     public func dematerialize(context: PropertyContext) -> XMLSerializableAttribute {
-        // TODO: conditions
+        // TODO: condition
         return XMLSerializableAttribute(name: attributeName, value: value.dematerialize(context: context.child(for: value)))
     }
     #endif

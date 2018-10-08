@@ -20,9 +20,7 @@ public struct ElementAssignableProperty<T: ElementSupportedPropertyType>: TypedP
     public var name: String
     public var description: ElementAssignablePropertyDescription<T>
     public var value: T
-
-    // TODO
-    public let condition: Condition? = nil
+    public var condition: Condition?
 
     public var attributeName: String {
         return namespace.resolvedAttributeName(name: name)
@@ -35,11 +33,13 @@ public struct ElementAssignableProperty<T: ElementSupportedPropertyType>: TypedP
      */
     public func application(on target: String, context: PropertyContext) -> String {
         let namespacedTarget = namespace.resolvedSwiftName(target: target)
-        return "\(namespacedTarget).\(description.swiftName) = \(value.generate(context: context.child(for: value)))"
+        let applicationString = "\(namespacedTarget).\(description.swiftName) = \(value.generate(context: context.child(for: value)))"
+        return condition.generateSwiftEnclosingIfPresent(viewName: namespacedTarget, applicationString)
     }
 
     #if SanAndreas
     public func dematerialize(context: PropertyContext) -> XMLSerializableAttribute {
+        // TODO: condition
         return XMLSerializableAttribute(name: attributeName, value: value.dematerialize(context: context.child(for: value)))
     }
     #endif
@@ -63,6 +63,13 @@ public struct ElementAssignableProperty<T: ElementSupportedPropertyType>: TypedP
             throw LiveUIError(message: "!! Value `\(value)` couldn't be resolved in runtime for key `\(key)`")
         }
 
+        if let condition = condition, let view = target as? UIView {
+            let traits = UITraitHelper(for: view)
+            if try condition.evaluate(from: traits, in: view) == false {
+                return
+            }
+        }
+
         do {
             try catchException {
                 _ = target.setValue(resolvedValue, forKey: key)
@@ -70,7 +77,6 @@ public struct ElementAssignableProperty<T: ElementSupportedPropertyType>: TypedP
         } catch {
             _ = target.perform(selector, with: resolvedValue)
         }
-
     }
 
     private func resolveTarget(for object: AnyObject) throws -> AnyObject {

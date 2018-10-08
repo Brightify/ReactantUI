@@ -20,7 +20,7 @@ public struct MultipleAttributeAssignableProperty<T: MultipleAttributeSupportedP
     public var name: String
     public var description: MultipleAttributeAssignablePropertyDescription<T>
     public var value: T
-    public let condition: Condition? = nil
+    public var condition: Condition?
 
     public var attributeName: String {
         return namespace.resolvedAttributeName(name: name)
@@ -39,7 +39,7 @@ public struct MultipleAttributeAssignableProperty<T: MultipleAttributeSupportedP
 
     #if SanAndreas
     public func dematerialize(context: PropertyContext) -> XMLSerializableAttribute {
-        // TODO: conditions
+        // TODO: condition
         return XMLSerializableAttribute(name: attributeName, value: value.dematerialize(context: context.child(for: value)))
     }
     #endif
