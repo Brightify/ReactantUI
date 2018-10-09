@@ -104,10 +104,10 @@ extension Array: XMLAttributeDeserializable where Iterator.Element: XMLAttribute
  *
  * Example:
  * ```
- *  <templates>
- *      <attributedString style="attributedStyle" name="superTemplate">
+ *  <templates>ont
+ *      <attributedText style="attributedStyle" name="superTemplate">
  *          <b>Hello</b> {{name}}, {{foo}}
- *      </attributedString>
+ *      </attributedText>
  *  </templates>
  * ```
  */
@@ -135,7 +135,7 @@ public struct Template: XMLElementDeserializable {
             self.extend = extendedStyles
         }
 
-        if node.name == "attributedString" {
+        if node.name == "attributedText" {
             parentModuleImport = "Reactant"
             properties = try PropertyHelper.deserializeSupportedProperties(properties: Properties.attributedText.allProperties, in: node) as [Property]
             type = .attributedText(template: try AttributedTextTemplate(node: node))

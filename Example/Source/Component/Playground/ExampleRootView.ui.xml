@@ -42,10 +42,10 @@
         </attributedTextStyle>
     </styles>
 
-    <templates name="ReactantTemplates">
-        <attributedString style="attributko" name="superTemplate">
-            <b>Welcome {{name}}</b> <i>ups</i> {{foo}}
-        </attributedString>
+    <templates>
+        <attributedText style="attributko" name="superTemplate">
+            <b>Welcome {{_name9}}</b> <i>ups</i> {{foo}}
+        </attributedText>
     </templates>
 
     <View
