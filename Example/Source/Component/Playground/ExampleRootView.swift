@@ -15,6 +15,7 @@ final class ExampleRootView: ViewBase<(test: String, Int, test2: (a: Int, b: Str
     let django = Label()
     let email = UITextField()
     let send = UIButton()
+    let label = Label()
 
     override func update() {
         django.attributedText = ReactantTemplates.superTemplate(name: "super name", foo: "super foo")

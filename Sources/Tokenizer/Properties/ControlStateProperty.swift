@@ -32,17 +32,23 @@ public struct ControlStateProperty<T: AttributeSupportedPropertyType>: TypedProp
     }
 
     /**
+     * - parameter context: property context to use
+     * - returns: Swift `String` representation of the property application on the target
+     */
+    public func application(context: PropertyContext) -> String {
+        return value.generate(context: context.child(for: value))
+    }
+
+    /**
      * - parameter target: UI element to be targetted with the property
      * - parameter context: property context to use
      * - returns: Swift `String` representation of the property application on the target
      */
-    public func application(on target: String?, context: PropertyContext) -> String {
-        guard let target = target else { fatalError("Currently supported only with specified target") }
-
+    public func application(on target: String, context: PropertyContext) -> String {
         let state = parseState(from: attributeName) as [ControlState]
         let stringState = state.map { "UIControl.State.\($0.rawValue)" }.joined(separator: ", ")
         let namespacedTarget = namespace.resolvedSwiftName(target: target)
-        return "\(namespacedTarget).set\(description.key.capitalizingFirstLetter())(\(value.generate(context: context.child(for: value))), for: [\(stringState)])"
+        return "\(namespacedTarget).set\(description.key.capitalizingFirstLetter())(\(application(context: context)), for: [\(stringState)])"
     }
     
     #if SanAndreas

@@ -145,7 +145,7 @@ public struct Template: XMLElementDeserializable {
     }
 
     /**
-     * Checks if any of Style's properties require theming.
+     * Checks if any of Template's properties require theming.
      * - parameter context: context to use
      * - returns: `Bool` whether or not any of its properties require theming
      */
@@ -169,7 +169,7 @@ public struct Template: XMLElementDeserializable {
 /**
  * Represents `Template`'s type.
  * Currently, there are:
- * - attributedString: attributed string styling allowing multiple attributed style tags with custom arguments to be defined within it
+ * - attributedText: attributed string styling allowing multiple attributed style tags with custom arguments to be defined within it
  */
 public enum TemplateType {
     case attributedText(template: AttributedTextTemplate)
@@ -188,18 +188,18 @@ public struct AttributedTextTemplate {
 
     init(node: XMLElement) throws {
         let text = try AttributedText.materialize(from: node)
+        let description = "attributedText"
         attributedText = ElementAssignableProperty(namespace: [],
-                                                   name: "attributedText",
+                                                   name: description,
                                                    description: ElementAssignablePropertyDescription(
-                                                    namespace: [], name: "attributedText",
-                                                    swiftName: "attributedText", key: "attributedText"),
+                                                    namespace: [], name: description,
+                                                    swiftName: description, key: description),
                                                    value: text)
         arguments = []
-
         node.children.forEach {
             let tokens = Lexer.tokenize(input: $0.description)
             tokens.forEach { token in
-                if case .argument(let argument) = token {
+                if case .argument(let argument) = token, !arguments.contains(argument) {
                     arguments.append(argument)
                 }
             }

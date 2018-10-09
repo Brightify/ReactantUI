@@ -171,17 +171,9 @@ extension AttributedText {
         return """
         {
             let s = NSMutableAttributedString()
-            \(generateStringParts(context: context).map { "s.append((\($0.text)).attributed(\($0.attributes)))" }.joined(separator: "\n"))
-            return s
-        }()
-        """
-    }
-
-    public func generateBody(context: SupportedPropertyTypeContext) -> String {
-        return """
-            let s = NSMutableAttributedString()
             \(generateStringParts(context: context).map { "s.append((\($0.text)).attributed(\($0.attributes)))" }.joined(separator: "\n\t"))
             return s
+        }()
         """
     }
 

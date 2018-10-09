@@ -26,22 +26,21 @@ public struct ElementAssignableProperty<T: ElementSupportedPropertyType>: TypedP
     }
 
     /**
+     * - parameter context: property context to use
+     * - returns: Swift `String` representation of the property application on the target
+     */
+    public func application(context: PropertyContext) -> String {
+        return value.generate(context: context.child(for: value))
+    }
+
+    /**
      * - parameter target: UI element to be targetted with the property
      * - parameter context: property context to use
      * - returns: Swift `String` representation of the property application on the target
      */
-    public func application(on target: String?, context: PropertyContext) -> String {
-        if let target = target {
-            let namespacedTarget = namespace.resolvedSwiftName(target: target)
-            return "\(namespacedTarget).\(description.swiftName) = \(value.generate(context: context.child(for: value)))"
-        } else {
-            if let value = value as? AttributedText {
-                return value.generateBody(context: context.child(for: value))
-            } else {
-                // FIXME: Do this another way?
-                fatalError("Only AttributedText is currently supported for templates")
-            }
-        }
+    public func application(on target: String, context: PropertyContext) -> String {
+        let namespacedTarget = namespace.resolvedSwiftName(target: target)
+        return "\(namespacedTarget).\(description.swiftName) = \(value.generate(context: context.child(for: value)))"
     }
 
     #if SanAndreas

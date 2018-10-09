@@ -20,13 +20,13 @@
             <base foregroundColor="white" />
         </attributedTextStyle>
         <attributedTextStyle name="attributko" extend="bandaska bandasnik">
-            <b font=":bold@40" backgroundColor="green@fadedOut(by: 30%)@fadedIn(20%)" foregroundColor="#f5f5f5" />
+            <b font=":bold@50" backgroundColor="red@fadedOut(by: 30%)@fadedIn(20%)" foregroundColor="#f5f5f5" />
             <i font=":light@20" backgroundColor="red" foregroundColor="#f5f5f5" />
             <base font=":light@20" backgroundColor="red@darker(by: 40%)@desaturated(by: 40%)" />
             <basko font=":light@20" backgroundColor="red@desaturated(40%)@saturated(40%)" foregroundColor="#f5f5f5" />
         </attributedTextStyle>
         <attributedTextStyle name="bandasnik" extend="common:globalko">
-            <b font=":light@40" backgroundColor="green" foregroundColor="#f5f5f5@fadedOut(by: 0.3)@desaturated(25%)" />
+            <b font=":light@40" backgroundColor="blue" foregroundColor="#f5f5f5@fadedOut(by: 0.3)@desaturated(25%)" />
             <i font=":bold@4" underlineStyle="single" underlineColor="black@alpha(at: 50%)@alpha(0.1)" />
             <base foregroundColor="white" backgroundColor="black" />
         </attributedTextStyle>
@@ -44,7 +44,7 @@
 
     <templates name="ReactantTemplates">
         <attributedString style="attributko" name="superTemplate">
-            <b>Hello {{name}}</b> <i>ups</i> {{foo}}
+            <b>Welcome {{name}}</b> <i>ups</i> {{foo}}
         </attributedString>
     </templates>
 
@@ -277,6 +277,7 @@
     </Label>
 
     <Label
+        field="label"
         layout:bottom="safeAreaLayoutGuide inset(10)"
         layout:fillHorizontally="super inset(20)"
         numberOfLines="0">

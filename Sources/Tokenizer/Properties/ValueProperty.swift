@@ -23,11 +23,13 @@ public struct ValueProperty<T: AttributeSupportedPropertyType>: TypedProperty {
         return namespace.resolvedAttributeName(name: name)
     }
 
-    public func application(on target: String?, context: PropertyContext) -> String {
-        guard let target = target else { fatalError("Currently supported only with specified target") }
+    public func application(context: PropertyContext) -> String {
+        return value.generate(context: context.child(for: value))
+    }
 
+    public func application(on target: String, context: PropertyContext) -> String {
         let namespacedTarget = namespace.resolvedSwiftName(target: target)
-        return "\(namespacedTarget).\(description.name) = \(value.generate(context: context.child(for: value)))"
+        return "\(namespacedTarget).\(description.name) = \(application(context: context))"
     }
 
     #if SanAndreas

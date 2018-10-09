@@ -422,7 +422,7 @@ public class UIGenerator: Generator {
                 let property = attributedTextTemplate.attributedText
                 let propertyContext = PropertyContext(parentContext: componentContext, property: property)
 
-                l(property.application(on: nil, context: propertyContext))
+                l("return " + property.application(context: propertyContext))
             }
         }
     }

@@ -22,7 +22,9 @@ public protocol Property {
 
     var anyValue: SupportedPropertyType { get }
 
-    func application(on target: String?, context: PropertyContext) -> String
+    func application(context: PropertyContext) -> String
+
+    func application(on target: String, context: PropertyContext) -> String
 
     #if SanAndreas
     func dematerialize(context: PropertyContext) -> XMLSerializableAttribute

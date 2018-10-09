@@ -26,17 +26,23 @@ public struct AssignableProperty<T: AttributeSupportedPropertyType>: TypedProper
     }
 
     /**
+     * - parameter context: property context to use
+     * - returns: Swift `String` representation of the property application on the target
+     */
+    public func application(context: PropertyContext) -> String {
+        return value.generate(context: context.child(for: value))
+    }
+
+    /**
      * - parameter target: UI element to be targetted with the property
      * - parameter context: property context to use
      * - returns: Swift `String` representation of the property application on the target
      */
-    public func application(on target: String?, context: PropertyContext) -> String {
-        guard let target = target else { fatalError("Currently supported only with specified target") }
-
+    public func application(on target: String, context: PropertyContext) -> String {
         let namespacedTarget = namespace.resolvedSwiftName(target: target)
-        return "\(namespacedTarget).\(description.swiftName) = \(value.generate(context: context.child(for: value)))"
+        return "\(namespacedTarget).\(description.swiftName) = \(application(context: context))"
     }
-    
+
     #if SanAndreas
     public func dematerialize(context: PropertyContext) -> XMLSerializableAttribute {
         return XMLSerializableAttribute(name: attributeName, value: value.dematerialize(context: context.child(for: value)))
