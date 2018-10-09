@@ -73,7 +73,7 @@ class FontParser: BaseParser<Font> {
                 case .exclamation:
                     components.append("!")
                 case .argument(let original):
-                    components.append("{{\(original)}}")
+                    components.append("\\(\(original))")
                 }
             }
             let size: Float

@@ -40,7 +40,7 @@ public struct ElementAssignableProperty<T: ElementSupportedPropertyType>: TypedP
      */
     public func application(on target: String, context: PropertyContext) -> String {
         let namespacedTarget = namespace.resolvedSwiftName(target: target)
-        return "\(namespacedTarget).\(description.swiftName) = \(value.generate(context: context.child(for: value)))"
+        return "\(namespacedTarget).\(description.swiftName) = \(application(context: context))"
     }
 
     #if SanAndreas

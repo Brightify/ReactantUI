@@ -73,7 +73,7 @@ extension Lexer {
         ("=", { _ in .assignment }),
         (",", { _ in .comma }),
         ("!", { _ in .exclamation }),
-        ("\\{\\{[a-zA-Z0-9]+\\}\\}", { argument in .argument(argument.argumentWithoutBrackets)})
+        ("\\{\\{[a-zA-Z_][a-zA-Z_0-9]*\\}\\}", { argument in .argument(argument.argumentWithoutBrackets)})
     ]
 
     static func tokenize(input: String, keepWhitespace: Bool = false) -> [Token] {
