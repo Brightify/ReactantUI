@@ -30,7 +30,7 @@ public struct EdgeInsets: AttributeSupportedPropertyType {
     }
 
     public func generate(context: SupportedPropertyTypeContext) -> String {
-        return "UIEdgeInsetsMake(\(top.cgFloat), \(left.cgFloat), \(bottom.cgFloat), \(right.cgFloat))"
+        return "UIEdgeInsets(top: \(top.cgFloat), left: \(left.cgFloat), bottom: \(bottom.cgFloat), right: \(right.cgFloat))"
     }
     
     #if SanAndreas
