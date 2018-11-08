@@ -7,7 +7,7 @@
 //
 
 public enum ContentMode: String, EnumPropertyType, AttributeSupportedPropertyType {
-    public static let enumName = "UIViewContentMode"
+    public static let enumName = "UIView.ContentMode"
 
     case scaleToFill
     case scaleAspectFit

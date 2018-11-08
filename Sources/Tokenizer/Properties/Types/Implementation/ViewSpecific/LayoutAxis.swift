@@ -12,7 +12,7 @@ import Foundation
 #endif
 
 public enum LayoutAxis: String, EnumPropertyType, AttributeSupportedPropertyType {
-    public static let enumName = "UILayoutConstraintAxis"
+    public static let enumName = "NSLayoutConstraint.Axis"
 
     case vertical
     case horizontal

@@ -8,7 +8,7 @@
 import Foundation
 
 public enum ControlContentHorizontalAlignment: Int, EnumPropertyType, AttributeSupportedPropertyType {
-    public static let enumName = "UIControlContentHorizontalAlignment"
+    public static let enumName = "UIControl.ContentHorizontalAlignment"
     
     case center
     case left
@@ -20,22 +20,22 @@ public enum ControlContentHorizontalAlignment: Int, EnumPropertyType, AttributeS
     public func generate(context: SupportedPropertyTypeContext) -> String {
         switch self {
         case .center:
-            return "UIControlContentHorizontalAlignment.center"
+            return "UIControl.ContentHorizontalAlignment.center"
         case .left:
-            return "UIControlContentHorizontalAlignment.left"
+            return "UIControl.ContentHorizontalAlignment.left"
         case .right:
-            return "UIControlContentHorizontalAlignment.right"
+            return "UIControl.ContentHorizontalAlignment.right"
         case .fill:
-            return "UIControlContentHorizontalAlignment.fill"
+            return "UIControl.ContentHorizontalAlignment.fill"
         case .leading:
             if #available(iOS 11.0, *) {
-                return "UIControlContentHorizontalAlignment.leading"
+                return "UIControl.ContentHorizontalAlignment.leading"
             } else {
                 fatalError("leading can only be used on iOS 11 and higher")
             }
         case .trailing:
             if #available(iOS 11.0, *) {
-                return "UIControlContentHorizontalAlignment.trailing"
+                return "UIControl.ContentHorizontalAlignment.trailing"
             } else {
                 fatalError("trailing can only be used on iOS 11 and higher")
             }

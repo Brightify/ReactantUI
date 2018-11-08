@@ -40,7 +40,7 @@ public class ActivityIndicatorProperties: ViewProperties {
     public required init(configuration: PropertyContainer.Configuration) {
         color = configuration.property(name: "color")
         hidesWhenStopped = configuration.property(name: "hidesWhenStopped")
-        indicatorStyle = configuration.property(name: "indicatorStyle", swiftName: "activityIndicatorViewStyle", key: "activityIndicatorViewStyle")
+        indicatorStyle = configuration.property(name: "indicatorStyle", swiftName: "style", key: "style")
         
         super.init(configuration: configuration)
     }
