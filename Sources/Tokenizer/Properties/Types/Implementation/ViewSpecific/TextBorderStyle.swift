@@ -9,7 +9,7 @@
 import Foundation
 
 public enum TextBorderStyle: String, EnumPropertyType, AttributeSupportedPropertyType {
-    public static let enumName = "UITextBorderStyle"
+    public static let enumName = "UITextField.BorderStyle"
 
     case none
     case line
