@@ -9,7 +9,7 @@
 import Foundation
 
 public enum LayoutDistribution: String, EnumPropertyType, AttributeSupportedPropertyType {
-    public static let enumName = "UIStackViewDistribution"
+    public static let enumName = "UIStackView.Distribution"
 
     case fill
     case fillEqually
