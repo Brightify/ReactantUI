@@ -9,7 +9,7 @@
 import Foundation
 
 public enum TextFieldViewMode: String, EnumPropertyType, AttributeSupportedPropertyType {
-    public static let enumName = "UITextFieldViewMode"
+    public static let enumName = "UITextField.ViewMode"
 
     case never
     case whileEditing

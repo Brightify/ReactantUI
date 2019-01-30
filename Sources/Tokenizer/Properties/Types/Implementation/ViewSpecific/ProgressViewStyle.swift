@@ -8,7 +8,7 @@
 import Foundation
 
 public enum ProgressViewStyle: String, EnumPropertyType, AttributeSupportedPropertyType {
-    public static let enumName = "UIProgressViewStyle"
+    public static let enumName = "UIProgressView.Style"
 
     case `default`
     case bar

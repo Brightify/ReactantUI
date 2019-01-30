@@ -8,7 +8,7 @@
 import Foundation
 
 public enum TableViewCellSeparatorInsetReference: String, EnumPropertyType, AttributeSupportedPropertyType {
-    public static let enumName = "UITableViewSeparatorInsetReference"
+    public static let enumName = "UITableView.SeparatorInsetReference"
 
     case fromCellEdges
     case fromAutomaticInsets
