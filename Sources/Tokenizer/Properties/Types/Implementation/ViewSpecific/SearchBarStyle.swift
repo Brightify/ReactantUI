@@ -9,7 +9,7 @@
 import Foundation
 
 public enum SearchBarStyle: String, EnumPropertyType, AttributeSupportedPropertyType {
-    public static let enumName = "UISearchBarStyle"
+    public static let enumName = "UISearchBar.Style"
 
     case `default`
     case minimal
