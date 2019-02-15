@@ -13,7 +13,7 @@ public enum LayoutDistribution: String, EnumPropertyType, AttributeSupportedProp
 
     case fill
     case fillEqually
-    case fillProportionaly
+    case fillProportionally
     case equalCentering
     case equalSpacing
 }
@@ -33,7 +33,7 @@ public enum LayoutDistribution: String, EnumPropertyType, AttributeSupportedProp
                 return UIStackView.Distribution.fill.rawValue
             case .fillEqually:
                 return UIStackView.Distribution.fillEqually.rawValue
-            case .fillProportionaly:
+            case .fillProportionally:
                 return UIStackView.Distribution.fillProportionally.rawValue
             }
         }
