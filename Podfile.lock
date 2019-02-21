@@ -11,9 +11,7 @@ PODS:
   - Reactant (1.2.0):
     - Reactant/Core (= 1.2.0)
     - Reactant/Result (= 1.2.0)
-  - Reactant/Configuration (1.2.0):
-    - RxSwift (~> 4.0)
-    - SnapKit (~> 4.0)
+  - Reactant/Configuration (1.2.0)
   - Reactant/Core (1.2.0):
     - Reactant/Configuration
     - RxCocoa (~> 4.0)
@@ -56,9 +54,9 @@ DEPENDENCIES:
   - Kingfisher (~> 4.0)
   - Nimble (~> 7.0)
   - Quick (~> 1.1)
-  - Reactant (from `../Reactant`)
-  - Reactant/FallbackSafeAreaInsets (from `../Reactant`)
-  - Reactant/TableView (from `../Reactant`)
+  - Reactant (from `Dependencies/Reactant`)
+  - Reactant/FallbackSafeAreaInsets (from `Dependencies/Reactant`)
+  - Reactant/TableView (from `Dependencies/Reactant`)
   - Result (~> 3.0)
   - RxCocoa (~> 4.0)
   - RxDataSources (~> 3.0)
@@ -87,7 +85,7 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   Reactant:
-    :path: "../Reactant"
+    :path: Dependencies/Reactant
 
 SPEC CHECKSUMS:
   Differentiator: a87be69eba49ec4ab460c7671143ee3a9eececfd
@@ -95,7 +93,7 @@ SPEC CHECKSUMS:
   Kingfisher: 976d828df2b24834c6a3f2fc4d82cdbd26552be1
   Nimble: 2839b01d1b31f6a6a7777a221f0d91cf52e8e27b
   Quick: d17304d58d0d169dd0bd1c6e5c28e3318de32a1a
-  Reactant: b48f142a84f5589b30dad05d1f53f0a3fd4a511c
+  Reactant: 5e4f19b798a42b46a61db6d86b42b85d70f774d4
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   RxBlocking: f6054985901412fc8c02daa84e92d4ba68c61389
   RxCocoa: d88ba0f1f6abf040011a9eb4b539324fc426843a
@@ -106,6 +104,6 @@ SPEC CHECKSUMS:
   RxTest: e634f15fd2c2cd0e0120132ef7a4f7be69ad0393
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
 
-PODFILE CHECKSUM: 58bd2a598d8c43d02ba4ee28351c675b2bcb2a9a
+PODFILE CHECKSUM: a6c381e619df22b7d64af7670e4f8a298303692a
 
-COCOAPODS: 1.6.0.beta.1
+COCOAPODS: 1.6.0.beta.2

@@ -1,0 +1,3 @@
+[submodule "Dependencies/Reactant"]
+	path = Dependencies/Reactant
+	url = https://github.com/Brightify/Reactant.git

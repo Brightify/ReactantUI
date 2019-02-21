@@ -11,9 +11,9 @@ def shared
     pod 'SnapKit', '~> 4.0'
     pod 'Kingfisher', '~> 4.0'
     pod 'Result', '~> 3.0'
-    pod 'Reactant', :path => '../Reactant'
-    pod 'Reactant/TableView', :path => '../Reactant'
-    pod 'Reactant/FallbackSafeAreaInsets', :path => '../Reactant'
+    pod 'Reactant', :path => 'Dependencies/Reactant'
+    pod 'Reactant/TableView', :path => 'Dependencies/Reactant'
+    pod 'Reactant/FallbackSafeAreaInsets', :path => 'Dependencies/Reactant'
 end
 
 abstract_target 'LiveUI' do
