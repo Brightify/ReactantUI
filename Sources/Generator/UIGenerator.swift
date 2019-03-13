@@ -123,7 +123,8 @@ public class UIGenerator: Generator {
                     }
 
                     if !themedProperties.isEmpty {
-                        l("ApplicationTheme.selector.register(target: target, listener: { theme in")
+                        l("ApplicationTheme.selector.register(target: target, listener: { [weak target] theme in")
+                        l("guard let target = target else { return }")
                         for (name, properties) in themedProperties {
                             for property in properties {
                                 let propertyContext = PropertyContext(parentContext: componentContext, property: property)
