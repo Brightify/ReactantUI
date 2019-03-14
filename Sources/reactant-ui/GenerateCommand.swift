@@ -247,8 +247,10 @@ class GenerateCommand: Command {
                   """)
         }
 
-        output.append(ifSimulator(swiftVersion: swiftVersion, ifClause: "\nlet bundleWorker = ReactantLiveUIWorker(configuration: GeneratedReactantLiveUIConfiguration())\n"))
-
+        if enableLive.value {
+            output.append(ifSimulator(swiftVersion: swiftVersion, ifClause: "\nlet bundleWorker = ReactantLiveUIWorker(configuration: GeneratedReactantLiveUIConfiguration())\n"))
+        }
+                          
         output.append("public func activateLiveReload(in window: UIWindow) {")
         if enableLive.value {
             let liveUIActivation = """
