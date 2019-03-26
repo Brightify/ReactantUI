@@ -30,7 +30,7 @@ public protocol SupportedPropertyType {
 }
 
 public extension SupportedPropertyType {
-    public var requiresTheme: Bool {
+    var requiresTheme: Bool {
         return false
     }
 }

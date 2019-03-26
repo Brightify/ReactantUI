@@ -15,8 +15,8 @@ struct XSDElement {
 }
 
 extension XSDElement: Hashable, Equatable {
-    var hashValue: Int {
-        return name.hashValue
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
     }
 
     static func ==(lhs: XSDElement, rhs: XSDElement) -> Bool {

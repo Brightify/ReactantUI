@@ -19,9 +19,9 @@ let package = Package(
             targets: ["Generator"])
     ],
     dependencies: [
-        .package(url: "https://github.com/tadija/AEXML.git", .exact("4.2.2")),
-        .package(url: "https://github.com/xcodeswift/xcproj.git", .upToNextMajor(from: "2.0.0")),
-        .package(url: "https://github.com/jakeheis/SwiftCLI", from: "4.0.0")
+        .package(url: "https://github.com/tadija/AEXML.git", .exact("4.3.3")),
+        .package(url: "https://github.com/tuist/xcodeproj.git", .upToNextMajor(from: "6.0.0")),
+        .package(url: "https://github.com/jakeheis/SwiftCLI", from: "5.2.2")
     ],
     targets: [
         .target(
@@ -32,7 +32,7 @@ let package = Package(
             dependencies: ["Common"]),
         .target(
             name: "Generator",
-            dependencies: ["Tokenizer", "xcproj", "SwiftCLI", "AEXML"]),
+            dependencies: ["Tokenizer", "xcodeproj", "SwiftCLI", "AEXML"]),
         .target(
             name: "reactant-ui",
             dependencies: ["Tokenizer", "Generator"])

@@ -11,7 +11,7 @@ import Common
 import Generator
 import Tokenizer
 import Foundation
-import xcproj
+import xcodeproj
 import SwiftCLI
 
 public enum GenerateCommandError: Error, LocalizedError {
@@ -379,7 +379,7 @@ class GenerateCommand: Command {
             throw GenerateCommandError.cannotReadXCodeProj
         }
 
-        return project.pbxproj.objects.buildConfigurations.values
+        return project.pbxproj.buildConfigurations
             .compactMap { config -> Substring? in
                 let value = (config.buildSettings["TVOS_DEPLOYMENT_TARGET"] ?? config.buildSettings["IPHONEOS_DEPLOYMENT_TARGET"]) as? String
 

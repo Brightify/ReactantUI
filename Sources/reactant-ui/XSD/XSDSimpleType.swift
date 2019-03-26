@@ -52,14 +52,12 @@ extension XSDSimpleType: XMLElementSerializable {
             
             return XMLSerializableElement(name: "xs:simpleType", attributes: attributeBuilder.attributes, children: [union])
         }
-
-        return XMLSerializableElement(name: "xs:simpleType", attributes: attributeBuilder.attributes, children: [])
     }
 }
 
 extension XSDSimpleType: Hashable, Equatable {
-    var hashValue: Int {
-        return name.hashValue
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
     }
 
     static func ==(lhs: XSDSimpleType, rhs: XSDSimpleType) -> Bool {

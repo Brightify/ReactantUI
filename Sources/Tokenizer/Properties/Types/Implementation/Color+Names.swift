@@ -7,7 +7,7 @@
 //
 
 public extension Color {
-    public static let supportedNames: [String] = [
+    static let supportedNames: [String] = [
         "black",
         "darkGray",
         "lightGray",

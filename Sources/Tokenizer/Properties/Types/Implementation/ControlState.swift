@@ -65,7 +65,7 @@ extension ControlState {
 #endif
 
 public extension Sequence where Element == ControlState {
-    public var name: String {
+    var name: String {
 
         return sorted(by: { lhs, rhs in
             ControlState.allValuesDictionary[lhs, default: 0] < ControlState.allValuesDictionary[rhs, default: 0]

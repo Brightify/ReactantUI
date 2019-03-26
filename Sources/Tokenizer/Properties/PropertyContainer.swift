@@ -9,15 +9,15 @@
 import Foundation
 
 public extension Array where Element == PropertyContainer.Namespace {
-    public var resolvedKeyPath: String {
+    var resolvedKeyPath: String {
         return map { $0.name }.joined(separator: ".")
     }
     
-    public func resolvedAttributeName(name: String) -> String {
+    func resolvedAttributeName(name: String) -> String {
         return (map { $0.name } + [name]).joined(separator: ".")
     }
     
-    public func resolvedSwiftName(target: String) -> String {
+    func resolvedSwiftName(target: String) -> String {
         return ([target] + map { "\($0.name)\($0.isOptional ? "?" : "")" }).joined(separator: ".")
     }
 }

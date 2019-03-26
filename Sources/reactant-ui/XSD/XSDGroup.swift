@@ -14,8 +14,8 @@ struct XSDGroup {
 }
 
 extension XSDGroup: Hashable, Equatable {
-    var hashValue: Int {
-        return name.hashValue
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
     }
 
     static func ==(lhs: XSDGroup, rhs: XSDGroup) -> Bool {

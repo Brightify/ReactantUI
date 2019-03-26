@@ -14,8 +14,8 @@ struct XSDAttribute {
 }
 
 extension XSDAttribute: Equatable, Hashable {
-    var hashValue: Int {
-        return name.hashValue
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(name)
     }
 
     public static func ==(lhs: XSDAttribute, rhs: XSDAttribute) -> Bool {
