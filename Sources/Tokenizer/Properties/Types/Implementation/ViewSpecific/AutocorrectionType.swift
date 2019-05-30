@@ -13,8 +13,6 @@ public enum AutocorrectionType: String, EnumPropertyType, AttributeSupportedProp
     case `default`
     case no
     case yes
-
-    public static let allValues: [AutocorrectionType] = [.`default`, .no, .yes]
 }
 
 #if canImport(UIKit)

@@ -14,8 +14,6 @@ public enum AutocapitalizationType: String, EnumPropertyType, AttributeSupported
     case words
     case sentences
     case allCharacters
-
-    public static let allValues: [AutocapitalizationType] = [.none, .words, .allCharacters]
 }
 
 #if canImport(UIKit)

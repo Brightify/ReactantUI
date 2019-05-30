@@ -13,8 +13,6 @@ public enum SmartDashesType: String, EnumPropertyType, AttributeSupportedPropert
     case `default`
     case no
     case yes
-
-    public static let allValues: [SmartDashesType] = [.`default`, .no, .yes]
 }
 
 #if canImport(UIKit)

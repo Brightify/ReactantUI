@@ -13,8 +13,6 @@ public enum SmartInsertDeleteType: String, EnumPropertyType, AttributeSupportedP
     case `default`
     case no
     case yes
-
-    public static let allValues: [SmartInsertDeleteType] = [.`default`, .no, .yes]
 }
 
 #if canImport(UIKit)

@@ -11,9 +11,7 @@ PODS:
   - Reactant (1.2.0):
     - Reactant/Core (= 1.2.0)
     - Reactant/Result (= 1.2.0)
-  - Reactant/Configuration (1.2.0):
-    - RxSwift (~> 4.0)
-    - SnapKit (~> 4.0)
+  - Reactant/Configuration (1.2.0)
   - Reactant/Core (1.2.0):
     - Reactant/Configuration
     - RxCocoa (~> 4.0)
@@ -106,6 +104,6 @@ SPEC CHECKSUMS:
   RxTest: e634f15fd2c2cd0e0120132ef7a4f7be69ad0393
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
 
-PODFILE CHECKSUM: a6c381e619df22b7d64af7670e4f8a298303692a
+PODFILE CHECKSUM: ba6957a31784aeea0a4e0e2e32ee20b3f0a5fcc1
 
-COCOAPODS: 1.6.0.beta.2
+COCOAPODS: 1.7.0

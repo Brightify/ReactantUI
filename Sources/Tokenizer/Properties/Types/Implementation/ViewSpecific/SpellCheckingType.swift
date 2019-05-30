@@ -13,8 +13,6 @@ public enum SpellCheckingType: String, EnumPropertyType, AttributeSupportedPrope
     case `default`
     case no
     case yes
-
-    public static let allValues: [SpellCheckingType] = [.`default`, .no, .yes]
 }
 
 #if canImport(UIKit)

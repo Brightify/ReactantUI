@@ -13,8 +13,6 @@ public enum SmartQuotesType: String, EnumPropertyType, AttributeSupportedPropert
     case `default`
     case no
     case yes
-
-    public static let allValues: [SmartQuotesType] = [.`default`, .no, .yes]
 }
 
 #if canImport(UIKit)

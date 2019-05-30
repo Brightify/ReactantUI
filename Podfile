@@ -59,7 +59,8 @@ post_install do |installer|
         'Reactant-iOS', 'Reactant-tvOS'
     ]
     swift4targets = [
-        'Result-iOS', 'Result-tvOS', 'SnapKit-iOS', 'SnapKit-tvOS'
+        'Result-iOS', 'Result-tvOS', 'SnapKit-iOS', 'SnapKit-tvOS',
+        'RxSwift-iOS', 'RxSwift-tvOS', 'RxCocoa-iOS', 'RxCocoa-tvOS', 'RxDataSources-iOS', 'RxDataSources-tvOS'
     ]
 
     installer.pods_project.targets.each do |target|
@@ -70,10 +71,6 @@ post_install do |installer|
         elsif swift4targets.include? target.name
             target.build_configurations.each do |config|
                 config.build_settings['SWIFT_VERSION'] = '4'
-            end
-        else
-            target.build_configurations.each do |config|
-                config.build_settings['SWIFT_VERSION'] = '3'
             end
         end
     end
