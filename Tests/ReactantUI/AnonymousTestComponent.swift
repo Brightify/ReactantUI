@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import Reactant
+import Hyperdrive
 import ReactantLiveUI
 
 public class AnonymousTestComponent: UIView, Anonymous {

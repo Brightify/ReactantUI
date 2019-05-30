@@ -10,7 +10,7 @@ import Foundation
 
 #if canImport(UIKit)
 import UIKit
-import Reactant
+import Hyperdrive
 import RxDataSources
 #endif
 
@@ -53,7 +53,7 @@ public class SimpleTableView: View, ComponentDefinitionContainer {
     }
 
     public override class var parentModuleImport: String {
-        return "Reactant"
+        return "Hyperdrive"
     }
 
     public override func initialization() -> String {
@@ -131,7 +131,7 @@ public class SimpleTableView: View, ComponentDefinitionContainer {
         let createFooter = try context.componentInstantiation(named: footerType)
         let sectionCount = ToolingProperties.headerTableView.sectionCount.get(from: self.toolingProperties) ?? 5
         let itemCount = ToolingProperties.headerTableView.itemCount.get(from: self.toolingProperties) ?? 5
-        let tableView = Reactant.SimpleTableView<CellWrapper, CellWrapper, CellWrapper>(
+        let tableView = Hyperdrive.SimpleTableView<CellWrapper, CellWrapper, CellWrapper>(
             cellFactory: {
                 CellWrapper(wrapped: createCell())
             },
@@ -140,7 +140,8 @@ public class SimpleTableView: View, ComponentDefinitionContainer {
             },
             footerFactory: {
                 CellWrapper(wrapped: createFooter())
-            })
+            },
+            options: [])
             .with(state: .items(Array(repeating: SectionModel(model: (header: (), footer: ()),
                                                               items: Array(repeating: (), count: itemCount)),
                                                               count: sectionCount)))

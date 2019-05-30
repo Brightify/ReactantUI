@@ -8,7 +8,7 @@
 
 import UIKit
 import SnapKit
-import Reactant
+import Hyperdrive
 import RxSwift
 import RxCocoa
 
@@ -27,21 +27,25 @@ public class ReactantLiveUIManager {
     public static let shared = ReactantLiveUIManager()
     private(set) var workers = Set<ReactantLiveUIWorker>()
 
-    private let errorView = LiveUIErrorMessage().with(state: [:])
+    private let errorView: LiveUIErrorMessage
     private let disposeBag = DisposeBag()
 
     private weak var activeWindow: UIWindow?
 
     private init() {
-        errorView.action
-            .filter { $0 == .dismiss }
-            .subscribe(onNext: { [weak self] _ in
-                guard let `self` = self else { return }
-                for worker in self.workers {
-                    worker.resetErrors()
-                }
-            })
-            .disposed(by: disposeBag)
+        let publisher = ActionPublisher<LiveUIErrorMessage.Action>(publisher: { _ in })
+        errorView = LiveUIErrorMessage(initialState: LiveUIErrorMessage.State(), actionPublisher: publisher)
+
+        #warning("TODO: Add publisher action handling")
+//        errorView.action
+//            .filter { $0 == .dismiss }
+//            .subscribe(onNext: { [weak self] _ in
+//                guard let `self` = self else { return }
+//                for worker in self.workers {
+//                    worker.resetErrors()
+//                }
+//            })
+//            .disposed(by: disposeBag)
     }
 
     /// Activates a worker and makes him ready for use.
@@ -65,7 +69,12 @@ public class ReactantLiveUIManager {
         worker.errorsObservable
             .subscribe(onNext: { [weak self] errors in
                 guard let `self` = self else { return }
-                self.errorView.componentState = Dictionary(keyValueTuples: errors.map { ($0.path, $0.message) })
+                self.errorView.state.errors = errors.map {
+                    let state = LiveUIErrorMessageItem.State()
+                    state.file = $0.path
+                    state.message = $0.message
+                    return state
+                }
             })
             .disposed(by: disposeBag)
     }
@@ -111,7 +120,7 @@ public class ReactantLiveUIManager {
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in }
         alertController.addAction(cancelAction)
 
-        controller.present(controller: alertController)
+        controller.present(alertController, animated: true) { }
     }
 
     /**
@@ -119,7 +128,7 @@ public class ReactantLiveUIManager {
      * - parameter path: `String` for which the error should be reset
      */
     public func resetError(for path: String) {
-        errorView.componentState.removeValue(forKey: path)
+        errorView.state.errors = errorView.state.errors.filter { $0.file != path }
     }
 
     /// Removes all errors for all paths for a bundle.
@@ -172,9 +181,16 @@ public class ReactantLiveUIManager {
         print(error ?? "")
 
         if let error = error {
-            errorView.componentState[path] = error
+            if let state = errorView.state.errors.first(where: { $0.file == path }) {
+                state.message = error
+            } else {
+                let state = LiveUIErrorMessageItem.State()
+                state.file = path
+                state.message = error
+                errorView.state.errors.append(state)
+            }
         } else {
-            errorView.componentState.removeValue(forKey: path)
+            errorView.state.errors = errorView.state.errors.filter { $0.file != path }
         }
     }
 }

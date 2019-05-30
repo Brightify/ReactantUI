@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Component
-    xmlns="http://schema.reactant.tech/ui"
-    xmlns:layout="http://schema.reactant.tech/layout"
+    xmlns="http://schema.Hyperdrive.tech/ui"
+    xmlns:layout="http://schema.Hyperdrive.tech/layout"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://schema.reactant.tech/ui http://schema.reactant.tech/ui.xsd
-                        http://schema.reactant.tech/layout http://schema.reactant.tech/layout.xsd">
+    xsi:schemaLocation="http://schema.Hyperdrive.tech/ui http://schema.Hyperdrive.tech/ui.xsd
+                        http://schema.Hyperdrive.tech/layout http://schema.Hyperdrive.tech/layout.xsd">
 
     <Label
         text="Footer"

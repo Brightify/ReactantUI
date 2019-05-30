@@ -10,7 +10,7 @@ import Foundation
 
 #if canImport(UIKit)
 import UIKit
-import Reactant
+import Hyperdrive
 import RxDataSources
 #endif
 
@@ -39,7 +39,7 @@ public class SimulatedSeparatorTableView: View, ComponentDefinitionContainer {
     }
 
     public override class var parentModuleImport: String {
-        return "Reactant"
+        return "Hyperdrive"
     }
 
     public class override func runtimeType() -> String {
@@ -90,9 +90,9 @@ public class SimulatedSeparatorTableView: View, ComponentDefinitionContainer {
         }
         let createCell = try context.componentInstantiation(named: cellType)
         let exampleCount = ToolingProperties.simulatedSeparatorTableView.exampleCount.get(from: self.toolingProperties) ?? 5
-        let tableView =  Reactant.SimulatedSeparatorTableView<CellWrapper>(cellFactory: {
+        let tableView =  Hyperdrive.SimulatedSeparatorTableView<CellWrapper>(cellFactory: {
             CellWrapper(wrapped: createCell())
-        }).with(state: .items(Array(repeating: (), count: exampleCount)))
+        }, options: []).with(state: .items(Array(repeating: (), count: exampleCount)))
 
         tableView.tableView.rowHeight = UITableView.automaticDimension
 

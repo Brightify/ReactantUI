@@ -10,7 +10,7 @@ import Foundation
 
 #if canImport(UIKit)
 import UIKit
-import Reactant
+import Hyperdrive
 #endif
 
 public class Container: View, UIContainer {

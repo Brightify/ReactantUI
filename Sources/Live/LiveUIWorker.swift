@@ -7,9 +7,10 @@
 
 import UIKit
 import SnapKit
-import Reactant
+import Hyperdrive
 import RxSwift
 import RxCocoa
+import RxOptional
 
 internal extension BehaviorRelay {
     internal func mutate(using mutator: (inout Element) -> Void) {
@@ -130,8 +131,8 @@ public class ReactantLiveUIWorker {
 
         let reapplyTrigger = forceReapplyTrigger.filter { $0 === view }
         observeDefinition(for: view.__rui.typeName)
-            .flatMapLatest {
-                Observable.concat(.just($0), reapplyTrigger.rewrite(with: $0))
+            .flatMapLatest { value in
+                Observable.concat(.just(value), reapplyTrigger.map { _ in value })
             }
             .observeOn(MainScheduler.instance)
             .takeUntil((view as UIView).rx.deallocated)
@@ -362,7 +363,7 @@ public class ReactantLiveUIWorker {
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in }
         alertController.addAction(cancelAction)
 
-        controller.present(controller: alertController)
+        controller.present(alertController, animated: true) { }
     }
 
     /**
@@ -374,14 +375,14 @@ public class ReactantLiveUIWorker {
         let dependencies = PreviewListController.Dependencies(worker: self)
         let reactions = PreviewListController.Reactions(
             preview: { name in
-                navigation.push(controller: self.preview(for: name))
-        },
+                navigation.pushViewController(self.preview(for: name), animated: true)
+            },
             close: {
                 navigation.dismiss(animated: true)
-        })
+            })
         let previewList = PreviewListController(dependencies: dependencies, reactions: reactions)
-        navigation.push(controller: previewList)
-        controller.present(controller: navigation)
+        navigation.pushViewController(previewList, animated: true)
+        controller.present(navigation, animated: true) { }
     }
 
     private func preview(for name: String) -> PreviewController {

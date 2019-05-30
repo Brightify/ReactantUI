@@ -10,7 +10,7 @@ import Foundation
 
 #if canImport(UIKit)
     import UIKit
-    import Reactant
+    import Hyperdrive
     import RxDataSources
 #endif
 
@@ -41,7 +41,7 @@ public class HeaderTableView: View, ComponentDefinitionContainer {
     }
 
     public override class var parentModuleImport: String {
-        return "Reactant"
+        return "Hyperdrive"
     }
 
     public class override func runtimeType() -> String {
@@ -108,13 +108,14 @@ public class HeaderTableView: View, ComponentDefinitionContainer {
         let createHeader = try context.componentInstantiation(named: headerType)
         let sectionCount = ToolingProperties.headerTableView.sectionCount.get(from: self.toolingProperties) ?? 5
         let itemCount = ToolingProperties.headerTableView.itemCount.get(from: self.toolingProperties) ?? 5
-        let tableView = Reactant.HeaderTableView<CellWrapper, CellWrapper>(
+        let tableView = Hyperdrive.HeaderTableView<CellWrapper, CellWrapper>(
             cellFactory: {
                 CellWrapper(wrapped: createCell())
             },
             headerFactory: {
                 CellWrapper(wrapped: createHeader())
-            })
+            },
+            options: [])
             .with(state: .items(Array(repeating: SectionModel(model: (), items: Array(repeating: (), count: itemCount)), count: sectionCount)))
 
         tableView.tableView.rowHeight = UITableView.automaticDimension

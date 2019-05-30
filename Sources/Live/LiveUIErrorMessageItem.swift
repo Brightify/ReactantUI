@@ -6,28 +6,70 @@
 //  Copyright © 2017 Brightify. All rights reserved.
 //
 
-import Reactant
+import Hyperdrive
 
-final class LiveUIErrorMessageItem: ViewBase<(file: String, message: String), Void> {
+final class LiveUIErrorMessageItem: HyperViewBase, HyperView {
+
+    final class State: HyperViewState {
+        fileprivate weak var owner: LiveUIErrorMessageItem?
+
+        var file: String?
+        var message: String?
+
+        init() {
+
+        }
+
+        func apply(from otherState: State) {
+
+        }
+
+        func resynchronize() {
+
+        }
+
+        private func notifyFileChanged() {
+            owner?.path.text = "in: \(file ?? "<n/a>")"
+        }
+
+        private func notifyMessageChanged() {
+            owner?.message.text = message
+        }
+    }
+    enum Action {
+
+    }
+
+    static let triggerReloadPaths: Set<String> = []
+
+    let state: State
+
     private let message = UILabel()
     private let path = UILabel()
 
-    override func update() {
-        message.text = componentState.message
-        path.text = "in: \(componentState.file)"
+    init(initialState: State, actionPublisher: ActionPublisher<Action>) {
+        state = initialState
+
+        super.init()
+
+        state.owner = self
+
+        loadView()
+
+        setupConstraints()
     }
 
-    override func loadView() {
-        children(
+    private func loadView() {
+        [
             message,
             path
-        )
+        ].forEach(addSubview(_:))
 
         Styles.message(label: message)
         Styles.path(label: path)
     }
 
-    override func setupConstraints() {
+    private func setupConstraints() {
         message.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()

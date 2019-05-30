@@ -41,11 +41,11 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, UIElem
     public var toolingProperties: [String: Property]
 
     public static var parentModuleImport: String {
-        return "Reactant"
+        return "Hyperdrive"
     }
 
     public var requiredImports: Set<String> {
-        return Set(arrayLiteral: "Reactant").union(children.flatMap { $0.requiredImports })
+        return Set(arrayLiteral: "Hyperdrive").union(children.flatMap { $0.requiredImports })
     }
 
     public var componentTypes: [String] {

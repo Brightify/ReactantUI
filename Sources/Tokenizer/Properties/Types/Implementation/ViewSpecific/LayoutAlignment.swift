@@ -1,6 +1,6 @@
 //
 //  LayoutAlignment.swift
-//  Reactant
+//  Hyperdrive
 //
 //  Created by Matouš Hýbl on 4/9/17.
 //  Copyright © 2017 Brightify. All rights reserved.

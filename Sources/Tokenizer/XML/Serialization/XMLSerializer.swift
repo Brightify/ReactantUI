@@ -26,11 +26,11 @@ public class XMLSerializer {
 
         var builder = XMLAttributeBuilder()
         l("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>")
-        builder.attribute(name: "xmlns", value: "http://schema.reactant.tech/ui")
-        builder.attribute(name: "xmlns:layout", value: "http://schema.reactant.tech/layout")
+        builder.attribute(name: "xmlns", value: "http://schema.Hyperdrive.tech/ui")
+        builder.attribute(name: "xmlns:layout", value: "http://schema.Hyperdrive.tech/layout")
         builder.attribute(name: "xmlns:xsi", value: "http://www.w3.org/2001/XMLSchema-instance")
-        builder.attribute(name: "xsi:schemaLocation", value: "http://schema.reactant.tech/ui https://schema.reactant.tech/ui.xsd\n" +
-            "                        http://schema.reactant.tech/layout https://schema.reactant.tech/layout.xsd")
+        builder.attribute(name: "xsi:schemaLocation", value: "http://schema.Hyperdrive.tech/ui https://schema.Hyperdrive.tech/ui.xsd\n" +
+            "                        http://schema.Hyperdrive.tech/layout https://schema.Hyperdrive.tech/layout.xsd")
         element.attributes.insert(contentsOf: builder.attributes, at: 0)
 
         serialize(element: element)

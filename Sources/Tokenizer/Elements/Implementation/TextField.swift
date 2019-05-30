@@ -10,7 +10,7 @@ import Foundation
 
 #if canImport(UIKit)
 import UIKit
-import Reactant
+import Hyperdrive
 #endif
 
 public class TextField: View {
@@ -19,16 +19,16 @@ public class TextField: View {
     }
 
     public override class var parentModuleImport: String {
-        return "Reactant"
+        return "Hyperdrive"
     }
 
     public class override func runtimeType() -> String {
-        return "Reactant.TextField"
+        return "Hyperdrive.TextField"
     }
 
     #if canImport(UIKit)
     public override func initialize(context: ReactantLiveUIWorker.Context) -> UIView {
-        return Reactant.TextField()
+        return Hyperdrive.TextField()
     }
     #endif
 }

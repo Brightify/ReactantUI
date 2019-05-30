@@ -25,7 +25,7 @@ class DebugAlertController: UIAlertController {
     }
 
     static func create(manager: ReactantLiveUIManager, window: UIWindow) -> DebugAlertController {
-        let controller = DebugAlertController(title: "Debug menu", message: "Reactant Live UI", preferredStyle: .actionSheet)
+        let controller = DebugAlertController(title: "Debug menu", message: "Hyperdrive Live UI", preferredStyle: .actionSheet)
 
         controller.popoverPresentationController?.sourceView = window
         controller.popoverPresentationController?.sourceRect = window.bounds

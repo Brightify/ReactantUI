@@ -8,7 +8,7 @@
 
 import XCTest
 import UIKit
-import Reactant
+import Hyperdrive
 @testable import ReactantLiveUI
 
 class ButtonTests: XCTestCase {

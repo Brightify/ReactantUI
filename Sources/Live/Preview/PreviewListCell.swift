@@ -6,24 +6,55 @@
 //  Copyright © 2017 Brightify. All rights reserved.
 //
 
-import Reactant
+import Hyperdrive
 
-final class PreviewListCell: ViewBase<String, Void> {
-    private let name = UILabel()
+final class PreviewListCell: HyperViewBase, HyperView {
+    final class State: HyperViewState {
+        fileprivate weak var owner: PreviewListCell?
 
-    override func update() {
-        name.text = componentState
+        var title: String? { didSet { notifyTitleChanged() } }
+
+        func apply(from otherState: State) {
+            title = otherState.title
+        }
+
+        func resynchronize() {
+            notifyTitleChanged()
+        }
+
+        private func notifyTitleChanged() {
+            owner?.name.text = title
+        }
+    }
+    enum Action {
+
     }
 
-    override func loadView() {
-        children(
+    static let triggerReloadPaths: Set<String> = []
+
+    let state: State
+
+    private let name = UILabel()
+
+    init(initialState: State, actionPublisher: ActionPublisher<Action>) {
+        state = initialState
+
+        super.init()
+
+        loadView()
+
+        setupConstraints()
+    }
+
+    private func loadView() {
+        [
             name
-        )
+        ].forEach(addSubview(_:))
 
         name.numberOfLines = 0
     }
 
-    override func setupConstraints() {
+    private func setupConstraints() {
         name.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(20)
             make.trailing.equalToSuperview().inset(20)

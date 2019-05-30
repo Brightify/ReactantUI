@@ -21,7 +21,7 @@ extension TransformationModifier {
         case .identity:
             return ".identity"
         case .rotate(let degrees):
-            // FIXME when #41 is fixed in Reactant, rework this
+            // FIXME when #41 is fixed in Hyperdrive, rework this
             return "rotate(\((.pi/180) * degrees))"
         case .scale(let x, let y):
             return "scale(x: \(x), y: \(y))"

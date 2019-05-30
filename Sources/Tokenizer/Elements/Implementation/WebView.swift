@@ -13,7 +13,7 @@ import UIKit
 #if os(iOS)
 import WebKit
 #endif
-import Reactant
+import Hyperdrive
 #endif
 
 public class WebView: View {

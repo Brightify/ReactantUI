@@ -8,7 +8,7 @@
 
 import Foundation
 #if canImport(UIKit)
-import Reactant
+import Hyperdrive
 #endif
 
 /**
@@ -132,7 +132,7 @@ public struct Style: XMLAttributeDeserializable, XMLElementDeserializable {
         }
 
         if node.name == "attributedTextStyle" {
-            parentModuleImport = "Reactant"
+            parentModuleImport = "Hyperdrive"
             properties = try PropertyHelper.deserializeSupportedProperties(properties: Properties.attributedText.allProperties, in: node) as [Property]
 
             type = try .attributedText(styles: node.xmlChildren.map(AttributedTextStyle.deserialize))

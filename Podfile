@@ -11,16 +11,14 @@ def shared
     pod 'SnapKit', '~> 4.0'
     pod 'Kingfisher', '~> 4.0'
     pod 'Result', '~> 3.0'
-    pod 'Reactant', :path => 'Dependencies/Reactant'
-    pod 'Reactant/TableView', :path => 'Dependencies/Reactant'
-    pod 'Reactant/FallbackSafeAreaInsets', :path => 'Dependencies/Reactant'
+    pod 'HyperdrivePlatform', :subspecs => ['TableView'], :path => 'Dependencies/Reactant'
 end
 
 abstract_target 'LiveUI' do
     shared
 
     target 'LiveUI-iOS' do
-        platform :ios, '9.0'
+        platform :ios, '11.0'
 
         target 'LiveUI-iOSTests' do
             pod 'Quick', '~> 1.1'
@@ -32,13 +30,12 @@ abstract_target 'LiveUI' do
     end
 
     target 'LiveUI-tvOS' do
-        platform :tvos, '9.2'
+        platform :tvos, '11.0'
     end
-
 end
 
 target 'Example' do
-    platform :ios, '9.0'
+    platform :ios, '11.0'
     shared
 
 #pod 'Reactant/All-iOS', :path => '../Reactant' # :git => 'https://github.com/Brightify/Reactant.git', :branch => 'master'
@@ -48,7 +45,7 @@ target 'Example' do
 end
 
 target 'Example-tvOS' do
-    platform :tvos, '9.2'
+    platform :tvos, '11.0'
     shared
 
 #    pod 'Reactant', :git => 'https://github.com/Brightify/Reactant.git', :branch => 'master'

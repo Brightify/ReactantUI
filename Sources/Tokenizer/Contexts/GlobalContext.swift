@@ -7,8 +7,8 @@
 
 import Foundation
 
-#if canImport(Reactant)
-import Reactant
+#if canImport(Hyperdrive)
+import Hyperdrive
 #else
 extension Dictionary {
     public init(keyValueTuples: [(Key, Value)]) {
@@ -102,13 +102,13 @@ public struct GlobalContext: DataContext {
     }
 
     public mutating func setStyles(from styleSheets: [StyleGroup]) {
-        let groups = (styleSheets
-            .flatMap { $0.styles }
-            .groupBy { style -> String? in
-                guard case .global(let groupName, _) = style.name else { return nil }
-                return groupName
-            } as [(name: String, styles: [Style])])
-            .map { ($0.name, Dictionary(keyValueTuples: $0.styles.map { ($0.name.name, $0) })) }
+        let groups = Dictionary(grouping: styleSheets.flatMap { $0.styles }, by: { style -> String? in
+            guard case .global(let groupName, _) = style.name else { return nil }
+            return groupName
+        }).compactMap { name, styles -> (String, [String: Style])? in
+            guard let name = name else { return nil }
+            return (name, Dictionary(keyValueTuples: styles.map { ($0.name.name, $0) }))
+        }
 
         styles = Dictionary(keyValueTuples: groups)
     }

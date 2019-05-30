@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import Reactant
+import Hyperdrive
 
 private struct WeakUIBox {
     weak var ui: ReactantUI?

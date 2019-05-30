@@ -1,5 +1,13 @@
 PODS:
   - Differentiator (3.0.2)
+  - HyperdrivePlatform/Configuration (2.0.0-alpha.1)
+  - HyperdrivePlatform/Core (2.0.0-alpha.1):
+    - HyperdrivePlatform/Configuration
+    - SnapKit (~> 4.0)
+  - HyperdrivePlatform/TableView (2.0.0-alpha.1):
+    - HyperdrivePlatform/Core
+    - RxCocoa (~> 4.0)
+    - RxDataSources (~> 3.0)
   - iOSSnapshotTestCase (3.0.0):
     - iOSSnapshotTestCase/SwiftSupport (= 3.0.0)
   - iOSSnapshotTestCase/Core (3.0.0)
@@ -8,26 +16,6 @@ PODS:
   - Kingfisher (4.8.0)
   - Nimble (7.1.3)
   - Quick (1.3.1)
-  - Reactant (1.2.0):
-    - Reactant/Core (= 1.2.0)
-    - Reactant/Result (= 1.2.0)
-  - Reactant/Configuration (1.2.0)
-  - Reactant/Core (1.2.0):
-    - Reactant/Configuration
-    - RxCocoa (~> 4.0)
-    - RxOptional (~> 3.0)
-    - RxSwift (~> 4.0)
-    - SnapKit (~> 4.0)
-  - Reactant/FallbackSafeAreaInsets (1.2.0):
-    - Reactant/Core
-  - Reactant/Result (1.2.0):
-    - Result (~> 3.0)
-    - RxOptional (~> 3.0)
-    - RxSwift (~> 4.0)
-  - Reactant/TableView (1.2.0):
-    - Reactant/Core
-    - RxCocoa (~> 4.0)
-    - RxDataSources (~> 3.0)
   - Result (3.2.4)
   - RxBlocking (4.1.2):
     - RxSwift (~> 4.0)
@@ -50,13 +38,11 @@ PODS:
   - SnapKit (4.0.0)
 
 DEPENDENCIES:
+  - HyperdrivePlatform/TableView (from `Dependencies/Reactant`)
   - iOSSnapshotTestCase
   - Kingfisher (~> 4.0)
   - Nimble (~> 7.0)
   - Quick (~> 1.1)
-  - Reactant (from `Dependencies/Reactant`)
-  - Reactant/FallbackSafeAreaInsets (from `Dependencies/Reactant`)
-  - Reactant/TableView (from `Dependencies/Reactant`)
   - Result (~> 3.0)
   - RxCocoa (~> 4.0)
   - RxDataSources (~> 3.0)
@@ -84,16 +70,16 @@ SPEC REPOS:
     - SnapKit
 
 EXTERNAL SOURCES:
-  Reactant:
+  HyperdrivePlatform:
     :path: Dependencies/Reactant
 
 SPEC CHECKSUMS:
   Differentiator: a87be69eba49ec4ab460c7671143ee3a9eececfd
+  HyperdrivePlatform: a50ead3d2e4f4b48c65e14ec8ab9b74c77fbac96
   iOSSnapshotTestCase: 23984ffe05289728d646cbb6a7a10b4fb1c93440
   Kingfisher: 976d828df2b24834c6a3f2fc4d82cdbd26552be1
   Nimble: 2839b01d1b31f6a6a7777a221f0d91cf52e8e27b
   Quick: d17304d58d0d169dd0bd1c6e5c28e3318de32a1a
-  Reactant: 5e4f19b798a42b46a61db6d86b42b85d70f774d4
   Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
   RxBlocking: f6054985901412fc8c02daa84e92d4ba68c61389
   RxCocoa: d88ba0f1f6abf040011a9eb4b539324fc426843a
@@ -104,6 +90,6 @@ SPEC CHECKSUMS:
   RxTest: e634f15fd2c2cd0e0120132ef7a4f7be69ad0393
   SnapKit: a42d492c16e80209130a3379f73596c3454b7694
 
-PODFILE CHECKSUM: 9eee51819f1d343770fe60327a8dad98bc795021
+PODFILE CHECKSUM: eb9d736085b14cefa328546a29f083b21c0d2705
 
 COCOAPODS: 1.7.0

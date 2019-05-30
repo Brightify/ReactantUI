@@ -6,9 +6,10 @@
 //  Copyright © 2017 Brightify. All rights reserved.
 //
 
-import Reactant
+import Hyperdrive
+import RxSwift
 
-final class PreviewController: ControllerBase<Void, PreviewRootView> {
+final class PreviewController: HyperViewController<PreviewRootView> {
     struct Parameters {
         let typeName: String
         let view: UIView
@@ -16,20 +17,22 @@ final class PreviewController: ControllerBase<Void, PreviewRootView> {
 
     private let parameters: Parameters
 
-    private let closeButton = UIBarButtonItem(title: "Close", style: .done)
+    private let closeButton = UIBarButtonItem(title: "Close", style: .done, target: nil, action: nil)
+    private let lifetimeDisposeBag = DisposeBag()
 
     init(parameters: Parameters) {
         self.parameters = parameters
 
-        super.init(title: "Previewing: \(parameters.typeName)",
-            root: PreviewRootView(previewing: parameters.view))
+        super.init()
+
+        afterInit()
     }
 
-    override func afterInit() {
+    private func afterInit() {
         navigationItem.leftBarButtonItem = closeButton
         closeButton.rx.tap
             .subscribe(onNext: { [weak self] _ in
-                self?.dismiss()
+                self?.dismiss(animated: true) { }
             })
             .disposed(by: lifetimeDisposeBag)
     }

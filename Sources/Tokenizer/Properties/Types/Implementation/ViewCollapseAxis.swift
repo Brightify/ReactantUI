@@ -16,7 +16,7 @@ public enum ViewCollapseAxis: String, EnumPropertyType, AttributeSupportedProper
 }
 
 #if canImport(UIKit)
-import Reactant
+import Hyperdrive
 
 extension ViewCollapseAxis {
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {

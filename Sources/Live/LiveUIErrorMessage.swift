@@ -6,63 +6,104 @@
 //  Copyright © 2017 Brightify. All rights reserved.
 //
 
-import Reactant
+import Hyperdrive
 import RxSwift
 
-enum LiveUIErrorMessageItemAction {
-    case dismiss
-}
+final class LiveUIErrorMessage: HyperViewBase, HyperView {
 
-final class LiveUIErrorMessage: ViewBase<[String: String], LiveUIErrorMessageItemAction> {
+    final class State: HyperViewState {
+        fileprivate weak var owner: LiveUIErrorMessage?
+
+        var errors: [LiveUIErrorMessageItem.State] = []
+
+        init() {
+
+        }
+
+        func apply(from otherState: LiveUIErrorMessage.State) {
+
+        }
+
+        func resynchronize() {
+
+        }
+
+        private func notifyErrorsChanged() {
+
+        }
+    }
+    enum Action {
+        case dismiss
+    }
+
+    static let triggerReloadPaths: Set<String> = []
+
+    let state: State
+
+//[String: String]
+
+    //LiveUIErrorMessageItemAction
 
     override var preferredFocusedView: UIView? {
         return button
     }
 
-    override var actions: [Observable<LiveUIErrorMessageItemAction>] {
-        #if os(tvOS)
-        return [
-            button.rx.primaryAction.rewrite(with: .dismiss)
-        ]
-        #else
-        return [
-            button.rx.tap.rewrite(with: .dismiss)
-        ]
-        #endif
-    }
+//    override var actions: [Observable<LiveUIErrorMessageItemAction>] {
+//        #if os(tvOS)
+//        return [
+//            button.rx.primaryAction.rewrite(with: .dismiss)
+//        ]
+//        #else
+//        return [
+//            button.rx.tap.rewrite(with: .dismiss)
+//        ]
+//        #endif
+//    }
 
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
     private let button = UIButton()
 
-    override func update() {
-        let state = componentState
+    init(initialState: State, actionPublisher: ActionPublisher<Action>) {
+        state = initialState
 
-        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        for (index, item) in state.enumerated() {
-            if index > 0 {
-                let divider = UIView()
-                Styles.divider(view: divider)
-                stackView.addArrangedSubview(divider)
-                divider.snp.makeConstraints { make in
-                    make.height.equalTo(1)
-                }
-            }
+        super.init()
 
-            let itemView = LiveUIErrorMessageItem().with(state: (file: item.key, message: item.value))
-            stackView.addArrangedSubview(itemView)
-        }
+        loadView()
 
-        isHidden = state.isEmpty
+        setupConstraints()
     }
 
-    override func loadView() {
-        children(
-            scrollView.children(
-                stackView
-            ),
+//    override func update() {
+//        let state = componentState
+//
+//        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+//        for (index, item) in state.enumerated() {
+//            if index > 0 {
+//                let divider = UIView()
+//                Styles.divider(view: divider)
+//                stackView.addArrangedSubview(divider)
+//                divider.snp.makeConstraints { make in
+//                    make.height.equalTo(1)
+//                }
+//            }
+//
+//            let itemView = LiveUIErrorMessageItem().with(state: (file: item.key, message: item.value))
+//            stackView.addArrangedSubview(itemView)
+//        }
+//
+//        isHidden = state.isEmpty
+//    }
+
+    private func loadView() {
+        [
+            scrollView,
             button
-        )
+        ].forEach(addSubview(_:))
+
+        [
+            stackView
+        ].forEach(scrollView.addSubview(_:))
 
         Styles.base(view: self)
 
@@ -74,14 +115,15 @@ final class LiveUIErrorMessage: ViewBase<[String: String], LiveUIErrorMessageIte
         button.setTitle("Dismiss (ESC)", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.setTitleColor(.black, for: .focused)
-        button.setBackgroundColor(UIColor.white.withAlphaComponent(0.1), for: .normal)
-        button.setBackgroundColor(UIColor.white, for: .focused)
+        #warning("TODO: Add implementation to HyperdriveUI")
+//        button.setBackgroundColor(UIColor.white.withAlphaComponent(0.1), for: .normal)
+//        button.setBackgroundColor(UIColor.white, for: .focused)
 
         button.clipsToBounds = true
         button.layer.cornerRadius = 16
     }
 
-    override func setupConstraints() {
+    private func setupConstraints() {
         scrollView.snp.makeConstraints { make in
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()

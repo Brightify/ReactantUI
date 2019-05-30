@@ -1,6 +1,6 @@
 //
 //  PlainTableView.swift
-//  Reactant
+//  Hyperdrive
 //
 //  Created by Tadeas Kriz on 4/22/17.
 //  Copyright © 2017 Brightify. All rights reserved.
@@ -10,7 +10,7 @@ import Foundation
 
 #if canImport(UIKit)
 import UIKit
-import Reactant
+import Hyperdrive
 import RxDataSources
 #endif
 
@@ -49,7 +49,7 @@ public class PlainTableView: View, ComponentDefinitionContainer {
     }
     
     public override class var parentModuleImport: String {
-        return "Reactant"
+        return "Hyperdrive"
     }
 
     public class override func runtimeType() -> String {
@@ -99,34 +99,12 @@ public class PlainTableView: View, ComponentDefinitionContainer {
         }
         let createCell = try context.componentInstantiation(named: cellType)
         let exampleCount = ToolingProperties.plainTableView.exampleCount.get(from: self.toolingProperties) ?? 5
-        let tableView =  Reactant.PlainTableView<CellWrapper>(cellFactory: {
-            CellWrapper(wrapped: createCell())
-        }).with(state: .items(Array(repeating: (), count: exampleCount)))
+        let tableView = Hyperdrive.PlainTableView<CellWrapper>(options: [], cellFactory: CellWrapper(wrapped: createCell()))
+            .with(state: .items(Array(repeating: (), count: exampleCount)))
 
         tableView.tableView.rowHeight = UITableView.automaticDimension
 
         return tableView
-    }
-
-    public final class CellHack: ViewBase<Void, Void> {
-        private let wrapped: UIView
-
-        public init(wrapped: UIView) {
-            self.wrapped = wrapped
-            super.init()
-        }
-
-        public override func loadView() {
-            children(
-                wrapped
-            )
-        }
-
-        public override func setupConstraints() {
-            wrapped.snp.makeConstraints { make in
-                make.edges.equalToSuperview()
-            }
-        }
     }
     #endif
 }

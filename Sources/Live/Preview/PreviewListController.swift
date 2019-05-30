@@ -6,9 +6,10 @@
 //  Copyright © 2017 Brightify. All rights reserved.
 //
 
-import Reactant
+import Hyperdrive
+import RxSwift
 
-final class PreviewListController: ControllerBase<Void, PreviewListRootView> {
+final class PreviewListController: HyperViewController<PreviewListRootView> {
     struct Dependencies {
         let worker: ReactantLiveUIWorker
     }
@@ -20,34 +21,51 @@ final class PreviewListController: ControllerBase<Void, PreviewListRootView> {
     private let dependencies: Dependencies
     private let reactions: Reactions
 
-    private let closeButton = UIBarButtonItem(title: "Close", style: .done)
+    private let closeButton = UIBarButtonItem(title: "Close", style: .done, target: nil, action: nil)
+
+    private let lifetimeDisposeBag = DisposeBag()
 
     init(dependencies: Dependencies, reactions: Reactions) {
         self.dependencies = dependencies
         self.reactions = reactions
 
-        super.init(title: "Select view to preview")
+        super.init()
+
+        afterInit()
     }
 
-    override func afterInit() {
+    private func afterInit() {
+        title = "Select view to preview"
+
         navigationItem.leftBarButtonItem = closeButton
         closeButton.rx.tap
             .subscribe(onNext: reactions.close)
             .disposed(by: lifetimeDisposeBag)
     }
 
-    override func update() {
-        let items = Array(dependencies.worker.allRegisteredDefinitionNames)
-        rootView.componentState = .items(items)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        loadDefinitions()
     }
 
-    override func act(on action: PlainTableViewAction<PreviewListCell>) {
+    private func loadDefinitions() {
+        let items = Array(dependencies.worker.allRegisteredDefinitionNames)
+        hyperView.state.items = items.map {
+            let state = PreviewListCell.State()
+            state.title = $0
+            return state
+        }
+    }
+
+    override func handle(action: PreviewListRootView.Action) {
         switch action {
         case .refresh:
             dependencies.worker.reloadFiles()
-            invalidate()
+            loadDefinitions()
         case .selected(let path):
-            reactions.preview(path)
+            guard let title = path.title else { break }
+            reactions.preview(title)
         case .rowAction:
             break
         }

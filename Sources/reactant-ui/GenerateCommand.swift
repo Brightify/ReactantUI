@@ -14,6 +14,8 @@ import Foundation
 import xcodeproj
 import SwiftCLI
 
+import SwiftCodeGen
+
 public enum GenerateCommandError: Error, LocalizedError {
     case inputPathInvalid
     case ouputFileInvalid
@@ -58,6 +60,11 @@ public enum GenerateCommandError: Error, LocalizedError {
 
 class GenerateCommand: Command {
 
+    enum Output {
+        case file(URL)
+        case console
+    }
+
     static let forbiddenNames = ["RootView", "UIView", "UIViewController", "self", "switch",
                                  "if", "else", "guard", "func", "class", "ViewBase", "ControllerBase", "for"]
 
@@ -68,6 +75,7 @@ class GenerateCommand: Command {
     let xcodeProjectPath = Key<String>("--xcodeprojPath")
     let inputPath = Key<String>("--inputPath")
     let outputFile = Key<String>("--outputFile")
+    let consoleOutput = Flag("--console-output")
     let applicationDescriptionFile = Key<String>("--description", description: "Path to an XML file with Application Description.")
     let swiftVersionParameter = Key<String>("--swift")
     let defaultAccessModifier = Key<String>("--defaultAccessModifier")
@@ -81,10 +89,14 @@ class GenerateCommand: Command {
         }
         let inputPathURL = URL(fileURLWithPath: inputPath)
 
-        guard let outputFile = outputFile.value else {
+        let outputType: Output
+        if let outputFile = outputFile.value {
+            outputType = .file(URL(fileURLWithPath: outputFile))
+        } else if (consoleOutput.value) {
+            outputType = .console
+        } else {
             throw GenerateCommandError.ouputFileInvalid
         }
-        let outputPathURL = URL(fileURLWithPath: outputFile)
 
         let rawSwiftVersion = swiftVersionParameter.value ?? "4.1" // use 4.1 as default
         guard let swiftVersion = SwiftVersion(raw: rawSwiftVersion) else {
@@ -194,10 +206,13 @@ class GenerateCommand: Command {
             output.append("import \(imp)")
         }
 
-        output.append("""
-        private final class __ReactantUIBundleToken { }
-        private let __resourceBundle = Bundle(for: __ReactantUIBundleToken.self)
-        """)
+        let bundleTokenClass = Class(accessibility: .private, name: "__HyperdriveUIBundleToken")
+        let resourceBundeProperty = SwiftCodeGen.Property.constant(accessibility: .private, name: "__resourceBundle", value: "Bundle(for: __HyperdriveUIBundleToken.self)")
+
+//        output.append("""
+//        private final class __ReactantUIBundleToken { }
+//        private let __resourceBundle = Bundle(for: __ReactantUIBundleToken.self)
+//        """)
 
         for (path, rootDefinition) in componentDefinitions {
             output.append("// Generated from \(path)")
@@ -264,7 +279,14 @@ class GenerateCommand: Command {
         }
         output.append("}")
 
-        try output.joined(separator: "\n").write(to: outputPathURL, atomically: true, encoding: .utf8)
+        let result = output.joined(separator: "\n")
+
+        switch outputType {
+        case .console:
+            print(result)
+        case .file(let outputPathURL):
+            try result.write(to: outputPathURL, atomically: true, encoding: .utf8)
+        }
     }
 
     private func theme(context: GlobalContext, swiftVersion: SwiftVersion) throws -> String {

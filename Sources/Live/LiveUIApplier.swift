@@ -8,7 +8,7 @@
 
 import UIKit
 import SnapKit
-import Reactant
+import Hyperdrive
 
 private func findView(named name: String, in array: [ReactantLiveUIViewApplier.ViewTuple]) -> UIView? {
     return array.first(where: { $0.name == name })?.view
@@ -172,11 +172,7 @@ public class ReactantLiveUIViewApplier {
                     case .this:
                         targetView = view.snp
                     case .safeAreaLayoutGuide:
-                        if #available(iOS 11.0, tvOS 11.0, *) {
-                            targetView = superview.safeAreaLayoutGuide.snp
-                        } else {
-                            targetView = superview.fallback_safeAreaLayoutGuide.snp
-                        }
+                        targetView = superview.safeAreaLayoutGuide.snp
                     case .readableContentGuide:
                         targetView = superview.readableContentGuide.snp
                     }

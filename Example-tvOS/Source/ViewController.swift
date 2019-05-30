@@ -5,7 +5,7 @@
 //  Created by Matous Hybl on 03/11/2017.
 //
 
-import Reactant
+import Hyperdrive
 
 final class ViewController: ControllerBase<Void, TestView> {
 

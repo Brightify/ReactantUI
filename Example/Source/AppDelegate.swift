@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Reactant
+import Hyperdrive
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window.backgroundColor = .white
         window.rootViewController = MainWireframe().entrypoint()
         window.makeKeyAndVisible()
-        activateLiveReload(in: window)
+//        activateLiveReload(in: window)
         return true
     }
 }

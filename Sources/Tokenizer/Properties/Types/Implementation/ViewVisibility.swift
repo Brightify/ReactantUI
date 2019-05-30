@@ -17,7 +17,7 @@ public enum ViewVisibility: String, EnumPropertyType, AttributeSupportedProperty
 }
 
 #if ReactantRuntime
-    import Reactant
+    import Hyperdrive
 
     extension ViewVisibility {
 

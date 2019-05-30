@@ -5,7 +5,7 @@
 //  Created by Matouš Hýbl on 09/03/2018.
 //
 
-import Reactant
+import Hyperdrive
 import RxSwift
 
 enum ExampleType: CaseIterable {

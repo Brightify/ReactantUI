@@ -7,13 +7,13 @@
 //
 
 import UIKit
-import Reactant
+import Hyperdrive
 
 internal typealias AnonymousComponent = AnonymousLiveComponent
 
 public protocol Anonymous {}
 
-public class AnonymousLiveComponent: ViewBase<Void, Void>, Anonymous {
+public class AnonymousLiveComponent: HyperViewBase, Anonymous {
     fileprivate let _typeName: String
     fileprivate let _xmlPath: String
     fileprivate let _worker: ReactantLiveUIWorker
@@ -25,6 +25,7 @@ public class AnonymousLiveComponent: ViewBase<Void, Void>, Anonymous {
         _xmlPath = xmlPath
         _typeName = typeName
         _worker = worker
+
         super.init()
     }
 
@@ -47,16 +48,16 @@ public class AnonymousLiveComponent: ViewBase<Void, Void>, Anonymous {
 
 extension AnonymousComponent: ReactantUI {
     var rui: AnonymousComponent.RUIContainer {
-        return Reactant.associatedObject(self, key: &AnonymousComponent.RUIContainer.associatedObjectKey) {
+        return Hyperdrive.associatedObject(self, key: &AnonymousComponent.RUIContainer.associatedObjectKey) {
             return AnonymousComponent.RUIContainer(target: self)
         }
     }
 
-    public var __rui: Reactant.ReactantUIContainer {
+    public var __rui: Hyperdrive.ReactantUIContainer {
         return rui
     }
 
-    final class RUIContainer: Reactant.ReactantUIContainer {
+    final class RUIContainer: Hyperdrive.ReactantUIContainer {
         fileprivate static var associatedObjectKey = 0 as UInt8
 
         let xmlPath: String

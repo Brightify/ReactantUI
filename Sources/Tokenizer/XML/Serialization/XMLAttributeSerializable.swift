@@ -1,6 +1,6 @@
 //
 //  XMLAttributeSerializable.swift
-//  reactant-ui
+//  Hyperdrive-ui
 //
 //  Created by Matouš Hýbl on 23/03/2018.
 //

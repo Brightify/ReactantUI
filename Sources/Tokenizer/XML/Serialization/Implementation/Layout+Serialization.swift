@@ -120,7 +120,8 @@ private enum ConstraintShortcutOrConstraint {
         for shortcut in ConstraintShortcut.allCases {
             let constraintsForShortcut = mutableConstraints.filter { shortcut.attributes.contains($0.attribute) }
             guard constraintsForShortcut.count == shortcut.attributes.count else { continue }
-            let grouped = constraintsForShortcut.groupBy { $0.serialize().value }
+
+            let grouped = Dictionary(grouping: constraintsForShortcut) { $0.serialize().value }
             for (_, group) in grouped {
                 let groupAttributes = Set(group.map { $0.attribute })
                 guard groupAttributes == shortcut.attributes else { continue }

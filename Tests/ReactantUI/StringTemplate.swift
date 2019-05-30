@@ -9,7 +9,7 @@
 import Foundation
 
 /**
- * Helper class for testing Reactant UI by giving it an XML template along with the wildcard (what should be replaced in the template).
+ * Helper class for testing Hyperdrive UI by giving it an XML template along with the wildcard (what should be replaced in the template).
  */
 struct StringTemplate {
     private let template: String

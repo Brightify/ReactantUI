@@ -5,7 +5,7 @@
 //  Created by Matouš Hýbl on 09/03/2018.
 //
 
-import Reactant
+import Hyperdrive
 
 final class MainWireframe: Wireframe {
 
@@ -19,21 +19,21 @@ final class MainWireframe: Wireframe {
                 exampleSelected: {
                     switch $0 {
                     case .playground:
-                        provider.navigation?.push(controller: self.playground())
+                        provider.navigation?.pushViewController(self.playground(), animated: true)
                     case .plainTableView:
-                        provider.navigation?.push(controller: self.plainTableViewController())
+                        provider.navigation?.pushViewController(self.plainTableViewController(), animated: true)
                     case .headerTableView:
-                        provider.navigation?.push(controller: self.headerTableView())
+                        provider.navigation?.pushViewController(self.headerTableView(), animated: true)
                     case .footerTableView:
-                        provider.navigation?.push(controller: self.footerTableView())
+                        provider.navigation?.pushViewController(self.footerTableView(), animated: true)
                     case .simpleTableView:
-                        provider.navigation?.push(controller: self.simpleTableView())
+                        provider.navigation?.pushViewController(self.simpleTableView(), animated: true)
                     case .simulatedSeparatorTableView:
-                        provider.navigation?.push(controller: self.simulatedSeparatorTableView())
+                        provider.navigation?.pushViewController(self.simulatedSeparatorTableView(), animated: true)
                     case .stackView:
-                        provider.navigation?.push(controller: self.stackViewController())
+                        provider.navigation?.pushViewController(self.stackViewController(), animated: true)
                     case .progressView:
-                        provider.navigation?.push(controller: self.progressViewController())
+                        provider.navigation?.pushViewController(self.progressViewController(), animated: true)
                     }
                 }
             )
@@ -51,11 +51,11 @@ final class MainWireframe: Wireframe {
     }
 
     private func headerTableView() -> UIViewController {
-        return HeaderTableViewController()
+        return HeaderTableViewController { HeaderTableViewRootView(initialState: ())) }
     }
 
     private func footerTableView() -> UIViewController {
-        return FooterTableViewController()
+        return FooterTableViewController(root)
     }
 
     private func simpleTableView() -> UIViewController {

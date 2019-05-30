@@ -7,7 +7,7 @@
 
 import Foundation
 #if canImport(UIKit)
-import Reactant
+import Hyperdrive
 #endif
 
 public protocol XMLAttributeName {
@@ -136,7 +136,7 @@ public struct Template: XMLElementDeserializable {
         }
 
         if node.name == "attributedText" {
-            parentModuleImport = "Reactant"
+            parentModuleImport = "Hyperdrive"
             properties = try PropertyHelper.deserializeSupportedProperties(properties: Properties.attributedText.allProperties, in: node) as [Property]
             type = .attributedText(template: try AttributedTextTemplate(node: node))
         } else {

@@ -1,6 +1,6 @@
 //
 //  CellWrapper.swift
-//  reactant-ui
+//  Hyperdrive-ui
 //
 //  Created by Matouš Hýbl on 23/03/2018.
 //
@@ -8,7 +8,7 @@
 import Foundation
 #if canImport(UIKit)
     import UIKit
-    import Reactant
+    import Hyperdrive
     import RxDataSources
     
     public final class CellWrapper: ViewBase<Void, Void> {
@@ -16,13 +16,13 @@ import Foundation
 
         public init(wrapped: UIView) {
             self.wrapped = wrapped
-            super.init()
+            super.init(initialState: ())
         }
 
         public override func loadView() {
-            children(
+            [
                 wrapped
-            )
+            ].forEach(addSubview(_:))
         }
 
         public override func setupConstraints() {

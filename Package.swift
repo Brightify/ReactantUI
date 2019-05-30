@@ -9,6 +9,9 @@ let package = Package(
             name: "reactant-ui",
             targets: ["reactant-ui"]),
         .library(
+            name: "SwiftCodeGen",
+            targets: ["SwiftCodeGen"]),
+        .library(
             name: "Common",
             targets: ["Common"]),
         .library(
@@ -25,6 +28,9 @@ let package = Package(
     ],
     targets: [
         .target(
+            name: "SwiftCodeGen",
+            dependencies: []),
+        .target(
             name: "Common",
             dependencies: []),
         .target(
@@ -32,9 +38,9 @@ let package = Package(
             dependencies: ["Common"]),
         .target(
             name: "Generator",
-            dependencies: ["Tokenizer", "xcodeproj", "SwiftCLI", "AEXML"]),
+            dependencies: ["Tokenizer", "xcodeproj", "SwiftCLI", "AEXML", "SwiftCodeGen"]),
         .target(
             name: "reactant-ui",
-            dependencies: ["Tokenizer", "Generator"])
+            dependencies: ["Tokenizer", "Generator", "SwiftCodeGen"])
     ]
 )

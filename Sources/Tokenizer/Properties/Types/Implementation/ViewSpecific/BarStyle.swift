@@ -1,6 +1,6 @@
 //
 //  BarStyle.swift
-//  Reactant
+//  Hyperdrive
 //
 //  Created by Matouš Hýbl on 23/04/2017.
 //  Copyright © 2017 Brightify. All rights reserved.
