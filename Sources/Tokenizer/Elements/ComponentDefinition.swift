@@ -39,7 +39,8 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, UIElem
 
     public var properties: [Property]
     public var toolingProperties: [String: Property]
-
+    public var handledActions: [HyperViewAction]
+    
     public static var parentModuleImport: String {
         return "Hyperdrive"
     }
@@ -96,6 +97,11 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, UIElem
 
         toolingProperties = try PropertyHelper.deserializeToolingProperties(properties: ToolingProperties.componentDefinition.allProperties, in: node)
         properties = try PropertyHelper.deserializeSupportedProperties(properties: View.availableProperties, in: node)
+
+        #warning("TODO: Merge property names?")
+        handledActions = children.flatMap {
+            $0.handledActions
+        }
 
         // here we gather all the constraints' fields that do not have a condition and check if any are duplicate
         // in that case we warn the user about it, because it's probably not what they intended

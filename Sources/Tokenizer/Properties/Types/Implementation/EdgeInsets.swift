@@ -158,7 +158,7 @@ public struct EdgeInsets: AttributeSupportedPropertyType {
         return finalDimensions.toEdgeInsets()
     }
 
-    public static var runtimeType: String = "UIEdgeInsets"
+    public static let runtimeType = RuntimeType(name: "UIEdgeInsets", module: "UIKit")
 
     public static var xsdType: XSDType {
         return .builtin(.string)

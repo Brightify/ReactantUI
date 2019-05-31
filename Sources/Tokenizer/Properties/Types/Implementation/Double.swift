@@ -31,7 +31,7 @@ extension Double: AttributeSupportedPropertyType {
         return materialized
     }
 
-    public static var runtimeType: String = "Double"
+    public static let runtimeType = RuntimeType(name: "Double", module: "Swift")
 
     public static var xsdType: XSDType {
         return .builtin(.decimal)

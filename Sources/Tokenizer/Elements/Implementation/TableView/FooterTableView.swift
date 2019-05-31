@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftCodeGen
 
 #if canImport(UIKit)
 import UIKit
@@ -48,11 +49,11 @@ public class FooterTableView: View, ComponentDefinitionContainer {
         return "ReactantTableView"
     }
 
-    public override func initialization() -> String {
+    public override func initialization(describeInto pipe: DescriptionPipe) throws {
         guard let cellType = cellType, let footerType = footerType else {
-            return "Initialization should never happen as the view was referenced via field."
+            throw TokenizationError(message: "Initialization should never happen as the view was referenced via field.")
         }
-        return "FooterTableView<\(footerType), \(cellType)>()"
+        pipe.string("FooterTableView<\(footerType), \(cellType)>()")
     }
 
     public required init(node: SWXMLHash.XMLElement) throws {

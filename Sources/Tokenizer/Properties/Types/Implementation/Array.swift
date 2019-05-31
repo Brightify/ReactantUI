@@ -27,6 +27,12 @@ extension Array: SupportedPropertyType where Iterator.Element: SupportedProperty
     public static var xsdType: XSDType {
         return .builtin(.string)
     }
+
+    public static func runtimeType(for platform: RuntimePlatform) -> RuntimeType {
+        let elementRuntimeType = Element.runtimeType(for: platform)
+        return RuntimeType(name: "[\(elementRuntimeType)]", modules: ["Swift"] + elementRuntimeType.modules)
+    }
+
 }
 
 extension Array: AttributeSupportedPropertyType where Iterator.Element: AttributeSupportedPropertyType {

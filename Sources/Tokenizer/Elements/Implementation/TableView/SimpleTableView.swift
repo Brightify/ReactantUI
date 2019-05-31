@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftCodeGen
 
 #if canImport(UIKit)
 import UIKit
@@ -56,11 +57,11 @@ public class SimpleTableView: View, ComponentDefinitionContainer {
         return "Hyperdrive"
     }
 
-    public override func initialization() -> String {
+    public override func initialization(describeInto pipe: DescriptionPipe) throws {
         guard let headerType = headerType, let cellType = cellType, let footerType = footerType else {
-            return "Initialization should never happen as the view was referenced via field."
+            throw TokenizationError(message: "Initialization should never happen as the view was referenced via field.")
         }
-        return "SimpleTableView<\(headerType), \(cellType), \(footerType)>()"
+        pipe.string("SimpleTableView<\(headerType), \(cellType), \(footerType)>()")
     }
 
     public required init(node: SWXMLHash.XMLElement) throws {

@@ -32,7 +32,7 @@ extension Float: AttributeSupportedPropertyType {
         return materialized
     }
 
-    public static var runtimeType: String = "Float"
+    public static let runtimeType = RuntimeType(name: "Float")
 
     public static var xsdType: XSDType {
         return .builtin(.decimal)

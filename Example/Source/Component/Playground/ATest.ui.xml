@@ -9,7 +9,30 @@
     anonymous="true"
     rootView="true">
 
+<!-- enum ATest.Action {
+    case otherAction(OtherView.Action)
+
+    case send(h: String, f: Int, index: IndexPath)
+    case hello
+}
+
+    <OtherView
+        action="otherAction"
+
+        action:doSomething="send(..., index: @tableView.selectedIndex)"
+         />
+
+enum OtherView.Action {
+    case send
+    case doSomething(h: String, f: Int)
+} -->
+    <Component
+        type="ExampleCell"
+        action:tap="cellTapped(@falcon.image, test: T)"
+        />
+
     <ImageView
+        action:tap="hello"
         layout:edges="super"
         image="falcon"
         visibility="visible"

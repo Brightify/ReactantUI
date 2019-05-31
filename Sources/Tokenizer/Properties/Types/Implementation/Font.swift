@@ -53,7 +53,7 @@ public enum Font: AttributeSupportedPropertyType {
         }
     }
 
-    public static var runtimeType: String = "UIFont"
+    public static let runtimeType = RuntimeType(name: "UIFont", module: "UIKit")
 
     public static var xsdType: XSDType {
         return .builtin(.string)

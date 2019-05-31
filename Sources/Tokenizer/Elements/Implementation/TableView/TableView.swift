@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftCodeGen
 
 #if canImport(UIKit)
 import UIKit
@@ -21,8 +22,8 @@ public class TableView: View {
         return "UITableView"
     }
 
-    public override func initialization() -> String {
-        return "UITableView()"
+    public override func initialization(describeInto pipe: DescriptionPipe) throws {
+        pipe.string("UITableView()")
     }
 
     #if canImport(UIKit)

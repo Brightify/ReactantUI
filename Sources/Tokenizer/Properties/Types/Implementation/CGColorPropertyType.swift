@@ -42,7 +42,7 @@ public struct CGColorPropertyType: AttributeSupportedPropertyType {
         return CGColorPropertyType(color: materializedValue)
     }
 
-    public static var runtimeType: String = "CGColor"
+    public static let runtimeType = RuntimeType(name: "CGColor", module: "Foundation")
 
     public static var xsdType: XSDType {
         return Color.xsdType

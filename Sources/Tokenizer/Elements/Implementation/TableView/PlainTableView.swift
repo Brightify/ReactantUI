@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftCodeGen
 
 #if canImport(UIKit)
 import UIKit
@@ -56,11 +57,11 @@ public class PlainTableView: View, ComponentDefinitionContainer {
         return "UITableView"
     }
 
-    public override func initialization() -> String {
+    public override func initialization(describeInto pipe: DescriptionPipe) throws {
         guard let cellType = cellType else {
-            return "Initialization should never happen as the view was referenced via field."
+            throw TokenizationError(message: "Initialization should never happen as the view was referenced via field.")
         }
-        return "PlainTableView<\(cellType)>()"
+        pipe.string("PlainTableView<\(cellType)>()")
     }
 
     public required init(node: SWXMLHash.XMLElement) throws {

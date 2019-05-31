@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftCodeGen
 
 #if canImport(UIKit)
     import UIKit
@@ -48,11 +49,11 @@ public class HeaderTableView: View, ComponentDefinitionContainer {
         return "ReactantTableView"
     }
 
-    public override func initialization() -> String {
+    public override func initialization(describeInto pipe: DescriptionPipe) throws {
         guard let headerType = headerType, let cellType = cellType else {
-            return "Initialization should never happen as the view was referenced via field."
+            throw TokenizationError(message: "Initialization should never happen as the view was referenced via field.")
         }
-        return "HeaderTableView<\(headerType), \(cellType)>()"
+        pipe.string("HeaderTableView<\(headerType), \(cellType)>()")
     }
 
     public required init(node: SWXMLHash.XMLElement) throws {

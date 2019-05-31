@@ -8,6 +8,28 @@
 
 import Foundation
 
+public enum RuntimePlatform {
+    case iOS
+    case macOS
+}
+
+public struct RuntimeType {
+    public var name: String
+    public var modules: [String]
+
+    public init(name: String, module: String) {
+        self.name = name
+        self.modules = [module]
+    }
+
+    public init(name: String, modules: [String] = []) {
+        self.name = name
+        self.modules = modules
+    }
+
+    public static let unsupported = RuntimeType(name: "1$\\'0")
+}
+
 public protocol SupportedPropertyType {
     var requiresTheme: Bool { get }
 
@@ -21,12 +43,18 @@ public protocol SupportedPropertyType {
     func runtimeValue(context: SupportedPropertyTypeContext) -> Any?
     #endif
 
-    // FIXME Although it's not needed for POC of Themes, it should be implemented so that more things can be themed.
-    // We would then use this to know how is the type called for generating.
-    // static var runtimeType: String { get }
+    static func runtimeType(for platform: RuntimePlatform) -> RuntimeType
 
     // FIXME Has to be put into `AttributeSupportedPropertyType`
     static var xsdType: XSDType { get }
+}
+
+public extension SupportedPropertyType {
+    static func runtimeType(for platform: RuntimePlatform) -> RuntimeType {
+        #warning("This should be removed to ensure all children implement this method. I put here to not require implementation in all children before testing it out.")
+        assertionFailure("TODO Implement this in your class.")
+        return .unsupported
+    }
 }
 
 public extension SupportedPropertyType {

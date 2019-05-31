@@ -11,6 +11,36 @@ import Foundation
 import UIKit
 #endif
 
+import SwiftCodeGen
+
+public struct HyperViewAction {
+    public var name: String
+    public var eventName: String
+    public var parameters: [Parameter]
+
+    public enum Parameter {
+        case constant(type: String, value: String)
+        case stateVariable(name: String)
+        case reference(targetId: String, property: String?)
+    }
+
+    public init(name: String, eventName: String, parameters: [Parameter]) {
+        self.name = name
+        self.eventName = eventName
+        self.parameters = parameters
+    }
+
+    #warning("TODO Properly parse actions")
+    public init?(attribute: XMLAttribute) throws {
+        guard attribute.name.starts(with: "action:") else { return nil }
+
+        eventName = String(attribute.name.dropFirst("action:".count))
+
+        name = attribute.text
+        parameters = []
+    }
+}
+
 /**
  * The most basic UI element protocol that every UI element should conform to.
  * UI elements usually conform to this protocol through `UIElement` or `View`.
@@ -19,6 +49,7 @@ import UIKit
 public protocol UIElementBase {
     var properties: [Property] { get set }
     var toolingProperties: [String: Property] { get set }
+    var handledActions: [HyperViewAction] { get set }
 
     // used for generating styles - does not care about children imports
     static var parentModuleImport: String { get }
@@ -41,7 +72,7 @@ public protocol UIElement: AnyObject, UIElementBase, XMLElementSerializable {
 
     static func runtimeType() throws -> String
 
-    func initialization() throws -> String
+    func initialization(describeInto pipe: DescriptionPipe) throws
 
     #if canImport(UIKit)
     func initialize(context: ReactantLiveUIWorker.Context) throws -> UIView

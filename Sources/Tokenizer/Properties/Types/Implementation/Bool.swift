@@ -34,4 +34,6 @@ extension Bool: AttributeSupportedPropertyType {
     public static var xsdType: XSDType {
         return .builtin(.boolean)
     }
+
+    public static let runtimeType = RuntimeType(name: "Bool")
 }

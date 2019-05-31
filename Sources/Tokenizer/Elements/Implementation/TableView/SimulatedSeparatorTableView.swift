@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftCodeGen
 
 #if canImport(UIKit)
 import UIKit
@@ -46,11 +47,11 @@ public class SimulatedSeparatorTableView: View, ComponentDefinitionContainer {
         return "ReactantTableView"
     }
 
-    public override func initialization() -> String {
+    public override func initialization(describeInto pipe: DescriptionPipe) throws {
         guard let cellType = cellType else {
-            return "Initialization should never happen as the view was referenced via field."
+            throw TokenizationError(message: "Initialization should never happen as the view was referenced via field.")
         }
-        return "SimulatedSeparatorTableView<\(cellType)>()"
+        pipe.string("SimulatedSeparatorTableView<\(cellType)>()")
     }
 
     public required init(node: SWXMLHash.XMLElement) throws {

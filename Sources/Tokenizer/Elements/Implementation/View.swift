@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftCodeGen
 
 #if canImport(UIKit)
 import UIKit
@@ -39,9 +40,10 @@ public class View: XMLElementDeserializable, UIElement {
     public var layout: Layout
     public var properties: [Property]
     public var toolingProperties: [String: Property]
+    public var handledActions: [HyperViewAction]
 
-    public func initialization() throws -> String {
-        return "\(try type(of: self).runtimeType())()"
+    public func initialization(describeInto pipe: DescriptionPipe) throws {
+        pipe.string("\(try type(of: self).runtimeType())()")
     }
 
     #if canImport(UIKit)
@@ -61,6 +63,10 @@ public class View: XMLElementDeserializable, UIElement {
 
         properties = try PropertyHelper.deserializeSupportedProperties(properties: type(of: self).availableProperties, in: node)
         toolingProperties = try PropertyHelper.deserializeToolingProperties(properties: type(of: self).availableToolingProperties, in: node)
+
+        handledActions = try node.allAttributes.compactMap { _, value in
+            try HyperViewAction(attribute: value)
+        }
     }
     
     public init() {
@@ -72,6 +78,7 @@ public class View: XMLElementDeserializable, UIElement {
                              contentHuggingPriorityVertical: View.defaultContentHugging.vertical)
         properties = []
         toolingProperties = [:]
+        handledActions = []
     }
 
     public static func deserialize(_ node: XMLElement) throws -> Self {
@@ -258,6 +265,10 @@ public struct PreferredSize: SupportedPropertyType {
 
     public static var xsdType: XSDType {
         return .builtin(.string)
+    }
+
+    public static func runtimeType(for platform: RuntimePlatform) -> RuntimeType {
+        return .unsupported
     }
 }
 

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftCodeGen
 
 #if canImport(UIKit)
 import UIKit
@@ -15,6 +16,7 @@ import UIKit
 public class ComponentReference: View, ComponentDefinitionContainer {
     public var type: String?
     public var definition: ComponentDefinition?
+    public var passthroughActions: String?
 
     public var isAnonymous: Bool {
         return definition?.isAnonymous ?? false
@@ -36,11 +38,41 @@ public class ComponentReference: View, ComponentDefinitionContainer {
         return "UIView"
     }
 
-    public override func initialization() throws -> String {
+    public override func initialization(describeInto pipe: DescriptionPipe) throws {
         guard let type = type else {
             throw TokenizationError(message: "Should never initialize when type is undefined.")
         }
-        return "\(type)()"
+
+//        let handledActionCases = handledActions.flatMap { action -> [String] in
+////            let parameters = action.parameters.map { parameter in
+////                switch
+////            }
+//            return [
+//                "case ." + action.eventName + ":",
+//                "    return .\(action.name)"
+//            ]
+//        }
+
+        pipe.block(line: "\(type)(initialState: \(type).State(), actionPublisher: actionPublisher.map", header: "action") {
+            pipe.block(line: "switch action") {
+                for action in handledActions {
+                    pipe.line("case .\(action.eventName):")
+                    pipe.line("    return .\(action.name)")
+                }
+                pipe.line("default:")
+                pipe.line("    return nil")
+            }
+        }.string(")")
+//
+//        return """
+//         { action in
+//            switch action {
+//        \(handledActionCases.map { "    \($0)"}.joined(separator: "\n"))
+//            default:
+//                return nil
+//            }
+//        })
+//        """
     }
 
     public required init(node: SWXMLHash.XMLElement) throws {
@@ -51,6 +83,8 @@ public class ComponentReference: View, ComponentDefinitionContainer {
         } else {
             definition = nil
         }
+
+        passthroughActions = node.attribute(by: "action")?.text
         
         try super.init(node: node)
     }

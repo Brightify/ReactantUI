@@ -23,8 +23,9 @@ extension EnumPropertyType where Self.RawValue == String {
 }
 
 extension EnumPropertyType {
-    public static var runtimeType: String {
-        return enumName
+    public static func runtimeType(for platform: RuntimePlatform) -> RuntimeType {
+        #warning("TODO: We should let the children decide the module here:")
+        return RuntimeType(name: enumName)
     }
 }
 

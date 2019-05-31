@@ -69,6 +69,15 @@ public enum VisualEffect: AttributeSupportedPropertyType {
 
         return .enumeration(EnumerationXSDType(name: "UIVisualEffect", base: .string, values: values))
     }
+
+    public static func runtimeType(for platform: RuntimePlatform) -> RuntimeType {
+        switch platform {
+        case .iOS:
+            return RuntimeType(name: "UIVisualEffect", module: "UIKit")
+        case .macOS:
+            return .unsupported
+        }
+    }
 }
 
 public enum BlurEffect: String, CaseIterable {

@@ -35,6 +35,8 @@ extension Sequence {
 }
 
 public struct AttributedText: ElementSupportedPropertyType {
+    public static let runtimeType = RuntimeType(name: "NSMutableAttributedString", module: "Foundation")
+
     public let style: StyleName?
     public let localProperties: [Property]
     public let parts: [AttributedText.Part]
