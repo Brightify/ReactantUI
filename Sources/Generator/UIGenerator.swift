@@ -42,8 +42,11 @@ public class UIGenerator: Generator {
         }
 
         tempCounter = 1
-        let viewInitializations = zip(root.children, root.children.generatedNames(tempCounter: &tempCounter)).map { child, name in
-            try! "\(name) = \(child.initialization())"
+        let viewInitializations = zip(root.children, root.children.generatedNames(tempCounter: &tempCounter)).flatMap { child, name -> [String] in
+            let pipe = DescriptionPipe()
+            pipe.string("\(name) = ")
+            try! child.initialization(describeInto: pipe)
+            return pipe.result
         }
 
         for name in root.children.generatedNames(tempCounter: &tempCounter) {
@@ -125,7 +128,9 @@ public class UIGenerator: Generator {
         let actionEnum = Enumeration(
             accessibility: viewAccessibility,
             name: "Action",
-            cases: [])
+            cases: root.handledActions.map {
+                Enumeration.Case(name: $0.name)
+            })
 
         let viewClass = Class(
             accessibility: viewAccessibility,
@@ -136,8 +141,10 @@ public class UIGenerator: Generator {
             properties: viewProperties + viewDeclarations,
             functions: [viewInit, loadView, setupConstraints])
 
-        viewClass.describe(into: DebugDescriptionPipe())
-        exit(0)
+        if root.type == "ATest" {
+            viewClass.describe(into: DebugDescriptionPipe())
+            exit(0)
+        }
 
         return ""
 
@@ -333,8 +340,9 @@ public class UIGenerator: Generator {
             name = "target.\(field)"
         } else if let layoutId = element.layout.id {
             name = "named_\(layoutId)"
-            pipe.line("let \(name) = \(try element.initialization())")
-            pipe.line("self.\(name) = \(name)")
+//            pipe.line("let \(name) = \(try element.initialization())")
+            pipe.string("self.\(name) = ")
+            try element.initialization(describeInto: pipe)
         } else {
             name = "temp_\(type(of: element))_\(tempCounter)"
             tempCounter += 1
