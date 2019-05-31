@@ -26,6 +26,7 @@ struct Lexer {
         case bracketsOpen
         case bracketsClose
         case exclamation
+        case dollar
         case argument(String)
     }
 }
@@ -39,7 +40,7 @@ extension Lexer.Token: Equatable {
             return lhsNumber == rhsNumber && lhsOriginal == rhsOriginal
         case (.parensOpen, .parensOpen), (.parensClose, .parensClose), (.colon, .colon), (.semicolon, .semicolon),
              (.period, .period), (.assignment, .assignment), (.at, .at), (.comma, .comma), (.exclamation, .exclamation),
-             (.bracketsOpen, .bracketsOpen), (.bracketsClose, .bracketsClose):
+             (.bracketsOpen, .bracketsOpen), (.bracketsClose, .bracketsClose), (.dollar, .dollar):
             return true
         case (.equals(let lhsBool), .equals(let rhsBool)):
             return lhsBool == rhsBool
@@ -73,6 +74,7 @@ extension Lexer {
         ("=", { _ in .assignment }),
         (",", { _ in .comma }),
         ("!", { _ in .exclamation }),
+        ("\\$", { _ in .dollar }),
         ("\\{\\{[a-zA-Z_][a-zA-Z_0-9]*\\}\\}", { argument in .argument(argument.argumentWithoutBrackets)})
     ]
 

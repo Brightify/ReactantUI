@@ -16,28 +16,28 @@ import SwiftCodeGen
 public struct HyperViewAction {
     public var name: String
     public var eventName: String
-    public var parameters: [Parameter]
+    public var parameters: [(label: String?, parameter: Parameter)]
 
     public enum Parameter {
+        case inheritedParameters
         case constant(type: String, value: String)
         case stateVariable(name: String)
         case reference(targetId: String, property: String?)
     }
 
-    public init(name: String, eventName: String, parameters: [Parameter]) {
+    public init(name: String, eventName: String, parameters: [(label: String?, parameter: Parameter)]) {
         self.name = name
         self.eventName = eventName
         self.parameters = parameters
     }
 
-    #warning("TODO Properly parse actions")
     public init?(attribute: XMLAttribute) throws {
-        guard attribute.name.starts(with: "action:") else { return nil }
+        let prefix = "action:"
+        guard attribute.name.starts(with: prefix) else { return nil }
 
-        eventName = String(attribute.name.dropFirst("action:".count))
+        eventName = String(attribute.name.dropFirst(prefix.count))
 
-        name = attribute.text
-        parameters = []
+        self = try ActionParser(tokens: Lexer.tokenize(input: attribute.text)).parseAction(eventName: eventName)
     }
 }
 

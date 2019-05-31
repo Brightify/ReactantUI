@@ -72,6 +72,8 @@ class FontParser: BaseParser<Font> {
                     components.append("]")
                 case .exclamation:
                     components.append("!")
+                case .dollar:
+                    components.append("$")
                 case .argument(let original):
                     components.append("\\(\(original))")
                 }

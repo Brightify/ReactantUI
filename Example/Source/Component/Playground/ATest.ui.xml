@@ -28,7 +28,7 @@ enum OtherView.Action {
 } -->
     <Component
         type="ExampleCell"
-        action:tap="cellTapped(@falcon.image, test: T)"
+        action:tap="cellTapped(..., @falcon.image, ref: @very.far.far.away, test: String(dude), empty: String(), Int(0), ...)"
         />
 
     <ImageView

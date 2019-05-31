@@ -9,6 +9,7 @@ import Foundation
 
 enum ParseError: Error {
     case unexpectedToken(Lexer.Token)
+    case expectedToken(Lexer.Token)
     case message(String)
 }
 
@@ -17,6 +18,8 @@ extension ParseError: LocalizedError {
         switch self {
         case .unexpectedToken(let token):
             return "Parser - Unexpected token: \(token)"
+        case .expectedToken(let token):
+            return "Parser - Expected token \(token) not found."
         case .message(let message):
             return "Parser - \(message)"
         }
