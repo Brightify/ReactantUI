@@ -26,7 +26,7 @@ Pod::Spec.new do |spec|
     generator_name = 'reactant-ui'
     spec.preserve_paths = ['Sources/**/*', 'Package.swift', 'Package.resolved']
     spec.prepare_command = <<-CMD
-        curl -Lo #{generator_name} https://github.com/Brightify/ReactantUI/releases/download/#{s.version}/#{generator_name}
+        curl -Lo #{generator_name} https://github.com/Brightify/ReactantUI/releases/download/#{spec.version}/#{generator_name}
         chmod +x #{generator_name}
     CMD
 end
