@@ -36,72 +36,118 @@ public class PropertyContainer {
             self.namespace = namespace
         }
         
-        func assignable<T>(name: String, swiftName: String, key: String) -> AssignablePropertyDescription<T> {
-            let property = AssignablePropertyDescription<T>(namespace: namespace, name: name, swiftName: swiftName, key: key)
-            properties.append(property)
-            return property
-        }
-
-        func value<T>(name: String) -> ValuePropertyDescription<T> {
-            let property = ValuePropertyDescription<T>(namespace: namespace, name: name)
-            properties.append(property)
-            return property
-        }
-        
-        func controlState<T>(name: String, key: String) -> ControlStatePropertyDescription<T> {
-            let property = ControlStatePropertyDescription<T>(namespace: namespace, name: name, key: key)
+        func assignable<T>(name: String, swiftName: String, key: String, defaultValue: T) -> AssignablePropertyDescription<T> {
+            let property = AssignablePropertyDescription<T>(namespace: namespace, name: name, swiftName: swiftName, key: key, defaultValue: defaultValue)
             properties.append(property)
             return property
         }
 
         // TODO Remove with Swift 4.2
-        func controlState<T>(name: String, key: String) -> ElementControlStatePropertyDescription<T> {
-            let property = ElementControlStatePropertyDescription<T>(namespace: namespace, name: name, key: key)
+        func assignable<T>(name: String, defaultValue: T) -> ElementAssignablePropertyDescription<T> {
+            let property = ElementAssignablePropertyDescription<T>(namespace: namespace, name: name, swiftName: name, key: name, defaultValue: defaultValue)
+            properties.append(property)
+            return property
+        }
+
+        func value<T>(name: String, defaultValue: T) -> ValuePropertyDescription<T> {
+            let property = ValuePropertyDescription<T>(namespace: namespace, name: name, defaultValue: defaultValue)
             properties.append(property)
             return property
         }
         
-        public func property<T>(name: String) -> AssignablePropertyDescription<T> {
-            return assignable(name: name, swiftName: name, key: name)
+        func controlState<T>(name: String, key: String, defaultValue: T) -> ControlStatePropertyDescription<T> {
+            let property = ControlStatePropertyDescription<T>(namespace: namespace, name: name, key: key, defaultValue: defaultValue)
+            properties.append(property)
+            return property
         }
 
         // TODO Remove with Swift 4.2
-        public func property<T>(name: String) -> ElementAssignablePropertyDescription<T> {
-            let property = ElementAssignablePropertyDescription<T>(namespace: namespace, name: name, swiftName: name, key: name)
+        func controlState<T>(name: String, key: String, defaultValue: T) -> ElementControlStatePropertyDescription<T> {
+            let property = ElementControlStatePropertyDescription<T>(namespace: namespace, name: name, key: key, defaultValue: defaultValue)
             properties.append(property)
             return property
         }
         
-        public func property<T>(name: String, swiftName: String) -> AssignablePropertyDescription<T> {
-            return assignable(name: name, swiftName: swiftName, key: name)
-        }
-        
-        public func property<T>(name: String, key: String) -> AssignablePropertyDescription<T> {
-            return assignable(name: name, swiftName: name, key: key)
-        }
-        
-        public func property<T>(name: String, swiftName: String, key: String) -> AssignablePropertyDescription<T> {
-            return assignable(name: name, swiftName: swiftName, key: key)
-        }
-        
-        public func property<T>(name: String) -> ControlStatePropertyDescription<T> {
-            return controlState(name: name, key: name)
+        public func property<T: HasDefaultValue>(name: String) -> AssignablePropertyDescription<T> {
+            return assignable(name: name, swiftName: name, key: name, defaultValue: T.defaultValue)
         }
 
-        public func property<T>(name: String) -> ElementControlStatePropertyDescription<T> {
-            return controlState(name: name, key: name)
+        public func property<T>(name: String, defaultValue: T) -> AssignablePropertyDescription<T> {
+            return assignable(name: name, swiftName: name, key: name, defaultValue: defaultValue)
+        }
+
+        public func property<T: HasDefaultValue>(name: String, swiftName: String) -> AssignablePropertyDescription<T> {
+            return assignable(name: name, swiftName: swiftName, key: name, defaultValue: T.defaultValue)
+        }
+
+        public func property<T>(name: String, swiftName: String, defaultValue: T) -> AssignablePropertyDescription<T> {
+            return assignable(name: name, swiftName: swiftName, key: name, defaultValue: defaultValue)
         }
         
-        public func property<T>(name: String, key: String) -> ControlStatePropertyDescription<T> {
-            return controlState(name: name, key: key)
+        public func property<T: HasDefaultValue>(name: String, key: String) -> AssignablePropertyDescription<T> {
+            return assignable(name: name, swiftName: name, key: key, defaultValue: T.defaultValue)
         }
 
-        public func property<T>(name: String) -> ValuePropertyDescription<T> {
-            return value(name: name)
+        public func property<T>(name: String, key: String, defaultValue: T) -> AssignablePropertyDescription<T> {
+            return assignable(name: name, swiftName: name, key: key, defaultValue: defaultValue)
+        }
+        
+        public func property<T: HasDefaultValue>(name: String, swiftName: String, key: String) -> AssignablePropertyDescription<T> {
+            return assignable(name: name, swiftName: swiftName, key: key, defaultValue: T.defaultValue)
         }
 
-        public func property<T>(name: String) -> MultipleAttributeAssignablePropertyDescription<T> {
-            let property = MultipleAttributeAssignablePropertyDescription<T>(namespace: namespace, name: name, swiftName: name, key: name)
+        public func property<T>(name: String, swiftName: String, key: String, defaultValue: T) -> AssignablePropertyDescription<T> {
+            return assignable(name: name, swiftName: swiftName, key: key, defaultValue: defaultValue)
+        }
+
+        public func property<T: HasDefaultValue>(name: String) -> ElementAssignablePropertyDescription<T> {
+            return assignable(name: name, defaultValue: T.defaultValue)
+        }
+
+        public func property<T>(name: String, defaultValue: T) -> ElementAssignablePropertyDescription<T> {
+            return assignable(name: name, defaultValue: defaultValue)
+        }
+        
+        public func property<T: HasDefaultValue>(name: String) -> ControlStatePropertyDescription<T> {
+            return controlState(name: name, key: name, defaultValue: T.defaultValue)
+        }
+
+        public func property<T>(name: String, defaultValue: T) -> ControlStatePropertyDescription<T> {
+            return controlState(name: name, key: name, defaultValue: defaultValue)
+        }
+
+        public func property<T: HasDefaultValue>(name: String) -> ElementControlStatePropertyDescription<T> {
+            return controlState(name: name, key: name, defaultValue: T.defaultValue)
+        }
+
+        public func property<T>(name: String, defaultValue: T) -> ElementControlStatePropertyDescription<T> {
+            return controlState(name: name, key: name, defaultValue: defaultValue)
+        }
+        
+        public func property<T: HasDefaultValue>(name: String, key: String) -> ControlStatePropertyDescription<T> {
+            return controlState(name: name, key: key, defaultValue: T.defaultValue)
+        }
+
+        public func property<T>(name: String, key: String, defaultValue: T) -> ControlStatePropertyDescription<T> {
+            return controlState(name: name, key: key, defaultValue: defaultValue)
+        }
+
+        public func property<T: HasDefaultValue>(name: String) -> ValuePropertyDescription<T> {
+            return value(name: name, defaultValue: T.defaultValue)
+        }
+
+        public func property<T>(name: String, defaultValue: T) -> ValuePropertyDescription<T> {
+            return value(name: name, defaultValue: defaultValue)
+        }
+
+        public func property<T: HasDefaultValue>(name: String) -> MultipleAttributeAssignablePropertyDescription<T> {
+            let property = MultipleAttributeAssignablePropertyDescription<T>(namespace: namespace, name: name, swiftName: name, key: name, defaultValue: T.defaultValue)
+            properties.append(property)
+            return property
+        }
+
+        public func property<T>(name: String, defaultValue: T) -> MultipleAttributeAssignablePropertyDescription<T> {
+            let property = MultipleAttributeAssignablePropertyDescription<T>(namespace: namespace, name: name, swiftName: name, key: name, defaultValue: defaultValue)
             properties.append(property)
             return property
         }

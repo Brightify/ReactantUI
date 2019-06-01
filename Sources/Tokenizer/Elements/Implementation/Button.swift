@@ -17,10 +17,6 @@ public class Button: View {
         return Properties.button.allProperties
     }
     
-    public class override func runtimeType() -> String {
-        return "UIButton"
-    }
-
     #if canImport(UIKit)
     public override func initialize(context: ReactantLiveUIWorker.Context) -> UIView {
         return UIButton()
@@ -29,12 +25,12 @@ public class Button: View {
 }
 
 public class ButtonProperties: ControlProperties {
-    public let title: ControlStatePropertyDescription<TransformedText>
-    public let titleColor: ControlStatePropertyDescription<UIColorPropertyType>
-    public let backgroundColorForState: ControlStatePropertyDescription<UIColorPropertyType>
-    public let titleShadowColor: ControlStatePropertyDescription<UIColorPropertyType>
-    public let image: ControlStatePropertyDescription<Image>
-    public let backgroundImage: ControlStatePropertyDescription<Image>
+    public let title: ControlStatePropertyDescription<TransformedText?>
+    public let titleColor: ControlStatePropertyDescription<UIColorPropertyType?>
+    public let backgroundColorForState: ControlStatePropertyDescription<UIColorPropertyType?>
+    public let titleShadowColor: ControlStatePropertyDescription<UIColorPropertyType?>
+    public let image: ControlStatePropertyDescription<Image?>
+    public let backgroundImage: ControlStatePropertyDescription<Image?>
     public let reversesTitleShadowWhenHighlighted: AssignablePropertyDescription<Bool>
     public let adjustsImageWhenHighlighted: AssignablePropertyDescription<Bool>
     public let adjustsImageWhenDisabled: AssignablePropertyDescription<Bool>
@@ -42,7 +38,7 @@ public class ButtonProperties: ControlProperties {
     public let contentEdgeInsets: AssignablePropertyDescription<EdgeInsets>
     public let titleEdgeInsets: AssignablePropertyDescription<EdgeInsets>
     public let imageEdgeInsets: AssignablePropertyDescription<EdgeInsets>
-    public let attributedTitle: ElementControlStatePropertyDescription<AttributedText>
+    public let attributedTitle: ElementControlStatePropertyDescription<AttributedText?>
     
     public let titleLabel: LabelProperties
     public let imageView: ImageViewProperties
@@ -78,11 +74,11 @@ public class ControlProperties: ViewProperties {
     public let contentHorizontalAlignment: AssignablePropertyDescription<ControlContentHorizontalAlignment>
     
     public required init(configuration: PropertyContainer.Configuration) {
-        isEnabled = configuration.property(name: "isEnabled", key: "enabled")
+        isEnabled = configuration.property(name: "isEnabled", key: "enabled", defaultValue: true)
         isSelected = configuration.property(name: "isSelected", key: "selected")
         isHighlighted = configuration.property(name: "isHighlighted", key: "highlighted")
-        contentVerticalAlignment = configuration.property(name: "contentVerticalAlignment")
-        contentHorizontalAlignment = configuration.property(name: "contentHorizontalAlignment")
+        contentVerticalAlignment = configuration.property(name: "contentVerticalAlignment", defaultValue: .top)
+        contentHorizontalAlignment = configuration.property(name: "contentHorizontalAlignment", defaultValue: .center)
         
         super.init(configuration: configuration)
     }

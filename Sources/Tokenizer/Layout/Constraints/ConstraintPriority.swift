@@ -13,9 +13,9 @@ public enum ConstraintPriority {
     case high
     case medium
     case low
-    case custom(Float)
+    case custom(Double)
 
-    public var numeric: Float {
+    public var numeric: Double {
         switch self {
         case .required:
             return 1000.0
@@ -30,7 +30,7 @@ public enum ConstraintPriority {
         }
     }
 
-    public init(numericValue: Float) {
+    public init(numericValue: Double) {
         switch numericValue {
         case ConstraintPriority.required.numeric:
             self = .required
@@ -56,10 +56,10 @@ public enum ConstraintPriority {
         case "low":
             self.init(numericValue: ConstraintPriority.low.numeric)
         default:
-            guard let floatValue = Float(value) else {
+            guard let doubleValue = Double(value) else {
                 throw TokenizationError(message: "Unknown constraint priority \(value)")
             }
-            self.init(numericValue: floatValue)
+            self.init(numericValue: doubleValue)
         }
     }
 }

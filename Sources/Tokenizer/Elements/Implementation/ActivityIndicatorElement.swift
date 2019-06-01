@@ -25,6 +25,10 @@ public class ActivityIndicatorElement: View {
         return "UIActivityIndicatorView"
     }
 
+    public override func runtimeType(for platform: RuntimePlatform) throws -> RuntimeType {
+        return RuntimeType(name: "UIActivityIndicatorView", module: "UIKit")
+    }
+
     #if canImport(UIKit)
     public override func initialize(context: ReactantLiveUIWorker.Context) -> UIView {
         return UIActivityIndicatorView()
@@ -33,14 +37,14 @@ public class ActivityIndicatorElement: View {
 }
 
 public class ActivityIndicatorProperties: ViewProperties {
-    public let color: AssignablePropertyDescription<UIColorPropertyType>
+    public let color: AssignablePropertyDescription<UIColorPropertyType?>
     public let hidesWhenStopped: AssignablePropertyDescription<Bool>
     public let indicatorStyle: AssignablePropertyDescription<ActivityIndicatorStyle>
     
     public required init(configuration: PropertyContainer.Configuration) {
         color = configuration.property(name: "color")
-        hidesWhenStopped = configuration.property(name: "hidesWhenStopped")
-        indicatorStyle = configuration.property(name: "indicatorStyle", swiftName: "style", key: "style")
+        hidesWhenStopped = configuration.property(name: "hidesWhenStopped", defaultValue: true)
+        indicatorStyle = configuration.property(name: "indicatorStyle", swiftName: "style", key: "style", defaultValue: .white)
         
         super.init(configuration: configuration)
     }

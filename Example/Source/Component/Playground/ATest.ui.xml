@@ -7,7 +7,12 @@
     type="ATest"
     extend="all"
     anonymous="true"
-    rootView="true">
+    rootView="true"
+    backgroundColor="black">
+
+    <!-- <state
+        image="falcon"
+        /> -->
 
 <!-- enum ATest.Action {
     case otherAction(OtherView.Action)
@@ -27,20 +32,45 @@ enum OtherView.Action {
     case doSomething(h: String, f: Int)
 } -->
     <Component
+        id="example"
+        export="true"
         type="ExampleCell"
-        action:tap="cellTapped(..., @falcon.image, ref: @very.far.far.away, test: String(dude), empty: String(), Int(0), ...)"
+        action:tap="cellTapped(..., im: $image, @falcon.image, ref: @very.far.far.away, test: String(dude), empty: String(), $message, Int(0), ...)"
         />
 
     <ImageView
-        action:tap="hello"
+        id="falcon"
+        action:tap="batman"
         layout:edges="super"
-        image="falcon"
+        backgroundColor="$imageColor"
+        image="$image"
         visibility="visible"
         clipsToBounds="true"
         layout:compressionPriority="high"
         layout:huggingPriority="low"
         contentMode="scaleAspectFill" />
 
+    <Label
+        text="$message"
+        />
+
+    <ImageView
+        image="$image"
+        />
+
+    <ImageView
+        image="$image"
+        />
+
+<Container>
+        <ImageView
+            image="$image"
+            />
+
+            <ImageView
+                image="$image"
+                />
+</Container>
     <PlainTableView
         cell="ExampleCell3"
         layout:edges="super"

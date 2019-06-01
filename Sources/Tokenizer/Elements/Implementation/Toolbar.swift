@@ -17,12 +17,13 @@ public class Toolbar: View {
         return Properties.toolbar.allProperties
     }
 
-    public class override func runtimeType() -> String {
-        #if os(tvOS)
+    public override func runtimeType(for platform: RuntimePlatform) throws -> RuntimeType {
+        switch platform {
+        case .iOS:
+            return RuntimeType(name: "UIToolbar", module: "UIKit")
+        case .tvOS:
             fatalError("View not available in tvOS")
-        #else
-        return "UIToolbar"
-        #endif
+        }
     }
 
     #if canImport(UIKit)
@@ -39,11 +40,11 @@ public class Toolbar: View {
 public class ToolbarProperties: ViewProperties {
     public let isTranslucent: AssignablePropertyDescription<Bool>
     public let barStyle: AssignablePropertyDescription<BarStyle>
-    public let barTintColor: AssignablePropertyDescription<UIColorPropertyType>
+    public let barTintColor: AssignablePropertyDescription<UIColorPropertyType?>
     
     public required init(configuration: Configuration) {
-        isTranslucent = configuration.property(name: "isTranslucent", key: "translucent")
-        barStyle = configuration.property(name: "barStyle")
+        isTranslucent = configuration.property(name: "isTranslucent", key: "translucent", defaultValue: true)
+        barStyle = configuration.property(name: "barStyle", defaultValue: .default)
         barTintColor = configuration.property(name: "barTintColor")
         
         super.init(configuration: configuration)

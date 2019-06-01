@@ -18,10 +18,6 @@ public class SegmentedControl: View {
         return Properties.segmentedControl.allProperties
     }
 
-    public class override func runtimeType() -> String {
-        return "UISegmentedControl"
-    }
-
     #if canImport(UIKit)
     public override func initialize(context: ReactantLiveUIWorker.Context) -> UIView {
         return UISegmentedControl()

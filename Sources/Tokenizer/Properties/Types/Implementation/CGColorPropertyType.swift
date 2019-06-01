@@ -11,6 +11,8 @@ import Foundation
 #endif
 
 public struct CGColorPropertyType: AttributeSupportedPropertyType {
+    public static let black = CGColorPropertyType(color: .color(.black))
+
     public let color: UIColorPropertyType
 
     public var requiresTheme: Bool {

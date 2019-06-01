@@ -23,7 +23,6 @@ public struct Layout: XMLElementDeserializable {
                                      "layout:huggingPriority.horizontal",
                                      "layout:huggingPriority"]
 
-    public var id: String?
     public var contentCompressionPriorityHorizontal: ConstraintPriority?
     public var contentCompressionPriorityVertical: ConstraintPriority?
     public var contentHuggingPriorityHorizontal: ConstraintPriority?
@@ -31,13 +30,12 @@ public struct Layout: XMLElementDeserializable {
     public var constraints: [Constraint]
     public var hasConditions: Bool
     
-    init(id: String? = nil,
-         contentCompressionPriorityHorizontal: ConstraintPriority?,
+    init(contentCompressionPriorityHorizontal: ConstraintPriority?,
          contentCompressionPriorityVertical: ConstraintPriority?,
          contentHuggingPriorityHorizontal: ConstraintPriority?,
          contentHuggingPriorityVertical: ConstraintPriority?,
          constraints: [Constraint] = []) {
-        self.id = id
+
         self.constraints = constraints
         self.contentCompressionPriorityHorizontal = contentCompressionPriorityHorizontal
         self.contentCompressionPriorityVertical = contentCompressionPriorityVertical
@@ -90,7 +88,6 @@ public struct Layout: XMLElementDeserializable {
         }
 
         return try Layout(
-            id: node.value(ofAttribute: "layout:id"),
             contentCompressionPriorityHorizontal: contentCompressionPriorityHorizontal,
             contentCompressionPriorityVertical: contentCompressionPriorityVertical,
             contentHuggingPriorityHorizontal: contentHuggingPriorityHorizontal,

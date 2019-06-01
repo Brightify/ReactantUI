@@ -222,7 +222,7 @@ class GenerateCommand: Command {
                                                        swiftVersion: swiftVersion,
                                                        defaultModifier: accessModifier)
             for definition in rootDefinition.componentDefinitions {
-                let componentContext = ComponentContext(globalContext: globalContext, component: definition)
+                let componentContext = ComponentContext(globalContext: globalContext, component: definition, allDefinitions: componentDefinitions)
                 output.append(try UIGenerator(componentContext: componentContext, configuration: configuration).generate(imports: false))
             }
         }
@@ -296,7 +296,7 @@ class GenerateCommand: Command {
                 guard let themedItem = container[theme: theme, item: item] else {
                     throw GenerateCommandError.themedItemNotFound(theme: theme, item: item)
                 }
-                let typeContext = SupportedPropertyTypeContext(parentContext: context, value: themedItem)
+                let typeContext = SupportedPropertyTypeContext(parentContext: context, value: .value(themedItem))
                 return "case .\(theme): return \(themedItem.generate(context: typeContext))"
             }.joined(separator: "\n")
         }

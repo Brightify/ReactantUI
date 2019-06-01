@@ -30,6 +30,15 @@ public class MapView: View {
         return "MKMapView"
     }
 
+    public override func runtimeType(for platform: RuntimePlatform) throws -> RuntimeType {
+        switch platform {
+        case .iOS:
+            return RuntimeType(name: "MKMapView", module: "MapKit")
+        case .tvOS:
+            fatalError("Not implemented, check if tvOS has this view.")
+        }
+    }
+
     #if canImport(UIKit)
     public override func initialize(context: ReactantLiveUIWorker.Context) -> UIView {
         return MKMapView()
@@ -53,20 +62,20 @@ public class MapViewProperties: ViewProperties {
     public let isUserLocationVisible: AssignablePropertyDescription<Bool>
     
     public required init(configuration: Configuration) {
-        mapType = configuration.property(name: "mapType")
-        isZoomEnabled = configuration.property(name: "isZoomEnabled", key: "zoomEnabled")
-        isScrollEnabled = configuration.property(name: "isScrollEnabled", key: "scrollEnabled")
-        isPitchEnabled = configuration.property(name: "isPitchEnabled", key: "pitchEnabled")
-        isRotateEnabled = configuration.property(name: "isRotateEnabled", key: "rotateEnabled")
-        showsPointsOfInterest = configuration.property(name: "showsPointsOfInterest")
-        showsBuildings = configuration.property(name: "showsBuildings")
-        showsCompass = configuration.property(name: "showsCompass")
+        mapType = configuration.property(name: "mapType", defaultValue: .standard)
+        isZoomEnabled = configuration.property(name: "isZoomEnabled", key: "zoomEnabled", defaultValue: true)
+        isScrollEnabled = configuration.property(name: "isScrollEnabled", key: "scrollEnabled", defaultValue: true)
+        isPitchEnabled = configuration.property(name: "isPitchEnabled", key: "pitchEnabled", defaultValue: true)
+        isRotateEnabled = configuration.property(name: "isRotateEnabled", key: "rotateEnabled", defaultValue: true)
+        showsPointsOfInterest = configuration.property(name: "showsPointsOfInterest", defaultValue: true)
+        showsBuildings = configuration.property(name: "showsBuildings", defaultValue: true)
+        showsCompass = configuration.property(name: "showsCompass", defaultValue: true)
         showsZoomControls = configuration.property(name: "showsZoomControls")
         showsScale = configuration.property(name: "showsScale")
         showsTraffic = configuration.property(name: "showsTraffic")
         showsUserLocation = configuration.property(name: "showsUserLocation")
         isUserLocationVisible = configuration.property(name: "isUserLocationVisible", key: "userLocationVisible")
-        
+
         super.init(configuration: configuration)
     }
 }

@@ -17,12 +17,13 @@ public class DatePicker: View {
         return Properties.datePicker.allProperties
     }
 
-    public class override func runtimeType() throws -> String {
-        #if os(tvOS)
+    public override func runtimeType(for platform: RuntimePlatform) throws -> RuntimeType {
+        switch platform {
+        case .iOS:
+            return RuntimeType(name: "UIDatePicker", module: "UIKit")
+        case .tvOS:
             throw TokenizationError.unsupportedElementError(element: DatePicker.self)
-        #else
-        return "UIDatePicker"
-        #endif
+        }
     }
 
     #if canImport(UIKit)
@@ -41,8 +42,8 @@ public class DatePickerProperties: ControlProperties {
     public let mode: AssignablePropertyDescription<DatePickerMode>
     
     public required init(configuration: PropertyContainer.Configuration) {
-        minuteInterval = configuration.property(name: "minuteInterval")
-        mode = configuration.property(name: "mode", swiftName: "datePickerMode", key: "datePickerMode")
+        minuteInterval = configuration.property(name: "minuteInterval", defaultValue: 1)
+        mode = configuration.property(name: "mode", swiftName: "datePickerMode", key: "datePickerMode", defaultValue: .dateAndTime)
         super.init(configuration: configuration)
     }
 }

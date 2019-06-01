@@ -14,10 +14,6 @@ public class ImageView: View {
         return Properties.imageView.allProperties
     }
 
-    public class override func runtimeType() -> String {
-        return "UIImageView"
-    }
-
     #if canImport(UIKit)
     public override func initialize(context: ReactantLiveUIWorker.Context) -> UIView {
         return UIImageView()
@@ -26,8 +22,8 @@ public class ImageView: View {
 }
 
 public class ImageViewProperties: ViewProperties {
-    public let image: AssignablePropertyDescription<Image>
-    public let highlightedImage: AssignablePropertyDescription<Image>
+    public let image: AssignablePropertyDescription<Image?>
+    public let highlightedImage: AssignablePropertyDescription<Image?>
     public let animationDuration: AssignablePropertyDescription<Double>
     public let animationRepeatCount: AssignablePropertyDescription<Int>
     public let isHighlighted: AssignablePropertyDescription<Bool>

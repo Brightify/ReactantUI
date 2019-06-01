@@ -46,15 +46,19 @@ public class SimulatedSeparatorTableView: View, ComponentDefinitionContainer {
     public class override func runtimeType() -> String {
         return "ReactantTableView"
     }
-
-    public override func initialization(describeInto pipe: DescriptionPipe) throws {
+    
+    public override func runtimeType(for platform: RuntimePlatform) throws -> RuntimeType {
         guard let cellType = cellType else {
             throw TokenizationError(message: "Initialization should never happen as the view was referenced via field.")
         }
-        pipe.string("SimulatedSeparatorTableView<\(cellType)>()")
+        return RuntimeType(name: "SimulatedSeparatorTableView<\(cellType)>", module: "Hyperdrive")
+    }
+    
+    public override func initialization(for platform: RuntimePlatform, describeInto pipe: DescriptionPipe) throws {
+        pipe.string("\(try runtimeType(for: platform))()")
     }
 
-    public required init(node: SWXMLHash.XMLElement) throws {
+    public required init(node: SWXMLHash.XMLElement, idProvider: ElementIdProvider) throws {
         if let field = node.value(ofAttribute: "field") as String?, !field.isEmpty {
             cellType = nil
             cellDefinition = nil
@@ -71,7 +75,7 @@ public class SimulatedSeparatorTableView: View, ComponentDefinitionContainer {
             }
         }
 
-        try super.init(node: node)
+        try super.init(node: node, idProvider: idProvider)
     }
 
     public override func serialize(context: DataContext) -> XMLSerializableElement {
@@ -103,14 +107,14 @@ public class SimulatedSeparatorTableView: View, ComponentDefinitionContainer {
 }
 
 public class SimulatedSeparatorTableViewProperties: PropertyContainer {
-    public let separatorHeight: AssignablePropertyDescription<Float>
-    public let separatorColor: AssignablePropertyDescription<UIColorPropertyType>
+    public let separatorHeight: AssignablePropertyDescription<Double>
+    public let separatorColor: AssignablePropertyDescription<UIColorPropertyType?>
     public let tableViewProperties: TableViewProperties
     public let emptyLabelProperties: LabelProperties
     public let loadingIndicatorProperties: ActivityIndicatorProperties
 
     public required init(configuration: Configuration) {
-        separatorHeight = configuration.property(name: "separatorHeight")
+        separatorHeight = configuration.property(name: "separatorHeight", defaultValue: -1)
         separatorColor = configuration.property(name: "separatorColor")
         tableViewProperties = configuration.namespaced(in: "tableView", TableViewProperties.self)
         emptyLabelProperties = configuration.namespaced(in: "emptyLabel", LabelProperties.self)

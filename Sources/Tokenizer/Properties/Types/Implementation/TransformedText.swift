@@ -97,4 +97,8 @@ extension TransformedText: AttributeSupportedPropertyType {
     public static var xsdType: XSDType {
         return .builtin(.string)
     }
+
+    public static func runtimeType(for platform: RuntimePlatform) -> RuntimeType {
+        return RuntimeType(name: "String")
+    }
 }

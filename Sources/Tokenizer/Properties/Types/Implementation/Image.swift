@@ -60,8 +60,9 @@ public enum Image: AttributeSupportedPropertyType {
         }
     }
 
-    public static let runtimeType = RuntimeType(name: "UIImage", module: "UIKit")
-    
+    public static func runtimeType(for platform: RuntimePlatform) -> RuntimeType {
+        return RuntimeType(name: "UIImage", module: "UIKit")
+    }
 
     public static var xsdType: XSDType {
         return .builtin(.string)

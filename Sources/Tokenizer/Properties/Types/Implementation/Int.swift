@@ -34,4 +34,12 @@ extension Int: AttributeSupportedPropertyType {
     public static var xsdType: XSDType {
         return .builtin(.integer)
     }
+
+    public static func runtimeType(for platform: RuntimePlatform) -> RuntimeType {
+        return RuntimeType(name: "Int")
+    }
+}
+
+extension Int: HasDefaultValue {
+    public static let defaultValue: Int = 0
 }

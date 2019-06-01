@@ -19,7 +19,7 @@ public struct MultipleAttributeAssignableProperty<T: MultipleAttributeSupportedP
     public var namespace: [PropertyContainer.Namespace]
     public var name: String
     public var description: MultipleAttributeAssignablePropertyDescription<T>
-    public var value: T
+    public var value: PropertyValue<T>
 
     public var attributeName: String {
         return namespace.resolvedAttributeName(name: name)

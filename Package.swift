@@ -35,7 +35,7 @@ let package = Package(
             dependencies: []),
         .target(
             name: "Tokenizer",
-            dependencies: ["Common"]),
+            dependencies: ["Common", "SwiftCodeGen"]),
         .target(
             name: "Generator",
             dependencies: ["Tokenizer", "xcodeproj", "SwiftCLI", "AEXML", "SwiftCodeGen"]),

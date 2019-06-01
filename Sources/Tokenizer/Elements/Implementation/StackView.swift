@@ -31,10 +31,6 @@ public class StackView: Container {
     }
     #endif
 
-    public class override func runtimeType() -> String {
-        return "UIStackView"
-    }
-
     #if canImport(UIKit)
     public override func initialize(context: ReactantLiveUIWorker.Context) -> UIView {
         return UIStackView()
@@ -44,17 +40,17 @@ public class StackView: Container {
 
 public class StackViewProperties: ViewProperties {
     public let axis: AssignablePropertyDescription<LayoutAxis>
-    public let spacing: AssignablePropertyDescription<Float>
+    public let spacing: AssignablePropertyDescription<Double>
     public let distribution: AssignablePropertyDescription<LayoutDistribution>
     public let alignment: AssignablePropertyDescription<LayoutAlignment>
     public let isBaselineRelativeArrangement: AssignablePropertyDescription<Bool>
     public let isLayoutMarginsRelativeArrangement: AssignablePropertyDescription<Bool>
     
     public required init(configuration: Configuration) {
-        axis = configuration.property(name: "axis")
+        axis = configuration.property(name: "axis", defaultValue: .horizontal)
         spacing = configuration.property(name: "spacing")
-        distribution = configuration.property(name: "distribution")
-        alignment = configuration.property(name: "alignment")
+        distribution = configuration.property(name: "distribution", defaultValue: .fill)
+        alignment = configuration.property(name: "alignment", defaultValue: .fill)
         isBaselineRelativeArrangement = configuration.property(name: "isBaselineRelativeArrangement", key: "baselineRelativeArrangement")
         isLayoutMarginsRelativeArrangement = configuration.property(name: "isLayoutMarginsRelativeArrangement", key: "layoutMarginsRelativeArrangement")
         

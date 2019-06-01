@@ -9,23 +9,21 @@
 import Foundation
 
 public struct EdgeInsets: AttributeSupportedPropertyType {
-    public let top: Float
-    public let left: Float
-    public let bottom: Float
-    public let right: Float
+    public static let zero = EdgeInsets()
 
-    public init(top: Float = 0, left: Float = 0, bottom: Float = 0, right: Float = 0) {
+    public let top: Double
+    public let left: Double
+    public let bottom: Double
+    public let right: Double
+
+    public init(top: Double = 0, left: Double = 0, bottom: Double = 0, right: Double = 0) {
         self.top = top
         self.left = left
         self.bottom = bottom
         self.right = right
     }
 
-    public init(top: Double = 0, left: Double = 0, bottom: Double = 0, right: Double = 0) {
-        self.init(top: Float(top), left: Float(left), bottom: Float(bottom), right: Float(right))
-    }
-
-    public init(horizontal: Float, vertical: Float) {
+    public init(horizontal: Double, vertical: Double) {
         self.init(top: vertical, left: horizontal, bottom: vertical, right: horizontal)
     }
 
@@ -44,12 +42,12 @@ public struct EdgeInsets: AttributeSupportedPropertyType {
         let dimensions = try DimensionParser(tokens: tokens).parse()
 
         struct OptionalDimensions {
-            var top: Float?
-            var left: Float?
-            var bottom: Float?
-            var right: Float?
+            var top: Double?
+            var left: Double?
+            var bottom: Double?
+            var right: Double?
 
-            init(top: Float? = nil, left: Float? = nil, bottom: Float? = nil, right: Float? = nil) {
+            init(top: Double? = nil, left: Double? = nil, bottom: Double? = nil, right: Double? = nil) {
                 self.top = top
                 self.left = left
                 self.bottom = bottom
@@ -64,7 +62,7 @@ public struct EdgeInsets: AttributeSupportedPropertyType {
                     right: right ?? 0)
             }
 
-            mutating func setDimensions(top: Float? = nil, left: Float? = nil, bottom: Float? = nil, right: Float? = nil) throws {
+            mutating func setDimensions(top: Double? = nil, left: Double? = nil, bottom: Double? = nil, right: Double? = nil) throws {
                 if let top = top {
                     if self.top != nil {
                         throw TokenizationError(message: "Duplicate \"top\" dimension in Edge Insets.")
@@ -175,3 +173,7 @@ extension EdgeInsets {
     }
 }
 #endif
+
+extension EdgeInsets: HasDefaultValue {
+    public static let defaultValue: EdgeInsets = EdgeInsets.zero
+}

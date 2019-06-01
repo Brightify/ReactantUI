@@ -289,28 +289,28 @@ extension AttributedText {
 }
 
 public class AttributedTextProperties: PropertyContainer {
-    public let font: AssignablePropertyDescription<Font>
-    public let foregroundColor: AssignablePropertyDescription<UIColorPropertyType>
-    public let backgroundColor: AssignablePropertyDescription<UIColorPropertyType>
-    public let ligature: AssignablePropertyDescription<Int>
-    public let kern: AssignablePropertyDescription<Float>
-    public let underlineStyle: AssignablePropertyDescription<UnderlineStyle>
-    public let strikethroughStyle: AssignablePropertyDescription<UnderlineStyle>
-    public let strokeColor: AssignablePropertyDescription<UIColorPropertyType>
-    public let strokeWidth: AssignablePropertyDescription<Float>
-    public let shadow: MultipleAttributeAssignablePropertyDescription<Shadow>
+    public let font: AssignablePropertyDescription<Font?>
+    public let foregroundColor: AssignablePropertyDescription<UIColorPropertyType?>
+    public let backgroundColor: AssignablePropertyDescription<UIColorPropertyType?>
+    public let ligature: AssignablePropertyDescription<Int?>
+    public let kern: AssignablePropertyDescription<Double?>
+    public let underlineStyle: AssignablePropertyDescription<UnderlineStyle?>
+    public let strikethroughStyle: AssignablePropertyDescription<UnderlineStyle?>
+    public let strokeColor: AssignablePropertyDescription<UIColorPropertyType?>
+    public let strokeWidth: AssignablePropertyDescription<Double?>
+    public let shadow: MultipleAttributeAssignablePropertyDescription<Shadow?>
 //    public let textEffect: AssignablePropertyDescription<String>
-    public let attachmentImage: AssignablePropertyDescription<Image>
-    public let link: AssignablePropertyDescription<URL>
-    public let baselineOffset: AssignablePropertyDescription<Float>
-    public let underlineColor: AssignablePropertyDescription<UIColorPropertyType>
-    public let strikethroughColor: AssignablePropertyDescription<UIColorPropertyType>
-    public let obliqueness: AssignablePropertyDescription<Float>
-    public let expansion: AssignablePropertyDescription<Float>
-    public let writingDirection: AssignablePropertyDescription<WritingDirection>
-    public let verticalGlyphForm: AssignablePropertyDescription<Int>
+    public let attachmentImage: AssignablePropertyDescription<Image?>
+    public let link: AssignablePropertyDescription<URL?>
+    public let baselineOffset: AssignablePropertyDescription<Double?>
+    public let underlineColor: AssignablePropertyDescription<UIColorPropertyType?>
+    public let strikethroughColor: AssignablePropertyDescription<UIColorPropertyType?>
+    public let obliqueness: AssignablePropertyDescription<Double?>
+    public let expansion: AssignablePropertyDescription<Double?>
+    public let writingDirection: AssignablePropertyDescription<WritingDirection?>
+    public let verticalGlyphForm: AssignablePropertyDescription<Int?>
 
-    public let paragraphStyle: MultipleAttributeAssignablePropertyDescription<ParagraphStyle>
+    public let paragraphStyle: MultipleAttributeAssignablePropertyDescription<ParagraphStyle?>
 
     public required init(configuration: Configuration) {
         font = configuration.property(name: "font")

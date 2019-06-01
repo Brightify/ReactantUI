@@ -9,23 +9,18 @@
 import Foundation
 
 public struct Size: AttributeSupportedPropertyType {
-    public static let zero = Size(width: 0 as Double, height: 0 as Double)
+    public static let zero = Size(width: 0, height: 0)
 
-    public let width: Float
-    public let height: Float
-    
-    public init(width: Float, height: Float) {
+    public let width: Double
+    public let height: Double
+
+    public init(width: Double, height: Double) {
         self.width = width
         self.height = height
     }
-    
-    public init(width: Double, height: Double) {
-        self.width = Float(width)
-        self.height = Float(height)
-    }
 
     public func generate(context: SupportedPropertyTypeContext) -> String {
-        return "CGSize(width: \(width.cgFloat), height: \(height.cgFloat))"
+        return "CGSize(width: \(CGFloat(width)), height: \(CGFloat(height))"
     }
     
     #if SanAndreas

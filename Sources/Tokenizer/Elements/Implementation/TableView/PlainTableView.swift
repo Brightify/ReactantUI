@@ -56,15 +56,22 @@ public class PlainTableView: View, ComponentDefinitionContainer {
     public class override func runtimeType() -> String {
         return "UITableView"
     }
+    
+    public override func runtimeType(for platform: RuntimePlatform) throws -> RuntimeType {
+        guard let cellType = cellType else {
+            throw TokenizationError(message: "Initialization should never happen as the view was referenced via field.")
+        }
+        return RuntimeType(name: "PlainTableView<\(cellType)>", module: "Hyperdrive")
+    }
 
-    public override func initialization(describeInto pipe: DescriptionPipe) throws {
+    public override func initialization(for platform: RuntimePlatform, describeInto pipe: DescriptionPipe) throws {
         guard let cellType = cellType else {
             throw TokenizationError(message: "Initialization should never happen as the view was referenced via field.")
         }
         pipe.string("PlainTableView<\(cellType)>()")
     }
 
-    public required init(node: SWXMLHash.XMLElement) throws {
+    public required init(node: SWXMLHash.XMLElement, idProvider: ElementIdProvider) throws {
         if let field = node.value(ofAttribute: "field") as String?, !field.isEmpty {
             cellType = nil
             cellDefinition = nil
@@ -82,7 +89,7 @@ public class PlainTableView: View, ComponentDefinitionContainer {
             }
         }
 
-        try super.init(node: node)
+        try super.init(node: node, idProvider: idProvider)
     }
 
     public override func serialize(context: DataContext) -> XMLSerializableElement {

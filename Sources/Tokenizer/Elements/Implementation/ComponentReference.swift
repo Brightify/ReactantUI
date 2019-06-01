@@ -14,6 +14,7 @@ import UIKit
 #endif
 
 public class ComponentReference: View, ComponentDefinitionContainer {
+    public var module: String?
     public var type: String?
     public var definition: ComponentDefinition?
     public var passthroughActions: String?
@@ -37,8 +38,16 @@ public class ComponentReference: View, ComponentDefinitionContainer {
     public class override func runtimeType() throws -> String {
         return "UIView"
     }
+    
+    public override func runtimeType(for platform: RuntimePlatform) throws -> RuntimeType {
+        if let type = type {
+            return RuntimeType(name: type, modules: module.map { [$0] } ?? [])
+        } else {
+            return RuntimeType(name: "UIView", module: "UIKit")
+        }
+    }
 
-    public override func initialization(describeInto pipe: DescriptionPipe) throws {
+    public override func initialization(for platform: RuntimePlatform, describeInto pipe: DescriptionPipe) throws {
         guard let type = type else {
             throw TokenizationError(message: "Should never initialize when type is undefined.")
         }
@@ -75,7 +84,7 @@ public class ComponentReference: View, ComponentDefinitionContainer {
 //        """
     }
 
-    public required init(node: SWXMLHash.XMLElement) throws {
+    public required init(node: SWXMLHash.XMLElement, idProvider: ElementIdProvider) throws {
         type = try? node.value(ofAttribute: "type")
         
         if !node.xmlChildren.isEmpty {
@@ -86,7 +95,7 @@ public class ComponentReference: View, ComponentDefinitionContainer {
 
         passthroughActions = node.attribute(by: "action")?.text
         
-        try super.init(node: node)
+        try super.init(node: node, idProvider: idProvider)
     }
     
     public init(type: String, definition: ComponentDefinition?) {

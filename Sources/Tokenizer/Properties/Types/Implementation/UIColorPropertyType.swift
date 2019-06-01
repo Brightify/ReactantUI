@@ -11,8 +11,14 @@ import Foundation
 #endif
 
 public enum UIColorPropertyType: AttributeSupportedPropertyType {
+    public static let black = UIColorPropertyType.color(.black)
+
     case color(Color)
     case themed(String)
+
+    public static func runtimeType(for platform: RuntimePlatform) -> RuntimeType {
+        return RuntimeType(name: "UIColor", module: "UIKit")
+    }
 
     public var requiresTheme: Bool {
         switch self {

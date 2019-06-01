@@ -19,7 +19,7 @@ public struct AssignableProperty<T: AttributeSupportedPropertyType>: TypedProper
     public var namespace: [PropertyContainer.Namespace]
     public var name: String
     public var description: AssignablePropertyDescription<T>
-    public var value: T
+    public var value: PropertyValue<T>
     
     public var attributeName: String {
         return namespace.resolvedAttributeName(name: name)

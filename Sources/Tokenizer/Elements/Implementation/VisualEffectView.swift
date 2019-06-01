@@ -21,10 +21,6 @@ public class VisualEffectView: Container {
         return "contentView.addSubview"
     }
 
-    public class override func runtimeType() -> String {
-        return "UIVisualEffectView"
-    }
-
     #if canImport(UIKit)
     public override func initialize(context: ReactantLiveUIWorker.Context) -> UIView {
     return UIVisualEffectView()
@@ -40,7 +36,7 @@ public class VisualEffectView: Container {
 }
 
 public class VisualEffectViewProperties: ViewProperties {
-    public let effect: AssignablePropertyDescription<VisualEffect>
+    public let effect: AssignablePropertyDescription<VisualEffect?>
     
     public required init(configuration: Configuration) {
         effect = configuration.property(name: "effect")

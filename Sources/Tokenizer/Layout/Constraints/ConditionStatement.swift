@@ -20,7 +20,7 @@ import UIKit
 public enum ConditionStatement {
     case trueStatement
     case falseStatement
-    case number(Float)
+    case number(Double)
     case interfaceIdiom(InterfaceIdiom)
     case sizeClass(SizeClassType, InterfaceSizeClass)
     case interfaceSizeClass(InterfaceSizeClass)
@@ -85,7 +85,7 @@ public enum ConditionStatement {
     }
 
     #if canImport(UIKit)
-    func numberValue(from traits: UITraitHelper) -> Float {
+    func numberValue(from traits: UITraitHelper) -> Double {
         switch self {
         case .interfaceIdiom, .sizeClass, .orientation, .trueStatement, .falseStatement, .interfaceSizeClass:
             fatalError("Requested `numberValue` from a logical condition statement.")

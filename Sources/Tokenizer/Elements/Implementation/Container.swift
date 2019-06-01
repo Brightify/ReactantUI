@@ -26,14 +26,15 @@ public class Container: View, UIContainer {
     }
     #endif
 
-    public required init(node: SWXMLHash.XMLElement) throws {
-        children = try View.deserialize(nodes: node.xmlChildren)
+    public required init(node: SWXMLHash.XMLElement, idProvider: ElementIdProvider) throws {
+        children = try View.deserialize(nodes: node.xmlChildren, idProvider: idProvider.child())
 
-        try super.init(node: node)
+        try super.init(node: node, idProvider: idProvider)
     }
     
     public override init() {
         children = []
+
         super.init()
     }
 
@@ -43,6 +44,10 @@ public class Container: View, UIContainer {
 
     public class override func runtimeType() throws -> String {
         return "ContainerView"
+    }
+    
+    public override func runtimeType(for platform: RuntimePlatform) throws -> RuntimeType {
+        return RuntimeType(name: "ContainerView", module: "Hyperdrive")
     }
     
     

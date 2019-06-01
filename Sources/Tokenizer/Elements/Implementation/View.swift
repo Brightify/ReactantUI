@@ -13,6 +13,25 @@ import SwiftCodeGen
 import UIKit
 #endif
 
+public class ElementIdProvider {
+    private var counter: Int = 1
+
+    private let prefix: String
+
+    init(prefix: String) {
+        self.prefix = prefix
+    }
+
+    func next(for type: String) -> UIElementID {
+        defer { counter += 1 }
+        return .generated("\(prefix)_\(counter)_\(type)")
+    }
+
+    func child() -> ElementIdProvider {
+        return ElementIdProvider(prefix: "\(prefix)_\(counter)")
+    }
+}
+
 public class View: XMLElementDeserializable, UIElement {
     public class var availableProperties: [PropertyDescription] {
         return Properties.view.allProperties
@@ -26,6 +45,15 @@ public class View: XMLElementDeserializable, UIElement {
     public class func runtimeType() throws -> String {
         return "UIView"
     }
+    
+    public func runtimeType(for platform: RuntimePlatform) throws -> RuntimeType {
+        switch platform {
+        case .iOS, .tvOS:
+            return RuntimeType(name: "UI\(type(of: self))", module: "UIKit")
+//        case .macOS:
+//            return RuntimeType(name: "NS\(type(of: self))", module: "AppKit")
+        }
+    }
 
     public class var parentModuleImport: String {
         return "UIKit"
@@ -35,15 +63,16 @@ public class View: XMLElementDeserializable, UIElement {
         return ["UIKit"]
     }
 
-    public var field: String?
+    public var id: UIElementID
+    public var isExported: Bool
     public var styles: [StyleName]
     public var layout: Layout
     public var properties: [Property]
     public var toolingProperties: [String: Property]
     public var handledActions: [HyperViewAction]
 
-    public func initialization(describeInto pipe: DescriptionPipe) throws {
-        pipe.string("\(try type(of: self).runtimeType())()")
+    public func initialization(for platform: RuntimePlatform, describeInto pipe: DescriptionPipe) throws {
+        pipe.string("\(try runtimeType(for: platform).name)()")
     }
 
     #if canImport(UIKit)
@@ -52,8 +81,9 @@ public class View: XMLElementDeserializable, UIElement {
     }
     #endif
 
-    public required init(node: XMLElement) throws {
-        field = node.value(ofAttribute: "field")
+    public required init(node: XMLElement, idProvider: ElementIdProvider) throws {
+        id = try node.value(ofAttribute: "id", defaultValue: idProvider.next(for: node.name))
+        isExported = try node.value(ofAttribute: "export", defaultValue: false)
         layout = try node.value()
         styles = try node.value(ofAttribute: "style", defaultValue: []) as [StyleName]
 
@@ -70,7 +100,9 @@ public class View: XMLElementDeserializable, UIElement {
     }
     
     public init() {
-        field = nil
+        preconditionFailure("Not implemented!")
+//        id = nil
+        isExported = false
         styles = []
         layout = Layout(contentCompressionPriorityHorizontal: View.defaultContentCompression.horizontal,
                              contentCompressionPriorityVertical: View.defaultContentCompression.vertical,
@@ -81,14 +113,14 @@ public class View: XMLElementDeserializable, UIElement {
         handledActions = []
     }
 
-    public static func deserialize(_ node: XMLElement) throws -> Self {
-        return try self.init(node: node)
+    public static func deserialize(_ node: XMLElement, idProvider: ElementIdProvider) throws -> Self {
+        return try self.init(node: node, idProvider: idProvider)
     }
 
-    public static func deserialize(nodes: [XMLElement]) throws -> [UIElement] {
+    public static func deserialize(nodes: [XMLElement], idProvider: ElementIdProvider) throws -> [UIElement] {
         return try nodes.compactMap { node -> UIElement? in
             if let elementType = ElementMapping.mapping[node.name] {
-                return try elementType.init(node: node)
+                return try elementType.init(node: node, idProvider: idProvider)
             } else if node.name == "styles" || node.name == "templates" {
                 // Intentionally ignored as these are parsed directly
                 return nil
@@ -100,8 +132,11 @@ public class View: XMLElementDeserializable, UIElement {
 
     public func serialize(context: DataContext) -> XMLSerializableElement {
         var builder = XMLAttributeBuilder()
-        if let field = field {
-            builder.attribute(name: "field", value: field)
+        if case .provided(let id) = id {
+            builder.attribute(name: "id", value: id)
+        }
+        if isExported {
+            builder.attribute(name: "export", value: "true")
         }
         let styleNames = styles.map { $0.serialize() }.joined(separator: " ")
         if !styleNames.isEmpty {
@@ -127,12 +162,12 @@ public class View: XMLElementDeserializable, UIElement {
 }
 
 public class ViewProperties: PropertyContainer {
-    public let backgroundColor: AssignablePropertyDescription<UIColorPropertyType>
+    public let backgroundColor: AssignablePropertyDescription<UIColorPropertyType?>
     public let clipsToBounds: AssignablePropertyDescription<Bool>
     public let isUserInteractionEnabled: AssignablePropertyDescription<Bool>
-    public let tintColor: AssignablePropertyDescription<UIColorPropertyType>
+    public let tintColor: AssignablePropertyDescription<UIColorPropertyType?>
     public let isHidden: AssignablePropertyDescription<Bool>
-    public let alpha: AssignablePropertyDescription<Float>
+    public let alpha: AssignablePropertyDescription<Double>
     public let isOpaque: AssignablePropertyDescription<Bool>
     public let isMultipleTouchEnabled: AssignablePropertyDescription<Bool>
     public let isExclusiveTouch: AssignablePropertyDescription<Bool>
@@ -154,26 +189,26 @@ public class ViewProperties: PropertyContainer {
     public required init(configuration: PropertyContainer.Configuration) {
         backgroundColor = configuration.property(name: "backgroundColor")
         clipsToBounds = configuration.property(name: "clipsToBounds")
-        isUserInteractionEnabled = configuration.property(name: "isUserInteractionEnabled", key: "userInteractionEnabled")
+        isUserInteractionEnabled = configuration.property(name: "isUserInteractionEnabled", key: "userInteractionEnabled", defaultValue: true)
         tintColor = configuration.property(name: "tintColor")
         isHidden = configuration.property(name: "isHidden", key: "hidden")
-        alpha = configuration.property(name: "alpha")
-        isOpaque = configuration.property(name: "isOpaque", key: "opaque")
+        alpha = configuration.property(name: "alpha", defaultValue: 1)
+        isOpaque = configuration.property(name: "isOpaque", key: "opaque", defaultValue: true)
         isMultipleTouchEnabled = configuration.property(name: "isMultipleTouchEnabled", key: "multipleTouchEnabled")
         isExclusiveTouch = configuration.property(name: "isExclusiveTouch", key: "exclusiveTouch")
-        autoresizesSubviews = configuration.property(name: "autoresizesSubviews")
-        contentMode = configuration.property(name: "contentMode")
-        translatesAutoresizingMaskIntoConstraints = configuration.property(name: "translatesAutoresizingMaskIntoConstraints")
+        autoresizesSubviews = configuration.property(name: "autoresizesSubviews", defaultValue: true)
+        contentMode = configuration.property(name: "contentMode", defaultValue: .scaleToFill)
+        translatesAutoresizingMaskIntoConstraints = configuration.property(name: "translatesAutoresizingMaskIntoConstraints", defaultValue: true)
         preservesSuperviewLayoutMargins = configuration.property(name: "preservesSuperviewLayoutMargins")
         tag = configuration.property(name: "tag")
         canBecomeFocused = configuration.property(name: "canBecomeFocused")
-        visibility = configuration.property(name: "visibility")
-        collapseAxis = configuration.property(name: "collapseAxis")
-        frame = configuration.property(name: "frame")
-        bounds = configuration.property(name: "bounds")
-        layoutMargins = configuration.property(name: "layoutMargins")
+        visibility = configuration.property(name: "visibility", defaultValue: .visible)
+        collapseAxis = configuration.property(name: "collapseAxis", defaultValue: .vertical)
+        frame = configuration.property(name: "frame", defaultValue: .zero)
+        bounds = configuration.property(name: "bounds", defaultValue: .zero)
+        layoutMargins = configuration.property(name: "layoutMargins", defaultValue: EdgeInsets(horizontal: 8, vertical: 8))
         
-        transform = configuration.property(name: "transform")
+        transform = configuration.property(name: "transform", defaultValue: AffineTransformation(transformations: []))
         
         layer = configuration.namespaced(in: "layer", LayerProperties.self)
         
@@ -191,7 +226,7 @@ public final class ViewToolingProperties: PropertyContainer {
 public enum PreferredDimension {
     case fill
     case wrap
-    case numeric(Float)
+    case numeric(Double)
 
     public init(_ value: String) throws {
         switch value {
@@ -200,10 +235,10 @@ public enum PreferredDimension {
         case "wrap":
             self = .wrap
         default:
-            guard let floatValue = Float(value) else {
+            guard let doubleValue = Double(value) else {
                 throw TokenizationError(message: "Unknown preferred dimension \(value)")
             }
-            self = .numeric(floatValue)
+            self = .numeric(doubleValue)
         }
     }
 

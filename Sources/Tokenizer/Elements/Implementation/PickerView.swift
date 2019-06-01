@@ -18,12 +18,13 @@ public class PickerView: View {
         return Properties.pickerView.allProperties
     }
 
-    public class override func runtimeType() throws -> String {
-        #if os(tvOS)
+    public override func runtimeType(for platform: RuntimePlatform) throws -> RuntimeType {
+        switch platform {
+        case .iOS:
+            return RuntimeType(name: "UIPickerView", module: "UIKit")
+        case .tvOS:
             throw TokenizationError.unsupportedElementError(element: PickerView.self)
-        #else
-            return "UIPickerView"
-        #endif
+        }
     }
 
     #if canImport(UIKit)

@@ -9,8 +9,8 @@
 import Foundation
 
 public enum Font: AttributeSupportedPropertyType {
-    case system(weight: SystemFontWeight, size: Float)
-    case named(String, size: Float)
+    case system(weight: SystemFontWeight, size: Double)
+    case named(String, size: Double)
     case themed(String)
 
     public var requiresTheme: Bool {

@@ -17,12 +17,13 @@ public class SearchBar: View {
         return Properties.searchBar.allProperties
     }
 
-    public class override func runtimeType() throws -> String {
-        #if os(tvOS)
+    public override func runtimeType(for platform: RuntimePlatform) throws -> RuntimeType {
+        switch platform {
+        case .iOS:
+            return RuntimeType(name: "UISearchBar", module: "UIKit")
+        case .tvOS:
             throw TokenizationError.unsupportedElementError(element: SearchBar.self)
-        #else
-        return "UISearchBar"
-        #endif
+        }
     }
 
     #if canImport(UIKit)
@@ -37,10 +38,10 @@ public class SearchBar: View {
 }
 
 public class SearchBarProperties: ViewProperties {
-    public let text: AssignablePropertyDescription<TransformedText>
-    public let placeholder: AssignablePropertyDescription<TransformedText>
-    public let prompt: AssignablePropertyDescription<TransformedText>
-    public let barTintColor: AssignablePropertyDescription<UIColorPropertyType>
+    public let text: AssignablePropertyDescription<TransformedText?>
+    public let placeholder: AssignablePropertyDescription<TransformedText?>
+    public let prompt: AssignablePropertyDescription<TransformedText?>
+    public let barTintColor: AssignablePropertyDescription<UIColorPropertyType?>
     public let barStyle: AssignablePropertyDescription<BarStyle>
     public let searchBarStyle: AssignablePropertyDescription<SearchBarStyle>
     public let isTranslucent: AssignablePropertyDescription<Bool>
@@ -50,17 +51,17 @@ public class SearchBarProperties: ViewProperties {
     public let isSearchResultsButtonSelected: AssignablePropertyDescription<Bool>
     public let selectedScopeButtonIndex: AssignablePropertyDescription<Int>
     public let showsScopeBar: AssignablePropertyDescription<Bool>
-    public let backgroundImage: AssignablePropertyDescription<Image>
-    public let scopeBarBackgroundImage: AssignablePropertyDescription<Image>
+    public let backgroundImage: AssignablePropertyDescription<Image?>
+    public let scopeBarBackgroundImage: AssignablePropertyDescription<Image?>
     
     public required init(configuration: Configuration) {
-        text = configuration.property(name: "text")
+        text = configuration.property(name: "text", defaultValue: TransformedText.text(""))
         placeholder = configuration.property(name: "placeholder")
         prompt = configuration.property(name: "prompt")
         barTintColor = configuration.property(name: "barTintColor")
-        barStyle = configuration.property(name: "barStyle")
-        searchBarStyle = configuration.property(name: "searchBarStyle")
-        isTranslucent = configuration.property(name: "isTranslucent", key: "translucent")
+        barStyle = configuration.property(name: "barStyle", defaultValue: .default)
+        searchBarStyle = configuration.property(name: "searchBarStyle", defaultValue: .default)
+        isTranslucent = configuration.property(name: "isTranslucent", key: "translucent", defaultValue: true)
         showsBookmarkButton = configuration.property(name: "showsBookmarkButton")
         showsCancelButton = configuration.property(name: "showsCancelButton")
         showsSearchResultsButton = configuration.property(name: "showsSearchResultsButton")

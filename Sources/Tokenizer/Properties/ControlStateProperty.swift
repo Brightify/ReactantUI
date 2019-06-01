@@ -20,7 +20,7 @@ public struct ControlStateProperty<T: AttributeSupportedPropertyType>: TypedProp
     public var state: [ControlState]
     
     public var description: ControlStatePropertyDescription<T>
-    public var value: T
+    public var value: PropertyValue<T>
     
     public var attributeName: String {
         let namespacedName = namespace.resolvedAttributeName(name: name)

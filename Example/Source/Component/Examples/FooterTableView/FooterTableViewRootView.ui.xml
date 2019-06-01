@@ -8,7 +8,7 @@
     rootView="true">
 
     <FooterTableView
-        field="footerTableView"
+        id="footerTableView"
         cell="PlainCell"
         footer="FooterView"
         tools:sectionCount="3"
@@ -19,5 +19,3 @@
         tableView.separatorInset="horizontal: 20"
         tableView.rowHeight="-1"/>
 </Component>
-
-

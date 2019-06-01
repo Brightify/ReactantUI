@@ -17,10 +17,6 @@ public class NavigationBar: View {
         return Properties.navigationBar.allProperties
     }
 
-    public class override func runtimeType() -> String {
-        return "UINavigationBar"
-    }
-
     #if canImport(UIKit)
     public override func initialize(context: ReactantLiveUIWorker.Context) -> UIView {
         return UINavigationBar()
@@ -29,10 +25,10 @@ public class NavigationBar: View {
 }
 
 public class NavigationBarProperties: ViewProperties {
-    public let barTintColor: AssignablePropertyDescription<UIColorPropertyType>
-    public let backIndicatorImage: AssignablePropertyDescription<Image>
-    public let backIndicatorTransitionMaskImage: AssignablePropertyDescription<Image>
-    public let shadowImage: AssignablePropertyDescription<Image>
+    public let barTintColor: AssignablePropertyDescription<UIColorPropertyType?>
+    public let backIndicatorImage: AssignablePropertyDescription<Image?>
+    public let backIndicatorTransitionMaskImage: AssignablePropertyDescription<Image?>
+    public let shadowImage: AssignablePropertyDescription<Image?>
     public let isTranslucent: AssignablePropertyDescription<Bool>
     public let barStyle: AssignablePropertyDescription<BarStyle>
     
@@ -41,8 +37,8 @@ public class NavigationBarProperties: ViewProperties {
         backIndicatorImage = configuration.property(name: "backIndicatorImage")
         backIndicatorTransitionMaskImage = configuration.property(name: "backIndicatorTransitionMaskImage")
         shadowImage = configuration.property(name: "shadowImage")
-        isTranslucent = configuration.property(name: "isTranslucent", key: "translucent")
-        barStyle = configuration.property(name: "barStyle")
+        isTranslucent = configuration.property(name: "isTranslucent", key: "translucent", defaultValue: true)
+        barStyle = configuration.property(name: "barStyle", defaultValue: .default)
         
         super.init(configuration: configuration)
     }

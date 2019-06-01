@@ -16,10 +16,6 @@ public class TextView: View {
         return Properties.textView.allProperties
     }
 
-    public class override func runtimeType() -> String {
-        return "UITextView"
-    }
-
     #if canImport(UIKit)
     public override func initialize(context: ReactantLiveUIWorker.Context) -> UIView {
         return UITextView()
@@ -28,19 +24,19 @@ public class TextView: View {
 }
 
 public class TextViewProperties: ViewProperties {
-    public let text: AssignablePropertyDescription<TransformedText>
-    public let font: AssignablePropertyDescription<Font>
-    public let textColor: AssignablePropertyDescription<UIColorPropertyType>
+    public let text: AssignablePropertyDescription<TransformedText?>
+    public let font: AssignablePropertyDescription<Font?>
+    public let textColor: AssignablePropertyDescription<UIColorPropertyType?>
     public let textAlignment: AssignablePropertyDescription<TextAlignment>
     public let textContainerInset: AssignablePropertyDescription<EdgeInsets>
     public let allowsEditingTextAttributes: AssignablePropertyDescription<Bool>
     
     public required init(configuration: Configuration) {
-        text = configuration.property(name: "text")
+        text = configuration.property(name: "text", defaultValue: .text(""))
         font = configuration.property(name: "font")
         textColor = configuration.property(name: "textColor")
-        textAlignment = configuration.property(name: "textAlignment")
-        textContainerInset = configuration.property(name: "textContainerInset")
+        textAlignment = configuration.property(name: "textAlignment", defaultValue: .natural)
+        textContainerInset = configuration.property(name: "textContainerInset", defaultValue: EdgeInsets(horizontal: 0, vertical: 8))
         allowsEditingTextAttributes = configuration.property(name: "allowsEditingTextAttributes")
         
         super.init(configuration: configuration)

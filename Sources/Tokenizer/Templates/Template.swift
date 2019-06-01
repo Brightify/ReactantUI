@@ -183,18 +183,20 @@ public enum TemplateType {
 }
 
 public struct AttributedTextTemplate {
-    public var attributedText: ElementAssignableProperty<AttributedText>
+    public var attributedText: ElementAssignableProperty<AttributedText?>
     public var arguments: [String]
 
     init(node: XMLElement) throws {
         let text = try AttributedText.materialize(from: node)
         let description = "attributedText"
-        attributedText = ElementAssignableProperty(namespace: [],
-                                                   name: description,
-                                                   description: ElementAssignablePropertyDescription(
-                                                    namespace: [], name: description,
-                                                    swiftName: description, key: description),
-                                                   value: text)
+        attributedText = ElementAssignableProperty(
+            namespace: [],
+            name: description,
+            description: ElementAssignablePropertyDescription(
+                namespace: [], name: description,
+                swiftName: description, key: description,
+                defaultValue: nil),
+            value: .value(text))
         arguments = []
         node.children.forEach {
             let tokens = Lexer.tokenize(input: $0.description)

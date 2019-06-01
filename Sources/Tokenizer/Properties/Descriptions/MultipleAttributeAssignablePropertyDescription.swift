@@ -21,13 +21,14 @@ public struct MultipleAttributeAssignablePropertyDescription<T: MultipleAttribut
     public let name: String
     public let swiftName: String
     public let key: String
+    public let defaultValue: T
 
     /**
      * Get a property using the dictionary passed.
      * - parameter properties: **[name: property]** dictionary to search in
      * - returns: found property's value if found, nil otherwise
      */
-    public func get(from properties: [String: Property]) -> T? {
+    public func get(from properties: [String: Property]) -> PropertyValue<T>? {
         let property = getProperty(from: properties)
         return property?.value
     }
@@ -38,7 +39,7 @@ public struct MultipleAttributeAssignablePropertyDescription<T: MultipleAttribut
      * - parameter value: value to be set to the property
      * - parameter properties: **[name: property]** dictionary to search in
      */
-    public func set(value: T, to properties: inout [String: Property]) {
+    public func set(value: PropertyValue<T>, to properties: inout [String: Property]) {
         var property: MultipleAttributeAssignableProperty<T>
         if let storedProperty = getProperty(from: properties) {
             property = storedProperty
@@ -82,8 +83,7 @@ extension MultipleAttributeAssignablePropertyDescription: MultipleAttributePrope
             return (mutableKey, item.value)
         }, uniquingKeysWith: { $1 })
 
-        let materializedValue = try T.materialize(from: nameAdjustedAttributes)
-
+        let materializedValue = PropertyValue.value(try T.materialize(from: nameAdjustedAttributes))
         return MultipleAttributeAssignableProperty(namespace: namespace, name: name, description: self, value: materializedValue)
     }
 }

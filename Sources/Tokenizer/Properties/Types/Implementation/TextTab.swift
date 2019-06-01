@@ -9,16 +9,16 @@ import Foundation
 
 public struct TextTab: AttributeSupportedPropertyType {
     public let textAlignment: TextAlignment
-    public let location: Float
+    public let location: Double
 
     public static func materialize(from value: String) throws -> TextTab {
         let components = value.components(separatedBy: "@")
         switch components.count {
         case 2:
-            let (textAlignment, location) = try (TextAlignment.materialize(from: components[0]), Float.materialize(from: components[1]))
+            let (textAlignment, location) = try (TextAlignment.materialize(from: components[0]), Double.materialize(from: components[1]))
             return TextTab(textAlignment: textAlignment, location: location)
         case 1:
-            let location = try Float.materialize(from: components[0])
+            let location = try Double.materialize(from: components[0])
             return TextTab(textAlignment: .left, location: location)
         default:
             throw XMLDeserializationError.NodeHasNoValue

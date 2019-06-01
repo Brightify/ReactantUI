@@ -18,6 +18,10 @@ public struct TokenizationError: Error, LocalizedError {
     public var errorDescription: String? {
         return message
     }
+
+    public init(message: String) {
+        self.message = message
+    }
 }
 
 extension TokenizationError {

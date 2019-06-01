@@ -15,9 +15,9 @@ import UIKit
  */
 public struct SupportedPropertyTypeContext: DataContext, HasParentContext {
     public let parentContext: DataContext
-    public let value: SupportedPropertyType
+    public let value: AnyPropertyValue
 
-    public init(parentContext: DataContext, value: SupportedPropertyType) {
+    public init(parentContext: DataContext, value: AnyPropertyValue) {
         self.parentContext = parentContext
         self.value = value
     }
@@ -25,12 +25,28 @@ public struct SupportedPropertyTypeContext: DataContext, HasParentContext {
 
 extension PropertyContext {
     public func child(for value: SupportedPropertyType) -> SupportedPropertyTypeContext {
+        return child(for: .value(value))
+    }
+
+    public func child<T>(for value: PropertyValue<T>) -> SupportedPropertyTypeContext {
+        return child(for: value.typeErased())
+    }
+
+    public func child(for value: AnyPropertyValue) -> SupportedPropertyTypeContext {
         return SupportedPropertyTypeContext(parentContext: self, value: value)
     }
 }
 
 extension SupportedPropertyTypeContext {
     public func child(for value: SupportedPropertyType) -> SupportedPropertyTypeContext {
+        return child(for: .value(value))
+    }
+
+    public func child<T>(for value: PropertyValue<T>) -> SupportedPropertyTypeContext {
+        return child(for: value.typeErased())
+    }
+
+    public func child(for value: AnyPropertyValue) -> SupportedPropertyTypeContext {
         return SupportedPropertyTypeContext(parentContext: self, value: value)
     }
 }

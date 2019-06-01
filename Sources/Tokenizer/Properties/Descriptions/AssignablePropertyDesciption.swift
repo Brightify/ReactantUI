@@ -21,13 +21,14 @@ public struct AssignablePropertyDescription<T: AttributeSupportedPropertyType>: 
     public let name: String
     public let swiftName: String
     public let key: String
+    public let defaultValue: T
 
     /**
      * Get a property using the dictionary passed.
      * - parameter properties: **[name: property]** dictionary to search in
      * - returns: found property's value if found, nil otherwise
      */
-    public func get(from properties: [String: Property]) -> T? {
+    public func get(from properties: [String: Property]) -> PropertyValue<T>? {
         let property = getProperty(from: properties)
         return property?.value
     }
@@ -38,7 +39,7 @@ public struct AssignablePropertyDescription<T: AttributeSupportedPropertyType>: 
      * - parameter value: value to be set to the property
      * - parameter properties: **[name: property]** dictionary to search in
      */
-    public func set(value: T, to properties: inout [String: Property]) {
+    public func set(value: PropertyValue<T>, to properties: inout [String: Property]) {
         var property: AssignableProperty<T>
         if let storedProperty = getProperty(from: properties) {
             property = storedProperty
@@ -74,8 +75,20 @@ public struct AssignablePropertyDescription<T: AttributeSupportedPropertyType>: 
 
 extension AssignablePropertyDescription: AttributePropertyDescription where T: AttributeSupportedPropertyType {
     public func materialize(attributeName: String, value: String) throws -> Property {
-        let materializedValue = try T.materialize(from: value)
-
+        let materializedValue: PropertyValue<T>
+        if value.starts(with: "$") {
+            materializedValue = .state(String(value.dropFirst()))
+        } else {
+            materializedValue = .value(try T.materialize(from: value))
+        }
         return AssignableProperty(namespace: namespace, name: name, description: self, value: materializedValue)
     }
 }
+
+//extension AssignablePropertyDescription: ElementPropertyDescription where T: ElementSupportedPropertyType {
+//    public func materialize(element: XMLElement) throws -> Property {
+//        let materializedValue = PropertyValue.value(try T.materialize(from: element))
+//
+//        return ElementAssignableProperty(namespace: namespace, name: name, description: self, value: materializedValue)
+//    }
+//}

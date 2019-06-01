@@ -22,7 +22,7 @@ public struct ElementControlStateProperty<T: ElementSupportedPropertyType>: Type
     public var state: [ControlState]
 
     public var description: ElementControlStatePropertyDescription<T>
-    public var value: T
+    public var value: PropertyValue<T>
 
     public var attributeName: String {
         let namespacedName = namespace.resolvedAttributeName(name: name)

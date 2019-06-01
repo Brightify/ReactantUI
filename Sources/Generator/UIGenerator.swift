@@ -33,43 +33,39 @@ public class UIGenerator: Generator {
             .constant(accessibility: viewAccessibility, modifiers: .static, name: "triggerReloadPaths", type: "Set<String>", value: "[\(triggerReloadPaths)]")
         ]
 
-        tempCounter = 1
-        let viewDeclarations = zip(root.children, root.children.generatedNames(tempCounter: &tempCounter)).map { child, name in
+        let viewDeclarations = try root.allChildren.map { child in
             SwiftCodeGen.Property.constant(
-                accessibility: child.field != nil ? viewAccessibility : .private,
-                name: name,
-                type: try! type(of: child).runtimeType())
+                accessibility: child.isExported ? viewAccessibility : .private,
+                name: child.id.description,
+                type: try child.runtimeType(for: .iOS).name)
         }
 
         tempCounter = 1
-        let viewInitializations = zip(root.children, root.children.generatedNames(tempCounter: &tempCounter)).flatMap { child, name -> [String] in
+        let viewInitializations = root.allChildren.flatMap { child -> [String] in
             let pipe = DescriptionPipe()
-            pipe.string("\(name) = ")
-            try! child.initialization(describeInto: pipe)
+            pipe.string("\(child.id) = ")
+            try! child.initialization(for: .iOS, describeInto: pipe)
             return pipe.result
         }
 
-        for name in root.children.generatedNames(tempCounter: &tempCounter) {
-            l("private weak var \(name): UIView?")
-        }
-
         tempCounter = 1
+        let loadViewPipe = DescriptionPipe()
         var themedProperties = [:] as [String: [Tokenizer.Property]]
         for property in root.properties {
             guard !property.anyValue.requiresTheme else {
-                themedProperties["target", default: []].append(property)
+                themedProperties["self", default: []].append(property)
                 continue
             }
             let propertyContext = PropertyContext(parentContext: componentContext, property: property)
-            l(property.application(on: "target", context: propertyContext))
+            loadViewPipe.line(property.application(on: "self", context: propertyContext))
         }
 
         tempCounter = 1
         let loadView = Function(
             accessibility: .private,
             name: "loadView",
-            block: try DescriptionPipe().lines(from: root.children.map {
-                try generate(element: $0, superName: "target", containedIn: root, themedProperties: &themedProperties)
+            block: try loadViewPipe.lines(from: root.children.map {
+                try generate(element: $0, superName: "self", containedIn: root, themedProperties: &themedProperties)
             }).result)
 
         tempCounter = 1
@@ -77,7 +73,7 @@ public class UIGenerator: Generator {
             accessibility: .private,
             name: "setupConstraints",
             block: DescriptionPipe().lines(from: root.children.map {
-                generateConstraints(element: $0, superName: "target", forUpdate: false)
+                generateConstraints(element: $0, superName: "self", forUpdate: false)
             }).result)
 
         let viewInit = Function.initializer(
@@ -102,34 +98,64 @@ public class UIGenerator: Generator {
             .variable(accessibility: .fileprivate, modifiers: .weak, name: "owner", type: "\(root.type)?"),
         ]
 
+        let stateItems = try componentContext.resolve(state: root)
+
+        let stateVariables = stateItems.map { _, item -> SwiftCodeGen.Property in
+//            let propertyContext = PropertyContext(parentContext: componentContext, property: property)
+//            let defaultValue = property.anyDescription.anyDefaultValue
+            return SwiftCodeGen.Property.variable(
+                name: item.name,
+                type: item.type.runtimeType(for: .iOS).name,
+                value: item.defaultValue.generate(context: SupportedPropertyTypeContext(parentContext: componentContext, value: .value(item.defaultValue))),
+                block: [
+                    "didSet { notify\(item.name)Changed() }"
+                ])
+        }
+
+        let stateNotifyFunctions = stateItems.map { _, item -> Function in
+            return Function(
+                accessibility: .private,
+                modifiers: .final,
+                name: "notify\(item.name.capitalizingFirstLetter())Changed",
+                block: item.applications.map { item in
+                    let propertyContext = PropertyContext(parentContext: componentContext, property: item.property.property)
+                    return item.property.property.application(on: (item.element as? UIElement)?.id.description ?? "self", context: propertyContext)
+                })
+        }
+
         let stateFunctions: [Function] = [
             .initializer(),
             .init(accessibility: viewAccessibility,
                   name: "apply",
                   parameters: [.init(label: "from", name: "otherState", type: "State")],
-                  block: [
-                    ""
-                ]),
+                  block: stateItems.map { _, item in
+                      "\(item.name) = otherState.\(item.name)"
+                  }),
             .init(accessibility: viewAccessibility,
                   name: "resynchronize",
-                  block: [
-                    #"#error("Add all notifyXChanged() calls")"#
-                ]),
+                  block: stateNotifyFunctions.map {
+                      "\($0.name)()"
+                  }),
         ]
+
+
+//        UIControlEventObserver.observe(button, to: actionPublisher)
 
         let stateClass = Class(
             accessibility: viewAccessibility,
             isFinal: true,
             name: "State",
             inheritances: ["HyperViewState"],
-            properties: stateProperties,
-            functions: stateFunctions)
+            properties: stateProperties + stateVariables,
+            functions: stateFunctions + stateNotifyFunctions)
 
         let actionEnum = Enumeration(
             accessibility: viewAccessibility,
             name: "Action",
-            cases: root.handledActions.map {
-                Enumeration.Case(name: $0.name)
+            cases: try componentContext.resolve(actions: root.providedActions).map { action in
+                Enumeration.Case(name: action.name, arguments: action.parameters.map { parameter -> (name: String?, type: String) in
+                    (name: parameter.label, type: parameter.type.runtimeType(for: .iOS).name)
+                })
             })
 
         let viewClass = Class(
@@ -197,9 +223,7 @@ public class UIGenerator: Generator {
                 l()
                 l("private weak var target: \(root.type)?")
                 l()
-                for name in root.children.generatedNames(tempCounter: &tempCounter) {
-                    l("private weak var \(name): UIView?")
-                }
+
                 tempCounter = 1
                 l()
                 l("fileprivate init(target: \(root.type))") {
@@ -283,16 +307,6 @@ public class UIGenerator: Generator {
                         l("#else")
                     }
 
-                    tempCounter = 1
-                    let guardNames = root.children.generatedNames(tempCounter: &tempCounter)
-                    if !guardNames.isEmpty {
-                        l("guard ")
-                        for guardName in guardNames {
-                            l("  let \(guardName) = self.\(guardName)\(guardName == guardNames.last ? "" : ",")")
-                        }
-                        l("else { /* FIXME Should we fatalError here? */ return }")
-                    }
-
                     // TODO: Add conditional properties?
 //                    for property in root.properties {
 //                        l(property.application(on: "target"))
@@ -335,18 +349,7 @@ public class UIGenerator: Generator {
 
         let pipe = DescriptionPipe()
 
-        let name: String
-        if let field = element.field {
-            name = "target.\(field)"
-        } else if let layoutId = element.layout.id {
-            name = "named_\(layoutId)"
-//            pipe.line("let \(name) = \(try element.initialization())")
-            pipe.string("self.\(name) = ")
-            try element.initialization(describeInto: pipe)
-        } else {
-            name = "temp_\(type(of: element))_\(tempCounter)"
-            tempCounter += 1
-        }
+        let name = element.id.description
 
         for style in element.styles {
             switch style {
@@ -381,15 +384,7 @@ public class UIGenerator: Generator {
     private func generateConstraints(element: UIElement, superName: String, forUpdate: Bool) -> DescriptionPipe {
         let pipe = DescriptionPipe()
 
-        let name: String
-        if let field = element.field {
-            name = "target.\(field)"
-        } else if let layoutId = element.layout.id {
-            name = "named_\(layoutId)"
-        } else {
-            name = "temp_\(type(of: element))_\(tempCounter)"
-            tempCounter += 1
-        }
+        let name = element.id.description
 
         defer {
             if let container = element as? UIContainer {
@@ -632,32 +627,5 @@ public class UIGenerator: Generator {
                 styleApplication()
             }
         }
-    }
-}
-
-extension Array where Iterator.Element == UIElement {
-    func generatedNames(tempCounter: inout Int) -> [String] {
-        var names = [] as [String]
-        for child in self {
-            defer {
-                if let container = child as? UIContainer {
-                    names.append(contentsOf: container.children.generatedNames(tempCounter: &tempCounter))
-                }
-            }
-
-            let name: String
-            if child.field != nil {
-                continue
-            } else if let layoutId = child.layout.id {
-                name = "named_\(layoutId)"
-            } else {
-                name = "temp_\(type(of: child))_\(tempCounter)"
-                tempCounter += 1
-            }
-
-            names.append(name)
-        }
-
-        return names
     }
 }

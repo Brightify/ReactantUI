@@ -212,11 +212,11 @@ public struct AttributedTextStyle: XMLElementDeserializable {
 }
 
 extension XMLElement {
-    public func value<T: XMLAttributeDeserializable>(ofAttribute attr: String, defaultValue: T) throws -> T {
+    public func value<T: XMLAttributeDeserializable>(ofAttribute attr: String, defaultValue: @autoclosure () -> T) throws -> T {
         if let attr = self.attribute(by: attr) {
             return try T.deserialize(attr)
         } else {
-            return defaultValue
+            return defaultValue()
         }
     }
 }

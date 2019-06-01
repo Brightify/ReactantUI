@@ -48,8 +48,8 @@ class ConstraintParser: BaseParser<Constraint> {
             let target = try parseTarget()
             let targetAnchor = try parseTargetAnchor()
             
-            var multiplier = 1 as Float
-            var constant = 0 as Float
+            var multiplier = 1 as Double
+            var constant = 0 as Double
             while try !constraintEnd(), let modifier = try parseModifier() {
                 switch modifier {
                 case .multiplied(let by):

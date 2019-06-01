@@ -17,12 +17,13 @@ public class Stepper: View {
         return Properties.stepper.allProperties
     }
 
-    public class override func runtimeType() throws -> String {
-        #if os(tvOS)
+    public override func runtimeType(for platform: RuntimePlatform) throws -> RuntimeType {
+        switch platform {
+        case .iOS:
+            return RuntimeType(name: "UIStepper", module: "UIKit")
+        case .tvOS:
             throw TokenizationError.unsupportedElementError(element: Stepper.self)
-        #else
-            return "UIStepper"
-        #endif
+        }
     }
 
     #if canImport(UIKit)

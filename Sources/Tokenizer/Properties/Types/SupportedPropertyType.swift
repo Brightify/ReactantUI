@@ -10,21 +10,27 @@ import Foundation
 
 public enum RuntimePlatform {
     case iOS
-    case macOS
+//    case macOS
+    case tvOS
 }
 
 public struct RuntimeType {
     public var name: String
-    public var modules: [String]
+    public var modules: Set<String>
+
+    public init(name: String) {
+        self.name = name
+        self.modules = []
+    }
 
     public init(name: String, module: String) {
         self.name = name
         self.modules = [module]
     }
 
-    public init(name: String, modules: [String] = []) {
+    public init<S: Sequence>(name: String, modules: S) where S.Element == String {
         self.name = name
-        self.modules = modules
+        self.modules = Set(modules)
     }
 
     public static let unsupported = RuntimeType(name: "1$\\'0")
@@ -57,6 +63,29 @@ public extension SupportedPropertyType {
     }
 }
 
+public protocol HasDefaultValue {
+    static var defaultValue: Self { get }
+}
+
+extension Optional: SupportedPropertyType & HasDefaultValue where Wrapped: SupportedPropertyType {
+    public func generate(context: SupportedPropertyTypeContext) -> String {
+        return self?.generate(context: context) ?? "nil"
+    }
+
+    public static var xsdType: XSDType {
+        return Wrapped.xsdType
+    }
+    
+    public static var defaultValue: Optional<Wrapped> {
+        return nil
+    }
+
+    public static func runtimeType(for platform: RuntimePlatform) -> RuntimeType {
+        let wrappedRuntimeType = Wrapped.runtimeType(for: platform)
+        return RuntimeType(name: wrappedRuntimeType.name + "?", modules: wrappedRuntimeType.modules)
+    }
+}
+
 public extension SupportedPropertyType {
     var requiresTheme: Bool {
         return false
@@ -67,12 +96,30 @@ public protocol AttributeSupportedPropertyType: SupportedPropertyType {
     static func materialize(from value: String) throws -> Self
 }
 
+extension Optional: AttributeSupportedPropertyType where Wrapped: AttributeSupportedPropertyType {
+    public static func materialize(from value: String) throws -> Optional<Wrapped> {
+        return try Wrapped.materialize(from: value)
+    }
+}
+
 public protocol ElementSupportedPropertyType: SupportedPropertyType {
     static func materialize(from element: XMLElement) throws -> Self
 }
 
+extension Optional: ElementSupportedPropertyType where Wrapped: ElementSupportedPropertyType {
+    public static func materialize(from element: XMLElement) throws -> Optional<Wrapped> {
+        return try Wrapped.materialize(from: element)
+    }
+}
+
 public protocol MultipleAttributeSupportedPropertyType: SupportedPropertyType {
     static func materialize(from attributes: [String: String]) throws -> Self
+}
+
+extension Optional: MultipleAttributeSupportedPropertyType where Wrapped: MultipleAttributeSupportedPropertyType {
+    public static func materialize(from attributes: [String: String]) throws -> Optional<Wrapped> {
+        return try Wrapped.materialize(from: attributes)
+    }
 }
 
 extension ElementSupportedPropertyType where Self: AttributeSupportedPropertyType {

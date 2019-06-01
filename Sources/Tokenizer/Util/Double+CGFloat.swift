@@ -1,5 +1,5 @@
 //
-//  Float+CGFloat.swift
+//  Double+CGFloat.swift
 //  Hyperdrive
 //
 //  Created by Matouš Hýbl on 23/04/2017.
@@ -9,7 +9,7 @@
 import CoreGraphics
 import Foundation
 
-public extension Float {
+public extension Double {
     var cgFloat: CGFloat {
         return CGFloat(self)
     }

@@ -12,17 +12,14 @@ import Foundation
 #endif
 
 public struct Point: AttributeSupportedPropertyType {
-    public let x: Float
-    public let y: Float
+    public static let zero = Point(x: 0, y: 0)
+
+    public let x: Double
+    public let y: Double
     
-    public init(x: Float, y: Float) {
+    public init(x: Double, y: Double) {
         self.x = x
         self.y = y
-    }
-
-    public init(x: Double, y: Double) {
-        self.x = Float(x)
-        self.y = Float(y)
     }
 
     public func generate(context: SupportedPropertyTypeContext) -> String {

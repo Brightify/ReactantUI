@@ -18,6 +18,7 @@ public protocol PropertyDescription {
     var name: String { get }
     var namespace: [PropertyContainer.Namespace] { get }
     var type: SupportedPropertyType.Type { get }
+    var anyDefaultValue: SupportedPropertyType { get }
 }
 
 /**
@@ -83,12 +84,18 @@ public protocol ElementPropertyDescription: PropertyDescription {
 
 public protocol TypedPropertyDescription: PropertyDescription {
     associatedtype ValueType: SupportedPropertyType
+
+    var defaultValue: ValueType { get }
 }
 
 // MARK:- Default implementations.
 extension TypedPropertyDescription {
     public var type: SupportedPropertyType.Type {
         return ValueType.self
+    }
+
+    public var anyDefaultValue: SupportedPropertyType {
+        return defaultValue
     }
 }
 

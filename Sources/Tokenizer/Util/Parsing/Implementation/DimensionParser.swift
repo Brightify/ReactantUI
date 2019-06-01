@@ -7,9 +7,9 @@
 
 import Foundation
 
-class DimensionParser: BaseParser<(identifier: String?, value: Float)> {
-    override func parseSingle() throws -> (identifier: String?, value: Float) {
-        let dimension: (identifier: String?, value: Float)
+class DimensionParser: BaseParser<(identifier: String?, value: Double)> {
+    override func parseSingle() throws -> (identifier: String?, value: Double) {
+        let dimension: (identifier: String?, value: Double)
         if case .identifier(let identifier)? = peekToken(), peekNextToken() == .colon {
             try popTokens(2)
             if case .number(let value)? = peekToken() {

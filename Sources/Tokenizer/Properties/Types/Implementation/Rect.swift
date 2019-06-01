@@ -12,6 +12,8 @@ import Foundation
 #endif
 
 public struct Rect: AttributeSupportedPropertyType {
+    public static let zero = Rect()
+
     public let origin: Point
     public let size: Size
 
@@ -24,7 +26,7 @@ public struct Rect: AttributeSupportedPropertyType {
         self.size = size
     }
 
-    public init(x: Float, y: Float, width: Float, height: Float) {
+    public init(x: Double = 0, y: Double = 0, width: Double = 0, height: Double = 0) {
         self.init(origin: Point(x: x, y: y), size: Size(width: width, height: height))
     }
     

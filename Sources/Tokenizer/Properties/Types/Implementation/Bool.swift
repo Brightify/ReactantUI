@@ -37,3 +37,7 @@ extension Bool: AttributeSupportedPropertyType {
 
     public static let runtimeType = RuntimeType(name: "Bool")
 }
+
+extension Bool: HasDefaultValue {
+    public static let defaultValue: Bool = false
+}

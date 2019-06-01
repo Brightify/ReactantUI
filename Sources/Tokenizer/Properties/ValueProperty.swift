@@ -17,7 +17,7 @@ public struct ValueProperty<T: AttributeSupportedPropertyType>: TypedProperty {
     public var namespace: [PropertyContainer.Namespace]
     public var name: String
     public var description: ValuePropertyDescription<T>
-    public var value: T
+    public var value: PropertyValue<T>
 
     public var attributeName: String {
         return namespace.resolvedAttributeName(name: name)

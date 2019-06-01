@@ -17,13 +17,14 @@ public struct ElementAssignablePropertyDescription<T: ElementSupportedPropertyTy
     public let name: String
     public let swiftName: String
     public let key: String
+    public let defaultValue: T
 
     /**
      * Get a property using the dictionary passed.
      * - parameter properties: **[name: property]** dictionary to search in
      * - returns: found property's value if found, nil otherwise
      */
-    public func get(from properties: [String: Property]) -> T? {
+    public func get(from properties: [String: Property]) -> PropertyValue<T>? {
         let property = getProperty(from: properties)
         return property?.value
     }
@@ -34,7 +35,7 @@ public struct ElementAssignablePropertyDescription<T: ElementSupportedPropertyTy
      * - parameter value: value to be set to the property
      * - parameter properties: **[name: property]** dictionary to search in
      */
-    public func set(value: T, to properties: inout [String: Property]) {
+    public func set(value: PropertyValue<T>, to properties: inout [String: Property]) {
         var property: ElementAssignableProperty<T>
         if let storedProperty = getProperty(from: properties) {
             property = storedProperty
@@ -70,8 +71,8 @@ public struct ElementAssignablePropertyDescription<T: ElementSupportedPropertyTy
 
 extension ElementAssignablePropertyDescription: ElementPropertyDescription {
     public func materialize(element: XMLElement) throws -> Property {
-        let materializedValue = try T.materialize(from: element)
-
+        let materializedValue = PropertyValue.value(try T.materialize(from: element))
+        
         return ElementAssignableProperty(namespace: namespace, name: name, description: self, value: materializedValue)
     }
 }

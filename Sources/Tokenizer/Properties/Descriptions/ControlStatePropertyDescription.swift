@@ -26,6 +26,7 @@ public struct ControlStatePropertyDescription<T: AttributeSupportedPropertyType>
     public let namespace: [PropertyContainer.Namespace]
     public let name: String
     public let key: String
+    public let defaultValue: T
 
     /**
      * Checks whether the passed attribute name can be handled by this `PropertyDescription`.
@@ -43,7 +44,7 @@ public struct ControlStatePropertyDescription<T: AttributeSupportedPropertyType>
      * - parameter state: `[ControlState]` to use when getting a property in the dictionary
      * - returns: found property's value if found for the passed control state, nil otherwise
      */
-    public func get(from properties: [String: Property], for state: [ControlState]) -> T? {
+    public func get(from properties: [String: Property], for state: [ControlState]) -> PropertyValue<T>? {
         let property = getProperty(from: properties, for: state)
         return property?.value
     }
@@ -55,7 +56,7 @@ public struct ControlStatePropertyDescription<T: AttributeSupportedPropertyType>
      * - parameter properties: **[name: property]** dictionary to search in
      * - parameter state: `[ControlState]` to find within the dictionary
      */
-    public func set(value: T, to properties: inout [String: Property], for state: [ControlState]) {
+    public func set(value: PropertyValue<T>, to properties: inout [String: Property], for state: [ControlState]) {
         var property: ControlStateProperty<T>
         if let storedProperty = getProperty(from: properties, for: state) {
             property = storedProperty
@@ -101,7 +102,12 @@ public struct ControlStatePropertyDescription<T: AttributeSupportedPropertyType>
 
 extension ControlStatePropertyDescription: AttributePropertyDescription where T: AttributeSupportedPropertyType {
     public func materialize(attributeName: String, value: String) throws -> Property {
-        let materializedValue = try T.materialize(from: value)
+        let materializedValue: PropertyValue<T>
+        if value.starts(with: "$") {
+            materializedValue = .state(String(value.dropFirst()))
+        } else {
+            materializedValue = .value(try T.materialize(from: value))
+        }
         return ControlStateProperty(namespace: namespace, name: name, state: parseState(from: attributeName), description: self, value: materializedValue)
     }
 }

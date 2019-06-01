@@ -11,10 +11,6 @@ extension Layout {
     public func serialize() -> [XMLSerializableAttribute] {
         var builder = XMLAttributeBuilder(namespace: "layout")
 
-        if let id = id {
-            builder.attribute(name: "id", value: id)
-        }
-
         if let horizontalCompressionPriority = contentCompressionPriorityHorizontal,
             let verticalCompressionPriority = contentCompressionPriorityVertical,
             horizontalCompressionPriority == verticalCompressionPriority {

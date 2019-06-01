@@ -20,7 +20,9 @@ public protocol Property {
     
     var namespace: [PropertyContainer.Namespace] { get set }
 
-    var anyValue: SupportedPropertyType { get }
+    var anyValue: AnyPropertyValue { get }
+
+    var anyDescription: PropertyDescription { get }
 
     func application(context: PropertyContext) -> String
 
@@ -36,13 +38,72 @@ public protocol Property {
 }
 
 public protocol TypedProperty: Property {
-    associatedtype ValueType: SupportedPropertyType
+    associatedtype ValueType
+    associatedtype PropertyDescriptionType: TypedPropertyDescription where PropertyDescriptionType.ValueType == ValueType
 
-    var value: ValueType { get set }
+    var value: PropertyValue<ValueType> { get set }
+
+    var description: PropertyDescriptionType { get }
 }
 
 extension Property where Self: TypedProperty {
-    public var anyValue: SupportedPropertyType {
-        return value
+    public var anyValue: AnyPropertyValue {
+        return value.typeErased()
+    }
+
+    public var anyDescription: PropertyDescription {
+        return description
+    }
+}
+
+public enum PropertyValue<T: SupportedPropertyType> {
+    case value(T)
+    case state(String)
+
+
+    public var requiresTheme: Bool {
+        switch self {
+        case .value(let value):
+            return value.requiresTheme
+        case .state:
+            return false
+        }
+    }
+
+    public func generate(context: SupportedPropertyTypeContext) -> String {
+        return typeErased().generate(context: context)
+    }
+
+    public func typeErased() -> AnyPropertyValue {
+        switch self {
+        case .value(let value):
+            return .value(value)
+        case .state(let name):
+            return .state(name, T.self)
+        }
+    }
+}
+
+
+public enum AnyPropertyValue {
+    case value(SupportedPropertyType)
+    case state(String, SupportedPropertyType.Type)
+
+    public var requiresTheme: Bool {
+        switch self {
+        case .value(let value):
+            return value.requiresTheme
+        case .state:
+            return false
+        }
+    }
+
+    public func generate(context: SupportedPropertyTypeContext) -> String {
+        switch self {
+        case .value(let value):
+            return value.generate(context: context)
+        case .state(let name, _):
+            return name
+        }
     }
 }

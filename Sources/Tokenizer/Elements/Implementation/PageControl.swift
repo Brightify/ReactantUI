@@ -17,10 +17,6 @@ public class PageControl: View {
         return Properties.pageControl.allProperties
     }
 
-    public class override func runtimeType() -> String {
-        return "UIPageControl"
-    }
-
     #if canImport(UIKit)
     public override func initialize(context: ReactantLiveUIWorker.Context) -> UIView {
         return UIPageControl()
@@ -32,12 +28,12 @@ public class PageControlProperties: ControlProperties {
     public let currentPage: AssignablePropertyDescription<Int>
     public let numberOfPages: AssignablePropertyDescription<Int>
     public let hidesForSinglePage: AssignablePropertyDescription<Bool>
-    public let pageIndicatorTintColor: AssignablePropertyDescription<UIColorPropertyType>
-    public let currentPageIndicatorTintColor: AssignablePropertyDescription<UIColorPropertyType>
+    public let pageIndicatorTintColor: AssignablePropertyDescription<UIColorPropertyType?>
+    public let currentPageIndicatorTintColor: AssignablePropertyDescription<UIColorPropertyType?>
     public let defersCurrentPageDisplay: AssignablePropertyDescription<Bool>
     
     public required init(configuration: Configuration) {
-        currentPage = configuration.property(name: "currentPage")
+        currentPage = configuration.property(name: "currentPage", defaultValue: -1)
         numberOfPages = configuration.property(name: "numberOfPages")
         hidesForSinglePage = configuration.property(name: "hidesForSinglePage")
         pageIndicatorTintColor = configuration.property(name: "pageIndicatorTintColor")

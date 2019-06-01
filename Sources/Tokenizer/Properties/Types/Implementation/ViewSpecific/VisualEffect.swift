@@ -72,10 +72,8 @@ public enum VisualEffect: AttributeSupportedPropertyType {
 
     public static func runtimeType(for platform: RuntimePlatform) -> RuntimeType {
         switch platform {
-        case .iOS:
+        case .iOS, .tvOS:
             return RuntimeType(name: "UIVisualEffect", module: "UIKit")
-        case .macOS:
-            return .unsupported
         }
     }
 }

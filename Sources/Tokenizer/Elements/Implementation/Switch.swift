@@ -17,12 +17,13 @@ public class Switch: View {
         return Properties.switch.allProperties
     }
 
-    public class override func runtimeType() throws -> String {
-        #if os(tvOS)
+    public override func runtimeType(for platform: RuntimePlatform) throws -> RuntimeType {
+        switch platform {
+        case .iOS:
+            return RuntimeType(name: "UISwitch", module: "UIKit")
+        case .tvOS:
             throw TokenizationError.unsupportedElementError(element: Switch.self)
-        #else
-        return "UISwitch"
-        #endif
+        }
     }
 
     #if canImport(UIKit)
@@ -38,10 +39,10 @@ public class Switch: View {
 
 public class SwitchProperties: ControlProperties {
     public let isOn: AssignablePropertyDescription<Bool>
-    public let onTintColor: AssignablePropertyDescription<UIColorPropertyType>
-    public let thumbTintColor: AssignablePropertyDescription<UIColorPropertyType>
-    public let onImage: AssignablePropertyDescription<Image>
-    public let offImage: AssignablePropertyDescription<Image>
+    public let onTintColor: AssignablePropertyDescription<UIColorPropertyType?>
+    public let thumbTintColor: AssignablePropertyDescription<UIColorPropertyType?>
+    public let onImage: AssignablePropertyDescription<Image?>
+    public let offImage: AssignablePropertyDescription<Image?>
     
     public required init(configuration: Configuration) {
         isOn = configuration.property(name: "isOn")

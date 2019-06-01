@@ -36,5 +36,10 @@ extension Double: AttributeSupportedPropertyType {
     public static var xsdType: XSDType {
         return .builtin(.decimal)
     }
+
+
 }
 
+extension Double: HasDefaultValue {
+    public static let defaultValue: Double = 0
+}

@@ -18,7 +18,7 @@ class FontParser: BaseParser<Font> {
             guard let weight = SystemFontWeight(rawValue: possibleWeight) else {
                 throw ParseError.message("Unknown weight name `\(possibleWeight)`!")
             }
-            let size: Float
+            let size: Double
             if case .at? = try? popToken() {
                 let possibleSize = try popToken()
                 guard case .number(let fontSize, _) = possibleSize else {
@@ -78,7 +78,7 @@ class FontParser: BaseParser<Font> {
                     components.append("\\(\(original))")
                 }
             }
-            let size: Float
+            let size: Double
             if case .at? = try? popToken() {
                 let possibleSize = try popToken()
                 guard case .number(let fontSize, _) = possibleSize else {

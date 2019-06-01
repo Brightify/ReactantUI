@@ -48,44 +48,43 @@ public class FooterTableView: View, ComponentDefinitionContainer {
     public class override func runtimeType() throws -> String {
         return "ReactantTableView"
     }
+    
+    public override func runtimeType(for platform: RuntimePlatform) throws -> RuntimeType {
+        return RuntimeType(name: "ReactantTableView")
+    }
 
-    public override func initialization(describeInto pipe: DescriptionPipe) throws {
+    public override func initialization(for platform: RuntimePlatform, describeInto pipe: DescriptionPipe) throws {
         guard let cellType = cellType, let footerType = footerType else {
             throw TokenizationError(message: "Initialization should never happen as the view was referenced via field.")
         }
         pipe.string("FooterTableView<\(footerType), \(cellType)>()")
     }
 
-    public required init(node: SWXMLHash.XMLElement) throws {
-        if let field = node.value(ofAttribute: "field") as String?, !field.isEmpty {
-            cellType = nil
-            cellDefinition = nil
-            footerDefinition = nil
+    public required init(node: SWXMLHash.XMLElement, idProvider: ElementIdProvider) throws {
+        guard let cellType = node.value(ofAttribute: "cell") as String? else {
+            throw TokenizationError(message: "cell for FooterTableView was not defined.")
+        }
+        self.cellType = cellType
+
+        guard let footerType = node.value(ofAttribute: "footer") as String? else {
+            throw TokenizationError(message: "Footer for FooterTableView was not defined.")
+        }
+        self.footerType = footerType
+
+        if let cellElement = try node.singleOrNoElement(named: "cell") {
+            cellDefinition = try ComponentDefinition(node: cellElement, type: cellType)
         } else {
-            guard let cellType = node.value(ofAttribute: "cell") as String? else {
-                throw TokenizationError(message: "cell for FooterTableView was not defined.")
-            }
-            self.cellType = cellType
-
-            guard let footerType = node.value(ofAttribute: "footer") as String? else {
-                throw TokenizationError(message: "Footer for FooterTableView was not defined.")
-            }
-            self.footerType = footerType
-
-            if let cellElement = try node.singleOrNoElement(named: "cell") {
-                cellDefinition = try ComponentDefinition(node: cellElement, type: cellType)
-            } else {
-                cellDefinition = nil
-            }
-
-            if let footerElement = try node.singleOrNoElement(named: "footer") {
-                footerDefinition = try ComponentDefinition(node: footerElement, type: footerType)
-            } else {
-                footerDefinition = nil
-            }
+            cellDefinition = nil
         }
 
-        try super.init(node: node)
+        if let footerElement = try node.singleOrNoElement(named: "footer") {
+            footerDefinition = try ComponentDefinition(node: footerElement, type: footerType)
+        } else {
+            footerDefinition = nil
+        }
+
+
+        try super.init(node: node, idProvider: idProvider)
     }
 
     public override func serialize(context: DataContext) -> XMLSerializableElement {

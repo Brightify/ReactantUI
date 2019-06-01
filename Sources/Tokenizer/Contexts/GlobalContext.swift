@@ -28,18 +28,19 @@ extension Dictionary {
 public struct GlobalContext: DataContext {
     private typealias StyleSheets = [String: [String: Style]]
     private typealias TemplateSheets = [String: [String: Template]]
+    private typealias ComponentDefinitions = [String: ComponentDefinition]
 
     public var applicationDescription: ApplicationDescription
     public var currentTheme: ApplicationDescription.ThemeName
     public var resourceBundle: Bundle?
     private var styles: StyleSheets = [:]
     private var templates: TemplateSheets = [:]
+    private var componentDefinitions: ComponentDefinitions = [:]
 
     public init() {
         self.applicationDescription = ApplicationDescription()
         self.currentTheme = applicationDescription.defaultTheme
         self.resourceBundle = Bundle.main
-        self.styles = [:]
     }
 
     public init(

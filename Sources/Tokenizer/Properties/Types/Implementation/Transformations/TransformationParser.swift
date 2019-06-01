@@ -35,8 +35,8 @@ class TransformationParser: BaseParser<TransformationModifier> {
 
             return .rotate(by: number)
         case "scale", "translate":
-            var x: Float? = nil
-            var y: Float? = nil
+            var x: Double? = nil
+            var y: Double? = nil
             
             if peekToken() == .identifier("x") && peekNextToken() == .colon { //x:, x:y:
                 try popTokens(2)

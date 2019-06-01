@@ -37,12 +37,17 @@ public class WebView: View {
         #endif
     }
 
-    public class override func runtimeType() throws -> String {
-        #if os(tvOS)
+    public override class func runtimeType() throws -> String {
+        return "WKWebView"
+    }
+
+    public override func runtimeType(for platform: RuntimePlatform) throws -> RuntimeType {
+        switch platform {
+        case .iOS:
+            return RuntimeType(name: "WKWebView", module: "WebKit")
+        case .tvOS:
             throw TokenizationError.unsupportedElementError(element: WebView.self)
-        #else
-            return "WKWebView"
-        #endif
+        }
     }
 
     #if canImport(UIKit)
@@ -57,13 +62,13 @@ public class WebView: View {
 }
 
 public class WebViewProperties: ViewProperties {
-    public let allowsMagnification: AssignablePropertyDescription<Bool>
-    public let magnification: AssignablePropertyDescription<Float>
+//    public let allowsMagnification: AssignablePropertyDescription<Bool>
+//    public let magnification: AssignablePropertyDescription<Double>
     public let allowsBackForwardNavigationGestures: AssignablePropertyDescription<Bool>
     
     public required init(configuration: Configuration) {
-        allowsMagnification = configuration.property(name: "allowsMagnification")
-        magnification = configuration.property(name: "magnification")
+//        allowsMagnification = configuration.property(name: "allowsMagnification")
+//        magnification = configuration.property(name: "magnification")
         allowsBackForwardNavigationGestures = configuration.property(name: "allowsBackForwardNavigationGestures")
         
         super.init(configuration: configuration)

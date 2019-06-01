@@ -17,6 +17,8 @@ public enum Color {
     case absolute(red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)
     case named(String)
 
+    public static let black = Color.named("black")
+
     init(color: SystemColor) {
         var red: CGFloat = 0
         var green: CGFloat = 0

@@ -17,10 +17,6 @@ public class TabBar: View {
         return Properties.tabBar.allProperties
     }
 
-    public class override func runtimeType() -> String {
-        return "UITabBar"
-    }
-
     #if canImport(UIKit)
     public override func initialize(context: ReactantLiveUIWorker.Context) -> UIView {
         return UITabBar()
@@ -31,16 +27,16 @@ public class TabBar: View {
 public class TabBarProperties: ViewProperties {
     public let isTranslucent: AssignablePropertyDescription<Bool>
     public let barStyle: AssignablePropertyDescription<BarStyle>
-    public let barTintColor: AssignablePropertyDescription<UIColorPropertyType>
-    public let itemSpacing: AssignablePropertyDescription<Float>
-    public let itemWidth: AssignablePropertyDescription<Float>
-    public let backgroundImage: AssignablePropertyDescription<Image>
-    public let shadowImage: AssignablePropertyDescription<Image>
-    public let selectionIndicatorImage: AssignablePropertyDescription<Image>
+    public let barTintColor: AssignablePropertyDescription<UIColorPropertyType?>
+    public let itemSpacing: AssignablePropertyDescription<Double>
+    public let itemWidth: AssignablePropertyDescription<Double>
+    public let backgroundImage: AssignablePropertyDescription<Image?>
+    public let shadowImage: AssignablePropertyDescription<Image?>
+    public let selectionIndicatorImage: AssignablePropertyDescription<Image?>
     
     public required init(configuration: Configuration) {
-        isTranslucent = configuration.property(name: "isTranslucent", key: "translucent")
-        barStyle = configuration.property(name: "barStyle")
+        isTranslucent = configuration.property(name: "isTranslucent", key: "translucent", defaultValue: true)
+        barStyle = configuration.property(name: "barStyle", defaultValue: .default)
         barTintColor = configuration.property(name: "barTintColor")
         itemSpacing = configuration.property(name: "itemSpacing")
         itemWidth = configuration.property(name: "itemWidth")

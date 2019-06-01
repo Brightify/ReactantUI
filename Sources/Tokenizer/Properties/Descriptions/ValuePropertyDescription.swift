@@ -20,13 +20,14 @@ public struct ValuePropertyDescription<T: AttributeSupportedPropertyType>: Typed
 
     public let namespace: [PropertyContainer.Namespace]
     public let name: String
+    public let defaultValue: T
 
     /**
      * Get a property using the dictionary passed.
      * - parameter properties: **[name: property]** dictionary to search in
      * - returns: found property's value if found, nil otherwise
      */
-    public func get(from properties: [String: Property]) -> T? {
+    public func get(from properties: [String: Property]) -> PropertyValue<T>? {
         let property = getProperty(from: properties)
         return property?.value
     }
@@ -37,7 +38,7 @@ public struct ValuePropertyDescription<T: AttributeSupportedPropertyType>: Typed
      * - parameter value: value to be set to the property
      * - parameter properties: **[name: property]** dictionary to search in
      */
-    public func set(value: T, to properties: inout [String: Property]) {
+    public func set(value: PropertyValue<T>, to properties: inout [String: Property]) {
         var property: ValueProperty<T>
         if let storedProperty = getProperty(from: properties) {
             property = storedProperty
@@ -73,7 +74,12 @@ public struct ValuePropertyDescription<T: AttributeSupportedPropertyType>: Typed
 
 extension ValuePropertyDescription: AttributePropertyDescription /*where T: AttributeSupportedPropertyType*/ {
     public func materialize(attributeName: String, value: String) throws -> Property {
-        let materializedValue = try T.materialize(from: value)
+        let materializedValue: PropertyValue<T>
+        if value.starts(with: "$") {
+            materializedValue = .state(String(value.dropFirst()))
+        } else {
+            materializedValue = .value(try T.materialize(from: value))
+        }
 
         return ValueProperty(namespace: namespace, name: name, description: self, value: materializedValue)
     }

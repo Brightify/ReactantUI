@@ -39,7 +39,6 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, UIElem
 
     public var properties: [Property]
     public var toolingProperties: [String: Property]
-    public var handledActions: [HyperViewAction]
     
     public static var parentModuleImport: String {
         return "Hyperdrive"
@@ -78,7 +77,7 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, UIElem
         stylesName = try node.singleOrNoElement(named: "styles")?.attribute(by: "name")?.text ?? "Styles"
         templates = try node.singleOrNoElement(named: "templates")?.xmlChildren.compactMap { try $0.value() as Template } ?? []
         templatesName = try node.singleOrNoElement(named: "templates")?.attribute(by: "name")?.text ?? "Templates"
-        children = try View.deserialize(nodes: node.xmlChildren)
+        children = try View.deserialize(nodes: node.xmlChildren, idProvider: ElementIdProvider(prefix: ""))
         isRootView = node.value(ofAttribute: "rootView") ?? false
         if isRootView {
             edgesForExtendedLayout = (node.attribute(by: "extend")?.text).map(RectEdge.parse) ?? []
@@ -97,11 +96,6 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, UIElem
 
         toolingProperties = try PropertyHelper.deserializeToolingProperties(properties: ToolingProperties.componentDefinition.allProperties, in: node)
         properties = try PropertyHelper.deserializeSupportedProperties(properties: View.availableProperties, in: node)
-
-        #warning("TODO: Merge property names?")
-        handledActions = children.flatMap {
-            $0.handledActions
-        }
 
         // here we gather all the constraints' fields that do not have a condition and check if any are duplicate
         // in that case we warn the user about it, because it's probably not what they intended
@@ -157,7 +151,7 @@ public final class ComponentDefinitionToolingProperties: PropertyContainer {
     public let preferredSize: ValuePropertyDescription<PreferredSize>
 
     public required init(configuration: Configuration) {
-        preferredSize = configuration.property(name: "tools:preferredSize")
+        preferredSize = configuration.property(name: "tools:preferredSize", defaultValue: PreferredSize(width: .fill, height: .wrap))
         super.init(configuration: configuration)
     }
 }

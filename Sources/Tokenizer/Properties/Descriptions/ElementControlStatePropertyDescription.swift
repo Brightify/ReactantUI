@@ -20,6 +20,7 @@ public struct ElementControlStatePropertyDescription<T: ElementSupportedProperty
     public let namespace: [PropertyContainer.Namespace]
     public let name: String
     public let key: String
+    public let defaultValue: T
 
     /**
      * Checks whether the passed attribute name can be handled by this `PropertyDescription`.
@@ -37,7 +38,7 @@ public struct ElementControlStatePropertyDescription<T: ElementSupportedProperty
      * - parameter state: `[ControlState]` to use when getting a property in the dictionary
      * - returns: found property's value if found for the passed control state, nil otherwise
      */
-    public func get(from properties: [String: Property], for state: [ControlState]) -> T? {
+    public func get(from properties: [String: Property], for state: [ControlState]) -> PropertyValue<T>? {
         let property = getProperty(from: properties, for: state)
         return property?.value
     }
@@ -49,7 +50,7 @@ public struct ElementControlStatePropertyDescription<T: ElementSupportedProperty
      * - parameter properties: **[name: property]** dictionary to search in
      * - parameter state: `[ControlState]` to find within the dictionary
      */
-    public func set(value: T, to properties: inout [String: Property], for state: [ControlState]) {
+    public func set(value: PropertyValue<T>, to properties: inout [String: Property], for state: [ControlState]) {
         var property: ElementControlStateProperty<T>
         if let storedProperty = getProperty(from: properties, for: state) {
             property = storedProperty
@@ -102,7 +103,7 @@ extension ElementControlStatePropertyDescription: ElementPropertyDescription whe
             controlState = [ControlState.normal]
         }
 
-        let materializedValue = try T.materialize(from: element)
+        let materializedValue = PropertyValue.value(try T.materialize(from: element))
         return ElementControlStateProperty(namespace: namespace, name: name, state: controlState, description: self, value: materializedValue)
     }
 }
