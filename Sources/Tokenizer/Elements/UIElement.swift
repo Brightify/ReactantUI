@@ -19,6 +19,7 @@ public struct ResolvedHyperViewAction {
 //    public var sources: [Source]
 
     public struct Source {
+        public var element: UIElement
         public var parameters: [Parameter]
     }
 

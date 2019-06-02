@@ -125,7 +125,7 @@ public class View: XMLElementDeserializable, UIElement {
                 // Intentionally ignored as these are parsed directly
                 return nil
             } else {
-                throw TokenizationError(message: "Unknown tag `\(node.name)`")
+                return try ComponentReference(node: node, idProvider: idProvider)
             }
         }
     }

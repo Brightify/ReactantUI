@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Component xmlns="http://schema.Hyperdrive.tech/ui"
+<SelectionCell xmlns="http://schema.Hyperdrive.tech/ui"
     xmlns:layout="http://schema.Hyperdrive.tech/layout"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://schema.Hyperdrive.tech/ui http://schema.Hyperdrive.tech/ui.xsd
@@ -16,4 +16,4 @@
         layout:height="1"
         layout:fillHorizontally="super"
         layout:bottom="super"/>
-</Component>
+</SelectionCell>

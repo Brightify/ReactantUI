@@ -108,7 +108,7 @@ public class UIGenerator: Generator {
                 type: item.type.runtimeType(for: .iOS).name,
                 value: item.defaultValue.generate(context: SupportedPropertyTypeContext(parentContext: componentContext, value: .value(item.defaultValue))),
                 block: [
-                    "didSet { notify\(item.name)Changed() }"
+                    "didSet { notify\(item.name.capitalizingFirstLetter())Changed() }"
                 ])
         }
 
@@ -119,7 +119,7 @@ public class UIGenerator: Generator {
                 name: "notify\(item.name.capitalizingFirstLetter())Changed",
                 block: item.applications.map { item in
                     let propertyContext = PropertyContext(parentContext: componentContext, property: item.property.property)
-                    return item.property.property.application(on: (item.element as? UIElement)?.id.description ?? "self", context: propertyContext)
+                    return item.property.property.application(on: (item.element as? UIElement)?.id.description ?? "owner?", context: propertyContext)
                 })
         }
 

@@ -170,14 +170,14 @@ class GenerateCommand: Command {
 
             let xml = SWXMLHash.parse(data)
 
-            guard let node = xml["Component"].element else { continue }
+            guard let node = xml.children.first?.element else { continue }
             var definition: ComponentDefinition
             do {
-                if let type: String = xml["Component"].value(ofAttribute: "type") {
-                    definition = try ComponentDefinition(node: node, type: type)
-                } else {
-                    definition = try ComponentDefinition(node: node, type: componentType(from: path))
-                }
+//                if let type: String = xml["Component"].value(ofAttribute: "type") {
+                    definition = try ComponentDefinition(node: node, type: node.name)
+//                } else {
+//                    definition = try ComponentDefinition(node: node, type: componentType(from: path))
+//                }
                 if GenerateCommand.forbiddenNames.contains(definition.type) {
                     throw GenerateCommandError.invalidType(path)
                 }

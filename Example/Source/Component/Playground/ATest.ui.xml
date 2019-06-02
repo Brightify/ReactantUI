@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Component xmlns="http://schema.Hyperdrive.tech/ui"
+<ATest xmlns="http://schema.Hyperdrive.tech/ui"
     xmlns:layout="http://schema.Hyperdrive.tech/layout"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://schema.Hyperdrive.tech/ui http://schema.Hyperdrive.tech/ui.xsd
@@ -8,7 +8,7 @@
     extend="all"
     anonymous="true"
     rootView="true"
-    backgroundColor="black">
+    backgroundColor="$testColor">
 
     <!-- <state
         image="falcon"
@@ -31,9 +31,10 @@ enum OtherView.Action {
     case send
     case doSomething(h: String, f: Int)
 } -->
-    <Component
+    <ExampleCell
         id="example"
         export="true"
+        title="OK"
         type="ExampleCell"
         action:tap="cellTapped(..., im: $image, @falcon.image, ref: @very.far.far.away, test: String(dude), empty: String(), $message, Int(0), ...)"
         />
@@ -85,4 +86,4 @@ enum OtherView.Action {
                 layout:fillVertically="super inset(0)" />
         </cell>
     </PlainTableView>
-</Component>
+</ATest>

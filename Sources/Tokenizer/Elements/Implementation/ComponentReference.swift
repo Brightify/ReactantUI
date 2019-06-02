@@ -18,6 +18,7 @@ public class ComponentReference: View, ComponentDefinitionContainer {
     public var type: String?
     public var definition: ComponentDefinition?
     public var passthroughActions: String?
+    public var possibleStateProperties: [String: String]
 
     public var isAnonymous: Bool {
         return definition?.isAnonymous ?? false
@@ -85,7 +86,8 @@ public class ComponentReference: View, ComponentDefinitionContainer {
     }
 
     public required init(node: SWXMLHash.XMLElement, idProvider: ElementIdProvider) throws {
-        type = try? node.value(ofAttribute: "type")
+        type = try node.value(ofAttribute: "type", defaultValue: node.name)
+        guard type != "Component" else { throw TokenizationError(message: "Name `Component` is not allowed for component reference!") }
         
         if !node.xmlChildren.isEmpty {
             definition = try node.value() as ComponentDefinition
@@ -94,6 +96,10 @@ public class ComponentReference: View, ComponentDefinitionContainer {
         }
 
         passthroughActions = node.attribute(by: "action")?.text
+        let viewProperties = Set(ComponentReference.availableProperties.map { $0.name })
+        possibleStateProperties = node.allAttributes.filter { name, attribute in
+            !viewProperties.contains(name)
+        }.mapValues { $0.text }
         
         try super.init(node: node, idProvider: idProvider)
     }
@@ -101,7 +107,8 @@ public class ComponentReference: View, ComponentDefinitionContainer {
     public init(type: String, definition: ComponentDefinition?) {
         self.type = type
         self.definition = definition
-        
+        self.possibleStateProperties = [:]
+
         super.init()
     }
 
