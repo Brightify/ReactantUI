@@ -109,7 +109,8 @@ public struct Style: XMLAttributeDeserializable, XMLElementDeserializable {
     public var properties: [Property]
     public var type: StyleType
 
-    init(node: XMLElement, groupName: String?) throws {
+    init(context: StyleTokenizationContext) throws {
+        let node = context.element
         let name = try node.value(ofAttribute: "name") as String
         let extendedStyles = try node.value(ofAttribute: "extend", defaultValue: []) as [StyleName]
         if let modifier = node.value(ofAttribute: "accessModifier") as String? {
@@ -117,7 +118,7 @@ public struct Style: XMLAttributeDeserializable, XMLElementDeserializable {
         } else {
             accessModifier = .internal
         }
-        if let groupName = groupName {
+        if let groupName = context.groupName {
             self.name = .global(group: groupName, name: name)
             self.extend = extendedStyles.map {
                 if case .local(let name) = $0 {

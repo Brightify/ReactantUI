@@ -25,7 +25,7 @@ public struct Properties: PropertiesContainer {
     public static let activityIndicator = prepare(ActivityIndicatorProperties.self)
     public static let datePicker = prepare(DatePickerProperties.self)
     public static let imageView = prepare(ImageViewProperties.self)
-    public static let mapView = prepare(MapViewProperties.self)
+    public static let mapView = prepare(Module.MapKit.iOS.MapViewProperties.self)
     public static let navigationBar = prepare(NavigationBarProperties.self)
     public static let pageControl = prepare(PageControlProperties.self)
     public static let pickerView = prepare(PickerViewProperties.self)

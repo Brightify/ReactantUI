@@ -17,7 +17,7 @@ import UIKit
 
 public class ComponentReference: View, ComponentDefinitionContainer {
     public var module: String?
-    public var type: String?
+    public var type: String
     public var definition: ComponentDefinition?
     public var passthroughActions: String?
     public var possibleStateProperties: [String: String]
@@ -27,11 +27,7 @@ public class ComponentReference: View, ComponentDefinitionContainer {
     }
 
     public var componentTypes: [String] {
-        if let type = type {
-            return definition?.componentTypes ?? [type]
-        } else {
-            return []
-        }
+        return definition?.componentTypes ?? [type]
     }
 
     public var componentDefinitions: [ComponentDefinition] {
@@ -43,19 +39,11 @@ public class ComponentReference: View, ComponentDefinitionContainer {
     }
     
     public override func runtimeType(for platform: RuntimePlatform) throws -> RuntimeType {
-        if let type = type {
-            return RuntimeType(name: type, modules: module.map { [$0] } ?? [])
-        } else {
-            return RuntimeType(name: "UIView", module: "UIKit")
-        }
+        return RuntimeType(name: type, modules: module.map { [$0] } ?? [])
     }
 
     #if canImport(SwiftCodeGen)
     public override func initialization(for platform: RuntimePlatform, describeInto pipe: DescriptionPipe) throws {
-        guard let type = type else {
-            throw TokenizationError(message: "Should never initialize when type is undefined.")
-        }
-
 //        let handledActionCases = handledActions.flatMap { action -> [String] in
 ////            let parameters = action.parameters.map { parameter in
 ////                switch
@@ -89,12 +77,13 @@ public class ComponentReference: View, ComponentDefinitionContainer {
     }
     #endif
 
-    public required init(node: SWXMLHash.XMLElement, idProvider: ElementIdProvider) throws {
+    public required init(context: UIElementTokenizationContext) throws {
+        let node = context.element
         type = try node.value(ofAttribute: "type", defaultValue: node.name)
         guard type != "Component" else { throw TokenizationError(message: "Name `Component` is not allowed for component reference!") }
         
         if !node.xmlChildren.isEmpty {
-            definition = try node.value() as ComponentDefinition
+            definition = try context.deserialize(element: node, type: type)
         } else {
             definition = nil
         }
@@ -105,7 +94,7 @@ public class ComponentReference: View, ComponentDefinitionContainer {
             !viewProperties.contains(name)
         }.mapValues { $0.text }
         
-        try super.init(node: node, idProvider: idProvider)
+        try super.init(context: context)
     }
     
     public init(type: String, definition: ComponentDefinition?) {
@@ -125,9 +114,10 @@ public class ComponentReference: View, ComponentDefinitionContainer {
     
     public override func serialize(context: DataContext) -> XMLSerializableElement {
         var serialized = super.serialize(context: context)
-        if let type = type {
+        #warning("TODO: Fix element serialization")
+//        if let type = type {
             serialized.attributes.insert(XMLSerializableAttribute(name: "type", value: type), at: 0)
-        }
+//        }
         return serialized
     }
 }

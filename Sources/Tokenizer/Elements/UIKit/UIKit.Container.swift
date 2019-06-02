@@ -26,10 +26,10 @@ public class Container: View, UIContainer {
     }
     #endif
 
-    public required init(node: SWXMLHash.XMLElement, idProvider: ElementIdProvider) throws {
-        children = try View.deserialize(nodes: node.xmlChildren, idProvider: idProvider.child())
+    public required init(context: UIElementTokenizationContext) throws {
+        children = try context.element.xmlChildren.compactMap(context.tokenize(element:))
 
-        try super.init(node: node, idProvider: idProvider)
+        try super.init(context: context)
     }
     
     public override init() {

@@ -8,12 +8,6 @@
 
 import Foundation
 
-public enum RuntimePlatform {
-    case iOS
-//    case macOS
-    case tvOS
-}
-
 public struct RuntimeType {
     public var name: String
     public var modules: Set<String>

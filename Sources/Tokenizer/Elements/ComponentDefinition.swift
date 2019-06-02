@@ -25,7 +25,7 @@ public enum AccessModifier: String {
 /**
  * Contains the structure of a Component's file.
  */
-public struct ComponentDefinition: XMLElementDeserializable, UIContainer, UIElementBase, StyleContainer, ComponentDefinitionContainer {
+public struct ComponentDefinition: UIContainer, UIElementBase, StyleContainer, ComponentDefinitionContainer {
     public var type: String
     public var isRootView: Bool
     public var styles: [Style]
@@ -71,13 +71,14 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, UIElem
     }
     #endif
 
-    public init(node: XMLElement, type: String) throws {
-        self.type = type
+    public init(context: ComponentTokenizationContext) throws {
+        let node = context.element
+        self.type = node.name
         styles = try node.singleOrNoElement(named: "styles")?.xmlChildren.compactMap { try $0.value() as Style } ?? []
         stylesName = try node.singleOrNoElement(named: "styles")?.attribute(by: "name")?.text ?? "Styles"
         templates = try node.singleOrNoElement(named: "templates")?.xmlChildren.compactMap { try $0.value() as Template } ?? []
         templatesName = try node.singleOrNoElement(named: "templates")?.attribute(by: "name")?.text ?? "Templates"
-        children = try View.deserialize(nodes: node.xmlChildren, idProvider: ElementIdProvider(prefix: ""))
+        children = try node.xmlChildren.compactMap(context.tokenize(element:))
         isRootView = node.value(ofAttribute: "rootView") ?? false
         if isRootView {
             edgesForExtendedLayout = (node.attribute(by: "extend")?.text).map(RectEdge.parse) ?? []
@@ -107,15 +108,6 @@ public struct ComponentDefinition: XMLElementDeserializable, UIContainer, UIElem
                 Logger.instance.warning("Duplicate constraint names for name \"\(field)\". The project will be compilable, but the behavior might be unexpected.")
             }
         }
-    }
-
-    /**
-     * Try to deserialize a `ComponentDefinition` from an XML element.
-     * - parameter node: XML element to try to parse
-     * - returns: if not thrown, then the `ComponentDefinition` representing the XML element passed
-     */
-    public static func deserialize(_ node: SWXMLHash.XMLElement) throws -> ComponentDefinition {
-        return try ComponentDefinition(node: node, type: node.value(ofAttribute: "type"))
     }
 }
 

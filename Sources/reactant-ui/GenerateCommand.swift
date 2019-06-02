@@ -58,6 +58,19 @@ public enum GenerateCommandError: Error, LocalizedError {
     }
 }
 
+extension RuntimePlatform: ConvertibleFromString {
+    public static func convert(from: String) -> RuntimePlatform? {
+        switch from.lowercased() {
+        case "ios":
+            return .iOS
+        case "tvos":
+            return .tvOS
+        default:
+            return nil
+        }
+    }
+}
+
 class GenerateCommand: Command {
 
     enum Output {
@@ -78,6 +91,7 @@ class GenerateCommand: Command {
     let consoleOutput = Flag("--console-output")
     let applicationDescriptionFile = Key<String>("--description", description: "Path to an XML file with Application Description.")
     let swiftVersionParameter = Key<String>("--swift")
+    let platform = Key<RuntimePlatform>("--platform") //, completion: .values(RuntimePlatform.allCases))
     let defaultAccessModifier = Key<String>("--defaultAccessModifier")
     let generateDisposableHelper = Flag("--generate-disposable-helper")
 

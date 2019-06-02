@@ -34,7 +34,7 @@ public class ElementIdProvider {
     }
 }
 
-public class View: XMLElementDeserializable, UIElement {
+public class View: UIElement {
     public class var availableProperties: [PropertyDescription] {
         return Properties.view.allProperties
     }
@@ -85,8 +85,9 @@ public class View: XMLElementDeserializable, UIElement {
     }
     #endif
 
-    public required init(node: XMLElement, idProvider: ElementIdProvider) throws {
-        id = try node.value(ofAttribute: "id", defaultValue: idProvider.next(for: node.name))
+    public required init(context: UIElementTokenizationContext) throws {
+        let node = context.element
+        id = try node.value(ofAttribute: "id", defaultValue: context.elementIdProvider.next(for: node.name))
         isExported = try node.value(ofAttribute: "export", defaultValue: false)
         layout = try node.value()
         styles = try node.value(ofAttribute: "style", defaultValue: []) as [StyleName]
@@ -117,23 +118,6 @@ public class View: XMLElementDeserializable, UIElement {
         handledActions = []
     }
 
-    public static func deserialize(_ node: XMLElement, idProvider: ElementIdProvider) throws -> Self {
-        return try self.init(node: node, idProvider: idProvider)
-    }
-
-    public static func deserialize(nodes: [XMLElement], idProvider: ElementIdProvider) throws -> [UIElement] {
-        return try nodes.compactMap { node -> UIElement? in
-            if let elementType = ElementMapping.mapping[node.name] {
-                return try elementType.init(node: node, idProvider: idProvider)
-            } else if node.name == "styles" || node.name == "templates" {
-                // Intentionally ignored as these are parsed directly
-                return nil
-            } else {
-                return try ComponentReference(node: node, idProvider: idProvider)
-            }
-        }
-    }
-
     public func serialize(context: DataContext) -> XMLSerializableElement {
         var builder = XMLAttributeBuilder()
         if case .provided(let id) = id {
@@ -160,7 +144,9 @@ public class View: XMLElementDeserializable, UIElement {
         layout.serialize().forEach { builder.add(attribute: $0) }
         
         let typeOfSelf = type(of: self)
-        let name = ElementMapping.mapping.first(where: { $0.value == typeOfSelf })?.key ?? "\(typeOfSelf)"
+        #warning("TODO Implement")
+        fatalError("Not implemented")
+        let name = "" // ElementMapping.mapping.first(where: { $0.value == typeOfSelf })?.key ?? "\(typeOfSelf)"
         return XMLSerializableElement(name: name, attributes: builder.attributes, children: [])
     }
 }

@@ -64,7 +64,8 @@ public class FooterTableView: View, ComponentDefinitionContainer {
     }
     #endif
 
-    public required init(node: SWXMLHash.XMLElement, idProvider: ElementIdProvider) throws {
+    public required init(context: UIElementTokenizationContext) throws {
+        let node = context.element
         guard let cellType = node.value(ofAttribute: "cell") as String? else {
             throw TokenizationError(message: "cell for FooterTableView was not defined.")
         }
@@ -76,19 +77,19 @@ public class FooterTableView: View, ComponentDefinitionContainer {
         self.footerType = footerType
 
         if let cellElement = try node.singleOrNoElement(named: "cell") {
-            cellDefinition = try ComponentDefinition(node: cellElement, type: cellType)
+            cellDefinition = try context.deserialize(element: cellElement, type: cellType)
         } else {
             cellDefinition = nil
         }
 
         if let footerElement = try node.singleOrNoElement(named: "footer") {
-            footerDefinition = try ComponentDefinition(node: footerElement, type: footerType)
+            footerDefinition = try context.deserialize(element: footerElement, type: footerType)
         } else {
             footerDefinition = nil
         }
 
 
-        try super.init(node: node, idProvider: idProvider)
+        try super.init(context: context)
     }
 
     public override func serialize(context: DataContext) -> XMLSerializableElement {

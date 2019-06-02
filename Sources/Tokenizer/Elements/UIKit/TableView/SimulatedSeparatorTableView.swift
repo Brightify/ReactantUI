@@ -62,7 +62,8 @@ public class SimulatedSeparatorTableView: View, ComponentDefinitionContainer {
     }
     #endif
 
-    public required init(node: SWXMLHash.XMLElement, idProvider: ElementIdProvider) throws {
+    public required init(context: UIElementTokenizationContext) throws {
+        let node = context.element
         if let field = node.value(ofAttribute: "field") as String?, !field.isEmpty {
             cellType = nil
             cellDefinition = nil
@@ -73,13 +74,13 @@ public class SimulatedSeparatorTableView: View, ComponentDefinitionContainer {
             self.cellType = cellType
 
             if let cellElement = try node.singleOrNoElement(named: "cell") {
-                cellDefinition = try ComponentDefinition(node: cellElement, type: cellType)
+                cellDefinition = try context.deserialize(element: cellElement, type: cellType)
             } else {
                 cellDefinition = nil
             }
         }
 
-        try super.init(node: node, idProvider: idProvider)
+        try super.init(context: context)
     }
 
     public override func serialize(context: DataContext) -> XMLSerializableElement {
