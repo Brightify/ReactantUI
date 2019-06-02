@@ -7,6 +7,6 @@
 
 import Hyperdrive
 
-final class SimulatedSeparatorTableViewController: ControllerBase<Void, SimulatedSeparatorTableViewRootView> {
+final class SimulatedSeparatorTableViewController: HyperViewController<SimulatedSeparatorTableViewRootView> {
     
 }

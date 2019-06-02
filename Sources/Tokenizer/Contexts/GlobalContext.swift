@@ -84,7 +84,7 @@ public struct GlobalContext: DataContext {
     }
 
     public func themed(image name: String) -> Image? {
-        return applicationDescription.images[theme: currentTheme, item: name]
+        return applicationDescription.images[theme: currentTheme, item: name].flatMap { $0 }
     }
 
     public func themed(color name: String) -> UIColorPropertyType? {
@@ -92,7 +92,7 @@ public struct GlobalContext: DataContext {
     }
 
     public func themed(font name: String) -> Font? {
-        return applicationDescription.fonts[theme: currentTheme, item: name]
+        return applicationDescription.fonts[theme: currentTheme, item: name].flatMap { $0 }
     }
 
     public mutating func setStyles(from styleSheetDictionary: [String: StyleGroup]) {

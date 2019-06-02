@@ -7,6 +7,6 @@
 
 import Hyperdrive
 
-final class HeaderTableViewController: ControllerBase<Void, HeaderTableViewRootView> {
+final class HeaderTableViewController: HyperViewController<HeaderTableViewRootView> {
 
 }

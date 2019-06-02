@@ -36,27 +36,20 @@ public class ReactantLiveUIViewApplier {
     }
 
     public func apply(element: UIElement, superview: UIView?, containedIn: UIContainer?) throws -> [ViewTuple] {
-        let name: String
+        #warning("FIXME In LiveUI mode, we shouldn't generate views that aren't `export=true`")
+        let name = element.id.description
         let view: UIView
-        if let field = element.field {
-            name = "\(field)"
-            view = try findViewByFieldName(field, element)
-        } else if let layoutId = element.layout.id {
-            name = "named_\(layoutId)"
-            view = try element.initialize(context: workerContext)
+        if let foundView = try? findViewByFieldName(name, element) {
+            view = foundView
         } else {
-            name = "temp_\(type(of: element))_\(UUID().uuidString)"
             view = try element.initialize(context: workerContext)
+            // tag views that are initialized without a field automatically
+            view.applierTag = "applier-generated-view"
         }
 
         for property in try resolveStyle(element) {
             let propertyContext = PropertyContext(parentContext: parentContext, property: property)
             try property.apply(on: view, context: propertyContext)
-        }
-
-        // tag views that are added automatically
-        if element.field == nil {
-            view.applierTag = "applier-generated-view"
         }
 
         if let superview = superview, let containedIn = containedIn {
@@ -93,19 +86,19 @@ public class ReactantLiveUIViewApplier {
         }
 
         view.setContentCompressionResistancePriority(
-            UILayoutPriority(rawValue: (element.layout.contentCompressionPriorityHorizontal ?? elementType.defaultContentCompression.horizontal).numeric
+            UILayoutPriority(rawValue: Float((element.layout.contentCompressionPriorityHorizontal ?? elementType.defaultContentCompression.horizontal).numeric)
         ), for: .horizontal)
 
         view.setContentCompressionResistancePriority(
-            UILayoutPriority(rawValue: (element.layout.contentCompressionPriorityVertical ?? elementType.defaultContentCompression.vertical).numeric
+            UILayoutPriority(rawValue: Float((element.layout.contentCompressionPriorityVertical ?? elementType.defaultContentCompression.vertical).numeric)
         ), for: .vertical)
 
         view.setContentHuggingPriority(
-            UILayoutPriority(rawValue: (element.layout.contentHuggingPriorityHorizontal ?? elementType.defaultContentHugging.horizontal).numeric
+            UILayoutPriority(rawValue: Float((element.layout.contentHuggingPriorityHorizontal ?? elementType.defaultContentHugging.horizontal).numeric)
         ), for: .horizontal)
 
         view.setContentHuggingPriority(
-            UILayoutPriority(rawValue: (element.layout.contentHuggingPriorityVertical ?? elementType.defaultContentHugging.vertical).numeric
+            UILayoutPriority(rawValue: Float((element.layout.contentHuggingPriorityVertical ?? elementType.defaultContentHugging.vertical).numeric)
         ), for: .vertical)
 
         var error: LiveUIError?
@@ -154,16 +147,9 @@ public class ReactantLiveUIViewApplier {
                 case .targeted(let targetDefinition):
                     let targetView: ConstraintAttributesDSL
                     switch targetDefinition.target {
-                    case .field(let targetName):
-                        guard let fieldView = findView(named: targetName, in: views) else {
-                            error = LiveUIError(message: "Couldn't find view with field name `\(targetName)` in view hierarchy")
-                            return
-                        }
-                        targetView = fieldView.snp
-                    case .layoutId(let layoutId):
-                        let targetName = "named_\(layoutId)"
-                        guard let fieldView = findView(named: targetName, in: views) else {
-                            error = LiveUIError(message: "Couldn't find view with layout id `\(targetName)` in view hierarchy")
+                    case .identifier(let id):
+                        guard let fieldView = findView(named: id, in: views) else {
+                            error = LiveUIError(message: "Couldn't find view with identifer `\(id)` in view hierarchy")
                             return
                         }
                         targetView = fieldView.snp

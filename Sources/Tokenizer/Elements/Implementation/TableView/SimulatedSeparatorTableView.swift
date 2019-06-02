@@ -7,7 +7,9 @@
 //
 
 import Foundation
+#if canImport(SwiftCodeGen)
 import SwiftCodeGen
+#endif
 
 #if canImport(UIKit)
 import UIKit
@@ -44,7 +46,7 @@ public class SimulatedSeparatorTableView: View, ComponentDefinitionContainer {
     }
 
     public class override func runtimeType() -> String {
-        return "ReactantTableView"
+        return "ReactantTableView & UITableView"
     }
     
     public override func runtimeType(for platform: RuntimePlatform) throws -> RuntimeType {
@@ -53,10 +55,12 @@ public class SimulatedSeparatorTableView: View, ComponentDefinitionContainer {
         }
         return RuntimeType(name: "SimulatedSeparatorTableView<\(cellType)>", module: "Hyperdrive")
     }
-    
+
+    #if canImport(SwiftCodeGen)
     public override func initialization(for platform: RuntimePlatform, describeInto pipe: DescriptionPipe) throws {
-        pipe.string("\(try runtimeType(for: platform))()")
+        pipe.string("\(try runtimeType(for: platform).name)()")
     }
+    #endif
 
     public required init(node: SWXMLHash.XMLElement, idProvider: ElementIdProvider) throws {
         if let field = node.value(ofAttribute: "field") as String?, !field.isEmpty {
@@ -94,10 +98,10 @@ public class SimulatedSeparatorTableView: View, ComponentDefinitionContainer {
             throw LiveUIError(message: "cell for SimulatedSeparatorTableView was not defined.")
         }
         let createCell = try context.componentInstantiation(named: cellType)
-        let exampleCount = ToolingProperties.simulatedSeparatorTableView.exampleCount.get(from: self.toolingProperties) ?? 5
+        let exampleCount = ToolingProperties.simulatedSeparatorTableView.exampleCount.get(from: self.toolingProperties)?.value ?? 5
         let tableView =  Hyperdrive.SimulatedSeparatorTableView<CellWrapper>(cellFactory: {
             CellWrapper(wrapped: createCell())
-        }, options: []).with(state: .items(Array(repeating: (), count: exampleCount)))
+        }, options: []).with(state: .items(Array(repeating: EmptyState(), count: exampleCount)))
 
         tableView.tableView.rowHeight = UITableView.automaticDimension
 

@@ -178,7 +178,7 @@ public class ReactantLiveUIWorker {
     }
 
     private func apply(definition: ComponentDefinition, view: UIView, setConstraint: @escaping (String, SnapKit.Constraint) -> Bool) throws {
-        let componentContext = ComponentContext(globalContext: context.globalContext, component: definition)
+        let componentContext = ComponentContext(globalContext: context.globalContext, component: definition, allDefinitions: [:])
         let uiApplier = appliers[view, default: ReactantLiveUIApplier(workerContext: context)]
         try uiApplier.apply(context: componentContext, commonStyles: commonStyles, view: view, setConstraint: setConstraint)
         if let invalidable = view as? Invalidable {
@@ -490,6 +490,8 @@ extension ReactantLiveUIWorker {
                 switch constraintParserError {
                 case .message(let message):
                     return message
+                case .expectedToken(let expectedToken):
+                    return "Expected token `\(expectedToken)`"
                 case .unexpectedToken(let unexpectedToken):
                     return "Unexpected token `\(unexpectedToken)` encountered while parsing constraints"
                 }

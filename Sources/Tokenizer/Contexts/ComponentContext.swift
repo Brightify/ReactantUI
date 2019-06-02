@@ -26,7 +26,7 @@ public struct ComponentContext: DataContext {
         guard case .local(let name) = styleName else {
             return globalContext.resolvedStyleName(named: styleName)
         }
-        return component.stylesName + "." + name
+        return component.stylesName + "Styles." + name
     }
 
     public func style(named styleName: StyleName) -> Style? {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Component xmlns="http://schema.Hyperdrive.tech/ui"
+<PlainTableViewRootView xmlns="http://schema.Hyperdrive.tech/ui"
     xmlns:layout="http://schema.Hyperdrive.tech/layout"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://schema.Hyperdrive.tech/ui http://schema.Hyperdrive.tech/ui.xsd
@@ -14,4 +14,4 @@
         tableView.separatorColor="red"
         tableView.separatorInset="horizontal: 20"
         tableView.rowHeight="-1"/>
-</Component>
+</PlainTableViewRootView>

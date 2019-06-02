@@ -7,6 +7,6 @@
 
 import Hyperdrive
 
-final class FooterTableViewController: ControllerBase<Void, FooterTableViewRootView> {
+final class FooterTableViewController: HyperViewController<FooterTableViewRootView> {
     
 }

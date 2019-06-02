@@ -60,6 +60,14 @@ public enum PropertyValue<T: SupportedPropertyType> {
     case value(T)
     case state(String)
 
+    public var value: T? {
+        switch self {
+        case .value(let value):
+            return value
+        case .state:
+            return nil
+        }
+    }
 
     public var requiresTheme: Bool {
         switch self {
@@ -82,6 +90,17 @@ public enum PropertyValue<T: SupportedPropertyType> {
             return .state(name, T.self)
         }
     }
+
+    #if canImport(UIKit)
+    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
+        switch self {
+        case .value(let value):
+            return value.runtimeValue(context: context.child(for: value))
+        case .state(let name):
+            fatalError("not implemented")
+        }
+    }
+    #endif
 }
 
 
@@ -106,4 +125,15 @@ public enum AnyPropertyValue {
             return name
         }
     }
+
+    #if canImport(UIKit)
+    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
+        switch self {
+        case .value(let value):
+            return value.runtimeValue(context: context.child(for: value))
+        case .state:
+            fatalError("not implemented")
+        }
+    }
+    #endif
 }

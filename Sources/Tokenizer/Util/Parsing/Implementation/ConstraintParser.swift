@@ -107,10 +107,7 @@ class ConstraintParser: BaseParser<Constraint> {
     private func parseTarget() throws -> ConstraintTarget? {
         guard case .identifier(let identifier)? = peekToken(), peekNextToken() != .parensOpen else { return nil }
         try popToken()
-        if peekToken() == .colon, case .identifier(let layoutId)? = peekNextToken() {
-            try popTokens(2)
-            return .layoutId(layoutId)
-        } else if identifier == "super" {
+        if identifier == "super" {
             return .parent
         } else if identifier == "self" {
             return .this
@@ -119,7 +116,7 @@ class ConstraintParser: BaseParser<Constraint> {
         } else if identifier == "readableContentGuide" {
             return .readableContentGuide
         } else {
-            return .field(identifier)
+            return .identifier(identifier)
         }
     }
     

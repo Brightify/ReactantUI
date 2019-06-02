@@ -18,6 +18,12 @@ public struct StyleGroup: XMLElementDeserializable {
     public var accessModifier: AccessModifier
     public var styles: [Style]
 
+    public init(name: String, accessModifier: AccessModifier, styles: [Style]) {
+        self.name = name
+        self.accessModifier = accessModifier
+        self.styles = styles
+    }
+
     /**
      * Tries to obtain a `StyleGroup` from an XML element.
      * - parameter node: the XML element to parse

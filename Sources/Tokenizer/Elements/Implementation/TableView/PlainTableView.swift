@@ -7,7 +7,9 @@
 //
 
 import Foundation
+#if canImport(SwiftCodeGen)
 import SwiftCodeGen
+#endif
 
 #if canImport(UIKit)
 import UIKit
@@ -64,12 +66,14 @@ public class PlainTableView: View, ComponentDefinitionContainer {
         return RuntimeType(name: "PlainTableView<\(cellType)>", module: "Hyperdrive")
     }
 
+    #if canImport(SwiftCodeGen)
     public override func initialization(for platform: RuntimePlatform, describeInto pipe: DescriptionPipe) throws {
         guard let cellType = cellType else {
             throw TokenizationError(message: "Initialization should never happen as the view was referenced via field.")
         }
         pipe.string("PlainTableView<\(cellType)>()")
     }
+    #endif
 
     public required init(node: SWXMLHash.XMLElement, idProvider: ElementIdProvider) throws {
         if let field = node.value(ofAttribute: "field") as String?, !field.isEmpty {
@@ -106,9 +110,9 @@ public class PlainTableView: View, ComponentDefinitionContainer {
             throw LiveUIError(message: "cell for PlainTableView was not defined.")
         }
         let createCell = try context.componentInstantiation(named: cellType)
-        let exampleCount = ToolingProperties.plainTableView.exampleCount.get(from: self.toolingProperties) ?? 5
+        let exampleCount = ToolingProperties.plainTableView.exampleCount.get(from: self.toolingProperties)?.value ?? 5
         let tableView = Hyperdrive.PlainTableView<CellWrapper>(options: [], cellFactory: CellWrapper(wrapped: createCell()))
-            .with(state: .items(Array(repeating: (), count: exampleCount)))
+            .with(state: .items(Array(repeating: EmptyState(), count: exampleCount)))
 
         tableView.tableView.rowHeight = UITableView.automaticDimension
 

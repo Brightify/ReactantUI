@@ -58,12 +58,12 @@ public class UITraitHelper {
         case height
     }
 
-    public func viewRootSize(_ dimensionType: DimensionType) -> Float {
+    public func viewRootSize(_ dimensionType: DimensionType) -> Double {
         switch dimensionType {
         case .width:
-            return Float(rootView.frame.width)
+            return Double(rootView.frame.width)
         case .height:
-            return Float(rootView.frame.height)
+            return Double(rootView.frame.height)
         }
     }
 

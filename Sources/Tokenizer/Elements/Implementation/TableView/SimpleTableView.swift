@@ -7,7 +7,9 @@
 //
 
 import Foundation
+#if canImport(SwiftCodeGen)
 import SwiftCodeGen
+#endif
 
 #if canImport(UIKit)
 import UIKit
@@ -50,7 +52,7 @@ public class SimpleTableView: View, ComponentDefinitionContainer {
     }
 
     public class override func runtimeType() -> String {
-        return "ReactantTableView"
+        return "ReactantTableView & UITableView"
     }
     
     public override func runtimeType(for platform: RuntimePlatform) throws -> RuntimeType {
@@ -64,9 +66,11 @@ public class SimpleTableView: View, ComponentDefinitionContainer {
         return "Hyperdrive"
     }
 
+    #if canImport(SwiftCodeGen)
     public override func initialization(for platform: RuntimePlatform, describeInto pipe: DescriptionPipe) throws {
-        pipe.string("\(try runtimeType(for: platform))()")
+        pipe.string("\(try runtimeType(for: platform).name)()")
     }
+    #endif
 
     public required init(node: SWXMLHash.XMLElement, idProvider: ElementIdProvider) throws {
         if let field = node.value(ofAttribute: "field") as String?, !field.isEmpty {
@@ -134,8 +138,8 @@ public class SimpleTableView: View, ComponentDefinitionContainer {
         let createCell = try context.componentInstantiation(named: cellType)
         let createHeader = try context.componentInstantiation(named: headerType)
         let createFooter = try context.componentInstantiation(named: footerType)
-        let sectionCount = ToolingProperties.headerTableView.sectionCount.get(from: self.toolingProperties) ?? 5
-        let itemCount = ToolingProperties.headerTableView.itemCount.get(from: self.toolingProperties) ?? 5
+        let sectionCount = ToolingProperties.headerTableView.sectionCount.get(from: self.toolingProperties)?.value ?? 5
+        let itemCount = ToolingProperties.headerTableView.itemCount.get(from: self.toolingProperties)?.value ?? 5
         let tableView = Hyperdrive.SimpleTableView<CellWrapper, CellWrapper, CellWrapper>(
             cellFactory: {
                 CellWrapper(wrapped: createCell())
@@ -147,8 +151,8 @@ public class SimpleTableView: View, ComponentDefinitionContainer {
                 CellWrapper(wrapped: createFooter())
             },
             options: [])
-            .with(state: .items(Array(repeating: SectionModel(model: (header: (), footer: ()),
-                                                              items: Array(repeating: (), count: itemCount)),
+            .with(state: .items(Array(repeating: SectionModel(model: (header: EmptyState(), footer: EmptyState()),
+                                                              items: Array(repeating: EmptyState(), count: itemCount)),
                                                               count: sectionCount)))
 
         tableView.tableView.rowHeight = UITableView.automaticDimension

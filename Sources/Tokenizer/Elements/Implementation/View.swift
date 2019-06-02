@@ -7,7 +7,9 @@
 //
 
 import Foundation
+#if canImport(SwiftCodeGen)
 import SwiftCodeGen
+#endif
 
 #if canImport(UIKit)
 import UIKit
@@ -43,7 +45,7 @@ public class View: XMLElementDeserializable, UIElement {
 
     // runtime type is used in generator for style parameters
     public class func runtimeType() throws -> String {
-        return "UIView"
+        return "UI\(self)"
     }
     
     public func runtimeType(for platform: RuntimePlatform) throws -> RuntimeType {
@@ -71,9 +73,11 @@ public class View: XMLElementDeserializable, UIElement {
     public var toolingProperties: [String: Property]
     public var handledActions: [HyperViewAction]
 
+    #if canImport(SwiftCodeGen)
     public func initialization(for platform: RuntimePlatform, describeInto pipe: DescriptionPipe) throws {
         pipe.string("\(try runtimeType(for: platform).name)()")
     }
+    #endif
 
     #if canImport(UIKit)
     public func initialize(context: ReactantLiveUIWorker.Context) throws -> UIView {

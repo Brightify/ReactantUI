@@ -82,7 +82,7 @@ class GenerateCommand: Command {
     let generateDisposableHelper = Flag("--generate-disposable-helper")
 
     public func execute() throws {
-        var output: [String] = []
+        let output = DescriptionPipe()
 
         guard let inputPath = inputPath.value else {
             throw GenerateCommandError.inputPathInvalid
@@ -140,11 +140,12 @@ class GenerateCommand: Command {
         var globalContextFiles = [] as [(path: String, group: StyleGroup)]
         var stylePaths = [] as [String]
         for path in styleFiles {
-            output.append("// Generated from \(path)")
+            output.line("// Generated from \(path)")
             let data = try Data(contentsOf: URL(fileURLWithPath: path))
 
             let xml = SWXMLHash.parse(data)
-            let group: StyleGroup = try xml["styleGroup"].value()
+            var group: StyleGroup = try xml["styleGroup"].value()
+            
             globalContextFiles.append((path, group))
             stylePaths.append(path)
         }
@@ -190,31 +191,33 @@ class GenerateCommand: Command {
             imports.formUnion(definition.styles.map { $0.parentModuleImport })
         }
 
-        output.append("""
-              import UIKit
-              import Reactant
-              import ReactantUI
-              import SnapKit
-              """)
+        output.lines(
+              "import UIKit",
+              "import Hyperdrive",
+              "import ReactantUI",
+              "import SnapKit")
 
         try output.append(theme(context: globalContext, swiftVersion: swiftVersion))
 
         if enableLive.value {
-            output.append(ifSimulator(swiftVersion: swiftVersion, ifClause: "import ReactantLiveUI"))
+            output.append(ifSimulator(ifClause: "import ReactantLiveUI"))
         }
         for imp in imports {
             output.append("import \(imp)")
         }
 
-        let bundleTokenClass = Class(accessibility: .private, name: "__HyperdriveUIBundleToken")
+        let bundleTokenClass = Structure.class(accessibility: .private, name: "__HyperdriveUIBundleToken")
         let resourceBundeProperty = SwiftCodeGen.Property.constant(accessibility: .private, name: "__resourceBundle", value: "Bundle(for: __HyperdriveUIBundleToken.self)")
+
+        output.append(bundleTokenClass)
+        output.append(resourceBundeProperty)
 
 //        output.append("""
 //        private final class __ReactantUIBundleToken { }
 //        private let __resourceBundle = Bundle(for: __ReactantUIBundleToken.self)
 //        """)
 
-        for (path, rootDefinition) in componentDefinitions {
+        for (path, rootDefinition) in componentDefinitions.sorted(by: { $0.key.compare($1.key) == .orderedAscending }) {
             output.append("// Generated from \(path)")
             let configuration = GeneratorConfiguration(minimumMajorVersion: minimumDeploymentTarget,
                                                        localXmlPath: path,
@@ -263,23 +266,23 @@ class GenerateCommand: Command {
         }
 
         if enableLive.value {
-            output.append(ifSimulator(swiftVersion: swiftVersion, ifClause: "\nlet bundleWorker = ReactantLiveUIWorker(configuration: GeneratedReactantLiveUIConfiguration())\n"))
+            output.append(ifSimulator(ifClause: "let bundleWorker = ReactantLiveUIWorker(configuration: GeneratedReactantLiveUIConfiguration())"))
         }
                           
         output.append("public func activateLiveReload(in window: UIWindow) {")
         if enableLive.value {
-            let liveUIActivation = """
-                ReactantLiveUIManager.shared.activate(in: window, worker: bundleWorker)
-                ApplicationTheme.selector.register(target: bundleWorker, listener: { theme in
-                    bundleWorker.setSelectedTheme(name: theme.name)
-                })
-            """
+            let liveUIActivation = [
+                "ReactantLiveUIManager.shared.activate(in: window, worker: bundleWorker)",
+                "ApplicationTheme.selector.register(target: bundleWorker, listener: { theme in",
+                "    bundleWorker.setSelectedTheme(name: theme.name)",
+                "})",
+            ] as [Describable]
 
-            output.append(ifSimulator(swiftVersion: swiftVersion, ifClause: liveUIActivation))
+            output.append(ifSimulator(ifClause: liveUIActivation))
         }
         output.append("}")
 
-        let result = output.joined(separator: "\n")
+        let result = output.result.joined(separator: "\n")
 
         switch outputType {
         case .console:
@@ -289,107 +292,136 @@ class GenerateCommand: Command {
         }
     }
 
-    private func theme(context: GlobalContext, swiftVersion: SwiftVersion) throws -> String {
+    private func theme(context: GlobalContext, swiftVersion: SwiftVersion) throws -> Structure {
         let description = context.applicationDescription
-        func allCases<T>(item: String, from container: ThemeContainer<T>) throws -> String {
+        func allCases<T>(item: String, from container: ThemeContainer<T>) throws -> [String] {
             return try description.themes.map { theme in
                 guard let themedItem = container[theme: theme, item: item] else {
                     throw GenerateCommandError.themedItemNotFound(theme: theme, item: item)
                 }
                 let typeContext = SupportedPropertyTypeContext(parentContext: context, value: .value(themedItem))
                 return "case .\(theme): return \(themedItem.generate(context: typeContext))"
-            }.joined(separator: "\n")
-        }
-
-        let cases = description.themes.map {
-            "    case \($0)"
-        }.joined(separator: "\n")
-
-        let allColorsSorted = try description.colors.allItemNames.sorted().map { """
-            public var \($0): UIColor {
-                switch theme {
-                \(try allCases(item: $0, from: description.colors))
-                }
-            }
-            """
-        }
-        let allImagesSorted = try description.images.allItemNames.sorted().map { """
-            public var \($0): UIImage? {
-                switch theme {
-                \(try allCases(item: $0, from: description.images))
-                }
-            }
-            """
-        }
-        let allFontsSorted = try description.fonts.allItemNames.sorted().map { """
-            public var \($0): UIFont {
-                switch theme {
-                \(try allCases(item: $0, from: description.fonts))
-                }
-            }
-            """
-        }
-
-        let rxSwiftShim: String
-        // canImport is only available from 4.1 and above
-        if swiftVersion >= .swift4_1 && generateDisposableHelper.value {
-            rxSwiftShim = """
-            #if canImport(RxSwift)
-            import RxSwift
-
-            extension ReactantThemeSelector.ListenerToken: Disposable {
-                public func dispose() {
-                    cancel()
-                }
-            }
-            #endif
-            """
-        } else {
-            rxSwiftShim = ""
-        }
-
-        return """
-
-        public enum ApplicationTheme: String, ReactantThemeDefinition {
-            public static var current: ApplicationTheme {
-                return selector.currentTheme
-            }
-
-            public static let selector = ReactantThemeSelector<ApplicationTheme>(defaultTheme: .\(description.defaultTheme))
-
-        \(cases)
-
-            public struct Colors {
-                fileprivate let theme: ApplicationTheme
-
-            \(allColorsSorted.joined(separator: "\n"))
-            }
-            public struct Images {
-                fileprivate let theme: ApplicationTheme
-
-            \(allImagesSorted.joined(separator: "\n"))
-            }
-            public struct Fonts {
-                fileprivate let theme: ApplicationTheme
-
-            \(allFontsSorted.joined(separator: "\n"))
-            }
-
-            public var colors: Colors {
-                return Colors(theme: self)
-            }
-
-            public var images: Images {
-                return Images(theme: self)
-            }
-
-            public var fonts: Fonts {
-                return Fonts(theme: self)
             }
         }
 
-        \(rxSwiftShim)
-        """
+        let themeProperty = SwiftCodeGen.Property.constant(accessibility: .fileprivate, name: "theme", type: "ApplicationTheme")
+
+        func themeContainer<T>(from container: ThemeContainer<T>, named name: String) throws -> Structure {
+            let themeProperty = SwiftCodeGen.Property.constant(accessibility: .fileprivate, name: "theme", type: "ApplicationTheme")
+
+            let properties = try container.allItemNames.sorted().map {
+                try SwiftCodeGen.Property.variable(
+                    accessibility: .public,
+                    name: $0,
+                    type: T.runtimeType(for: .iOS).name,
+                    block: ["switch theme {"] +
+                        allCases(item: $0, from: container).map { "    \($0)" } +
+                        ["}"])
+            }
+
+            return Structure.struct(
+                accessibility: .public,
+                name: name,
+                properties: [themeProperty] + properties)
+        }
+
+        let colorsStruct = try themeContainer(from: description.colors, named: "Colors")
+
+        let imagesStruct = try themeContainer(from: description.images, named: "Images")
+
+        let fontsStruct = try themeContainer(from: description.fonts, named: "Fonts")
+
+        let currentTheme = SwiftCodeGen.Property.variable(
+            accessibility: .public,
+            modifiers: .static,
+            name: "current",
+            type: "ApplicationTheme",
+            block: [
+                "return selector.currentTheme"
+            ])
+
+        let selector = SwiftCodeGen.Property.constant(
+            accessibility: .public,
+            modifiers: .static,
+            name: "selector",
+            value: "ReactantThemeSelector<ApplicationTheme>(defaultTheme: .\(description.defaultTheme))")
+
+        let colors = SwiftCodeGen.Property.variable(
+            accessibility: .public,
+            name: "colors",
+            type: "Colors",
+            block: [
+                "return Colors(theme: self)"
+            ])
+
+        let images = SwiftCodeGen.Property.variable(
+            accessibility: .public,
+            name: "images",
+            type: "Images",
+            block: [
+                "return Images(theme: self)"
+            ])
+
+        let fonts = SwiftCodeGen.Property.variable(
+            accessibility: .public,
+            name: "fonts",
+            type: "Fonts",
+            block: [
+                "return Fonts(theme: self)"
+            ])
+
+        return Structure.enum(
+            accessibility: .public,
+            name: "ApplicationTheme",
+            inheritances: ["String", "ReactantThemeDefinition"],
+            containers: [colorsStruct, imagesStruct, fontsStruct],
+            cases: description.themes.map {
+                Structure.EnumCase(name: $0)
+            },
+            properties: [currentTheme, selector, colors, images, fonts])
+
+//        return """
+//
+//        public enum ApplicationTheme: String, ReactantThemeDefinition {
+//            public static var current: ApplicationTheme {
+//                return selector.currentTheme
+//            }
+//
+//            public static let selector = ReactantThemeSelector<ApplicationTheme>(defaultTheme: .\(description.defaultTheme))
+//
+//        \(cases)
+//
+//            public struct Colors {
+//                fileprivate let theme: ApplicationTheme
+//
+//            \(allColorsSorted.joined(separator: "\n"))
+//            }
+//            public struct Images {
+//                fileprivate let theme: ApplicationTheme
+//
+//            \(allImagesSorted.joined(separator: "\n"))
+//            }
+//            public struct Fonts {
+//                fileprivate let theme: ApplicationTheme
+//
+//            \(allFontsSorted.joined(separator: "\n"))
+//            }
+//
+//            public var colors: Colors {
+//                return Colors(theme: self)
+//            }
+//
+//            public var images: Images {
+//                return Images(theme: self)
+//            }
+//
+//            public var fonts: Fonts {
+//                return Fonts(theme: self)
+//            }
+//        }
+//
+//        \(rxSwiftShim)
+//        """
     }
 
     private func minimumDeploymentTarget() throws -> Int {
@@ -412,31 +444,16 @@ class GenerateCommand: Command {
         }
     }
 
-    private func ifSimulator(swiftVersion: SwiftVersion, ifClause: String, elseClause: String? = nil) -> String {
-        let elseCode: String
+    private func ifSimulator(ifClause: Describable, elseClause: Describable? = nil) -> [Describable] {
+        let elseCode: [Describable]
         if let elseClause = elseClause {
-            elseCode = """
-            #else
-            \(elseClause)
-            """
+            elseCode = ["#else", elseClause]
         } else {
-            elseCode = ""
+            elseCode = []
         }
 
-        if swiftVersion >= .swift4_1 {
-            return """
-            #if targetEnvironment(simulator)
-            \(ifClause)
-            \(elseCode)
-            #endif
-            """
-        } else {
-            return """
-            #if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))
-            \(ifClause)
-            \(elseCode)
-            #endif
-            """
-        }
+        return ["#if targetEnvironment(simulator)", ifClause] +
+            elseCode +
+            ["#endif"]
     }
 }

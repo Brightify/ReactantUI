@@ -38,6 +38,8 @@ target 'Example' do
     platform :ios, '11.0'
     shared
 
+    pod 'RxGesture'
+
 #pod 'Reactant/All-iOS', :path => '../Reactant' # :git => 'https://github.com/Brightify/Reactant.git', :branch => 'master'
 #    pod 'Reactant/TableView', :git => 'https://github.com/Brightify/Reactant.git', :branch => 'master'
 #    pod 'ReactantUI', :path => './'
@@ -61,7 +63,8 @@ post_install do |installer|
     ]
     swift4targets = [
         'Result-iOS', 'Result-tvOS', 'SnapKit-iOS', 'SnapKit-tvOS',
-        'RxSwift-iOS', 'RxSwift-tvOS', 'RxCocoa-iOS', 'RxCocoa-tvOS', 'RxDataSources-iOS', 'RxDataSources-tvOS'
+        'RxSwift-iOS', 'RxSwift-tvOS', 'RxCocoa-iOS', 'RxCocoa-tvOS', 'RxDataSources-iOS', 'RxDataSources-tvOS',
+        'RxGesture'
     ]
 
     installer.pods_project.targets.each do |target|

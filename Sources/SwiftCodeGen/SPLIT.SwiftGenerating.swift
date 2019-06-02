@@ -125,7 +125,59 @@ public protocol Describable {
     func describe(into pipe: DescriptionPipe)
 }
 
+extension String: Describable {
+    public func describe(into pipe: DescriptionPipe) {
+        pipe.line(self)
+    }
+}
+
+extension Array: Describable where Element == Describable {
+    public func describe(into pipe: DescriptionPipe) {
+        forEach {
+            $0.describe(into: pipe)
+        }
+    }
+}
+
 public class DescriptionPipe {
+    public enum Encapsulation {
+        case none
+        case parentheses
+        case brackets
+        case braces
+        case custom(open: String, close: String)
+
+        var open: String {
+            switch self {
+            case .none:
+                return ""
+            case .parentheses:
+                return "("
+            case .brackets:
+                return "["
+            case .braces:
+                return "{"
+            case .custom(let open, _):
+                return open
+            }
+        }
+
+        var close: String {
+            switch self {
+            case .none:
+                return ""
+            case .parentheses:
+                return ")"
+            case .brackets:
+                return "]"
+            case .braces:
+                return "}"
+            case .custom(_, let close):
+                return close
+            }
+        }
+    }
+
     public private(set) var result: [String] = [""]
     private var indentationLevel = 0
     private var lastLine: String {
@@ -142,9 +194,14 @@ public class DescriptionPipe {
     }
 
     @discardableResult
-    public func block(line lineContent: String? = nil, header: String? = nil, descriptionBlock: () throws -> Void) rethrows -> DescriptionPipe {
-        lineEnd("\(lineContent.format(into: { "\($0) " })){\(header.format(into: { " \($0) in" }))")
-        defer { line("}") }
+    public func block(
+        line lineContent: String? = nil,
+        encapsulateIn encapsulation: Encapsulation = .braces,
+        header: String? = nil,
+        descriptionBlock: () throws -> Void
+    ) rethrows -> DescriptionPipe {
+        lineEnd("\(lineContent.format(into: { "\($0) " }))\(encapsulation.open)\(header.format(into: { " \($0) in" }))")
+        defer { line("\(encapsulation.close)") }
         try indented(descriptionBlock: descriptionBlock)
 
         return self
@@ -220,27 +277,13 @@ public class DescriptionPipe {
     }
 
     @discardableResult
-    public func lines(from otherPipe: DescriptionPipe) -> DescriptionPipe {
-        lines(otherPipe.result)
+    public func spaced(linePadding: Int = 1, describables: Describable...) -> DescriptionPipe {
+        spaced(linePadding: linePadding, describables: describables)
         return self
     }
 
     @discardableResult
-    public func lines(from otherPipes: [DescriptionPipe]) -> DescriptionPipe {
-        otherPipes.forEach {
-            lines(from: $0)
-        }
-        return self
-    }
-
-    @discardableResult
-    public func spaced(describables: Describable...) -> DescriptionPipe {
-        spaced(describables: describables)
-        return self
-    }
-
-    @discardableResult
-    public func spaced(describables: [Describable], linePadding: Int = 1) -> DescriptionPipe {
+    public func spaced(linePadding: Int = 1, describables: [Describable]) -> DescriptionPipe {
         for (index, describable) in describables.enumerated() {
             describable.describe(into: self)
             if index != describables.endIndex - 1 {
@@ -248,6 +291,52 @@ public class DescriptionPipe {
             }
         }
         return self
+    }
+
+    @discardableResult
+    public func spaced(linePadding: Int = 1, describables: [(linePadding: Int, describables: [Describable])]) -> DescriptionPipe {
+        return spaced(linePadding: linePadding, blocks: describables.map { padding, describables in
+            { self.spaced(linePadding: padding, describables: describables) }
+        })
+    }
+
+    @discardableResult
+    public func spaced(linePadding: Int = 1, blocks: (() -> Void)...) -> DescriptionPipe {
+        return spaced(linePadding: linePadding, blocks: blocks)
+    }
+    
+
+    @discardableResult
+    public func spaced(linePadding: Int = 1, blocks: [() -> Void]) -> DescriptionPipe {
+        for (index, block) in blocks.enumerated() {
+            let oldCount = self.result.count
+            block()
+            let newCount = self.result.count
+            if oldCount != newCount && index != blocks.endIndex - 1 {
+                line(times: linePadding)
+            }
+        }
+        return self
+    }
+
+    @discardableResult
+    public func append(_ describable: Describable) -> DescriptionPipe {
+        describable.describe(into: self)
+        return self
+    }
+
+    @discardableResult
+    public func append<T: Describable>(_ describables: [T]) -> DescriptionPipe {
+        describables.forEach {
+            append($0)
+        }
+        return self
+    }
+}
+
+extension DescriptionPipe: Describable {
+    public func describe(into pipe: DescriptionPipe) {
+        pipe.lines(result)
     }
 }
 
@@ -516,43 +605,159 @@ public struct Property: HasAttributes, HasAccessibility, HasModifiers, Describab
 
 public protocol ContainerType: Describable {}
 
-public struct Class: ContainerType, HasAttributes, HasAccessibility {
+public struct Structure: ContainerType, HasAttributes, HasAccessibility {
+    public enum Kind: CustomStringConvertible {
+        case `struct`
+        case `class`(isFinal: Bool)
+        case `enum`(cases: [EnumCase])
+        case `extension`
+
+        public var description: String {
+            switch self {
+            case .struct:
+                return "struct"
+            case .class(isFinal: true):
+                return "final class"
+            case .class(isFinal: false):
+                return "class"
+            case .enum:
+                return "enum"
+            case .extension:
+                return "extension"
+            }
+        }
+
+        public var cases: [EnumCase] {
+            switch self {
+            case .struct, .class, .extension:
+                return []
+            case .enum(let cases):
+                return cases
+            }
+        }
+    }
+
     public var attributes: Attributes
     public var accessibility: Accessibility
-    public var isFinal: Bool
+    public var kind: Kind
     public var name: String
     public var genericParameters: [GenericParameter]
     public var inheritances: [String]
+    public var whereClause: [String]
     public var containers: [ContainerType]
     public var properties: [Property]
     public var functions: [Function]
 
-    public init(attributes: Attributes = [], accessibility: Accessibility = .internal, isFinal: Bool = false, name: String, genericParameters: [GenericParameter] = [], inheritances: [String] = [], containers: [ContainerType] = [], properties: [Property] = [], functions: [Function] = []) {
-        self.attributes = attributes
-        self.accessibility = accessibility
-        self.isFinal = isFinal
-        self.name = name
-        self.genericParameters = genericParameters
-        self.inheritances = inheritances
-        self.containers = containers
-        self.properties = properties
-        self.functions = functions
+    public static func `class`(attributes: Attributes = [], accessibility: Accessibility = .internal, isFinal: Bool = false, name: String, genericParameters: [GenericParameter] = [], inheritances: [String] = [], whereClause: [String] = [], containers: [ContainerType] = [], properties: [Property] = [], functions: [Function] = []) -> Structure {
+
+        return Structure(
+            attributes: attributes,
+            accessibility: accessibility,
+            kind: .class(isFinal: isFinal),
+            name: name,
+            genericParameters: genericParameters,
+            inheritances: inheritances,
+            whereClause: whereClause,
+            containers: containers,
+            properties: properties,
+            functions: functions)
+    }
+
+    public static func `struct`(attributes: Attributes = [], accessibility: Accessibility = .internal, name: String, genericParameters: [GenericParameter] = [], inheritances: [String] = [], whereClause: [String] = [], containers: [ContainerType] = [], properties: [Property] = [], functions: [Function] = []) -> Structure {
+
+        return Structure(
+            attributes: attributes,
+            accessibility: accessibility,
+            kind: .struct,
+            name: name,
+            genericParameters: genericParameters,
+            inheritances: inheritances,
+            whereClause: whereClause,
+            containers: containers,
+            properties: properties,
+            functions: functions)
+    }
+
+    public static func `enum`(attributes: Attributes = [], accessibility: Accessibility = .internal, name: String, genericParameters: [GenericParameter] = [], inheritances: [String] = [], whereClause: [String] = [], containers: [ContainerType] = [], cases: [EnumCase], properties: [Property] = [], functions: [Function] = []) -> Structure {
+
+        return Structure(
+            attributes: attributes,
+            accessibility: accessibility,
+            kind: .enum(cases: cases),
+            name: name,
+            genericParameters: genericParameters,
+            inheritances: inheritances,
+            whereClause: whereClause,
+            containers: containers,
+            properties: properties,
+            functions: functions)
+    }
+
+    public static func `extension`(attributes: Attributes = [], accessibility: Accessibility = .internal, extendedType: String, inheritances: [String] = [], whereClause: [String] = [], containers: [ContainerType] = [], properties: [Property] = [], functions: [Function] = []) -> Structure {
+
+        return Structure(
+            attributes: attributes,
+            accessibility: accessibility,
+            kind: .extension,
+            name: extendedType,
+            genericParameters: [],
+            inheritances: inheritances,
+            whereClause: whereClause,
+            containers: containers,
+            properties: properties,
+            functions: functions)
     }
 
     public func describe(into pipe: DescriptionPipe) {
         let inheritancesString = inheritances.joined(separator: ", ")
         attributes.describe(into: pipe)
         let genericParametersString = genericParameters.map { $0.description }.joined(separator: ", ")
-        pipe.string([accessibility.description, "\(isFinal ? "final " : "")class \(name)\(genericParameters.isEmpty ? "" : "<\(genericParametersString)>")\(!inheritancesString.isEmpty ? ": \(inheritancesString)" : "")"].filter { !$0.isEmpty }.joined(separator: " "))
+        pipe.string([accessibility.description, "\(kind) \(name)\(genericParameters.isEmpty ? "" : "<\(genericParametersString)>")\(!inheritancesString.isEmpty ? ": \(inheritancesString)" : "")"].filter { !$0.isEmpty }.joined(separator: " "))
         pipe.string(" ")
         pipe.block {
-            if !containers.isEmpty {
-                pipe.spaced(describables: containers, linePadding: 0)
-                pipe.line()
+            pipe.spaced(linePadding: 1, describables: [
+                (linePadding: 0, describables: containers),
+                (linePadding: 0, kind.cases),
+                (linePadding: 0, describables: properties),
+                (linePadding: 1, describables: functions),
+            ])
+        }
+    }
+}
+
+extension Structure {
+    public struct EnumCase: Describable {
+        public typealias Argument = (name: String?, type: String)
+
+        public var isIndirect: Bool
+        public var name: String
+        public var arguments: [Argument]
+
+        public func describe(into pipe: DescriptionPipe) {
+            let argumentsString: String
+            if arguments.isEmpty {
+                argumentsString = ""
+            } else {
+                let mappedArguments = arguments.map { argument in
+                    argument.name.format(into: { "\($0): " }) + argument.type
+                }
+                argumentsString = "(\(mappedArguments.joined(separator: ", ")))"
             }
-            pipe.spaced(describables: properties, linePadding: 0)
-            pipe.line()
-            pipe.spaced(describables: functions)
+            pipe.line("case \(name)\(argumentsString)")
+        }
+
+        public init(name: String, arguments: [Argument] = []) {
+            self.init(isIndirect: false, name: name, arguments: arguments)
+        }
+
+        private init(isIndirect: Bool, name: String, arguments: [Argument]) {
+            self.isIndirect = isIndirect
+            self.name = name
+            self.arguments = arguments
+        }
+
+        public static func indirect(name: String, arguments: [Argument]) -> EnumCase {
+            return EnumCase(isIndirect: true, name: name, arguments: arguments)
         }
     }
 }
@@ -634,7 +839,7 @@ public struct Protocol: ContainerType, HasAttributes, HasAccessibility {
         pipe.block {
             pipe.lines(genericParameters.map { "associatedtype \($0.name)\($0.inheritance.format(into: { ": \($0)" }))" })
             pipe.line()
-            pipe.spaced(describables: properties, linePadding: 0)
+            pipe.spaced(linePadding: 0, describables: properties)
             pipe.line()
             for (index, function) in functions.enumerated() {
                 function.describe(into: pipe, shouldOmitBody: true)
@@ -646,106 +851,73 @@ public struct Protocol: ContainerType, HasAttributes, HasAccessibility {
     }
 }
 
-public struct Extension: ContainerType, HasAttributes, HasAccessibility {
-    public var attributes: Attributes
-    public var accessibility: Accessibility
-    public var extendedType: String
-    public var inheritances: [String]
-    public var whereClause: [String]
-    public var properties: [Property]
-    public var functions: [Function]
+//public struct Extension: ContainerType, HasAttributes, HasAccessibility {
+//    public var attributes: Attributes
+//    public var accessibility: Accessibility
+//    public var extendedType: String
+//    public var inheritances: [String]
+//    public var whereClause: [String]
+//    public var properties: [Property]
+//    public var functions: [Function]
+//
+//    public init(attributes: Attributes = [], accessibility: Accessibility = .internal, extendedType: String, inheritances: [String] = [], whereClause: [String], properties: [Property] = [], functions: [Function] = []) {
+//        self.attributes = attributes
+//        self.accessibility = accessibility
+//        self.extendedType = extendedType
+//        self.inheritances = inheritances
+//        self.whereClause = whereClause
+//        self.properties = properties
+//        self.functions = functions
+//    }
+//
+//    public func describe(into pipe: DescriptionPipe) {
+//        let inheritancesString = inheritances.joined(separator: ", ")
+//        attributes.describe(into: pipe)
+//        pipe.string([accessibility.description, "extension \(extendedType)\(inheritancesString.isEmpty ? inheritancesString : "")"].filter { !$0.isEmpty }.joined(separator: " "))
+//        if !whereClause.isEmpty {
+//            pipe.string(" where \(whereClause.joined(separator: ", "))")
+//        }
+//        pipe.string(" ")
+//        pipe.block {
+//            pipe.spaced(describables: properties + functions)
+//        }
+//    }
+//}
 
-    public init(attributes: Attributes = [], accessibility: Accessibility = .internal, extendedType: String, inheritances: [String] = [], whereClause: [String], properties: [Property] = [], functions: [Function] = []) {
-        self.attributes = attributes
-        self.accessibility = accessibility
-        self.extendedType = extendedType
-        self.inheritances = inheritances
-        self.whereClause = whereClause
-        self.properties = properties
-        self.functions = functions
-    }
-
-    public func describe(into pipe: DescriptionPipe) {
-        let inheritancesString = inheritances.joined(separator: ", ")
-        attributes.describe(into: pipe)
-        pipe.string([accessibility.description, "extension \(extendedType)\(inheritancesString.isEmpty ? inheritancesString : "")"].filter { !$0.isEmpty }.joined(separator: " "))
-        if !whereClause.isEmpty {
-            pipe.string(" where \(whereClause.joined(separator: ", "))")
-        }
-        pipe.string(" ")
-        pipe.block {
-            pipe.spaced(describables: properties + functions)
-        }
-    }
-}
-
-public struct Enumeration: ContainerType, HasAttributes, HasAccessibility {
-    public struct Case {
-        public typealias Argument = (name: String?, type: String)
-
-        public var isIndirect: Bool
-        public var name: String
-        public var arguments: [Argument]
-
-        public var description: String {
-            let argumentsString: String
-            if arguments.isEmpty {
-                argumentsString = ""
-            } else {
-                let mappedArguments = arguments.map { argument in
-                    argument.name.format(into: { "\($0): " }) + argument.type
-                }
-                argumentsString = "(\(mappedArguments.joined(separator: ", ")))"
-            }
-            return "case \(name)\(argumentsString)"
-        }
-
-        public init(name: String, arguments: [Argument] = []) {
-            self.init(isIndirect: false, name: name, arguments: arguments)
-        }
-
-        private init(isIndirect: Bool, name: String, arguments: [Argument]) {
-            self.isIndirect = isIndirect
-            self.name = name
-            self.arguments = arguments
-        }
-
-        public static func indirect(name: String, arguments: [Argument]) -> Case {
-            return Case(isIndirect: true, name: name, arguments: arguments)
-        }
-    }
-
-    public var attributes: Attributes
-    public var accessibility: Accessibility
-    public var name: String
-    public var inheritances: [String]
-    public var containers: [ContainerType]
-    public var cases: [Case]
-    public var properties: [Property]
-    public var functions: [Function]
-
-    public init(attributes: Attributes = [], accessibility: Accessibility = .internal, name: String, inheritances: [String] = [], containers: [ContainerType] = [], cases: [Case], properties: [Property] = [], functions: [Function] = []) {
-        self.attributes = attributes
-        self.accessibility = accessibility
-        self.name = name
-        self.inheritances = inheritances
-        self.containers = containers
-        self.cases = cases
-        self.properties = properties
-        self.functions = functions
-    }
-
-    public func describe(into pipe: DescriptionPipe) {
-        let inheritancesString = inheritances.joined(separator: ", ")
-        attributes.describe(into: pipe)
-        pipe.string([accessibility.description, "enum \(name)\(inheritancesString.isEmpty ? inheritancesString : "")"].filter { !$0.isEmpty }.joined(separator: " "))
-        pipe.string(" ")
-        pipe.block {
-            pipe.spaced(describables: containers)
-            pipe.line()
-            pipe.lines(cases.map { $0.description })
-            pipe.line()
-            pipe.spaced(describables: properties + functions)
-        }
-    }
-}
+//public struct Enumeration: ContainerType, HasAttributes, HasAccessibility {
+//
+//
+//    public var attributes: Attributes
+//    public var accessibility: Accessibility
+//    public var name: String
+//    public var inheritances: [String]
+//    public var containers: [ContainerType]
+//    public var cases: [Case]
+//    public var properties: [Property]
+//    public var functions: [Function]
+//
+//    public init(attributes: Attributes = [], accessibility: Accessibility = .internal, name: String, inheritances: [String] = [], containers: [ContainerType] = [], cases: [Case], properties: [Property] = [], functions: [Function] = []) {
+//        self.attributes = attributes
+//        self.accessibility = accessibility
+//        self.name = name
+//        self.inheritances = inheritances
+//        self.containers = containers
+//        self.cases = cases
+//        self.properties = properties
+//        self.functions = functions
+//    }
+//
+//    public func describe(into pipe: DescriptionPipe) {
+//        let inheritancesString = inheritances.joined(separator: ", ")
+//        attributes.describe(into: pipe)
+//        pipe.string([accessibility.description, "enum \(name)\(inheritancesString.isEmpty ? inheritancesString : "")"].filter { !$0.isEmpty }.joined(separator: " "))
+//        pipe.string(" ")
+//        pipe.block {
+//            pipe.spaced(describables: containers)
+//            pipe.line()
+//            pipe.lines(cases.map { $0.description })
+//            pipe.line()
+//            pipe.spaced(describables: properties + functions)
+//        }
+//    }
+//}

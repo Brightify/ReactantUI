@@ -17,6 +17,14 @@ public class ScrollView: Container {
         return Properties.scrollView.allProperties
     }
 
+    public class override func runtimeType() throws -> String {
+        return "UIScrollView"
+    }
+
+    public override func runtimeType(for platform: RuntimePlatform) throws -> RuntimeType {
+        return RuntimeType(name: "UIScrollView", module: "UIKit")
+    }
+
     #if canImport(UIKit)
     public override func initialize(context: ReactantLiveUIWorker.Context) -> UIView {
         return UIScrollView()

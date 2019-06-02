@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<Component
+<FooterView
     xmlns="http://schema.Hyperdrive.tech/ui"
     xmlns:layout="http://schema.Hyperdrive.tech/layout"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -10,6 +10,4 @@
         text="Footer"
         textColor="red"
         layout:edges="super inset(16)" />
-</Component>
-
-
+</FooterView>

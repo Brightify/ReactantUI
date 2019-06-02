@@ -7,7 +7,9 @@
 //
 
 import Foundation
+#if canImport(SwiftCodeGen)
 import SwiftCodeGen
+#endif
 
 #if canImport(UIKit)
 import UIKit

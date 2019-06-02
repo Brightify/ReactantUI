@@ -7,9 +7,11 @@
 
 import Hyperdrive
 
-final class PlainTableViewController: ControllerBase<Void, PlainTableViewRootView> {
+final class PlainTableViewController: HyperViewController<PlainTableViewRootView> {
 
-    override init() {
-        super.init(title: "Plain table view")
+    init() {
+        super.init()
+
+        title = "Plain table view"
     }
 }

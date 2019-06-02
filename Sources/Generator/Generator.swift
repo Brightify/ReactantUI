@@ -1,5 +1,6 @@
 import Foundation
 import Tokenizer
+import SwiftCodeGen
 
 public enum SwiftVersion: Int {
     case swift4_0
@@ -105,42 +106,23 @@ public class Generator {
     
     var output = ""
 
-    func generate(imports: Bool) throws -> String {
-        return output
-    }
-
-    func l(_ line: String = "") {
-        l(fakeLine: line)
-    }
-
-    func l(_ line: String = "", encapsulateIn encapsulation: Encapsulation = .braces, _ f: () throws -> Void) rethrows {
-        l(fakeLine: line + encapsulation.open)
-        nestLevel += 1
-        try f()
-        nestLevel -= 1
-        l(encapsulation.close)
-    }
-
-    private func l(fakeLine: String) {
-        let lines = fakeLine.components(separatedBy: CharacterSet.newlines)
-        for line in lines {
-            output.append((0..<nestLevel).map { _ in "    " }.joined() + line + "\n")
-        }
+    func generate(imports: Bool) throws -> Describable {
+        return ""
     }
     
-    func ifSimulator(_ commands: String) -> String {
+    func ifSimulator(_ commands: String) -> [String] {
         if configuration.swiftVersion >= .swift4_1 {
-            return """
-            #if targetEnvironment(simulator)
-                \(commands)
-            #endif
-            """
+            return [
+                "#if targetEnvironment(simulator)",
+                "    \(commands)",
+                "#endif",
+            ]
         } else {
-            return """
-            #if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))
-                \(commands)
-            #endif
-            """
+            return [
+                "#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))",
+                "    \(commands)",
+                "#endif",
+            ]
         }
     }
 }

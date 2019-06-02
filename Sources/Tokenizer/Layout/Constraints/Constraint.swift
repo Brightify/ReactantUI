@@ -90,10 +90,8 @@ public struct Constraint {
         case .targeted(let target, let targetAnchor, let multiplier, let constant):
             var targetString: String
             switch target {
-            case .field(let field):
-                targetString = "\(field)"
-            case .layoutId(let layoutId):
-                targetString = "id:\(layoutId)"
+            case .identifier(let id):
+                targetString = id
             case .parent:
                 targetString = "super"
             case .this:

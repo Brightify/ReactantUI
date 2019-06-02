@@ -3,10 +3,11 @@
     xmlns:layout="http://schema.Hyperdrive.tech/layout"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://schema.Hyperdrive.tech/ui http://schema.Hyperdrive.tech/ui.xsd
-                        http://schema.Hyperdrive.tech/layout http://schema.Hyperdrive.tech/layout.xsd">
+                        http://schema.Hyperdrive.tech/layout http://schema.Hyperdrive.tech/layout.xsd"
+    action:tap="ordel">
 
     <Label
-        field="name"
+        text="$name"
         textColor="black"
         layout:fillHorizontally="super inset(20)"
         layout:fillVertically="super inset(12)" />
@@ -15,5 +16,5 @@
         backgroundColor="lightGray"
         layout:height="1"
         layout:fillHorizontally="super"
-        layout:bottom="super"/>
+        layout:bottom="super" />
 </SelectionCell>

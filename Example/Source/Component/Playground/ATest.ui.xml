@@ -36,8 +36,8 @@ enum OtherView.Action {
         export="true"
         title="OK"
         type="ExampleCell"
-        action:tap="cellTapped(..., im: $image, @falcon.image, ref: @very.far.far.away, test: String(dude), empty: String(), $message, Int(0), ...)"
         />
+        <!-- action:tap="cellTapped(..., im: $image, @falcon.image, ref: @very.far.far.away, test: String(dude), empty: String(), $message, Int(0), ...)" -->
 
     <ImageView
         id="falcon"

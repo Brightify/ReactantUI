@@ -15,6 +15,10 @@ public enum ControlState: String, EnumPropertyType {
     case selected
     case focused
 
+    public var requiresTheme: Bool {
+        return false
+    }
+
     public init?(rawValue: String) {
         switch rawValue {
         case "normal":

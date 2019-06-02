@@ -160,6 +160,13 @@
 		18C920AD229FD4EB004C2B0B /* SmartDashesType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22535098212443760009B368 /* SmartDashesType.swift */; };
 		18C920AE229FD4EE004C2B0B /* SmartInsertDeleteType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2253509A212443CD0009B368 /* SmartInsertDeleteType.swift */; };
 		18C920C522A2B62E004C2B0B /* UIControlEventObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C920C322A2B618004C2B0B /* UIControlEventObserver.swift */; };
+		18C920C722A3D201004C2B0B /* ActionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C920C622A3D201004C2B0B /* ActionParser.swift */; };
+		18C920C822A3D201004C2B0B /* ActionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C920C622A3D201004C2B0B /* ActionParser.swift */; };
+		18C9211022A4062D004C2B0B /* GeneratedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FF981F216638BC00B617E4 /* GeneratedUI.swift */; };
+		18C9212622A41E98004C2B0B /* UIButton+BackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C9212522A41E98004C2B0B /* UIButton+BackgroundColor.swift */; };
+		18C9212722A41E98004C2B0B /* UIButton+BackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C9212522A41E98004C2B0B /* UIButton+BackgroundColor.swift */; };
+		18C9212822A41EA2004C2B0B /* UIButton+BackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C9212522A41E98004C2B0B /* UIButton+BackgroundColor.swift */; };
+		18C9212922A41EA3004C2B0B /* UIButton+BackgroundColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C9212522A41E98004C2B0B /* UIButton+BackgroundColor.swift */; };
 		18F7988820D7D76600522E1E /* ApplicationDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F7988620D7D74400522E1E /* ApplicationDescription.swift */; };
 		22141C922052B0A400205F56 /* ExampleSelectionRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22141C912052B0A400205F56 /* ExampleSelectionRootView.ui.xml */; };
 		22141C972052B0FD00205F56 /* SelectionCell.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22141C962052B0FD00205F56 /* SelectionCell.ui.xml */; };
@@ -402,19 +409,13 @@
 		22BF274D212ABDC80024B1A4 /* XMLElement+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184491E9209223A70080B743 /* XMLElement+Utils.swift */; };
 		22BF274E212ABEF50024B1A4 /* RUIExceptionCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 1844912F20921F150080B743 /* RUIExceptionCatcher.m */; };
 		22BF2755212AD8C70024B1A4 /* HeaderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF2754212AD8C70024B1A4 /* HeaderTableViewController.swift */; };
-		22BF2757212AD8D30024B1A4 /* HeaderTableViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF2756212AD8D30024B1A4 /* HeaderTableViewRootView.swift */; };
 		22BF2759212AD8EF0024B1A4 /* HeaderTableViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22BF2758212AD8EF0024B1A4 /* HeaderTableViewRootView.ui.xml */; };
-		22BF275C212AD9A00024B1A4 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF275B212AD9A00024B1A4 /* HeaderView.swift */; };
-		22BF275F212ADA000024B1A4 /* FooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF275E212ADA000024B1A4 /* FooterView.swift */; };
 		22BF2761212ADA1A0024B1A4 /* HeaderView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22BF2760212ADA1A0024B1A4 /* HeaderView.ui.xml */; };
 		22BF2763212ADAAF0024B1A4 /* FooterView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22BF2762212ADAAF0024B1A4 /* FooterView.ui.xml */; };
-		22BF2765212ADAF80024B1A4 /* FooterTableViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF2764212ADAF80024B1A4 /* FooterTableViewRootView.swift */; };
 		22BF2767212ADB090024B1A4 /* FooterTableViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22BF2766212ADB090024B1A4 /* FooterTableViewRootView.ui.xml */; };
 		22BF2769212ADB860024B1A4 /* FooterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF2768212ADB860024B1A4 /* FooterTableViewController.swift */; };
 		22BF276B212ADC350024B1A4 /* SimpleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF276A212ADC350024B1A4 /* SimpleTableViewController.swift */; };
-		22BF276D212ADC400024B1A4 /* SimpleTableViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF276C212ADC400024B1A4 /* SimpleTableViewRootView.swift */; };
 		22BF276F212ADC4F0024B1A4 /* SimpleTableViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22BF276E212ADC4F0024B1A4 /* SimpleTableViewRootView.ui.xml */; };
-		22BF2771212ADCAE0024B1A4 /* SimulatedSeparatorTableViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF2770212ADCAE0024B1A4 /* SimulatedSeparatorTableViewRootView.swift */; };
 		22BF2773212ADCBF0024B1A4 /* SimulatedSeparatorTableViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22BF2772212ADCBF0024B1A4 /* SimulatedSeparatorTableViewRootView.ui.xml */; };
 		22BF2775212ADCCC0024B1A4 /* SimulatedSeparatorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF2774212ADCCC0024B1A4 /* SimulatedSeparatorTableViewController.swift */; };
 		22D274F9212AB1FF00F30115 /* Example-tvOS.hyperdrive.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22D274F8212AB1FF00F30115 /* Example-tvOS.hyperdrive.xml */; };
@@ -455,17 +456,9 @@
 		58836BDBAF0F10A4A5E31625 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7139F67D20934D6E009EA7F4 /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */; };
 		5B1333D6A201F8A50D8697D9 /* Pods_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1AAC4CA06239D481C4E7F9D /* Pods_Example.framework */; };
 		680DD2EC2111E59B00069A82 /* ProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224F04EA2085134000C48268 /* ProgressViewController.swift */; };
-		680DD2ED2111E59B00069A82 /* ProgressViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224F04EC2085134B00C48268 /* ProgressViewRootView.swift */; };
 		680DD2EE2111E59B00069A82 /* StackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22957E37207235C40088C09E /* StackViewController.swift */; };
-		680DD2EF2111E59B00069A82 /* StackViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22957E39207235D00088C09E /* StackViewRootView.swift */; };
-		680DD2F02111E59B00069A82 /* PlainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141CA12052B55000205F56 /* PlainCell.swift */; };
 		680DD2F12111E59B00069A82 /* PlainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141C9A2052B47000205F56 /* PlainTableViewController.swift */; };
-		680DD2F22111E59B00069A82 /* PlainTableViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141C9C2052B47F00205F56 /* PlainTableViewRootView.swift */; };
-		680DD2F32111E59B00069A82 /* SelectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141C942052B0ED00205F56 /* SelectionCell.swift */; };
 		680DD2F42111E59B00069A82 /* ExampleSelectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141C8D2052B08700205F56 /* ExampleSelectionController.swift */; };
-		680DD2F52111E59B00069A82 /* ExampleSelectionRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141C8F2052B09200205F56 /* ExampleSelectionRootView.swift */; };
-		680DD2F62111E59B00069A82 /* ExampleRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B68801EAF7641007CC668 /* ExampleRootView.swift */; };
-		680DD2F72111E59B00069A82 /* ExampleView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B68821EAF7641007CC668 /* ExampleView2.swift */; };
 		680DD2F82111E59B00069A82 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B68841EAF7641007CC668 /* ViewController.swift */; };
 		680DD2F92111E59B00069A82 /* MainWireframe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22141C8A2052B02F00205F56 /* MainWireframe.swift */; };
 		680DD2FA2111E59B00069A82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 182B687B1EAF7641007CC668 /* AppDelegate.swift */; };
@@ -610,7 +603,6 @@
 		182B687F1EAF7641007CC668 /* ExampleCell.ui.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ExampleCell.ui.xml; sourceTree = "<group>"; };
 		182B68801EAF7641007CC668 /* ExampleRootView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleRootView.swift; sourceTree = "<group>"; };
 		182B68811EAF7641007CC668 /* ExampleRootView.ui.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ExampleRootView.ui.xml; sourceTree = "<group>"; };
-		182B68821EAF7641007CC668 /* ExampleView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleView2.swift; sourceTree = "<group>"; };
 		182B68831EAF7641007CC668 /* ExampleView2.ui.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ExampleView2.ui.xml; sourceTree = "<group>"; };
 		182B68841EAF7641007CC668 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		182B68861EAF7641007CC668 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -790,20 +782,17 @@
 		18758FE320D980FF004C6690 /* Example.hyperdrive.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Example.hyperdrive.xml; sourceTree = "<group>"; };
 		18758FE520D9BBB0004C6690 /* ReactantThemeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactantThemeSelector.swift; sourceTree = "<group>"; };
 		18C920C322A2B618004C2B0B /* UIControlEventObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIControlEventObserver.swift; sourceTree = "<group>"; };
+		18C920C622A3D201004C2B0B /* ActionParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionParser.swift; sourceTree = "<group>"; };
+		18C9212522A41E98004C2B0B /* UIButton+BackgroundColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+BackgroundColor.swift"; sourceTree = "<group>"; };
 		18F7988620D7D74400522E1E /* ApplicationDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationDescription.swift; sourceTree = "<group>"; };
 		22141C8A2052B02F00205F56 /* MainWireframe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWireframe.swift; sourceTree = "<group>"; };
 		22141C8D2052B08700205F56 /* ExampleSelectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSelectionController.swift; sourceTree = "<group>"; };
-		22141C8F2052B09200205F56 /* ExampleSelectionRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSelectionRootView.swift; sourceTree = "<group>"; };
 		22141C912052B0A400205F56 /* ExampleSelectionRootView.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ExampleSelectionRootView.ui.xml; sourceTree = "<group>"; };
-		22141C942052B0ED00205F56 /* SelectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionCell.swift; sourceTree = "<group>"; };
 		22141C962052B0FD00205F56 /* SelectionCell.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SelectionCell.ui.xml; sourceTree = "<group>"; };
 		22141C9A2052B47000205F56 /* PlainTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainTableViewController.swift; sourceTree = "<group>"; };
-		22141C9C2052B47F00205F56 /* PlainTableViewRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainTableViewRootView.swift; sourceTree = "<group>"; };
 		22141C9E2052B49E00205F56 /* PlainTableViewRootView.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PlainTableViewRootView.ui.xml; sourceTree = "<group>"; };
-		22141CA12052B55000205F56 /* PlainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlainCell.swift; sourceTree = "<group>"; };
 		22141CA32052B55E00205F56 /* PlainCell.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PlainCell.ui.xml; sourceTree = "<group>"; };
 		224F04EA2085134000C48268 /* ProgressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewController.swift; sourceTree = "<group>"; };
-		224F04EC2085134B00C48268 /* ProgressViewRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressViewRootView.swift; sourceTree = "<group>"; };
 		224F04EE2085136400C48268 /* ProgressViewRootView.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ProgressViewRootView.ui.xml; sourceTree = "<group>"; };
 		2253508F212442D00009B368 /* AutocapitalizationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocapitalizationType.swift; sourceTree = "<group>"; };
 		22535092212443170009B368 /* AutocorrectionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutocorrectionType.swift; sourceTree = "<group>"; };
@@ -820,22 +809,15 @@
 		2284DAEC1FAC96BE00D231D3 /* GeneratedUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneratedUI.swift; sourceTree = "<group>"; };
 		2284DAEE1FAC971900D231D3 /* TestView.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = TestView.ui.xml; sourceTree = "<group>"; };
 		22957E37207235C40088C09E /* StackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackViewController.swift; sourceTree = "<group>"; };
-		22957E39207235D00088C09E /* StackViewRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackViewRootView.swift; sourceTree = "<group>"; };
 		22957E3B207235E20088C09E /* StackViewRootView.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = StackViewRootView.ui.xml; sourceTree = "<group>"; };
 		22BF2754212AD8C70024B1A4 /* HeaderTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderTableViewController.swift; sourceTree = "<group>"; };
-		22BF2756212AD8D30024B1A4 /* HeaderTableViewRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderTableViewRootView.swift; sourceTree = "<group>"; };
 		22BF2758212AD8EF0024B1A4 /* HeaderTableViewRootView.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = HeaderTableViewRootView.ui.xml; sourceTree = "<group>"; };
-		22BF275B212AD9A00024B1A4 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
-		22BF275E212ADA000024B1A4 /* FooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterView.swift; sourceTree = "<group>"; };
 		22BF2760212ADA1A0024B1A4 /* HeaderView.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = HeaderView.ui.xml; sourceTree = "<group>"; };
 		22BF2762212ADAAF0024B1A4 /* FooterView.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = FooterView.ui.xml; sourceTree = "<group>"; };
-		22BF2764212ADAF80024B1A4 /* FooterTableViewRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterTableViewRootView.swift; sourceTree = "<group>"; };
 		22BF2766212ADB090024B1A4 /* FooterTableViewRootView.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = FooterTableViewRootView.ui.xml; sourceTree = "<group>"; };
 		22BF2768212ADB860024B1A4 /* FooterTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterTableViewController.swift; sourceTree = "<group>"; };
 		22BF276A212ADC350024B1A4 /* SimpleTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleTableViewController.swift; sourceTree = "<group>"; };
-		22BF276C212ADC400024B1A4 /* SimpleTableViewRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleTableViewRootView.swift; sourceTree = "<group>"; };
 		22BF276E212ADC4F0024B1A4 /* SimpleTableViewRootView.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SimpleTableViewRootView.ui.xml; sourceTree = "<group>"; };
-		22BF2770212ADCAE0024B1A4 /* SimulatedSeparatorTableViewRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatedSeparatorTableViewRootView.swift; sourceTree = "<group>"; };
 		22BF2772212ADCBF0024B1A4 /* SimulatedSeparatorTableViewRootView.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = SimulatedSeparatorTableViewRootView.ui.xml; sourceTree = "<group>"; };
 		22BF2774212ADCCC0024B1A4 /* SimulatedSeparatorTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatedSeparatorTableViewController.swift; sourceTree = "<group>"; };
 		22D274F8212AB1FF00F30115 /* Example-tvOS.hyperdrive.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Example-tvOS.hyperdrive.xml"; sourceTree = "<group>"; };
@@ -1424,6 +1406,7 @@
 		184491D0209223A70080B743 /* Implementation */ = {
 			isa = PBXGroup;
 			children = (
+				18C920C622A3D201004C2B0B /* ActionParser.swift */,
 				184491D1209223A70080B743 /* ConstraintParser.swift */,
 				71BAEAB520972DFD00D56639 /* ConditionParser.swift */,
 				184491D2209223A70080B743 /* DimensionParser.swift */,
@@ -1520,7 +1503,6 @@
 			isa = PBXGroup;
 			children = (
 				22141C8D2052B08700205F56 /* ExampleSelectionController.swift */,
-				22141C8F2052B09200205F56 /* ExampleSelectionRootView.swift */,
 				22141C912052B0A400205F56 /* ExampleSelectionRootView.ui.xml */,
 			);
 			path = ExampleSelection;
@@ -1529,7 +1511,6 @@
 		22141C932052B0D200205F56 /* SelectionCell */ = {
 			isa = PBXGroup;
 			children = (
-				22141C942052B0ED00205F56 /* SelectionCell.swift */,
 				22141C962052B0FD00205F56 /* SelectionCell.ui.xml */,
 			);
 			path = SelectionCell;
@@ -1554,7 +1535,6 @@
 			children = (
 				22141CA02052B54300205F56 /* Cell */,
 				22141C9A2052B47000205F56 /* PlainTableViewController.swift */,
-				22141C9C2052B47F00205F56 /* PlainTableViewRootView.swift */,
 				22141C9E2052B49E00205F56 /* PlainTableViewRootView.ui.xml */,
 			);
 			path = PlainTableView;
@@ -1563,7 +1543,6 @@
 		22141CA02052B54300205F56 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				22141CA12052B55000205F56 /* PlainCell.swift */,
 				22141CA32052B55E00205F56 /* PlainCell.ui.xml */,
 			);
 			path = Cell;
@@ -1577,7 +1556,6 @@
 				182B687F1EAF7641007CC668 /* ExampleCell.ui.xml */,
 				182B68801EAF7641007CC668 /* ExampleRootView.swift */,
 				182B68811EAF7641007CC668 /* ExampleRootView.ui.xml */,
-				182B68821EAF7641007CC668 /* ExampleView2.swift */,
 				182B68831EAF7641007CC668 /* ExampleView2.ui.xml */,
 				182B68841EAF7641007CC668 /* ViewController.swift */,
 			);
@@ -1588,7 +1566,6 @@
 			isa = PBXGroup;
 			children = (
 				224F04EA2085134000C48268 /* ProgressViewController.swift */,
-				224F04EC2085134B00C48268 /* ProgressViewRootView.swift */,
 				224F04EE2085136400C48268 /* ProgressViewRootView.ui.xml */,
 			);
 			path = ProgressView;
@@ -1637,7 +1614,6 @@
 			isa = PBXGroup;
 			children = (
 				22957E37207235C40088C09E /* StackViewController.swift */,
-				22957E39207235D00088C09E /* StackViewRootView.swift */,
 				22957E3B207235E20088C09E /* StackViewRootView.ui.xml */,
 			);
 			path = StackView;
@@ -1648,7 +1624,6 @@
 			children = (
 				22BF275A212AD98F0024B1A4 /* Header */,
 				22BF2754212AD8C70024B1A4 /* HeaderTableViewController.swift */,
-				22BF2756212AD8D30024B1A4 /* HeaderTableViewRootView.swift */,
 				22BF2758212AD8EF0024B1A4 /* HeaderTableViewRootView.ui.xml */,
 			);
 			path = HeaderTableView;
@@ -1659,7 +1634,6 @@
 			children = (
 				22BF275D212AD9F40024B1A4 /* Footer */,
 				22BF2768212ADB860024B1A4 /* FooterTableViewController.swift */,
-				22BF2764212ADAF80024B1A4 /* FooterTableViewRootView.swift */,
 				22BF2766212ADB090024B1A4 /* FooterTableViewRootView.ui.xml */,
 			);
 			path = FooterTableView;
@@ -1669,7 +1643,6 @@
 			isa = PBXGroup;
 			children = (
 				22BF276A212ADC350024B1A4 /* SimpleTableViewController.swift */,
-				22BF276C212ADC400024B1A4 /* SimpleTableViewRootView.swift */,
 				22BF276E212ADC4F0024B1A4 /* SimpleTableViewRootView.ui.xml */,
 			);
 			path = SimpleTableView;
@@ -1679,7 +1652,6 @@
 			isa = PBXGroup;
 			children = (
 				22BF2774212ADCCC0024B1A4 /* SimulatedSeparatorTableViewController.swift */,
-				22BF2770212ADCAE0024B1A4 /* SimulatedSeparatorTableViewRootView.swift */,
 				22BF2772212ADCBF0024B1A4 /* SimulatedSeparatorTableViewRootView.ui.xml */,
 			);
 			path = SimulatedSeparatorTableView;
@@ -1688,7 +1660,6 @@
 		22BF275A212AD98F0024B1A4 /* Header */ = {
 			isa = PBXGroup;
 			children = (
-				22BF275B212AD9A00024B1A4 /* HeaderView.swift */,
 				22BF2760212ADA1A0024B1A4 /* HeaderView.ui.xml */,
 			);
 			path = Header;
@@ -1697,7 +1668,6 @@
 		22BF275D212AD9F40024B1A4 /* Footer */ = {
 			isa = PBXGroup;
 			children = (
-				22BF275E212ADA000024B1A4 /* FooterView.swift */,
 				22BF2762212ADAAF0024B1A4 /* FooterView.ui.xml */,
 			);
 			path = Footer;
@@ -1743,6 +1713,7 @@
 				6870E26320CFC0E2002825CC /* Array+subarrays.swift */,
 				18758FE520D9BBB0004C6690 /* ReactantThemeSelector.swift */,
 				18C920C322A2B618004C2B0B /* UIControlEventObserver.swift */,
+				18C9212522A41E98004C2B0B /* UIButton+BackgroundColor.swift */,
 			);
 			path = Runtime;
 			sourceTree = "<group>";
@@ -2207,6 +2178,7 @@
 				"${BUILT_PRODUCTS_DIR}/Result-iOS/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa-iOS/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxDataSources-iOS/RxDataSources.framework",
+				"${BUILT_PRODUCTS_DIR}/RxGesture/RxGesture.framework",
 				"${BUILT_PRODUCTS_DIR}/RxOptional-iOS/RxOptional.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift-iOS/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit-iOS/SnapKit.framework",
@@ -2219,6 +2191,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxDataSources.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxGesture.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxOptional.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
@@ -2389,28 +2362,15 @@
 			files = (
 				680DD2F12111E59B00069A82 /* PlainTableViewController.swift in Sources */,
 				680DD2F92111E59B00069A82 /* MainWireframe.swift in Sources */,
-				680DD2F62111E59B00069A82 /* ExampleRootView.swift in Sources */,
 				680DD2FA2111E59B00069A82 /* AppDelegate.swift in Sources */,
-				22BF276D212ADC400024B1A4 /* SimpleTableViewRootView.swift in Sources */,
 				680DD2EE2111E59B00069A82 /* StackViewController.swift in Sources */,
 				22BF2775212ADCCC0024B1A4 /* SimulatedSeparatorTableViewController.swift in Sources */,
-				22BF2757212AD8D30024B1A4 /* HeaderTableViewRootView.swift in Sources */,
 				22BF276B212ADC350024B1A4 /* SimpleTableViewController.swift in Sources */,
 				22BF2769212ADB860024B1A4 /* FooterTableViewController.swift in Sources */,
-				22BF275C212AD9A00024B1A4 /* HeaderView.swift in Sources */,
-				680DD2F52111E59B00069A82 /* ExampleSelectionRootView.swift in Sources */,
-				680DD2ED2111E59B00069A82 /* ProgressViewRootView.swift in Sources */,
-				22BF2765212ADAF80024B1A4 /* FooterTableViewRootView.swift in Sources */,
 				22BF2755212AD8C70024B1A4 /* HeaderTableViewController.swift in Sources */,
-				680DD2F02111E59B00069A82 /* PlainCell.swift in Sources */,
-				680DD2F72111E59B00069A82 /* ExampleView2.swift in Sources */,
-				22BF275F212ADA000024B1A4 /* FooterView.swift in Sources */,
-				22BF2771212ADCAE0024B1A4 /* SimulatedSeparatorTableViewRootView.swift in Sources */,
-				680DD2F32111E59B00069A82 /* SelectionCell.swift in Sources */,
 				680DD2F82111E59B00069A82 /* ViewController.swift in Sources */,
+				18C9211022A4062D004C2B0B /* GeneratedUI.swift in Sources */,
 				680DD2F42111E59B00069A82 /* ExampleSelectionController.swift in Sources */,
-				680DD2F22111E59B00069A82 /* PlainTableViewRootView.swift in Sources */,
-				680DD2EF2111E59B00069A82 /* StackViewRootView.swift in Sources */,
 				680DD2EC2111E59B00069A82 /* ProgressViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2424,6 +2384,7 @@
 				22BF2678212ABD570024B1A4 /* ElementContext.swift in Sources */,
 				18449245209223A70080B743 /* LineBreakMode.swift in Sources */,
 				22BF269E212ABD570024B1A4 /* WebView.swift in Sources */,
+				18C9212622A41E98004C2B0B /* UIButton+BackgroundColor.swift in Sources */,
 				68DBC63D210717A200A81E8D /* LiveUIWorker.swift in Sources */,
 				18449277209223A70080B743 /* XMLElement+Utils.swift in Sources */,
 				22BF2681212ABD570024B1A4 /* ComponentReference.swift in Sources */,
@@ -2557,6 +2518,7 @@
 				18449270209223A70080B743 /* Style+Serialization.swift in Sources */,
 				1844913320921F150080B743 /* DebugAlertController.swift in Sources */,
 				1844925C209223A70080B743 /* StyleGroup.swift in Sources */,
+				18C920C722A3D201004C2B0B /* ActionParser.swift in Sources */,
 				1844913720921F150080B743 /* LiveUIError.swift in Sources */,
 				1844926F209223A70080B743 /* Layout+Serialization.swift in Sources */,
 				22BF268D212ABD570024B1A4 /* SegmentedControl.swift in Sources */,
@@ -2673,6 +2635,7 @@
 				22D2753F212ABAB400F30115 /* UITraitHelper.swift in Sources */,
 				22D2753D212ABAAB00F30115 /* Array+subarrays.swift in Sources */,
 				22D2753C212ABAAB00F30115 /* NSShadow+convenienceInit.swift in Sources */,
+				18C9212922A41EA3004C2B0B /* UIButton+BackgroundColor.swift in Sources */,
 				22D2753E212ABAB400F30115 /* ViewOrientation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2708,6 +2671,7 @@
 				22BF271A212ABD920024B1A4 /* VisualEffect.swift in Sources */,
 				22D2754A212ABAD700F30115 /* PreviewListController.swift in Sources */,
 				22BF26B3212ABD570024B1A4 /* NavigationBar.swift in Sources */,
+				18C9212722A41E98004C2B0B /* UIButton+BackgroundColor.swift in Sources */,
 				22BF2730212ABDB80024B1A4 /* Collection+groupBy.swift in Sources */,
 				22BF26AC212ABD570024B1A4 /* Button.swift in Sources */,
 				22BF2700212ABD920024B1A4 /* TransformationModifier.swift in Sources */,
@@ -2881,6 +2845,7 @@
 				22BF26D4212ABD630024B1A4 /* Condition.swift in Sources */,
 				22BF2742212ABDC70024B1A4 /* SWXMLHash+TypeConversion.swift in Sources */,
 				22BF26CB212ABD570024B1A4 /* AttributedText.swift in Sources */,
+				18C920C822A3D201004C2B0B /* ActionParser.swift in Sources */,
 				22BF2673212ABD210024B1A4 /* InterfaceState.swift in Sources */,
 				22BF26D0212ABD630024B1A4 /* ConstraintPriority.swift in Sources */,
 				22BF271E212ABD920024B1A4 /* TextTab.swift in Sources */,
@@ -2900,6 +2865,7 @@
 				6836D5F920B8404F00FD2DF8 /* UIView+traits.swift in Sources */,
 				68CA17BE20C977B3005654B0 /* ViewOrientation.swift in Sources */,
 				18758FE620D9BBB0004C6690 /* ReactantThemeSelector.swift in Sources */,
+				18C9212822A41EA2004C2B0B /* UIButton+BackgroundColor.swift in Sources */,
 				6870E26620CFC5ED002825CC /* Array+subarrays.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

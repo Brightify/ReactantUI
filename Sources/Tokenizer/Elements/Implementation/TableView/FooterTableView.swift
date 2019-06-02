@@ -7,7 +7,9 @@
 //
 
 import Foundation
+#if canImport(SwiftCodeGen)
 import SwiftCodeGen
+#endif
 
 #if canImport(UIKit)
 import UIKit
@@ -46,19 +48,21 @@ public class FooterTableView: View, ComponentDefinitionContainer {
     }
 
     public class override func runtimeType() throws -> String {
-        return "ReactantTableView"
+        return "ReactantTableView & UITableView"
     }
     
     public override func runtimeType(for platform: RuntimePlatform) throws -> RuntimeType {
-        return RuntimeType(name: "ReactantTableView")
-    }
-
-    public override func initialization(for platform: RuntimePlatform, describeInto pipe: DescriptionPipe) throws {
         guard let cellType = cellType, let footerType = footerType else {
             throw TokenizationError(message: "Initialization should never happen as the view was referenced via field.")
         }
-        pipe.string("FooterTableView<\(footerType), \(cellType)>()")
+        return RuntimeType(name: "FooterTableView<\(footerType), \(cellType)>", module: "Hyperdrive")
     }
+
+    #if canImport(SwiftCodeGen)
+    public override func initialization(for platform: RuntimePlatform, describeInto pipe: DescriptionPipe) throws {
+        pipe.string("\(try runtimeType(for: platform).name)()")
+    }
+    #endif
 
     public required init(node: SWXMLHash.XMLElement, idProvider: ElementIdProvider) throws {
         guard let cellType = node.value(ofAttribute: "cell") as String? else {
@@ -105,8 +109,8 @@ public class FooterTableView: View, ComponentDefinitionContainer {
         }
         let createCell = try context.componentInstantiation(named: cellType)
         let createFooter = try context.componentInstantiation(named: footerType)
-        let sectionCount = ToolingProperties.footerTableView.sectionCount.get(from: self.toolingProperties) ?? 5
-        let itemCount = ToolingProperties.footerTableView.itemCount.get(from: self.toolingProperties) ?? 5
+        let sectionCount = ToolingProperties.footerTableView.sectionCount.get(from: self.toolingProperties)?.value ?? 5
+        let itemCount = ToolingProperties.footerTableView.itemCount.get(from: self.toolingProperties)?.value ?? 5
         let tableView = Hyperdrive.FooterTableView<CellWrapper, CellWrapper>(
             cellFactory: {
                 CellWrapper(wrapped: createCell())
@@ -115,7 +119,7 @@ public class FooterTableView: View, ComponentDefinitionContainer {
                 CellWrapper(wrapped: createFooter())
             },
             options: [])
-            .with(state: .items(Array(repeating: SectionModel(model: (), items: Array(repeating: (), count: itemCount)), count: sectionCount)))
+            .with(state: .items(Array(repeating: SectionModel(model: EmptyState(), items: Array(repeating: EmptyState(), count: itemCount)), count: sectionCount)))
 
         tableView.tableView.rowHeight = UITableView.automaticDimension
         tableView.tableView.sectionFooterHeight = UITableView.automaticDimension

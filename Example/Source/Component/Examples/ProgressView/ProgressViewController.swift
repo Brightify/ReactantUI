@@ -7,13 +7,12 @@
 
 import Hyperdrive
 
-final class ProgressViewController: ControllerBase<Void, ProgressViewRootView> {
+final class ProgressViewController: HyperViewController<ProgressViewRootView> {
 
-    override init() {
-        super.init(title: "Progress view")
-    }
+    init() {
+        super.init()
 
-    override func afterInit() {
+        title = "Progress view"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .camera) {
             ApplicationTheme.selector.select(theme: ApplicationTheme.selector.currentTheme == .day ? .night : .day)
         }

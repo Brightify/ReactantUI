@@ -7,7 +7,9 @@
 //
 
 import Foundation
+#if canImport(SwiftCodeGen)
 import SwiftCodeGen
+#endif
 
 #if canImport(UIKit)
 import UIKit
@@ -48,6 +50,7 @@ public class ComponentReference: View, ComponentDefinitionContainer {
         }
     }
 
+    #if canImport(SwiftCodeGen)
     public override func initialization(for platform: RuntimePlatform, describeInto pipe: DescriptionPipe) throws {
         guard let type = type else {
             throw TokenizationError(message: "Should never initialize when type is undefined.")
@@ -84,6 +87,7 @@ public class ComponentReference: View, ComponentDefinitionContainer {
 //        })
 //        """
     }
+    #endif
 
     public required init(node: SWXMLHash.XMLElement, idProvider: ElementIdProvider) throws {
         type = try node.value(ofAttribute: "type", defaultValue: node.name)

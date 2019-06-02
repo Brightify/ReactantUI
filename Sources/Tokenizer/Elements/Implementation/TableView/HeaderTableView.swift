@@ -7,7 +7,9 @@
 //
 
 import Foundation
+#if canImport(SwiftCodeGen)
 import SwiftCodeGen
+#endif
 
 #if canImport(UIKit)
     import UIKit
@@ -46,7 +48,7 @@ public class HeaderTableView: View, ComponentDefinitionContainer {
     }
 
     public class override func runtimeType() -> String {
-        return "ReactantTableView"
+        return "ReactantTableView & UITableView"
     }
     
     public override func runtimeType(for platform: RuntimePlatform) throws -> RuntimeType {
@@ -56,9 +58,11 @@ public class HeaderTableView: View, ComponentDefinitionContainer {
         return RuntimeType(name: "HeaderTableView<\(headerType), \(cellType)>", module: "Hyperdrive")
     }
 
+    #if canImport(SwiftCodeGen)
     public override func initialization(for platform: RuntimePlatform, describeInto pipe: DescriptionPipe) throws {
-        pipe.string("\(try runtimeType(for: platform))()")
+        pipe.string("\(try runtimeType(for: platform).name)()")
     }
+    #endif
 
     public required init(node: SWXMLHash.XMLElement, idProvider: ElementIdProvider) throws {
         if let field = node.value(ofAttribute: "field") as String?, !field.isEmpty {
@@ -111,8 +115,8 @@ public class HeaderTableView: View, ComponentDefinitionContainer {
         }
         let createCell = try context.componentInstantiation(named: cellType)
         let createHeader = try context.componentInstantiation(named: headerType)
-        let sectionCount = ToolingProperties.headerTableView.sectionCount.get(from: self.toolingProperties) ?? 5
-        let itemCount = ToolingProperties.headerTableView.itemCount.get(from: self.toolingProperties) ?? 5
+        let sectionCount = ToolingProperties.headerTableView.sectionCount.get(from: self.toolingProperties)?.value ?? 5
+        let itemCount = ToolingProperties.headerTableView.itemCount.get(from: self.toolingProperties)?.value ?? 5
         let tableView = Hyperdrive.HeaderTableView<CellWrapper, CellWrapper>(
             cellFactory: {
                 CellWrapper(wrapped: createCell())
@@ -121,7 +125,7 @@ public class HeaderTableView: View, ComponentDefinitionContainer {
                 CellWrapper(wrapped: createHeader())
             },
             options: [])
-            .with(state: .items(Array(repeating: SectionModel(model: (), items: Array(repeating: (), count: itemCount)), count: sectionCount)))
+            .with(state: .items(Array(repeating: SectionModel(model: EmptyState(), items: Array(repeating: EmptyState(), count: itemCount)), count: sectionCount)))
 
         tableView.tableView.rowHeight = UITableView.automaticDimension
         tableView.tableView.sectionHeaderHeight = UITableView.automaticDimension

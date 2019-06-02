@@ -27,7 +27,7 @@ public enum Font: AttributeSupportedPropertyType {
         case .system(let weight, let size):
             return "UIFont.systemFont(ofSize: \(size), weight: \(weight.name))"
         case .named(let name, let size):
-            return "UIFont(\"\(name)\", \(size))"
+            return "UIFont(name: \"\(name)\", size: \(size))"
         case .themed(let name):
             return "theme.fonts.\(name)"
         }
@@ -53,7 +53,9 @@ public enum Font: AttributeSupportedPropertyType {
         }
     }
 
-    public static let runtimeType = RuntimeType(name: "UIFont", module: "UIKit")
+    public static func runtimeType(for platform: RuntimePlatform) -> RuntimeType {
+        return RuntimeType(name: "UIFont", module: "UIKit")
+    }
 
     public static var xsdType: XSDType {
         return .builtin(.string)

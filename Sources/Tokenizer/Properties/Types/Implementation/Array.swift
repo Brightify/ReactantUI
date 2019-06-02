@@ -8,6 +8,10 @@
 import Foundation
 
 extension Array: SupportedPropertyType where Iterator.Element: SupportedPropertyType {
+    public var requiresTheme: Bool {
+        return false
+    }
+
     public func generate(context: SupportedPropertyTypeContext) -> String {
         return "[" + map { $0.generate(context: context.child(for: $0)) }.joined(separator: ", ") + "]"
     }

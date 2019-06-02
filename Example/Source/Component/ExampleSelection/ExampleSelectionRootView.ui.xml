@@ -9,7 +9,8 @@
     <ScrollView
         layout:edges="super">
         <StackView
-            field="stackView"
+            id="stackView"
+            export="true"
             layout:edges="super"
             layout:width="super"
             axis="vertical"/>

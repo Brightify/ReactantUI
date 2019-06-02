@@ -12,7 +12,7 @@ import Hyperdrive
 import UIKit
 
 public final class ControlEventObserver: NSObject {
-    private static var associationKey: UInt8 = 0
+    private var associationKey: UInt8 = 0
 
     private weak var control: UIControl?
     private let events: UIControl.Event
@@ -31,9 +31,9 @@ public final class ControlEventObserver: NSObject {
 
         super.init()
 
-        let p = ActionPublisher<Bool>(publisher: { _ in })
-
-        p.publisher
+//        let p = ActionPublisher<Bool>(publisher: { _ in })
+//
+//        p.publisher
 
         control.addTarget(self, action: selector, for: events)
     }

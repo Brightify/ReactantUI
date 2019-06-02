@@ -11,12 +11,13 @@ import UIKit
 import SnapKit
 import RxSwift
 
-class ViewController: ControllerBase<Void, ExampleRootView> {
+class ViewController: HyperViewController<ExampleRootView> {
 
-    override init() {
+    init() {
         super.init()
 
-        rootView.componentState = (test: "test", 1, test2: (a: 10, b: "hello worl"))
+        hyperView.state
+            //= (test: "test", 1, test2: (a: 10, b: "hello worl"))
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .camera) {
             ApplicationTheme.selector.select(theme: ApplicationTheme.selector.currentTheme == .day ? .night : .day)

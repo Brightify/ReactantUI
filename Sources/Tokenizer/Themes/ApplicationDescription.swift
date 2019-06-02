@@ -77,8 +77,8 @@ public struct ApplicationDescription: XMLElementDeserializable {
     public var themes = [ApplicationDescription.defaultThemeName]
     public var defaultTheme = ApplicationDescription.defaultThemeName
     public var colors =  ThemeContainer<UIColorPropertyType>()
-    public var images = ThemeContainer<Image>()
-    public var fonts = ThemeContainer<Font>()
+    public var images = ThemeContainer<Image?>()
+    public var fonts = ThemeContainer<Font?>()
 
     public init(node: XMLElement) throws {
         if let themesNode = try node.singleOrNoElement(named: "Themes") {

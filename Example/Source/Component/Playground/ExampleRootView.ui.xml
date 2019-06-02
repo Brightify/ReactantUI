@@ -8,7 +8,7 @@
     rootView="true"
     backgroundColor="black">
 
-    <styles name="ReactantStyles">
+    <styles name="Reactant">
         <LabelStyle name="base" backgroundColor="white" />
         <LabelStyle name="black" backgroundColor="black" textColor="#ff0000" />
         <LabelStyle name="astyle" extend="black" />
@@ -49,39 +49,45 @@
     </templates>
 
     <View
-    backgroundColor="blue"
-    layout:id="test"
-    layout:leading="[!(horizontal == compact) and (vertical == regular) and pad or width :lt 100] coolConstraint = super;
-    [(horizontal == compact or vertical == compact or pad) and height :gte 20] coolConstraint = self;
-    [false] uniqueConstraint = :gte 10"
-    layout:top="safeAreaLayoutGuide.top"
-    layout:width="100"
-    layout:height="50" />
+        backgroundColor="blue"
+        id="test"
+        layout:leading="[!(horizontal == compact) and (vertical == regular) and pad or width :lt 100] coolConstraint = super;
+        [(horizontal == compact or vertical == compact or pad) and height :gte 20] coolConstraint = self;
+        [false] uniqueConstraint = :gte 10"
+        layout:top="safeAreaLayoutGuide.top"
+        layout:width="100"
+        layout:height="50" />
     <View
-    collapseAxis="horizontal"
-    backgroundColor="red"
-    layout:leading="super"
-    layout:top="id:test.bottom offset(10)"
-    layout:width="100"
-    layout:height="50" />
+        collapseAxis="horizontal"
+        backgroundColor="red"
+        layout:leading="super"
+        layout:top="test.bottom offset(10)"
+        layout:width="100"
+        layout:height="50" />
+
+    <Label>
+        <attributedText style="attributko">
+            <b>Welcome</b> <i>ups</i>
+        </attributedText>
+    </Label>
 
     <View/>
     <ImageView
-    layout:edges="super"
-    layoutMargins="10,10,10,10"
-    image="theme.falcon"
-    visibility="visible"
-    clipsToBounds="true"
-    layout:compressionPriority="high"
-    layout:huggingPriority="low"
-    contentMode="scaleAspectFill" />
+        layout:edges="super"
+        layoutMargins="10,10,10,10"
+        image="theme.falcon"
+        visibility="visible"
+        clipsToBounds="true"
+        layout:compressionPriority="high"
+        layout:huggingPriority="low"
+        contentMode="scaleAspectFill" />
 
     <!--  <VisualEffectView
      effect="blur:light"
      layout:edges="super" />
 
      <DatePicker
-     layout:id="picker"
+     id="picker"
      mode="time"
      layout:top="super"
      layout:fillHorizontally="super inset(20)" />
@@ -98,23 +104,23 @@
      layout:height="50" />
 
      <MapView
-     layout:id="map"
+     id="map"
      style=":common:map"
      layout:fillHorizontally="super inset(20)"
-     layout:below="id:picker"
+     layout:below="picker"
      layout:height="testConstraint = 200" />
      <Switch
-     layout:id="switch"
+     id="switch"
      layout:leading="inset(20)"
      layout:trailing=":lt inset(20)"
-     layout:below="id:map"/>
+     layout:below="map"/>
      <Slider
-     layout:id="slider"
-     layout:below="id:switch"
+     id="slider"
+     layout:below="switch"
      layout:fillHorizontally="super inset(20)" />
      <Stepper
-     layout:below="id:slider"
-     layout:id="stepper"
+     layout:below="slider"
+     id="stepper"
      value="10"
      minimumValue="0"
      maximumValue="100"
@@ -124,11 +130,11 @@
         axis="vertical"
         backgroundColor="black"
         spacing="10"
-        layout:id="stacko"
-        layout:top="super inset(20)"
+        id="stacko"
+        layout:top="safeAreaLayoutGuide inset(20)"
         layout:fillHorizontally="readableContentGuide inset(20)">
-        <Component type="ExampleView2" layout:width="dudegr=370" />
-        <Component type="ExampleView2" />
+        <ExampleView2 layout:width="dudegr=370" />
+        <ExampleView2 />
     </StackView>
 
     <!-- <ScrollView layout:edges="super">
@@ -139,7 +145,7 @@
      <ActivityIndicator indicatorStyle="white" />
 
      <Label
-     layout:id="helloWorldLabel"
+     id="helloWorldLabel"
      textColor="white"
      text="localizable(NAME.NAME)"
      font=":bold@30"
@@ -150,15 +156,15 @@
      layout:top="super offset(61)" />
 
      <TextView
-     layout:id="textView"
+     id="textView"
      text="text"
      textColor="black"
-     layout:below="id:helloWorldLabel"
+     layout:below="helloWorldLabel"
      layout:height="50"
      layout:fillHorizontally="super" />
 
      <Label
-     layout:id="please"
+     id="please"
      text="Keep your rocket safes"
      font=":regular@14"
      style=":common:whiteLabel"
@@ -166,14 +172,14 @@
      textAlignment="center"
      clipsToBounds="true"
      backgroundColor="red"
-     layout:below="id:textView offset(10)"
+     layout:below="textView offset(10)"
      layout:centerX="super" />
 
      <TextField
      placeholder="E-mail"
      field="email"
      textColor="white"
-     layout:below="id:please offset(50)"
+     layout:below="please offset(50)"
      layout:above="send offset(-50)"
      layout:fillHorizontally="super inset(50)" />
 
@@ -195,7 +201,7 @@
      layout:height="buttonHeightConstraint = 50" />
 
      <Button
-     layout:id="neco"
+     id="neco"
      title="Forgotten password?"
      backgroundColor="#FFddaa"
      layer.cornerRadius="10"
@@ -207,7 +213,7 @@
      <StackView
      axis="vertical"
      backgroundColor="black"
-     layout:below="id:neco offset(0)"
+     layout:below="neco offset(0)"
      layout:fillHorizontally="super inset(20)"
      layout:bottom="super inset(20)">
      <Component type="ExampleCell" />
@@ -252,9 +258,9 @@
 
     <Button
         collapseAxis="vertical"
-        layout:id="buttonko"
+        id="buttonko"
         layout:fillHorizontally="super"
-        layout:below="id:stacko"
+        layout:below="stacko"
         layout:height="60"
         isSelected="true">
         <attributedTitle
@@ -269,15 +275,15 @@
     </Button>
 
     <Label
-        field="django"
+        id="django"
         collapseAxis="both"
         numberOfLines="0"
-        layout:below="id:buttonko"
+        layout:below=":gte buttonko"
         layout:fillHorizontally="super inset(20)">
     </Label>
 
     <Label
-        field="label"
+        id="label"
         layout:bottom="safeAreaLayoutGuide inset(10)"
         layout:fillHorizontally="super inset(20)"
         numberOfLines="0">

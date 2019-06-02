@@ -51,11 +51,11 @@ final class MainWireframe: Wireframe {
     }
 
     private func headerTableView() -> UIViewController {
-        return HeaderTableViewController { HeaderTableViewRootView(initialState: ())) }
+        return HeaderTableViewController()
     }
 
     private func footerTableView() -> UIViewController {
-        return FooterTableViewController(root)
+        return FooterTableViewController()
     }
 
     private func simpleTableView() -> UIViewController {

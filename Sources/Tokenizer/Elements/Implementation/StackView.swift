@@ -22,6 +22,14 @@ public class StackView: Container {
         return "addArrangedSubview"
     }
 
+    public class override func runtimeType() throws -> String {
+        return "UIStackView"
+    }
+
+    public override func runtimeType(for platform: RuntimePlatform) throws -> RuntimeType {
+        return RuntimeType(name: "UIStackView", module: "UIKit")
+    }
+
     #if canImport(UIKit)
     public override func add(subview: UIView, toInstanceOfSelf: UIView) {
         guard let stackView = toInstanceOfSelf as? UIStackView else {

@@ -58,7 +58,7 @@ public protocol SupportedPropertyType {
 public extension SupportedPropertyType {
     static func runtimeType(for platform: RuntimePlatform) -> RuntimeType {
         #warning("This should be removed to ensure all children implement this method. I put here to not require implementation in all children before testing it out.")
-        assertionFailure("TODO Implement this in your class.")
+        assertionFailure("TODO Implement this in your class: \(self).")
         return .unsupported
     }
 }
@@ -84,16 +84,30 @@ extension Optional: SupportedPropertyType & HasDefaultValue where Wrapped: Suppo
         let wrappedRuntimeType = Wrapped.runtimeType(for: platform)
         return RuntimeType(name: wrappedRuntimeType.name + "?", modules: wrappedRuntimeType.modules)
     }
-}
 
-public extension SupportedPropertyType {
-    var requiresTheme: Bool {
-        return false
+    public var requiresTheme: Bool {
+        return self?.requiresTheme ?? false
     }
+
+    #if canImport(UIKit)
+    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
+        if let wrapped = self {
+            return wrapped.runtimeValue(context: context.child(for: wrapped))
+        } else {
+            return nil
+        }
+    }
+    #endif
 }
 
 public protocol AttributeSupportedPropertyType: SupportedPropertyType {
     static func materialize(from value: String) throws -> Self
+}
+
+public extension AttributeSupportedPropertyType {
+    var requiresTheme: Bool {
+        return false
+    }
 }
 
 extension Optional: AttributeSupportedPropertyType where Wrapped: AttributeSupportedPropertyType {
@@ -106,6 +120,12 @@ public protocol ElementSupportedPropertyType: SupportedPropertyType {
     static func materialize(from element: XMLElement) throws -> Self
 }
 
+public extension ElementSupportedPropertyType {
+    var requiresTheme: Bool {
+        return false
+    }
+}
+
 extension Optional: ElementSupportedPropertyType where Wrapped: ElementSupportedPropertyType {
     public static func materialize(from element: XMLElement) throws -> Optional<Wrapped> {
         return try Wrapped.materialize(from: element)
@@ -114,6 +134,12 @@ extension Optional: ElementSupportedPropertyType where Wrapped: ElementSupported
 
 public protocol MultipleAttributeSupportedPropertyType: SupportedPropertyType {
     static func materialize(from attributes: [String: String]) throws -> Self
+}
+
+public extension MultipleAttributeSupportedPropertyType {
+    var requiresTheme: Bool {
+        return false
+    }
 }
 
 extension Optional: MultipleAttributeSupportedPropertyType where Wrapped: MultipleAttributeSupportedPropertyType {

@@ -7,11 +7,13 @@
 //
 
 import Foundation
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
 #if canImport(UIKit)
 import UIKit
 #endif
-
-import SwiftCodeGen
 
 public struct ResolvedHyperViewAction {
     public var name: String
@@ -90,7 +92,7 @@ public protocol UIElementBase {
 public struct StateProperty {
     public var name: String
     public var type: SupportedPropertyType.Type
-    public var property: Tokenizer.Property
+    public var property: Property
 }
 
 public extension UIElementBase {
@@ -146,7 +148,9 @@ public protocol UIElement: AnyObject, UIElementBase, XMLElementSerializable {
 
     func runtimeType(for platform: RuntimePlatform) throws -> RuntimeType
 
+    #if canImport(SwiftCodeGen)
     func initialization(for platform: RuntimePlatform, describeInto pipe: DescriptionPipe) throws
+    #endif
 
     #if canImport(UIKit)
     func initialize(context: ReactantLiveUIWorker.Context) throws -> UIView

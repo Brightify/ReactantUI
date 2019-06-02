@@ -7,9 +7,11 @@
 
 import Hyperdrive
 
-final class StackViewController: ControllerBase<Void, StackViewRootView> {
+final class StackViewController: HyperViewController<StackViewRootView> {
 
-    override init() {
-        super.init(title: "Stack view")
+    init() {
+        super.init()
+
+        title = "Stack view"
     }
 }

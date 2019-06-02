@@ -161,6 +161,8 @@ public class ReactantLiveUIManager {
             switch constraintParserError {
             case .message(let message):
                 logError(message, in: path)
+            case .expectedToken(let expectedToken):
+                logError("Expected token `\(expectedToken)` while parsing constraints", in: path)
             case .unexpectedToken(let unexpectedToken):
                 logError("Unexpected token `\(unexpectedToken)` encountered while parsing constraints", in: path)
             }
