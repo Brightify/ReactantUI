@@ -8,6 +8,8 @@
 import Foundation
 
 extension Module {
+    public static let uiKit = UIKit()
+
     public struct UIKit: RuntimeModule {
         public let supportedPlatforms: Set<RuntimePlatform> = [
             .iOS,

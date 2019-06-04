@@ -7,6 +7,10 @@
 
 import Foundation
 
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
 public enum ControlContentVerticalAlignment: Int, EnumPropertyType, AttributeSupportedPropertyType {
     public static let enumName = "UIControl.ContentVerticalAlignment"
     
@@ -15,18 +19,20 @@ public enum ControlContentVerticalAlignment: Int, EnumPropertyType, AttributeSup
     case bottom
     case fill
     
-    public func generate(context: SupportedPropertyTypeContext) -> String {
+    #if canImport(SwiftCodeGen)
+    public func generate(context: SupportedPropertyTypeContext) -> Expression {
         switch self {
         case .center:
-            return "UIControl.ContentVerticalAlignment.center"
+            return .constant("UIControl.ContentVerticalAlignment.center")
         case .top:
-            return "UIControl.ContentVerticalAlignment.top"
+            return .constant("UIControl.ContentVerticalAlignment.top")
         case .bottom:
-            return "UIControl.ContentVerticalAlignment.bottom"
+            return .constant("UIControl.ContentVerticalAlignment.bottom")
         case .fill:
-            return "UIControl.ContentVerticalAlignment.fill"
+            return .constant("UIControl.ContentVerticalAlignment.fill")
         }
     }
+    #endif
     
     #if SanAndreas
 

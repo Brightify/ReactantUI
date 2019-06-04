@@ -8,14 +8,14 @@
 import Foundation
 
 extension Module {
-    static let webKit = WebKit()
+    public static let webKit = WebKit()
 
-    struct WebKit: RuntimeModule {
-        let supportedPlatforms: Set<RuntimePlatform> = [
+    public struct WebKit: RuntimeModule {
+        public let supportedPlatforms: Set<RuntimePlatform> = [
             .iOS,
         ]
 
-        func elements(for platform: RuntimePlatform) -> [UIElementFactory] {
+        public func elements(for platform: RuntimePlatform) -> [UIElementFactory] {
             return [
                 factory(named: "WebView", for: WebView.init),
             ]

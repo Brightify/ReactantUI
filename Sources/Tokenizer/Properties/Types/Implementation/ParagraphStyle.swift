@@ -7,18 +7,31 @@
 
 import Foundation
 
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
 public struct ParagraphStyle: MultipleAttributeSupportedPropertyType {
     public let properties: [Property]
 
-    public func generate(context: SupportedPropertyTypeContext) -> String {
-        return """
-        {
-            let p = NSMutableParagraphStyle()
-            \(properties.map { "p.\($0.name) = \($0.anyValue.generate(context: context.child(for: $0.anyValue)))" }.joined(separator: "\n"))
-            return p
-        }()
-        """
+    #if canImport(SwiftCodeGen)
+    public func generate(context: SupportedPropertyTypeContext) -> Expression {
+        var block = Block()
+        block += .declaration(isConstant: true, name: "p", expression: .constant("NSMutableParagraphStyle()"))
+
+        for property in properties {
+            block += .assignment(
+                target: .member(target: .constant("p"), name: property.name),
+                expression: property.anyValue.generate(context: context.child(for: property.anyValue)))
+        }
+
+        block += .return(expression: .constant("p"))
+
+        let closure = Closure(block: block)
+
+        return .invoke(target: .closure(closure), arguments: [])
     }
+    #endif
 
     #if SanAndreas
     // TODO

@@ -10,6 +10,10 @@ import Foundation
     import UIKit
 #endif
 
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
 public struct CGColorPropertyType: AttributeSupportedPropertyType {
     public static let black = CGColorPropertyType(color: .color(.black))
 
@@ -19,9 +23,11 @@ public struct CGColorPropertyType: AttributeSupportedPropertyType {
         return color.requiresTheme
     }
 
-    public func generate(context: SupportedPropertyTypeContext) -> String {
-        return "\(color.generate(context: context.child(for: color))).cgColor"
+    #if canImport(SwiftCodeGen)
+    public func generate(context: SupportedPropertyTypeContext) -> Expression {
+        return .member(target: color.generate(context: context.child(for: color)), name: "cgColor")
     }
+    #endif
 
     #if SanAndreas
     public func dematerialize(context: SupportedPropertyTypeContext) -> String {

@@ -11,15 +11,21 @@ import Foundation
     import UIKit
 #endif
 
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
 public struct Rect: AttributeSupportedPropertyType {
     public static let zero = Rect()
 
     public let origin: Point
     public let size: Size
 
-    public func generate(context: SupportedPropertyTypeContext) -> String {
-        return "CGRect(origin: CGPoint(x: \(origin.x.cgFloat), y: \(origin.y.cgFloat)), size: CGSize(width: \(size.width.cgFloat), height: \(size.height.cgFloat)))"
+    #if canImport(SwiftCodeGen)
+    public func generate(context: SupportedPropertyTypeContext) -> Expression {
+        return .constant("CGRect(origin: CGPoint(x: \(origin.x.cgFloat), y: \(origin.y.cgFloat)), size: CGSize(width: \(size.width.cgFloat), height: \(size.height.cgFloat)))")
     }
+    #endif
 
     public init(origin: Point, size: Size) {
         self.origin = origin

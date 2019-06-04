@@ -101,7 +101,7 @@ extension StyleName: Equatable {
  * </styles>
  * ```
  */
-public struct Style: XMLAttributeDeserializable, XMLElementDeserializable {
+public struct Style {
     public var name: StyleName
     public var extend: [StyleName]
     public var accessModifier: AccessModifier
@@ -109,7 +109,7 @@ public struct Style: XMLAttributeDeserializable, XMLElementDeserializable {
     public var properties: [Property]
     public var type: StyleType
 
-    init(context: StyleTokenizationContext) throws {
+    init(context: StyleDeserializationContext) throws {
         let node = context.element
         let name = try node.value(ofAttribute: "name") as String
         let extendedStyles = try node.value(ofAttribute: "extend", defaultValue: []) as [StyleName]
@@ -138,10 +138,10 @@ public struct Style: XMLAttributeDeserializable, XMLElementDeserializable {
 
             type = try .attributedText(styles: node.xmlChildren.map(AttributedTextStyle.deserialize))
 
-        } else if let (elementName, element) = ElementMapping.mapping.first(where: { node.name == "\($0.key)Style" }) {
-            parentModuleImport = element.parentModuleImport
-            properties = try PropertyHelper.deserializeSupportedProperties(properties: element.availableProperties, in: node) as [Property]
-            type = .view(type: elementName)
+        } else if let elementFactory = context.factory(for: String(node.name.dropLast("Style".count))) {
+            parentModuleImport = elementFactory.parentModuleImport
+            properties = try PropertyHelper.deserializeSupportedProperties(properties: elementFactory.availableProperties, in: node) as [Property]
+            type = .view(factory: elementFactory)
         } else {
             throw TokenizationError(message: "Unknown style \(node.name). (\(node))")
         }
@@ -158,15 +158,6 @@ public struct Style: XMLAttributeDeserializable, XMLElementDeserializable {
                 context.style(named: $0)?.requiresTheme(context: context) == true
             })
     }
-
-    /**
-     * Tries to create the `Style` structure from an XML element.
-     * - parameter element: XML element to parse
-     * - returns: if not thrown, `Style` obtained from the passed XML element
-     */
-    public static func deserialize(_ element: XMLElement) throws -> Style {
-        return try Style(node: element, groupName: nil)
-    }
 }
 
 /**
@@ -176,13 +167,13 @@ public struct Style: XMLAttributeDeserializable, XMLElementDeserializable {
  * - attributedText: attributed string styling allowing multiple attributed style tags to be defined within it
  */
 public enum StyleType {
-    case view(type: String)
+    case view(factory: UIElementFactory)
     case attributedText(styles: [AttributedTextStyle])
 
     public var styleType: String {
         switch self {
         case .view(let type):
-            return type
+            return type.elementName
         case .attributedText:
             return "attributedText"
         }
@@ -223,31 +214,31 @@ extension XMLElement {
 }
 
 extension Sequence where Iterator.Element == Style {
-    public func resolveStyle(for element: UIElement) throws -> [Property] {
-        guard !element.styles.isEmpty else { return element.properties }
-        guard let type = ElementMapping.mapping.first(where: { $0.value == type(of: element) })?.key else {
-            print("// No type found for \(element)")
-            return element.properties
-        }
-        let viewStyles = compactMap { style -> Style? in
-            if case .view(let styledType) = style.type, styledType == type {
-                return style
-            } else {
-                return nil
-            }
-        }
-        // FIXME This will be slow
-        var result = Dictionary<String, Property>(minimumCapacity: element.properties.count)
-        for name in element.styles {
-            for property in try viewStyles.resolveViewStyle(for: type, named: name) {
-                result[property.attributeName] = property
-            }
-        }
-        for property in element.properties {
-            result[property.attributeName] = property
-        }
-        return Array(result.values)
-    }
+//    public func resolveStyle(for element: UIElement) throws -> [Property] {
+//        guard !element.styles.isEmpty else { return element.properties }
+//        guard let type = ElementMapping.mapping.first(where: { $0.value == type(of: element) })?.key else {
+//            print("// No type found for \(element)")
+//            return element.properties
+//        }
+//        let viewStyles = compactMap { style -> Style? in
+//            if case .view(let styledType) = style.type, styledType == type {
+//                return style
+//            } else {
+//                return nil
+//            }
+//        }
+//        // FIXME This will be slow
+//        var result = Dictionary<String, Property>(minimumCapacity: element.properties.count)
+//        for name in element.styles {
+//            for property in try viewStyles.resolveViewStyle(for: type, named: name) {
+//                result[property.attributeName] = property
+//            }
+//        }
+//        for property in element.properties {
+//            result[property.attributeName] = property
+//        }
+//        return Array(result.values)
+//    }
 
     private func resolveViewStyle(for type: String, named name: StyleName) throws -> [Property] {
         guard let style = first(where: { $0.name == name }) else {

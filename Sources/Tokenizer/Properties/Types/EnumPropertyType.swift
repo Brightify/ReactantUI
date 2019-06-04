@@ -7,14 +7,20 @@
 
 import Foundation
 
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
 public protocol EnumPropertyType: RawRepresentable, SupportedPropertyType, CaseIterable {
     static var enumName: String { get }
 }
 
 extension EnumPropertyType where Self.RawValue == String {
-    public func generate(context: SupportedPropertyTypeContext) -> String {
-        return "\(Self.enumName).\(rawValue)"
+    #if canImport(SwiftCodeGen)
+    public func generate(context: SupportedPropertyTypeContext) -> Expression {
+        return .constant("\(Self.enumName).\(rawValue)")
     }
+    #endif
 
     public static var xsdType: XSDType {
         let values = Set(Self.allCases.map { $0.rawValue })

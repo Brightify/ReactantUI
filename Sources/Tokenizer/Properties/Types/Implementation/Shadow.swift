@@ -7,17 +7,28 @@
 
 import Foundation
 
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
 public struct Shadow: MultipleAttributeSupportedPropertyType {
     public let offset: Size
     public let blurRadius: Float
     public let color: UIColorPropertyType?
 
-    public func generate(context: SupportedPropertyTypeContext) -> String {
+    #if canImport(SwiftCodeGen)
+    public func generate(context: SupportedPropertyTypeContext) -> Expression {
         let generatedOffset = offset.generate(context: context.child(for: offset))
         let generatedBlurRadius = blurRadius.generate(context: context.child(for: blurRadius))
-        let generatedColor = color.map { $0.generate(context: context.child(for: $0)) } ?? "nil"
-        return "NSShadow(offset: \(generatedOffset), blurRadius: \(generatedBlurRadius), color: \(generatedColor))"
+        let generatedColor = color.map { $0.generate(context: context.child(for: $0)) } ?? .constant("nil")
+
+        return .invoke(target: .constant("NSShadow"), arguments: [
+            .init(name: "offset", value: generatedOffset),
+            .init(name: "blurRadius", value: generatedBlurRadius),
+            .init(name: "color", value: generatedColor),
+        ])
     }
+    #endif
 
     #if SanAndreas
     // TODO

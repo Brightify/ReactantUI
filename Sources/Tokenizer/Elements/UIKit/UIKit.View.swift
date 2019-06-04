@@ -16,9 +16,10 @@ import UIKit
 #endif
 
 public class ElementIdProvider {
-    private var counter: Int = 1
-
     private let prefix: String
+
+    private var counter: Int = 1
+    private var children: [Int: ElementIdProvider] = [:]
 
     init(prefix: String) {
         self.prefix = prefix
@@ -30,11 +31,29 @@ public class ElementIdProvider {
     }
 
     func child() -> ElementIdProvider {
-        return ElementIdProvider(prefix: "\(prefix)_\(counter)")
+        if let child = children[counter] {
+            return child
+        } else {
+            let newChild = ElementIdProvider(prefix: "\(prefix)_\(counter)")
+            children[counter] = newChild
+            return newChild
+        }
+
+
     }
 }
 
-public class View: UIElement {
+#if canImport(SwiftCodeGen) && canImport(UIKit)
+public protocol SwiftExtensionWorkaround: ProvidesCodeInitialization, CanInitializeUIKitView { }
+#elseif canImport(SwiftCodeGen)
+public protocol SwiftExtensionWorkaround: ProvidesCodeInitialization { }
+#elseif canImport(UIKit)
+public protocol SwiftExtensionWorkaround: CanInitializeUIKitView { }
+#else
+public protocol SwiftExtensionWorkaround { }
+#endif
+
+public class View: UIElement, SwiftExtensionWorkaround {
     public class var availableProperties: [PropertyDescription] {
         return Properties.view.allProperties
     }
@@ -73,11 +92,6 @@ public class View: UIElement {
     public var toolingProperties: [String: Property]
     public var handledActions: [HyperViewAction]
 
-    #if canImport(SwiftCodeGen)
-    public func initialization(for platform: RuntimePlatform, describeInto pipe: DescriptionPipe) throws {
-        pipe.string("\(try runtimeType(for: platform).name)()")
-    }
-    #endif
 
     #if canImport(UIKit)
     public func initialize(context: ReactantLiveUIWorker.Context) throws -> UIView {
@@ -85,7 +99,13 @@ public class View: UIElement {
     }
     #endif
 
-    public required init(context: UIElementTokenizationContext) throws {
+    #if canImport(SwiftCodeGen)
+    public func initialization(for platform: RuntimePlatform) throws -> Expression {
+        return .constant("\(try runtimeType(for: platform).name)()")
+    }
+    #endif
+
+    public required init(context: UIElementDeserializationContext) throws {
         let node = context.element
         id = try node.value(ofAttribute: "id", defaultValue: context.elementIdProvider.next(for: node.name))
         isExported = try node.value(ofAttribute: "export", defaultValue: false)
@@ -269,9 +289,11 @@ public struct PreferredSize: SupportedPropertyType {
     }
 
     // FIXME what happens in generated code
-    public func generate(context: SupportedPropertyTypeContext) -> String {
-        return ""
+    #if canImport(SwiftCodeGen)
+    public func generate(context: SupportedPropertyTypeContext) -> Expression {
+        return .constant("")
     }
+    #endif
 
     #if SanAndreas
     public func dematerialize(context: SupportedPropertyTypeContext) -> String {

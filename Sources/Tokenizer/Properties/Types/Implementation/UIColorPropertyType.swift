@@ -10,6 +10,10 @@ import Foundation
     import UIKit
 #endif
 
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
 public enum UIColorPropertyType: AttributeSupportedPropertyType {
     public static let black = UIColorPropertyType.color(.black)
 
@@ -29,16 +33,18 @@ public enum UIColorPropertyType: AttributeSupportedPropertyType {
         }
     }
 
-    public func generate(context: SupportedPropertyTypeContext) -> String {
+    #if canImport(SwiftCodeGen)
+    public func generate(context: SupportedPropertyTypeContext) -> Expression {
         switch self {
         case .color(.absolute(let red, let green, let blue, let alpha)):
-            return "UIColor(red: \(red), green: \(green), blue: \(blue), alpha: \(alpha))"
+            return .constant("UIColor(red: \(red), green: \(green), blue: \(blue), alpha: \(alpha))")
         case .color(.named(let name)):
-            return "UIColor.\(name)"
+            return .constant("UIColor.\(name)")
         case .themed(let name):
-            return "theme.colors.\(name)"
+            return .constant("theme.colors.\(name)")
         }
     }
+    #endif
 
     #if SanAndreas
     public func dematerialize(context: SupportedPropertyTypeContext) -> String {

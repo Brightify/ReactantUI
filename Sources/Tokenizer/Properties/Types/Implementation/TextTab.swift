@@ -7,6 +7,10 @@
 
 import Foundation
 
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
 public struct TextTab: AttributeSupportedPropertyType {
     public let textAlignment: TextAlignment
     public let location: Double
@@ -25,11 +29,16 @@ public struct TextTab: AttributeSupportedPropertyType {
         }
     }
 
-    public func generate(context: SupportedPropertyTypeContext) -> String {
+    #if canImport(SwiftCodeGen)
+    public func generate(context: SupportedPropertyTypeContext) -> Expression {
         let generatedTextAlignment = textAlignment.generate(context: context.child(for: textAlignment))
         let generatedLocation = location.generate(context: context.child(for: location))
-        return "NSTextTab(textAlignment: \(generatedTextAlignment), location: \(generatedLocation))"
+        return .invoke(target: .constant("NSTextTab"), arguments: [
+            .init(name: "textAlignment", value: generatedTextAlignment),
+            .init(name: "location", value: generatedLocation),
+        ])
     }
+    #endif
 
     #if SanAndreas
     public func dematerialize(context: SupportedPropertyTypeContext) -> String {

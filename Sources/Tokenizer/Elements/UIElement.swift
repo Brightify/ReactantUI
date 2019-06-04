@@ -147,14 +147,6 @@ public protocol UIElement: AnyObject, UIElementBase, XMLElementSerializable {
     static func runtimeType() throws -> String
 
     func runtimeType(for platform: RuntimePlatform) throws -> RuntimeType
-
-    #if canImport(SwiftCodeGen)
-    func initialization(for platform: RuntimePlatform, describeInto pipe: DescriptionPipe) throws
-    #endif
-
-    #if canImport(UIKit)
-    func initialize(context: ReactantLiveUIWorker.Context) throws -> UIView
-    #endif
 }
 
 extension UIElement {
@@ -165,3 +157,15 @@ extension UIElement {
         return (ConstraintPriority.low, ConstraintPriority.low)
     }
 }
+
+#if canImport(SwiftCodeGen)
+public protocol ProvidesCodeInitialization {
+    func initialization(for platform: RuntimePlatform) throws -> Expression
+}
+#endif
+
+#if canImport(UIKit)
+public protocol CanInitializeUIKitView {
+    func initialize(context: ReactantLiveUIWorker.Context) throws -> UIView
+}
+#endif

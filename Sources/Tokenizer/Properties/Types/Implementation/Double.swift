@@ -7,10 +7,16 @@
 
 import Foundation
 
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
 extension Double: AttributeSupportedPropertyType {
-    public func generate(context: SupportedPropertyTypeContext) -> String {
-        return "\(self)"
+    #if canImport(SwiftCodeGen)
+    public func generate(context: SupportedPropertyTypeContext) -> Expression {
+        return .constant("\(self)")
     }
+    #endif
 
     #if canImport(UIKit)
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {

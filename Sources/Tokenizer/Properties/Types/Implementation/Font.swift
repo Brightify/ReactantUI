@@ -8,6 +8,10 @@
 
 import Foundation
 
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
 public enum Font: AttributeSupportedPropertyType {
     case system(weight: SystemFontWeight, size: Double)
     case named(String, size: Double)
@@ -22,16 +26,18 @@ public enum Font: AttributeSupportedPropertyType {
         }
     }
 
-    public func generate(context: SupportedPropertyTypeContext) -> String {
+    #if canImport(SwiftCodeGen)
+    public func generate(context: SupportedPropertyTypeContext) -> Expression {
         switch self {
         case .system(let weight, let size):
-            return "UIFont.systemFont(ofSize: \(size), weight: \(weight.name))"
+            return .constant("UIFont.systemFont(ofSize: \(size), weight: \(weight.name))")
         case .named(let name, let size):
-            return "UIFont(name: \"\(name)\", size: \(size))"
+            return .constant("UIFont(name: \"\(name)\", size: \(size))")
         case .themed(let name):
-            return "theme.fonts.\(name)"
+            return .constant("theme.fonts.\(name)")
         }
     }
+    #endif
     
     #if SanAndreas
     public func dematerialize(context: SupportedPropertyTypeContext) -> String {

@@ -33,14 +33,16 @@ public enum RowHeight: AttributeSupportedPropertyType {
     case value(Float)
     case automatic
 
-    public func generate(context: SupportedPropertyTypeContext) -> String {
+    #if canImport(SwiftCodeGen)
+    public func generate(context: SupportedPropertyTypeContext) -> Expression {
         switch self {
         case .value(let value):
             return value.generate(context: context.child(for: value))
         case .automatic:
-            return "UITableView.automaticDimension"
+            return .constant("UITableView.automaticDimension")
         }
     }
+    #endif
 
     #if SanAndreas
     public func dematerialize(context: SupportedPropertyTypeContext) -> String {

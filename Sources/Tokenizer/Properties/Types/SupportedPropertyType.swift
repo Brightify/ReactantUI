@@ -8,9 +8,17 @@
 
 import Foundation
 
-public struct RuntimeType {
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
+public struct RuntimeType: CustomStringConvertible {
     public var name: String
     public var modules: Set<String>
+
+    public var description: String {
+        return name
+    }
 
     public init(name: String) {
         self.name = name
@@ -33,7 +41,9 @@ public struct RuntimeType {
 public protocol SupportedPropertyType {
     var requiresTheme: Bool { get }
 
-    func generate(context: SupportedPropertyTypeContext) -> String
+    #if canImport(SwiftCodeGen)
+    func generate(context: SupportedPropertyTypeContext) -> Expression
+    #endif
 
     #if SanAndreas
     func dematerialize(context: SupportedPropertyTypeContext) -> String
@@ -62,9 +72,11 @@ public protocol HasDefaultValue {
 }
 
 extension Optional: SupportedPropertyType & HasDefaultValue where Wrapped: SupportedPropertyType {
-    public func generate(context: SupportedPropertyTypeContext) -> String {
-        return self?.generate(context: context) ?? "nil"
+    #if canImport(SwiftCodeGen)
+    public func generate(context: SupportedPropertyTypeContext) -> Expression {
+        return self?.generate(context: context) ?? .constant("nil")
     }
+    #endif
 
     public static var xsdType: XSDType {
         return Wrapped.xsdType

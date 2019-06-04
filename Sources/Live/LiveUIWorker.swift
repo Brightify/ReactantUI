@@ -210,7 +210,8 @@ public class ReactantLiveUIWorker {
                         let xml = SWXMLHash.parse(data)
                         do {
                             var oldStyles = self.styles
-                            let group: StyleGroup = try xml["styleGroup"].value()
+                            let group: StyleGroup // = try xml["styleGroup"].value()
+                            fatalError("Not implemented")
                             oldStyles[group.name] = group
                             self.styles = oldStyles
                         } catch let error {
@@ -290,11 +291,13 @@ public class ReactantLiveUIWorker {
         guard let node = xml["Component"].element else { throw LiveUIError(message: "ERROR: Node is not Component") }
         var rootDefinition: ComponentDefinition
 
-        if let type: String = xml["Component"].value(ofAttribute: "type") {
-            rootDefinition = try ComponentDefinition(node: node, type: type)
-        } else {
-            rootDefinition = try ComponentDefinition(node: node, type: componentType(from: file))
-        }
+//        if let type: String = xml["Component"].value(ofAttribute: "type") {
+//            rootDefinition = try ComponentDefinition(node: node, type: type)
+//        } else {
+//            rootDefinition = try ComponentDefinition(node: node, type: componentType(from: file))
+//        }
+
+        fatalError()
 
         if rootDefinition.isRootView {
             extendedEdges[file] = rootDefinition.edgesForExtendedLayout.resolveUnion()

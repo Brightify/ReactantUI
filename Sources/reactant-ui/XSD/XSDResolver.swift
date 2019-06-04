@@ -11,12 +11,12 @@ import Tokenizer
 class XSDResolver {
     private var file = XSDFile()
 
-    func resolve() -> XSDFile {
+    func resolve(factories: [String: UIElementFactory]) -> XSDFile {
         var viewGroup = XSDGroup(name: "viewGroup", elements: [])
         var stylesType = XSDComplexChoiceType(name: "stylesType", elements: [])
 
-        for (name, element) in ElementMapping.mapping {
-            let xsdElement = resolve(element: element, named: name)
+        for (name, elementFactory) in factories {
+            let xsdElement = resolve(elementFactory: elementFactory, named: name)
             viewGroup.elements.insert(xsdElement)
             stylesType.elements.insert(XSDElement(name: name + "Style",
                                                   isContainer: false,
@@ -38,12 +38,12 @@ class XSDResolver {
         return file
     }
 
-    private func resolve(element: View.Type, named name: String) -> XSDElement {
-        var xsdElement = XSDElement(name: name, isContainer: element is Container.Type, attributeGroups: [])
+    private func resolve(elementFactory: UIElementFactory, named name: String) -> XSDElement {
+        var xsdElement = XSDElement(name: name, isContainer: elementFactory.isContainer, attributeGroups: [])
         var attributes = XSDAttributeGroup(name: name + "Attributes", attributes: [])
         xsdElement.attributeGroups.insert(name + "Attributes")
 
-        for property in element.availableProperties {
+        for property in elementFactory.availableProperties {
             let propertyName = property.namespace.resolvedAttributeName(name: property.name)
             let typeName: String
             switch property.type.xsdType {
@@ -91,10 +91,11 @@ class XSDResolver {
             attributes.attributes.insert(XSDAttribute(name: propertyName, typeName: typeName))
         }
 
-        if element is ComponentReference.Type {
-            attributes.attributes.insert(XSDAttribute(name: "type", typeName: BuiltinXSDType.string.xsdName))
-            // FIXME figure out how anonymous components are handled
-        }
+        #warning("FIXME: Add the element name in this case")
+//        if element is ComponentReference.Type {
+//            attributes.attributes.insert(XSDAttribute(name: "type", typeName: BuiltinXSDType.string.xsdName))
+//            // FIXME figure out how anonymous components are handled
+//        }
 
         xsdElement.attributeGroups.insert("layout:layoutAttributes")
 

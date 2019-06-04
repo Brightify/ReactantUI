@@ -10,6 +10,10 @@
 import UIKit
 #endif
 
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
 /**
  * Base protocol for UI element properties.
  */
@@ -24,9 +28,11 @@ public protocol Property {
 
     var anyDescription: PropertyDescription { get }
 
-    func application(context: PropertyContext) -> String
+    #if canImport(SwiftCodeGen)
+    func application(context: PropertyContext) -> Expression
 
-    func application(on target: String, context: PropertyContext) -> String
+    func application(on target: String, context: PropertyContext) -> Statement
+    #endif
 
     #if SanAndreas
     func dematerialize(context: PropertyContext) -> XMLSerializableAttribute
@@ -78,9 +84,11 @@ public enum PropertyValue<T: SupportedPropertyType> {
         }
     }
 
-    public func generate(context: SupportedPropertyTypeContext) -> String {
+    #if canImport(SwiftCodeGen)
+    public func generate(context: SupportedPropertyTypeContext) -> Expression {
         return typeErased().generate(context: context)
     }
+    #endif
 
     public func typeErased() -> AnyPropertyValue {
         switch self {
@@ -117,14 +125,16 @@ public enum AnyPropertyValue {
         }
     }
 
-    public func generate(context: SupportedPropertyTypeContext) -> String {
+    #if canImport(SwiftCodeGen)
+    public func generate(context: SupportedPropertyTypeContext) -> Expression {
         switch self {
         case .value(let value):
             return value.generate(context: context)
         case .state(let name, _):
-            return name
+            return .constant(name)
         }
     }
+    #endif
 
     #if canImport(UIKit)
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {

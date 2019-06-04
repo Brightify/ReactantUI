@@ -150,6 +150,11 @@ class GenerateCommand: Command {
         let styleFiles = styleXmlEnumerator?.compactMap { $0 as? String }.filter { $0.hasSuffix(".styles.xml") }
             .map { inputPathURL.appendingPathComponent($0).path } ?? []
 
+        let mainContext = MainDeserializationContext(elementFactories:
+            Module.mapKit.elements(for: .iOS) +
+            Module.uiKit.elements(for: .iOS) +
+            Module.webKit.elements(for: .iOS))
+
         // path with the stylegroup associated with it
         var globalContextFiles = [] as [(path: String, group: StyleGroup)]
         var stylePaths = [] as [String]
@@ -158,7 +163,8 @@ class GenerateCommand: Command {
             let data = try Data(contentsOf: URL(fileURLWithPath: path))
 
             let xml = SWXMLHash.parse(data)
-            var group: StyleGroup = try xml["styleGroup"].value()
+            guard let element = xml["styleGroup"].element else { continue }
+            var group: StyleGroup = try mainContext.deserialize(element: element)
             
             globalContextFiles.append((path, group))
             stylePaths.append(path)
@@ -189,7 +195,7 @@ class GenerateCommand: Command {
             var definition: ComponentDefinition
             do {
 //                if let type: String = xml["Component"].value(ofAttribute: "type") {
-                    definition = try ComponentDefinition(node: node, type: node.name)
+                    definition = try mainContext.deserialize(element: node, type: node.name)
 //                } else {
 //                    definition = try ComponentDefinition(node: node, type: componentType(from: path))
 //                }
@@ -221,7 +227,7 @@ class GenerateCommand: Command {
         }
 
         let bundleTokenClass = Structure.class(accessibility: .private, name: "__HyperdriveUIBundleToken")
-        let resourceBundeProperty = SwiftCodeGen.Property.constant(accessibility: .private, name: "__resourceBundle", value: "Bundle(for: __HyperdriveUIBundleToken.self)")
+        let resourceBundeProperty = SwiftCodeGen.Property.constant(accessibility: .private, name: "__resourceBundle", value: .constant("Bundle(for: __HyperdriveUIBundleToken.self)"))
 
         output.append(bundleTokenClass)
         output.append(resourceBundeProperty)
@@ -308,13 +314,13 @@ class GenerateCommand: Command {
 
     private func theme(context: GlobalContext, swiftVersion: SwiftVersion) throws -> Structure {
         let description = context.applicationDescription
-        func allCases<T>(item: String, from container: ThemeContainer<T>) throws -> [String] {
+        func allCases<T>(item: String, from container: ThemeContainer<T>) throws -> [(Expression, Block)] {
             return try description.themes.map { theme in
                 guard let themedItem = container[theme: theme, item: item] else {
                     throw GenerateCommandError.themedItemNotFound(theme: theme, item: item)
                 }
                 let typeContext = SupportedPropertyTypeContext(parentContext: context, value: .value(themedItem))
-                return "case .\(theme): return \(themedItem.generate(context: typeContext))"
+                return (Expression.constant(".\(theme)"), [.return(expression: themedItem.generate(context: typeContext))])
             }
         }
 
@@ -323,14 +329,17 @@ class GenerateCommand: Command {
         func themeContainer<T>(from container: ThemeContainer<T>, named name: String) throws -> Structure {
             let themeProperty = SwiftCodeGen.Property.constant(accessibility: .fileprivate, name: "theme", type: "ApplicationTheme")
 
-            let properties = try container.allItemNames.sorted().map {
-                try SwiftCodeGen.Property.variable(
+            let properties = try container.allItemNames.sorted().map { item -> SwiftCodeGen.Property in
+                let switchStatement = try Statement.switch(
+                    expression: .constant("theme"),
+                    cases: allCases(item: item, from: container),
+                    default: nil)
+
+                return SwiftCodeGen.Property.variable(
                     accessibility: .public,
-                    name: $0,
+                    name: item,
                     type: T.runtimeType(for: .iOS).name,
-                    block: ["switch theme {"] +
-                        allCases(item: $0, from: container).map { "    \($0)" } +
-                        ["}"])
+                    block: [switchStatement])
             }
 
             return Structure.struct(
@@ -351,21 +360,21 @@ class GenerateCommand: Command {
             name: "current",
             type: "ApplicationTheme",
             block: [
-                "return selector.currentTheme"
+                .return(expression: .constant("selector.currentTheme")),
             ])
 
         let selector = SwiftCodeGen.Property.constant(
             accessibility: .public,
             modifiers: .static,
             name: "selector",
-            value: "ReactantThemeSelector<ApplicationTheme>(defaultTheme: .\(description.defaultTheme))")
+            value: .constant("ReactantThemeSelector<ApplicationTheme>(defaultTheme: .\(description.defaultTheme))"))
 
         let colors = SwiftCodeGen.Property.variable(
             accessibility: .public,
             name: "colors",
             type: "Colors",
             block: [
-                "return Colors(theme: self)"
+                .return(expression: .constant("Colors(theme: self)"))
             ])
 
         let images = SwiftCodeGen.Property.variable(
@@ -373,7 +382,7 @@ class GenerateCommand: Command {
             name: "images",
             type: "Images",
             block: [
-                "return Images(theme: self)"
+                .return(expression: .constant("Images(theme: self)"))
             ])
 
         let fonts = SwiftCodeGen.Property.variable(
@@ -381,7 +390,7 @@ class GenerateCommand: Command {
             name: "fonts",
             type: "Fonts",
             block: [
-                "return Fonts(theme: self)"
+                .return(expression: .constant("Fonts(theme: self)"))
             ])
 
         return Structure.enum(

@@ -30,11 +30,15 @@ public class UIGenerator: Generator {
     public override func generate(imports: Bool) throws -> Describable {
         let viewAccessibility: Accessibility = componentContext.component.modifier == .public || configuration.defaultModifier == .public ? .public : .internal
 
-        let triggerReloadPaths = [configuration.localXmlPath].map { #""\#($0)""# }.joined(separator: ",\n")
+        let triggerReloadPaths = Expression.arrayLiteral(items:
+            [configuration.localXmlPath].map { Expression.constant(#""\#($0)""#) }
+        )
+
+
 
         let viewProperties: [SwiftCodeGen.Property] = [
-            .constant(accessibility: viewAccessibility, modifiers: .static, name: "triggerReloadPaths", type: "Set<String>", value: "[\(triggerReloadPaths)]"),
-            .constant(accessibility: viewAccessibility, name: "layout", value: "Constraints()"),
+            .constant(accessibility: viewAccessibility, modifiers: .static, name: "triggerReloadPaths", type: "Set<String>", value: triggerReloadPaths),
+            .constant(accessibility: viewAccessibility, name: "layout", value: .constant("Constraints()")),
             .constant(accessibility: viewAccessibility, name: "state", type: "State"),
             .constant(accessibility: .private, name: "actionPublisher", type: "ActionPublisher<Action>"),
         ]
@@ -47,52 +51,14 @@ public class UIGenerator: Generator {
         }
 
         tempCounter = 1
-        let viewInitializations = root.allChildren.flatMap { child -> [String] in
-            let pipe = DescriptionPipe()
-            pipe.string("\(child.id) = ")
-            try! child.initialization(for: .iOS, describeInto: pipe)
-            return pipe.result
-        }
-
-        let loadViewPipe = DescriptionPipe()
-        var themedProperties = [:] as [String: [Tokenizer.Property]]
-        for property in root.properties {
-            guard !property.anyValue.requiresTheme else {
-                themedProperties["self", default: []].append(property)
-                continue
+        let viewInitializations = try root.allChildren.flatMap { child -> Statement in
+            guard let providesInitialization = child as? ProvidesCodeInitialization else {
+                #warning("FIXME Replace with throwing an error")
+                fatalError()
             }
-            if case .state = property.anyValue { continue }
-            let propertyContext = PropertyContext(parentContext: componentContext, property: property)
-            loadViewPipe.line(property.application(on: "self", context: propertyContext))
+
+            return .assignment(target: .constant(child.id.description), expression: try providesInitialization.initialization(for: .iOS))
         }
-
-        try loadViewPipe.append(root.children.map {
-            try generate(element: $0, superName: "self", containedIn: root, themedProperties: &themedProperties)
-        })
-
-        if !themedProperties.isEmpty {
-            loadViewPipe.block(line: "ApplicationTheme.selector.register(target: self, listener:", encapsulateIn: .custom(open: "{", close: "})"), header: "[weak self] theme") {
-                loadViewPipe.line("guard let self = self else { return }")
-                for (name, properties) in themedProperties {
-                    for property in properties {
-                        let propertyContext = PropertyContext(parentContext: componentContext, property: property)
-                        loadViewPipe.line(property.application(on: "self." + name, context: propertyContext))
-                    }
-                }
-            }
-        }
-
-        let loadView = Function(
-            accessibility: .private,
-            name: "loadView",
-            block: loadViewPipe.result)
-
-        let setupConstraints = Function(
-            accessibility: .private,
-            name: "setupConstraints",
-            block: DescriptionPipe().append(root.children.map {
-                generateConstraints(element: $0, superName: "self", forUpdate: false)
-            }).result)
 
         let viewInit = Function.initializer(
             accessibility: viewAccessibility,
@@ -100,7 +66,7 @@ public class UIGenerator: Generator {
                 .init(name: "initialState", type: "State", defaultValue: "State()"),
                 .init(name: "actionPublisher", type: "ActionPublisher<Action>"),
             ],
-            block: viewInitializations + [
+            block: Block(statements: viewInitializations + [
                 "",
                 "state = initialState",
                 "self.actionPublisher = actionPublisher",
@@ -110,7 +76,7 @@ public class UIGenerator: Generator {
                 "loadView()",
                 "setupConstraints()",
                 "initialState.owner = self",
-            ])
+            ].map { Statement.expression(.constant($0)) }))
 
         let stateProperties: [SwiftCodeGen.Property] = [
             .variable(accessibility: .fileprivate, modifiers: .weak, name: "owner", type: "\(root.type)?"),
@@ -126,7 +92,7 @@ public class UIGenerator: Generator {
                 type: item.type.runtimeType(for: .iOS).name,
                 value: item.defaultValue.generate(context: SupportedPropertyTypeContext(parentContext: componentContext, value: .value(item.defaultValue))),
                 block: [
-                    "didSet { notify\(item.name.capitalizingFirstLetter())Changed() }"
+                    .expression(.constant("didSet { notify\(item.name.capitalizingFirstLetter())Changed() }"))
                 ])
         }
 
@@ -135,26 +101,30 @@ public class UIGenerator: Generator {
                 accessibility: .private,
                 modifiers: .final,
                 name: "notify\(item.name.capitalizingFirstLetter())Changed",
-                block: ["guard let owner = owner else { return }"] + item.applications.map { item in
-                    let propertyContext = PropertyContext(parentContext: componentContext, property: item.property.property)
-                    let view = (item.element as? UIElement).map { "owner.\($0.id.description)" } ?? "owner"
-                    return item.property.property.application(on: view, context: propertyContext)
-                })
+                block: Block(statements:
+                    [.guard(conditions: [ConditionExpression.conditionalUnwrap(isConstant: true, name: "owner", expression: .constant("owner"))], else: [.return(expression: nil)])] +
+                    item.applications.map { item in
+                        let propertyContext = PropertyContext(parentContext: componentContext, property: item.property.property)
+                        let view = (item.element as? UIElement).map { "owner.\($0.id.description)" } ?? "owner"
+                        return item.property.property.application(on: view, context: propertyContext)
+                    }))
         }
 
         let stateFunctions: [Function] = [
             .initializer(accessibility: viewAccessibility),
-            .init(accessibility: viewAccessibility,
-                  name: "apply",
-                  parameters: [.init(label: "from", name: "otherState", type: "State")],
-                  block: stateItems.map { _, item in
-                      "\(item.name) = otherState.\(item.name)"
-                  }),
-            .init(accessibility: viewAccessibility,
-                  name: "resynchronize",
-                  block: stateNotifyFunctions.map {
-                      "\($0.name)()"
-                  }),
+            .init(
+                accessibility: viewAccessibility,
+                name: "apply",
+                parameters: [.init(label: "from", name: "otherState", type: "State")],
+                block: Block(statements: stateItems.map { _, item in
+                    Statement.assignment(target: .constant(item.name), expression: .constant("otherState.\(item.name)"))
+                })),
+            .init(
+                accessibility: viewAccessibility,
+                name: "resynchronize",
+                block: Block(statements: stateNotifyFunctions.map {
+                    Statement.expression(.invoke(target: .constant($0.name), arguments: []))
+                })),
         ]
 
 
@@ -185,14 +155,14 @@ public class UIGenerator: Generator {
             name: "Constraints",
             properties: constraintFields)
 
-        let viewClass = Structure.class(
+        let viewClass = try Structure.class(
             accessibility: viewAccessibility,
             isFinal: true,
             name: root.type,
             inheritances: ["HyperViewBase", "HyperView"],
             containers: [stateClass, actionEnum, constraintsClass],
             properties: viewProperties + viewDeclarations,
-            functions: [viewInit, loadView, setupConstraints])
+            functions: [viewInit, loadView(), setupConstraints()])
 
         if false && root.type == "ATest" {
             viewClass.describe(into: DebugDescriptionPipe())
@@ -363,7 +333,7 @@ public class UIGenerator: Generator {
 //            try generateTemplates(modifier: modifier)
 //        }
 
-        let styleExtension = try Structure.extension(
+        let styleExtension = Structure.extension(
             accessibility: viewAccessibility,
             extendedType: root.type,
             containers: [
@@ -374,20 +344,72 @@ public class UIGenerator: Generator {
         return [viewClass, styleExtension]
     }
 
-    private func generate(element: UIElement, superName: String, containedIn: UIContainer, themedProperties: inout [String: [Tokenizer.Property]]) throws -> DescriptionPipe {
+    private func loadView() throws -> Function {
+        var block = Block()
+        var themedProperties = [:] as [String: [Tokenizer.Property]]
+        for property in root.properties {
+            guard !property.anyValue.requiresTheme else {
+                themedProperties["self", default: []].append(property)
+                continue
+            }
+            if case .state = property.anyValue { continue }
+            let propertyContext = PropertyContext(parentContext: componentContext, property: property)
 
-        let pipe = DescriptionPipe()
+            block += property.application(on: "self", context: propertyContext)
+        }
+
+        for child in root.children {
+            block += try propertyApplications(element: child, superName: "self", containedIn: root, themedProperties: &themedProperties)
+        }
+
+        if !themedProperties.isEmpty {
+            var themeApplicationBlock = Block()
+
+            themeApplicationBlock += .guard(conditions: [.conditionalUnwrap(isConstant: true, name: "self", expression: .constant("self"))], else: [.return(expression: nil)])
+
+            for (name, properties) in themedProperties {
+                for property in properties {
+                    let propertyContext = PropertyContext(parentContext: componentContext, property: property)
+                    themeApplicationBlock += property.application(on: "self." + name, context: propertyContext)
+                }
+            }
+
+            block += Statement.expression(
+                .invoke(target: .constant("ApplicationTheme.selector.register"), arguments: [
+                    MethodArgument(name: "target", value: .constant("self")),
+                    MethodArgument(name: "listener", value: .closure(
+                        Closure(captures: ["weak self"], parameters: [(name: "theme", type: nil)], block: themeApplicationBlock))),
+                    ])
+            )
+        }
+
+        return Function(
+            accessibility: .private,
+            name: "loadView",
+            block: block)
+    }
+
+    private func propertyApplications(element: UIElement, superName: String, containedIn: UIContainer, themedProperties: inout [String: [Tokenizer.Property]]) throws -> Block {
+
+        var block = Block()
 
         let name = element.id.description
 
+        let applyStyle = Expression.member(target: .constant(name), name: "apply")
         for style in element.styles {
+            let styleExpression: Expression
             switch style {
             case .local(let styleName):
-                pipe.line("\(name).apply(style: \(root.stylesName).\(styleName))")
+                styleExpression = .constant("\(root.stylesName).\(styleName)")
             case .global(let group, let styleName):
                 let stylesGroupName = group.capitalizingFirstLetter() + "Styles"
-                pipe.line("\(name).apply(style: \(stylesGroupName).\(styleName))")
+                styleExpression = .constant("\(stylesGroupName).\(styleName)")
             }
+
+            block += .expression(
+                .invoke(target: applyStyle, arguments: [
+                    MethodArgument(name: "style", value: styleExpression)
+                ]))
         }
 
         for property in element.properties {
@@ -398,63 +420,111 @@ public class UIGenerator: Generator {
             if case .state = property.anyValue { continue }
 
             let propertyContext = PropertyContext(parentContext: componentContext, property: property)
-            pipe.line(property.application(on: name, context: propertyContext))
+            block += property.application(on: name, context: propertyContext)
         }
-        pipe.line("\(superName).\(containedIn.addSubviewMethod)(\(name))")
-        pipe.line()
+
+        block += .expression(
+            .invoke(target: .member(target: .constant(superName), name: containedIn.addSubviewMethod), arguments: [
+                MethodArgument(value: .constant(name)),
+            ])
+        )
+
         if let container = element as? UIContainer {
-            try container.children.forEach {
-                pipe.append(try generate(element: $0, superName: name, containedIn: container, themedProperties: &themedProperties))
+            for child in container.children {
+                block += try propertyApplications(element: child, superName: name, containedIn: container, themedProperties: &themedProperties)
             }
         }
 
-        return pipe
+        return block
     }
 
-    private func generateConstraints(element: UIElement, superName: String, forUpdate: Bool) -> DescriptionPipe {
-        let pipe = DescriptionPipe()
+    private func setupConstraints() -> Function {
+        var block = Block()
+
+        for child in root.children {
+            block += viewConstraints(element: child, superName: "self", forUpdate: false)
+        }
+
+        return Function(
+            accessibility: .private,
+            name: "setupConstraints",
+            block: block)
+    }
+
+    private func viewConstraints(element: UIElement, superName: String, forUpdate: Bool) -> Block {
+        var block = Block()
 
         let name = element.id.description
 
-        defer {
-            if let container = element as? UIContainer {
-                container.children.forEach {
-                    pipe.append(generateConstraints(element: $0, superName: name, forUpdate: forUpdate))
-                }
-            }
-        }
+        let children: Block = (element as? UIContainer)?.children.reduce(Block()) { accumulator, child in
+            accumulator + viewConstraints(element: child, superName: name, forUpdate: forUpdate)
+        } ?? []
 
         // we want to continue only if we are generating constraints for update AND the layout has conditions
         // on the other hand, if it's the first time this method is called (not from update), we don't want to
         // generate the constraints if the layout has any conditions in it (they will be handled in update later)
-        guard forUpdate == element.layout.hasConditions else { return pipe }
+        guard forUpdate == element.layout.hasConditions else {
+            return children
+        }
+
+        let elementExpression = Expression.constant(name)
+        let setContentCompressionResistancePriority = Expression.member(target: elementExpression, name: "setContentCompressionResistancePriority")
+        let setContentHuggingPriority = Expression.member(target: elementExpression, name: "setContentHuggingPriority")
 
         if let horizontalCompressionPriority = element.layout.contentCompressionPriorityHorizontal {
-            pipe.line("\(name).setContentCompressionResistancePriority(UILayoutPriority(rawValue: \(horizontalCompressionPriority.numeric)), for: .horizontal)")
+            block += .expression(.invoke(target: setContentCompressionResistancePriority, arguments: [
+                .init(value: .constant("UILayoutPriority(rawValue: \(horizontalCompressionPriority.numeric))")),
+                .init(name: "for", value: .constant(".horizontal")),
+            ]))
         }
 
         if let verticalCompressionPriority = element.layout.contentCompressionPriorityVertical {
-            pipe.line("\(name).setContentCompressionResistancePriority(UILayoutPriority(rawValue: \(verticalCompressionPriority.numeric)), for: .vertical)")
+            block += .expression(.invoke(target: setContentCompressionResistancePriority, arguments: [
+                .init(value: .constant("UILayoutPriority(rawValue: \(verticalCompressionPriority.numeric))")),
+                .init(name: "for", value: .constant(".vertical")),
+            ]))
         }
 
         if let horizontalHuggingPriority = element.layout.contentHuggingPriorityHorizontal {
-            pipe.line("\(name).setContentHuggingPriority(UILayoutPriority(rawValue: \(horizontalHuggingPriority.numeric)), for: .horizontal)")
+            block += .expression(.invoke(target: setContentHuggingPriority, arguments: [
+                .init(value: .constant("UILayoutPriority(rawValue: \(horizontalHuggingPriority.numeric))")),
+                .init(name: "for", value: .constant(".horizontal")),
+            ]))
         }
 
         if let verticalHuggingPriority = element.layout.contentHuggingPriorityVertical {
-            pipe.line("\(name).setContentHuggingPriority(UILayoutPriority(rawValue: \(verticalHuggingPriority.numeric)), for: .vertical)")
-        }
-        // we're calling `remakeConstraints` if we're called from update
-        pipe.block(line: "\(name).snp.\(forUpdate ? "re" : "")makeConstraints", header: "make") {
-            for constraint in element.layout.constraints {
-                pipe.append(generateConstraintLine(constraint: constraint, superName: superName, name: name, fallback: false))
-            }
+            block += .expression(.invoke(target: setContentHuggingPriority, arguments: [
+                .init(value: .constant("UILayoutPriority(rawValue: \(verticalHuggingPriority.numeric))")),
+                .init(name: "for", value: .constant(".vertical")),
+            ]))
         }
 
-        return pipe
+        let makeConstraints = Expression.member(target: elementExpression, name: "snp.makeConstraints")
+        let remakeConstraints = Expression.member(target: elementExpression, name: "snp.remakeConstraints")
+
+        let createConstraintsClosure = Closure(
+            parameters: [(name: "make", type: nil)],
+            block: element.layout.constraints.reduce(into: Block()) { accumulator, constraint in
+                accumulator += viewConstraintLine(constraint: constraint, superName: superName, name: name, fallback: false)
+            })
+
+        block += .expression(
+            .invoke(target: forUpdate ? remakeConstraints : makeConstraints, arguments: [
+                .init(value: .closure(createConstraintsClosure)),
+            ])
+        )
+
+        // we're calling `remakeConstraints` if we're called from update
+//        pipe.block(line: "\(name).snp.\(forUpdate ? "re" : "")makeConstraints", header: "make") {
+//            for constraint in element.layout.constraints {
+//                pipe.append()
+//            }
+//        }
+
+        return block + children
     }
 
-    private func generateConstraintLine(constraint: Constraint, superName: String, name: String, fallback: Bool) -> DescriptionPipe {
+    private func viewConstraintLine(constraint: Constraint, superName: String, name: String, fallback: Bool) -> Statement {
         var constraintLine = "make.\(constraint.anchor).\(constraint.relation)("
 
         switch constraint.type {
@@ -503,15 +573,16 @@ public class UIGenerator: Generator {
             constraintLine = "layout.\(field) = \(constraintLine).constraint"
         }
 
-        let pipe = DescriptionPipe()
         if let condition = constraint.condition {
-            pipe.block(line: "if \(condition.generateSwift(viewName: name))") {
-                pipe.line(constraintLine)
-            }
+            return .if(
+                condition: [.expression(condition.generateSwift(viewName: name))],
+                then: [
+                    .expression(.constant(constraintLine))
+                ],
+                else: nil)
         } else {
-            pipe.line(constraintLine)
+            return .expression(.constant(constraintLine))
         }
-        return pipe
     }
 
     private func constraintFields(element: UIElement) -> [SwiftCodeGen.Property] {
@@ -523,7 +594,7 @@ public class UIGenerator: Generator {
         }
 
         let properties = fields.map { field in
-            SwiftCodeGen.Property.variable(name: field, type: "Constraint?")
+            SwiftCodeGen.Property.variable(name: field, type: "SnapKit.Constraint?")
         }
 
         if let container = element as? UIContainer {
@@ -557,7 +628,7 @@ public class UIGenerator: Generator {
                 },
                 returnType: "NSMutableAttributedString",
                 block: [
-                    "return " + property.application(context: propertyContext)
+                    .return(expression: property.application(context: propertyContext))
                 ])
         }
     }

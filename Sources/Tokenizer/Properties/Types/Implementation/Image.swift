@@ -11,6 +11,10 @@ import Foundation
 import UIKit
 #endif
 
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
 public enum Image: AttributeSupportedPropertyType {
     case named(String)
     case themed(String)
@@ -24,15 +28,16 @@ public enum Image: AttributeSupportedPropertyType {
         }
     }
 
-    public func generate(context: SupportedPropertyTypeContext) -> String {
+    #if canImport(SwiftCodeGen)
+    public func generate(context: SupportedPropertyTypeContext) -> Expression {
         switch self {
         case .named(let name):
-            return "UIImage(named: \"\(name)\", in: __resourceBundle, compatibleWith: nil)"
+            return .constant("UIImage(named: \"\(name)\", in: __resourceBundle, compatibleWith: nil)")
         case .themed(let name):
-            return "theme.images.\(name)"
+            return .constant("theme.images.\(name)")
         }
-
     }
+    #endif
 
     #if canImport(UIKit)
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {

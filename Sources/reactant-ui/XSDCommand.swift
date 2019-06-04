@@ -21,7 +21,9 @@ final class XSDCommand: Command {
             throw GenerateCommandError.ouputFileInvalid
         }
 
-        let file = XSDResolver().resolve()
+        let factories = Module.uiKit.elements(for: .iOS) + Module.webKit.elements(for: .iOS) + Module.mapKit.elements(for: .iOS)
+
+        let file = XSDResolver().resolve(factories: Dictionary(uniqueKeysWithValues: factories.map { ($0.elementName, $0) }))
 
         try XSDSerializer(root: file).serialize().write(to: outputPathURL, atomically: true, encoding: .utf8)
     }

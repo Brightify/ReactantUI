@@ -11,13 +11,20 @@ import Foundation
     import UIKit
 #endif
 
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
 public struct AffineTransformation: AttributeSupportedPropertyType {
     
     public let transformations: [TransformationModifier]
     
-    public func generate(context: SupportedPropertyTypeContext) -> String {
-        return transformations.map { $0.generated }.joined(separator: " + ")
+    #if canImport(SwiftCodeGen)
+    public func generate(context: SupportedPropertyTypeContext) -> Expression {
+        let expressions = transformations.map { $0.generated }
+        return Expression.join(expressions: expressions, operator: "+") ?? TransformationModifier.identity.generated
     }
+    #endif
     
     public static func materialize(from value: String) throws -> AffineTransformation {
         let tokens = Lexer.tokenize(input: value)

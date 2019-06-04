@@ -71,14 +71,14 @@ public struct ComponentDefinition: UIContainer, UIElementBase, StyleContainer, C
     }
     #endif
 
-    public init(context: ComponentTokenizationContext) throws {
+    public init(context: ComponentDeserializationContext) throws {
         let node = context.element
-        self.type = node.name
-        styles = try node.singleOrNoElement(named: "styles")?.xmlChildren.compactMap { try $0.value() as Style } ?? []
+        type = context.type
+        styles = try node.singleOrNoElement(named: "styles")?.xmlChildren.compactMap { try context.deserialize(element: $0, groupName: nil) } ?? []
         stylesName = try node.singleOrNoElement(named: "styles")?.attribute(by: "name")?.text ?? "Styles"
         templates = try node.singleOrNoElement(named: "templates")?.xmlChildren.compactMap { try $0.value() as Template } ?? []
         templatesName = try node.singleOrNoElement(named: "templates")?.attribute(by: "name")?.text ?? "Templates"
-        children = try node.xmlChildren.compactMap(context.tokenize(element:))
+        children = try node.xmlChildren.compactMap(context.deserialize(element:))
         isRootView = node.value(ofAttribute: "rootView") ?? false
         if isRootView {
             edgesForExtendedLayout = (node.attribute(by: "extend")?.text).map(RectEdge.parse) ?? []

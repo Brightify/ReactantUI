@@ -10,6 +10,10 @@
 import UIKit
 #endif
 
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
 /**
  * Typed property obtained from several XML attributes.
  * It's used for properties that react to `ControlState`.
@@ -31,11 +35,12 @@ public struct ControlStateProperty<T: AttributeSupportedPropertyType>: TypedProp
         }
     }
 
+    #if canImport(SwiftCodeGen)
     /**
      * - parameter context: property context to use
      * - returns: Swift `String` representation of the property application on the target
      */
-    public func application(context: PropertyContext) -> String {
+    public func application(context: PropertyContext) -> Expression {
         return value.generate(context: context.child(for: value))
     }
 
@@ -44,12 +49,20 @@ public struct ControlStateProperty<T: AttributeSupportedPropertyType>: TypedProp
      * - parameter context: property context to use
      * - returns: Swift `String` representation of the property application on the target
      */
-    public func application(on target: String, context: PropertyContext) -> String {
+    public func application(on target: String, context: PropertyContext) -> Statement {
         let state = parseState(from: attributeName) as [ControlState]
         let stringState = state.map { "UIControl.State.\($0.rawValue)" }.joined(separator: ", ")
         let namespacedTarget = namespace.resolvedSwiftName(target: target)
-        return "\(namespacedTarget).set\(description.key.capitalizingFirstLetter())(\(application(context: context)), for: [\(stringState)])"
+
+        let methodName = "set\(description.key.capitalizingFirstLetter())"
+        return .expression(
+            .invoke(target: .member(target: .constant(namespacedTarget), name: methodName), arguments: [
+                .init(value: application(context: context)),
+                .init(name: "for", value: .constant("[\(stringState)]"))
+            ])
+        )
     }
+    #endif
     
     #if SanAndreas
     public func dematerialize(context: PropertyContext) -> XMLSerializableAttribute {

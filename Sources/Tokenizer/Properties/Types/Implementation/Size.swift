@@ -8,6 +8,10 @@
 
 import Foundation
 
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
 public struct Size: AttributeSupportedPropertyType {
     public static let zero = Size(width: 0, height: 0)
 
@@ -19,9 +23,11 @@ public struct Size: AttributeSupportedPropertyType {
         self.height = height
     }
 
-    public func generate(context: SupportedPropertyTypeContext) -> String {
-        return "CGSize(width: \(CGFloat(width)), height: \(CGFloat(height))"
+    #if canImport(SwiftCodeGen)
+    public func generate(context: SupportedPropertyTypeContext) -> Expression {
+        return .constant("CGSize(width: \(CGFloat(width)), height: \(CGFloat(height))")
     }
+    #endif
     
     #if SanAndreas
     public func dematerialize(context: SupportedPropertyTypeContext) -> String {

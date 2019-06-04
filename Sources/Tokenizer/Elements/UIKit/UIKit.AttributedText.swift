@@ -11,6 +11,10 @@ import UIKit
 import Hyperdrive
 #endif
 
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
 extension Array {
 
     fileprivate func arrayByAppending(_ elements: Element...) -> Array<Element> {
@@ -169,30 +173,75 @@ extension AttributedText {
         return AttributedText(style: styleName, localProperties: style.properties, parts: parsedText)
     }
 
-    public func generate(context: SupportedPropertyTypeContext) -> String {
-        return """
-        {
-            let s = NSMutableAttributedString()
-            \(generateStringParts(context: context).map { "s.append((\($0.text)).attributed(\($0.attributes)))" }.joined(separator: "\n\t"))
-            return s
-        }()
-        """
+    #if canImport(SwiftCodeGen)
+    public func generate(context: SupportedPropertyTypeContext) -> Expression {
+//        let pipe = DescriptionPipe()
+//
+//        pipe.block(encapsulateIn: .custom(open: "{", close: "}()")) {
+//            pipe.line("let s = NSMutableAttributedString()")
+//            for (text, attributes) in generateStringParts(context: context) {
+//                pipe.block(line: "s.append", encapsulateIn: .parentheses) {
+//                    pipe.block(encapsulateIn: .parentheses) {
+//                        pipe.append(text)
+//                    }
+//                    pipe.line(".attributed(\(attributes))")
+//                }
+//            }
+//            pipe.line("return s")
+//        }
+//
+//        return pipe
+
+        var block = Block()
+
+        block += .declaration(isConstant: true, name: "s", expression: .invoke(target: .constant("NSMutableAttributedString"), arguments: []))
+
+        for (text, attributes) in generateStringParts(context: context) {
+            block += Statement.expression(
+                .invoke(target: .constant("s.append"), arguments: [
+                    MethodArgument(value: .invoke(target: .member(target: text, name: "attributed"), arguments: attributes)),
+                ])
+            )
+
+//            pipe.block(line: "s.append", encapsulateIn: .parentheses) {
+//                pipe.block(encapsulateIn: .parentheses) {
+//                    pipe.append(text)
+//                }
+//                pipe.line(".attributed(\(attributes))")
+//            }
+        }
+        block += .return(expression: .constant("s"))
+
+        let closure = Closure(parameters: [], returnType: nil, block: block)
+
+        return .invoke(target: .closure(closure), arguments: [])
+
+//        return """
+//        {
+//            let s = NSMutableAttributedString()
+//            \(generateStringParts(context: context).map { "s.append((\($0.text)).attributed(\($0.attributes)))" }.joined(separator: "\n\t"))
+//            return s
+//        }()
+//        """
     }
 
-    private func generateStringParts(context: SupportedPropertyTypeContext) -> [(text: String, attributes: String)] {
-        func resolveAttributes(part: AttributedText.Part, inheritedAttributes: [Property], parentElements: [String]) -> [(text: String, attributes: String)] {
+    private func generateStringParts(context: SupportedPropertyTypeContext) -> [(text: Expression, attributes: [MethodArgument])] {
+        func resolveAttributes(part: AttributedText.Part, inheritedAttributes: [Property], parentElements: [String]) -> [(text: Expression, attributes: [MethodArgument])] {
             switch part {
             case .transform(let transformedText):
                 let generatedAttributes = inheritedAttributes.map {
-                    ".\($0.name)(\($0.anyValue.generate(context: context.child(for: $0.anyValue))))"
-                }.joined(separator: ", ")
+                    Expression.invoke(target: .constant(".\($0.name)"), arguments: [
+                        .init(value: $0.anyValue.generate(context: context.child(for: $0.anyValue)))
+                    ])
+                }
                 let generatedTransformedText = transformedText.generate(context: context.child(for: transformedText))
                 let generatedParentStyles = parentElements.compactMap { elementName in
                     style.map { context.resolvedStyleName(named: $0) + ".\(elementName)" }
-                }.distinctLast()
+                }.distinctLast().map(Expression.constant)
 
-                let attributesString = (generatedParentStyles + ["[\(generatedAttributes)]"]).joined(separator: " + ")
-                return [(generatedTransformedText, attributesString)]
+                let attributesString = Expression.join(expressions: generatedParentStyles + [Expression.arrayLiteral(items: generatedAttributes)], operator: "+") ?? .arrayLiteral(items: [])
+
+                return [(generatedTransformedText, [MethodArgument(value: attributesString)])]
             case .attributed(let attributedStyle, let attributedTexts):
                 let resolvedAttributes: Set<String>
                 if let styleName = style {
@@ -213,16 +262,17 @@ extension AttributedText {
         }
 
         return parts.flatMap {
-            resolveAttributes(part: $0, inheritedAttributes: localProperties, parentElements: [])
-            }.reduce([]) { current, stringPart in
+                resolveAttributes(part: $0, inheritedAttributes: localProperties, parentElements: [])
+            }/*.reduce([]) { current, stringPart in
                 guard let lastStringPart = current.last, lastStringPart.attributes == stringPart.attributes else {
                     return current.arrayByAppending(stringPart)
                 }
                 var mutableCurrent = current
                 mutableCurrent[mutableCurrent.endIndex - 1] = (text: "\(lastStringPart.text) + \(stringPart.text)", attributes: lastStringPart.attributes)
                 return mutableCurrent
-        } as [(text: String, attributes: String)]
+        } as [(text: Expression, attributes: [MethodArgument])]*/
     }
+    #endif
 
     private func resolvedExtensions(of style: AttributedTextStyle, from styleNames: [StyleName], in context: SupportedPropertyTypeContext) -> [Property] {
         return styleNames.flatMap { styleName -> [Property] in

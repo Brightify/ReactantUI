@@ -11,6 +11,10 @@ import Foundation
 import UIKit
 #endif
 
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
 /**
  * Typed property that is obtained from multiple XML attributes.
  * Its main usage is for `struct`s that need multiple `init` parameters.
@@ -25,11 +29,12 @@ public struct MultipleAttributeAssignableProperty<T: MultipleAttributeSupportedP
         return namespace.resolvedAttributeName(name: name)
     }
 
+    #if canImport(SwiftCodeGen)
     /**
      * - parameter context: property context to use
      * - returns: Swift `String` representation of the property application on the target
      */
-    public func application(context: PropertyContext) -> String {
+    public func application(context: PropertyContext) -> Expression {
         return value.generate(context: context.child(for: value))
     }
 
@@ -38,10 +43,12 @@ public struct MultipleAttributeAssignableProperty<T: MultipleAttributeSupportedP
      * - parameter context: property context to use
      * - returns: Swift `String` representation of the property application on the target
      */
-    public func application(on target: String, context: PropertyContext) -> String {
+    public func application(on target: String, context: PropertyContext) -> Statement {
         let namespacedTarget = namespace.resolvedSwiftName(target: target)
-        return "\(namespacedTarget).\(description.swiftName) = \(application(context: context))"
+
+        return .assignment(target: .member(target: .constant(namespacedTarget), name: description.swiftName), expression: application(context: context))
     }
+    #endif
 
     #if SanAndreas
     public func dematerialize(context: PropertyContext) -> XMLSerializableAttribute {

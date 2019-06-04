@@ -7,10 +7,16 @@
 
 import Foundation
 
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
 extension Bool: AttributeSupportedPropertyType {
-    public func generate(context: SupportedPropertyTypeContext) -> String {
-        return self ? "true" : "false"
+    #if canImport(SwiftCodeGen)
+    public func generate(context: SupportedPropertyTypeContext) -> Expression {
+        return .constant(self ? "true" : "false")
     }
+    #endif
 
     #if SanAndreas
     public func dematerialize(context: SupportedPropertyTypeContext) -> String {

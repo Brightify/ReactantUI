@@ -42,7 +42,10 @@ public class ReactantLiveUIViewApplier {
         if let foundView = try? findViewByFieldName(name, element) {
             view = foundView
         } else {
-            view = try element.initialize(context: workerContext)
+            guard let initializer = element as? CanInitializeUIKitView else {
+                fatalError("Not Implemented")
+            }
+            view = try initializer.initialize(context: workerContext)
             // tag views that are initialized without a field automatically
             view.applierTag = "applier-generated-view"
         }
@@ -266,7 +269,8 @@ public class ReactantLiveUIApplier {
         func findViewByFieldName(field: String, element: UIElement) throws -> UIView {
             let view: UIView
             if instance is Anonymous {
-                view = (try? element.initialize(context: workerContext)) ?? UIView()
+                fatalError()
+//                view = (try? (element as? CanInitializeUIKitView)?.initialize(context: workerContext)) ?? UIView() ?? UIView()
                 instance.setValue(view, forUndefinedKey: field)
             } else if instance.responds(to: Selector("\(field)")) {
                 guard let targetView = instance.value(forKey: field) as? UIView else {
@@ -282,7 +286,8 @@ public class ReactantLiveUIApplier {
         }
 
         func resolveStyle(element: UIElement) throws -> [Property] {
-            return try (commonStyles + context.component.styles).resolveStyle(for: element)
+            fatalError()
+//            return try (commonStyles + context.component.styles).resolveStyle(for: element)
         }
 
         let viewApplier = ReactantLiveUIViewApplier(

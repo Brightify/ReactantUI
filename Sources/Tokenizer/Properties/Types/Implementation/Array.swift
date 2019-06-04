@@ -7,14 +7,20 @@
 
 import Foundation
 
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
 extension Array: SupportedPropertyType where Iterator.Element: SupportedPropertyType {
     public var requiresTheme: Bool {
         return false
     }
 
-    public func generate(context: SupportedPropertyTypeContext) -> String {
-        return "[" + map { $0.generate(context: context.child(for: $0)) }.joined(separator: ", ") + "]"
+    #if canImport(SwiftCodeGen)
+    public func generate(context: SupportedPropertyTypeContext) -> Expression {
+        return .arrayLiteral(items: map { $0.generate(context: context.child(for: $0)) })
     }
+    #endif
 
     #if canImport(UIKit)
     public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {

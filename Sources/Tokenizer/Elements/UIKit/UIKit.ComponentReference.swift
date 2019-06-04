@@ -43,7 +43,7 @@ public class ComponentReference: View, ComponentDefinitionContainer {
     }
 
     #if canImport(SwiftCodeGen)
-    public override func initialization(for platform: RuntimePlatform, describeInto pipe: DescriptionPipe) throws {
+    public override func initialization(for platform: RuntimePlatform) throws -> Expression {
 //        let handledActionCases = handledActions.flatMap { action -> [String] in
 ////            let parameters = action.parameters.map { parameter in
 ////                switch
@@ -54,16 +54,33 @@ public class ComponentReference: View, ComponentDefinitionContainer {
 //            ]
 //        }
 
-        pipe.block(line: "\(type)(initialState: \(type).State(), actionPublisher: actionPublisher.map", header: "action") {
-            pipe.block(line: "switch action") {
-                for action in handledActions {
-                    pipe.line("case .\(action.eventName):")
-                    pipe.line("    return .\(action.name)")
-                }
-                pipe.line("default:")
-                pipe.line("    return nil")
-            }
-        }.string(")")
+//        let pipe = DescriptionPipe()
+//        pipe.block(line: "\(type)(initialState: \(type).State(), actionPublisher: actionPublisher.map", encapsulateIn: .custom(open: "{", close: "})"), header: "action") {
+//            pipe.block(line: "switch action") {
+//                for action in handledActions {
+//                    pipe.line("case .\(action.eventName):")
+//                    pipe.line("    return .\(action.name)")
+//                }
+//                pipe.line("default:")
+//                pipe.line("    return nil")
+//            }
+//        }
+//        return pipe.result as [Describable]
+
+        let actionMappingBlock = [.switch(
+            expression: .constant("action"),
+            cases: handledActions.map {
+                (Expression.constant(".\($0.eventName)"), [.return(expression: .constant(".\($0.name)"))] as Block)
+            },
+            default: [.return(expression: .constant("nil"))])] as Block
+
+        return .invoke(target: .constant(type), arguments: [
+            MethodArgument(name: "initialState", value: .constant("\(type).State()")),
+            MethodArgument(name: "actionPublisher", value: .invoke(target: .constant("actionPublisher.map"), arguments: [
+                MethodArgument(value: .closure(Closure(parameters: [(name: "action", type: nil)], block: actionMappingBlock))),
+            ]))
+        ])
+
 //
 //        return """
 //         { action in
@@ -77,7 +94,7 @@ public class ComponentReference: View, ComponentDefinitionContainer {
     }
     #endif
 
-    public required init(context: UIElementTokenizationContext) throws {
+    public required init(context: UIElementDeserializationContext) throws {
         let node = context.element
         type = try node.value(ofAttribute: "type", defaultValue: node.name)
         guard type != "Component" else { throw TokenizationError(message: "Name `Component` is not allowed for component reference!") }
@@ -107,7 +124,6 @@ public class ComponentReference: View, ComponentDefinitionContainer {
 
     #if canImport(UIKit)
     public override func initialize(context: ReactantLiveUIWorker.Context) throws -> UIView {
-        guard let type = type else { throw LiveUIError(message: "Should never initialize when type is undefined.") }
         return try context.componentInstantiation(named: type)()
     }
     #endif

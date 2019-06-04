@@ -7,6 +7,10 @@
 
 import Foundation
 
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
 public enum TransformedText {
     case text(String)
     indirect case transform(Transform, TransformedText)
@@ -20,17 +24,26 @@ public enum TransformedText {
 }
 
 extension TransformedText: AttributeSupportedPropertyType {
-    public func generate(context: SupportedPropertyTypeContext) -> String {
-        func resolveTransformations(text: TransformedText) -> String {
+    #if canImport(SwiftCodeGen)
+    public func generate(context: SupportedPropertyTypeContext) -> Expression {
+        func resolveTransformations(text: TransformedText) -> Expression {
             switch text {
             case .transform(.uppercased, let inner):
-                return resolveTransformations(text: inner) + ".uppercased()"
+                return .invoke(target: .member(target: resolveTransformations(text: inner), name: "uppercased"), arguments: [])
+
             case .transform(.lowercased, let inner):
-                return resolveTransformations(text: inner) + ".lowercased()"
+                return .invoke(target: .member(target: resolveTransformations(text: inner), name: "lowercased"), arguments: [])
+
             case .transform(.localized, let inner):
-                return "NSLocalizedString(\(resolveTransformations(text: inner)), bundle: __resourceBundle, comment: \"\")"
+                return .invoke(target: .constant("NSLocalizedString"), arguments: [
+                    MethodArgument(value: resolveTransformations(text: inner)),
+                    MethodArgument(name: "bundle", value: .constant("__resourceBundle")),
+                    MethodArgument(name: "comment", value: .constant("\"\"")),
+                ])
+
             case .transform(.capitalized, let inner):
-                return resolveTransformations(text: inner) + ".capitalized"
+                return .member(target: resolveTransformations(text: inner), name: "capitalized")
+
             case .text(let value):
                 let escapedValue = value
                     .replacingOccurrences(of: "\"", with: "\\\"")
@@ -38,11 +51,12 @@ extension TransformedText: AttributeSupportedPropertyType {
                     .replacingOccurrences(of: "\r", with: "\\r")
                     .replacingOccurrences(of: "\t", with: "\\t")
 
-                return "\"\(escapedValue)\""
+                return .constant("\"\(escapedValue)\"")
             }
         }
         return resolveTransformations(text: self)
     }
+    #endif
 
     #if SanAndreas
     public func dematerialize(context: SupportedPropertyTypeContext) -> String {

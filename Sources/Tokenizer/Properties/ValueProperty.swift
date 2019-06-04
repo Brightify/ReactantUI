@@ -9,6 +9,10 @@
 import UIKit
 #endif
 
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
 /**
  * Typed property obtained from an XML attribute.
  * The most basic typed property. Just sets the property using the parsed value.
@@ -23,14 +27,16 @@ public struct ValueProperty<T: AttributeSupportedPropertyType>: TypedProperty {
         return namespace.resolvedAttributeName(name: name)
     }
 
-    public func application(context: PropertyContext) -> String {
+    #if canImport(SwiftCodeGen)
+    public func application(context: PropertyContext) -> Expression {
         return value.generate(context: context.child(for: value))
     }
 
-    public func application(on target: String, context: PropertyContext) -> String {
+    public func application(on target: String, context: PropertyContext) -> Statement {
         let namespacedTarget = namespace.resolvedSwiftName(target: target)
-        return "\(namespacedTarget).\(description.name) = \(application(context: context))"
+        return .assignment(target: .constant("\(namespacedTarget).\(description.name)"), expression: application(context: context))
     }
+    #endif
 
     #if SanAndreas
     public func dematerialize(context: PropertyContext) -> XMLSerializableAttribute {

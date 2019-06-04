@@ -26,8 +26,8 @@ public class Container: View, UIContainer {
     }
     #endif
 
-    public required init(context: UIElementTokenizationContext) throws {
-        children = try context.element.xmlChildren.compactMap(context.tokenize(element:))
+    public required init(context: UIElementDeserializationContext) throws {
+        children = try context.element.xmlChildren.compactMap(context.deserialize(element:))
 
         try super.init(context: context)
     }

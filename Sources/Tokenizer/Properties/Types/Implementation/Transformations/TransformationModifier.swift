@@ -6,6 +6,10 @@
 //
 //
 
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
 // FIXME Shouldn't this be XMLDeserializable/Serializable?
 public enum TransformationModifier {
     case identity
@@ -15,20 +19,22 @@ public enum TransformationModifier {
 }
 
 extension TransformationModifier {
-    
-    public var generated: String {
+
+    #if canImport(SwiftCodeGen)
+    public var generated: Expression {
         switch self {
         case .identity:
-            return ".identity"
+            return .constant(".identity")
         case .rotate(let degrees):
             // FIXME when #41 is fixed in Hyperdrive, rework this
-            return "rotate(\((.pi/180) * degrees))"
+            return .constant("rotate(\((.pi/180) * degrees))")
         case .scale(let x, let y):
-            return "scale(x: \(x), y: \(y))"
+            return .constant("scale(x: \(x), y: \(y))")
         case .translate(let x, let y):
-            return "translate(x: \(x), y: \(y))"
+            return .constant("translate(x: \(x), y: \(y))")
         }
     }
+    #endif
     
     #if SanAndreas
     public func dematerialize() -> String {

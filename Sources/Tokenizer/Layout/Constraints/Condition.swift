@@ -201,23 +201,28 @@ public indirect enum Condition {
     }
 }
 
-// MARK: - Generator Extensions
+// MARK:- Generator Extensions
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+
 extension Condition {
-    public func generateSwift(viewName: String) -> String {
+    public func generateSwift(viewName: String) -> Expression {
         switch self {
         case .statement(let statement):
-            return statement.generateSwift(viewName: viewName)
+            return .constant(statement.generateSwift(viewName: viewName))
         case .unary(let operation, let condition):
-            return "\(operation.swiftRepresentation)\(condition.generateSwift(viewName: viewName))"
+            return .constant("\(operation.swiftRepresentation)\(condition.generateSwift(viewName: viewName))")
         case .binary(let operation, let lhsCondition, let rhsCondition):
-            return [
-                lhsCondition.generateSwift(viewName: viewName),
-                operation.swiftRepresentation,
-                rhsCondition.generateSwift(viewName: viewName),
-            ].joined(separator: " ")
+            return .operator(
+                lhs: lhsCondition.generateSwift(viewName: viewName),
+                operator: operation.swiftRepresentation,
+                rhs: rhsCondition.generateSwift(viewName: viewName))
         }
     }
+}
+#endif
 
+extension Condition {
     // MARK: - XML condition generators
     public func generateXML() -> String {
         switch self {

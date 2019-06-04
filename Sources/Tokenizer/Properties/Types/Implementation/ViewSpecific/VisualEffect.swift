@@ -8,18 +8,24 @@
 
 import Foundation
 
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
 public enum VisualEffect: AttributeSupportedPropertyType {
     case blur(BlurEffect)
     case vibrancy(BlurEffect)
 
-    public func generate(context: SupportedPropertyTypeContext) -> String {
+    #if canImport(SwiftCodeGen)
+    public func generate(context: SupportedPropertyTypeContext) -> Expression {
         switch self {
         case .blur(let effect):
-            return "UIBlurEffect(style: .\(effect.rawValue))"
+            return .constant("UIBlurEffect(style: .\(effect.rawValue))")
         case .vibrancy(let effect):
-            return "UIVibrancyEffect(blurEffect: .\(effect.rawValue))"
+            return .constant("UIVibrancyEffect(blurEffect: .\(effect.rawValue))")
         }
     }
+    #endif
     
     #if SanAndreas
     public func dematerialize(context: SupportedPropertyTypeContext) -> String {

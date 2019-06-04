@@ -125,9 +125,24 @@ public protocol Describable {
     func describe(into pipe: DescriptionPipe)
 }
 
+public func +(lhs: Describable, rhs: Describable) -> Describable {
+    let pipe = DescriptionPipe()
+    pipe.append(lhs)
+    pipe.append(rhs)
+    return pipe
+}
+
 extension String: Describable {
     public func describe(into pipe: DescriptionPipe) {
-        pipe.line(self)
+        pipe.lineEnd(self)
+    }
+}
+
+public struct Line: Describable {
+    public let content: String
+
+    public func describe(into pipe: DescriptionPipe) {
+        pipe.line(content)
     }
 }
 
@@ -136,6 +151,315 @@ extension Array: Describable where Element == Describable {
         forEach {
             $0.describe(into: pipe)
         }
+    }
+}
+
+public enum Expression: Describable {
+    case constant(String)
+    case closure(Closure)
+    indirect case member(target: Expression, name: String)
+    indirect case invoke(target: Expression, arguments: [MethodArgument])
+    indirect case `operator`(lhs: Expression, operator: String, rhs: Expression)
+    indirect case arrayLiteral(items: [Expression])
+    indirect case dictionaryLiteral(items: [(key: Expression, value: Expression)])
+
+    public func describe(into pipe: DescriptionPipe) {
+        switch self {
+        case .constant(let constant):
+            pipe.string(constant)
+        case .closure(let closure):
+            pipe.append(closure)
+        case .member(let target, let name):
+            pipe.append(target).string(".").string(name)
+        case .invoke(let target, let arguments):
+            pipe.append(target).string("(")
+            for (index, argument) in arguments.enumerated() {
+                if index > 0 {
+                    pipe.string(", ")
+                }
+                if let name = argument.name {
+                    pipe.string(name).string(": ")
+                }
+                pipe.append(argument.value)
+            }
+            pipe.string(")")
+        case .operator(let lhs, let op, let rhs):
+            pipe.append(lhs).string(op).append(rhs)
+        case .arrayLiteral(let items):
+            guard !items.isEmpty else {
+                pipe.string("[]")
+                break
+            }
+
+            pipe.block(encapsulateIn: .brackets) {
+                for item in items {
+                    pipe.append(item).lineEnd(",")
+                }
+            }
+
+        case .dictionaryLiteral(let items):
+            guard !items.isEmpty else {
+                pipe.string("[:]")
+                break
+            }
+
+            pipe.block {
+                for (key, value) in items {
+                    pipe.append(key).string(": ").append(value).lineEnd(",")
+                }
+            }
+        }
+    }
+
+    public static func join(expressions: [Expression], operator: String) -> Expression? {
+        guard let firstExpression = expressions.first else { return nil }
+
+        return expressions.dropFirst().reduce(firstExpression) { lhs, rhs in
+            Expression.operator(lhs: lhs, operator: `operator`, rhs: rhs)
+        }
+    }
+}
+
+public struct MethodArgument {
+    public var name: String?
+    public var value: Expression
+
+    public init(name: String? = nil, value: Expression) {
+        self.name = name
+        self.value = value
+    }
+}
+
+public enum ConditionExpression: Describable {
+    case expression(Expression)
+    case conditionalUnwrap(isConstant: Bool, name: String, expression: Expression)
+    case enumUnwrap(case: String, parameters: [String], expression: Expression)
+    case `operator`(lhs: Expression, operator: String, rhs: Expression)
+
+    public func describe(into pipe: DescriptionPipe) {
+        switch self {
+        case .expression(let expression):
+            pipe.append(expression)
+        case .conditionalUnwrap(let isConstant, let name, let expression):
+            pipe.string(isConstant ? "let " : "var ").string(name).string(" = ").append(expression)
+        case .enumUnwrap(let caseName, let parameters, let expression):
+            pipe.string("case .").string(caseName)
+            if !parameters.isEmpty {
+                pipe.string("(").string(parameters.map { "let \($0)" }.joined(separator: ", ")).string(")")
+            }
+            pipe.string(" = ").append(expression)
+        case .operator(let lhs, let op, let rhs):
+            pipe.string("(").append(lhs).string(op).append(rhs).string(")")
+        }
+    }
+}
+
+public enum Statement: Describable {
+    case assignment(target: Expression, expression: Expression)
+    case `return`(expression: Expression?)
+    case declaration(isConstant: Bool, name: String, expression: Expression?)
+    case expression(Expression)
+    case `guard`(conditions: [ConditionExpression], else: Block)
+    case `if`(condition: [ConditionExpression], then: Block, else: Block?)
+    case `switch`(expression: Expression, cases: [(Expression, Block)], default: Block?)
+    case emptyLine
+
+    public static func variable(name: String, expression: Expression) -> Statement {
+        return .declaration(isConstant: false, name: name, expression: expression)
+    }
+
+    public static func constant(name: String, expression: Expression) -> Statement {
+        return .declaration(isConstant: true, name: name, expression: expression)
+    }
+
+    public func describe(into pipe: DescriptionPipe) {
+        switch self {
+        case .assignment(let target, let expression):
+            pipe.append(target).string(" = ").append(expression)
+        case .return(let expression):
+            pipe.string("return")
+            if let expression = expression {
+                pipe.string(" ").append(expression)
+            }
+        case .declaration(let isConstant, let name, let expression):
+            pipe.string(isConstant ? "let " : "var ").string(name)
+            if let expression = expression {
+                pipe.string(" = ").append(expression)
+            }
+        case .expression(let expression):
+            pipe.append(expression)
+        case .guard(let conditions, let elseBlock):
+            pipe.string("guard ")
+            for (index, condition) in conditions.enumerated() {
+                if index > 0 {
+                    pipe.string(", ")
+                }
+                pipe.append(condition).block(line: " else") {
+                    pipe.append(elseBlock)
+                }
+            }
+        case .if(let conditions, let thenBlock, let elseBlock):
+            pipe.string("if ")
+            for (index, condition) in conditions.enumerated() {
+                if index > 0 {
+                    pipe.string(", ")
+                }
+                pipe.append(condition)
+            }
+            pipe.string(" {").indented {
+                pipe.append(thenBlock)
+            }.string("}")
+            if let elseBlock = elseBlock {
+                if case .if? = elseBlock.statements.first, elseBlock.isSingleStatement {
+                    pipe.string(" else ").append(elseBlock)
+                } else {
+                    pipe.string(" else ").block {
+                        pipe.append(elseBlock)
+                    }
+                }
+            } else {
+                pipe.lineEnd()
+            }
+
+        case .switch(let expression, let cases, let defaultBlock):
+            pipe.string("switch ").append(expression).lineEnd(" {")
+
+            for (caseExpresison, caseBlock) in cases {
+                pipe.string("case ").append(caseExpresison).string(":")
+                if caseBlock.isSingleStatement {
+                    pipe.string(" ").append(caseBlock).lineEnd()
+                } else {
+                    pipe.indented {
+                        pipe.append(caseBlock)
+                    }
+                }
+            }
+
+            if let defaultBlock = defaultBlock {
+                pipe.string("default:")
+                if defaultBlock.isSingleStatement {
+                    pipe.string(" ").append(defaultBlock).lineEnd()
+                } else {
+                    pipe.indented {
+                        pipe.append(defaultBlock)
+                    }
+                }
+            }
+
+            pipe.line("}")
+        case .emptyLine:
+            pipe.line()
+        }
+    }
+}
+
+public struct Block: ExpressibleByArrayLiteral, Describable {
+    public var isSingleStatement: Bool {
+        return statements.count <= 1
+    }
+
+    public var statements: [Statement]
+
+    public init(statements: [Statement]) {
+        self.statements = statements
+    }
+
+    public init(arrayLiteral elements: Statement...) {
+        statements = elements
+    }
+
+    public func describe(into pipe: DescriptionPipe) {
+        if let firstStatement = statements.first, isSingleStatement {
+            pipe.append(firstStatement)
+        } else {
+            for statement in statements {
+                pipe.append(statement).endOfLineIfNeeded()
+            }
+        }
+    }
+
+    public static func +(lhs: Block, rhs: Block) -> Block {
+        return Block(statements: lhs.statements + rhs.statements)
+    }
+
+    public static func +=(lhs: inout Block, rhs: Statement) {
+        lhs.statements.append(rhs)
+    }
+
+    public static func +=(lhs: inout Block, rhs: Block) {
+        lhs.statements.append(contentsOf: rhs.statements)
+    }
+}
+
+public struct Closure: Describable {
+    public let captures: [String]
+    public let parameters: [(name: String?, type: String?)]
+    public let returnType: String?
+    public let block: Block
+
+    public init(captures: [String] = [], parameters: [(name: String?, type: String?)] = [], returnType: String? = nil, block: Block) {
+        self.captures = captures
+        self.parameters = parameters
+        self.returnType = returnType
+        self.block = block
+    }
+
+    public func describe(into pipe: DescriptionPipe) {
+        pipe.string("{")
+        
+        var hasHeader = false
+
+        if !captures.isEmpty {
+            hasHeader = true
+            pipe.string(" [")
+            for (index, capture) in captures.enumerated() {
+                if index > 0 {
+                    pipe.string(", ")
+                }
+                pipe.string(capture)
+            }
+            pipe.string("]")
+        }
+
+        if !parameters.isEmpty {
+            pipe.string(" ")
+            hasHeader = true
+            let needsWrapping = parameters.contains { $0.type != nil }
+            if needsWrapping {
+                pipe.string("(")
+            }
+            for (index, parameter) in parameters.enumerated() {
+                if index > 0 {
+                    pipe.string(", ")
+                }
+
+                let (name, type) = parameter
+                pipe.string(name ?? "_")
+
+                if let type = type {
+                    pipe.string(": \(type)")
+                }
+            }
+            if needsWrapping {
+                pipe.string(")")
+            }
+        }
+
+        if let returnType = returnType {
+            hasHeader = true
+
+            pipe.string(" -> \(returnType)")
+        }
+
+        if hasHeader {
+            pipe.string(" in")
+        }
+        pipe.lineEnd()
+
+        pipe.indented {
+            pipe.append(block)
+        }
+        pipe.string("}")
     }
 }
 
@@ -218,10 +542,12 @@ public class DescriptionPipe {
         return self
     }
 
-    private func endOfLineIfNeeded() {
+    @discardableResult
+    public func endOfLineIfNeeded() -> DescriptionPipe {
         if lastLine != "" {
             result.append("")
         }
+        return self
     }
 
     @discardableResult
@@ -430,13 +756,13 @@ public struct Function: HasAttributes, HasAccessibility, HasModifiers, Describab
     public var throwType: ThrowType?
     public var returnType: String?
     public var whereClause: [String]
-    public var block: [String]
+    public var block: Block
 
-    public init(attributes: Attributes = [], accessibility: Accessibility = .internal, modifiers: DeclarationModifiers = [], name: String, genericParameters: [GenericParameter] = [], parameters: [MethodParameter] = [], throwType: ThrowType? = nil, returnType: String? = nil, whereClause: [String] = [], block: [String] = []) {
+    public init(attributes: Attributes = [], accessibility: Accessibility = .internal, modifiers: DeclarationModifiers = [], name: String, genericParameters: [GenericParameter] = [], parameters: [MethodParameter] = [], throwType: ThrowType? = nil, returnType: String? = nil, whereClause: [String] = [], block: Block = []) {
         self.init(attributes: attributes, accessibility: accessibility, modifiers: modifiers, functionType: .standard, name: name, genericParameters: genericParameters, parameters: parameters, throwType: throwType, returnType: returnType, whereClause: whereClause, block: block)
     }
 
-    private init(attributes: Attributes, accessibility: Accessibility, modifiers: DeclarationModifiers, functionType: FunctionType, name: String, genericParameters: [GenericParameter], parameters: [MethodParameter], throwType: ThrowType?, returnType: String?, whereClause: [String], block: [String]) {
+    private init(attributes: Attributes, accessibility: Accessibility, modifiers: DeclarationModifiers, functionType: FunctionType, name: String, genericParameters: [GenericParameter], parameters: [MethodParameter], throwType: ThrowType?, returnType: String?, whereClause: [String], block: Block) {
         self.attributes = attributes
         self.accessibility = accessibility
         self.modifiers = modifiers
@@ -450,11 +776,11 @@ public struct Function: HasAttributes, HasAccessibility, HasModifiers, Describab
         self.block = block
     }
 
-    public static func initializer(attributes: Attributes = [], accessibility: Accessibility = .internal, modifiers: DeclarationModifiers = [], optionalInit: Bool = false, genericParameters: [GenericParameter] = [], parameters: [MethodParameter] = [], throwType: ThrowType? = nil, whereClause: [String] = [], block: [String] = []) -> Function {
+    public static func initializer(attributes: Attributes = [], accessibility: Accessibility = .internal, modifiers: DeclarationModifiers = [], optionalInit: Bool = false, genericParameters: [GenericParameter] = [], parameters: [MethodParameter] = [], throwType: ThrowType? = nil, whereClause: [String] = [], block: Block = []) -> Function {
         return Function(attributes: attributes, accessibility: accessibility, modifiers: modifiers, functionType: .initializer, name: "init\(optionalInit ? "?" : "")", genericParameters: genericParameters, parameters: parameters, throwType: throwType, returnType: nil, whereClause: whereClause, block: block)
     }
 
-    public static func deinitializer(attributes: Attributes = [], block: [String] = []) -> Function {
+    public static func deinitializer(attributes: Attributes = [], block: Block = []) -> Function {
         return Function(attributes: attributes, accessibility: .internal, modifiers: [], functionType: .deinitializer, name: "deinit", genericParameters: [], parameters: [], throwType: nil, returnType: nil, whereClause: [], block: block)
     }
 
@@ -482,7 +808,7 @@ public struct Function: HasAttributes, HasAccessibility, HasModifiers, Describab
         guard !shouldOmitBody else { return }
         pipe.string(" ")
         pipe.block {
-            pipe.lines(block)
+            pipe.append(block)
         }
     }
 }
@@ -494,10 +820,10 @@ public struct Property: HasAttributes, HasAccessibility, HasModifiers, Describab
     public var isConstant: Bool
     public var name: String
     public var type: String?
-    public var value: String?
-    public var block: [String]?
+    public var value: Expression?
+    public var block: Block?
 
-    public static func variable(attributes: Attributes = [], accessibility: Accessibility = .internal, modifiers: DeclarationModifiers = [], name: String, type: String? = nil, value: String) -> Property {
+    public static func variable(attributes: Attributes = [], accessibility: Accessibility = .internal, modifiers: DeclarationModifiers = [], name: String, type: String? = nil, value: Expression) -> Property {
         return Property(
             attributes: attributes,
             accessibility: accessibility,
@@ -510,7 +836,7 @@ public struct Property: HasAttributes, HasAccessibility, HasModifiers, Describab
         )
     }
 
-    public static func variable(attributes: Attributes = [], accessibility: Accessibility = .internal, modifiers: DeclarationModifiers = [], name: String, type: String, value: String? = nil, block: [String]? = nil) -> Property {
+    public static func variable(attributes: Attributes = [], accessibility: Accessibility = .internal, modifiers: DeclarationModifiers = [], name: String, type: String, value: Expression? = nil, block: Block? = nil) -> Property {
         return Property(
             attributes: attributes,
             accessibility: accessibility,
@@ -536,7 +862,7 @@ public struct Property: HasAttributes, HasAccessibility, HasModifiers, Describab
     //        )
     //    }
 
-    public static func constant(attributes: Attributes = [], accessibility: Accessibility = .internal, modifiers: DeclarationModifiers = [], name: String, value: String) -> Property {
+    public static func constant(attributes: Attributes = [], accessibility: Accessibility = .internal, modifiers: DeclarationModifiers = [], name: String, value: Expression) -> Property {
         return Property(
             attributes: attributes,
             accessibility: accessibility,
@@ -562,7 +888,7 @@ public struct Property: HasAttributes, HasAccessibility, HasModifiers, Describab
         )
     }
 
-    public static func constant(attributes: Attributes = [], accessibility: Accessibility = .internal, modifiers: DeclarationModifiers = [], name: String, type: String, value: String) -> Property {
+    public static func constant(attributes: Attributes = [], accessibility: Accessibility = .internal, modifiers: DeclarationModifiers = [], name: String, type: String, value: Expression) -> Property {
         return Property(
             attributes: attributes,
             accessibility: accessibility,
@@ -575,7 +901,7 @@ public struct Property: HasAttributes, HasAccessibility, HasModifiers, Describab
         )
     }
 
-    private init(attributes: Attributes, accessibility: Accessibility, modifiers: DeclarationModifiers, isConstant: Bool, name: String, type: String?, value: String?, block: [String]?) {
+    private init(attributes: Attributes, accessibility: Accessibility, modifiers: DeclarationModifiers, isConstant: Bool, name: String, type: String?, value: Expression?, block: Block?) {
         self.attributes = attributes
         self.accessibility = accessibility
         self.modifiers = modifiers
@@ -588,14 +914,17 @@ public struct Property: HasAttributes, HasAccessibility, HasModifiers, Describab
 
     public func describe(into pipe: DescriptionPipe) {
         let typeString = type.format(into: { ": \($0)" })
-        let valueString = value.format(into: { "= \($0)" })
 
         attributes.describe(into: pipe)
-        pipe.string([accessibility.description, modifiers.description, "\(isConstant ? "let" : "var")", "\(name)\(typeString)", valueString].filter { !$0.isEmpty }.joined(separator: " "))
+        pipe.string([accessibility.description, modifiers.description, "\(isConstant ? "let" : "var")", "\(name)\(typeString)"].filter { !$0.isEmpty }.joined(separator: " "))
+        if let value = value {
+            pipe.string(" = ").append(value)
+        }
+
         if let block = block {
             pipe.string(" ")
             pipe.block {
-                pipe.lines(block)
+                pipe.append(block)
             }
         } else {
             pipe.lineEnd()
@@ -803,7 +1132,7 @@ public struct Protocol: ContainerType, HasAttributes, HasAccessibility {
             guard let type = property.type else {
                 throw GenerationError.missingField
             }
-            let propertyType = propertyTypeHint ?? (property.isConstant && property.block?.isEmpty ?? true ? .get : .getSet)
+            let propertyType = propertyTypeHint ?? (property.isConstant && property.block == nil ? .get : .getSet)
             return ProtocolProperty(attributes: property.attributes, accessibility: property.accessibility, modifiers: property.modifiers, name: property.name, type: type, propertyType: propertyType)
         }
 

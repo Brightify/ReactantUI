@@ -8,6 +8,10 @@
 
 import Foundation
 
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
 public struct EdgeInsets: AttributeSupportedPropertyType {
     public static let zero = EdgeInsets()
 
@@ -27,9 +31,11 @@ public struct EdgeInsets: AttributeSupportedPropertyType {
         self.init(top: vertical, left: horizontal, bottom: vertical, right: horizontal)
     }
 
-    public func generate(context: SupportedPropertyTypeContext) -> String {
-        return "UIEdgeInsets(top: \(top.cgFloat), left: \(left.cgFloat), bottom: \(bottom.cgFloat), right: \(right.cgFloat))"
+    #if canImport(SwiftCodeGen)
+    public func generate(context: SupportedPropertyTypeContext) -> Expression {
+        return .constant("UIEdgeInsets(top: \(top.cgFloat), left: \(left.cgFloat), bottom: \(bottom.cgFloat), right: \(right.cgFloat))")
     }
+    #endif
     
     #if SanAndreas
     public func dematerialize(context: SupportedPropertyTypeContext) -> String {

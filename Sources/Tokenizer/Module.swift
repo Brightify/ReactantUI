@@ -11,6 +11,21 @@ public struct Module {
     
 }
 
+public protocol UIElementFactory {
+    var elementName: String { get }
+
+    #warning("REMOVEME Rewrite handling imports")
+    var parentModuleImport: String { get }
+
+    var availableProperties: [PropertyDescription] { get }
+
+    var isContainer: Bool { get }
+
+    func create(context: UIElementDeserializationContext) throws -> UIElement
+
+    func runtimeType() throws -> RuntimeType
+}
+
 public protocol RuntimeModule {
     var supportedPlatforms: Set<RuntimePlatform> { get }
 
@@ -18,30 +33,38 @@ public protocol RuntimeModule {
 }
 
 extension RuntimeModule {
-    public func factory<T: UIElement>(named name: String, for initializer: @escaping (UIElementTokenizationContext) throws -> T) -> UIElementFactory {
-
-        return DefaultUIElementFactory(name: name, initializer: initializer)
+    public func factory<T: View>(named name: String, for initializer: @escaping (UIElementDeserializationContext) throws -> T) -> UIElementFactory {
+        return UIKitUIElementFactory(name: name, initializer: initializer)
     }
 }
 
-public protocol UIElementFactory {
-    var elementName: String { get }
-
-    func create(context: UIElementTokenizationContext) throws -> UIElement
-}
-
-private class DefaultUIElementFactory: UIElementFactory {
+private class UIKitUIElementFactory<VIEW: View>: UIElementFactory {
     let elementName: String
-    let typeIdentifier: ObjectIdentifier
-    let initializer: (UIElementTokenizationContext) throws -> UIElement
+    let initializer: (UIElementDeserializationContext) throws -> VIEW
 
-    init<T: UIElement>(name: String, initializer: @escaping (UIElementTokenizationContext) throws -> T) {
+    var availableProperties: [PropertyDescription] {
+        return VIEW.availableProperties
+    }
+
+    var parentModuleImport: String {
+        return VIEW.parentModuleImport
+    }
+
+    var isContainer: Bool {
+        return VIEW.self is UIContainer.Type
+    }
+
+    init(name: String, initializer: @escaping (UIElementDeserializationContext) throws -> VIEW) {
         elementName = name
-        typeIdentifier = ObjectIdentifier(T.self)
         self.initializer = initializer
     }
 
-    func create(context: UIElementTokenizationContext) throws -> UIElement {
+    func create(context: UIElementDeserializationContext) throws -> UIElement {
         return try initializer(context)
     }
+
+    func runtimeType() throws -> RuntimeType {
+        return RuntimeType(name: try VIEW.runtimeType())
+    }
 }
+

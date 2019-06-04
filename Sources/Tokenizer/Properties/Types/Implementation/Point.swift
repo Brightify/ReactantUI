@@ -11,6 +11,10 @@ import Foundation
     import UIKit
 #endif
 
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
 public struct Point: AttributeSupportedPropertyType {
     public static let zero = Point(x: 0, y: 0)
 
@@ -22,9 +26,11 @@ public struct Point: AttributeSupportedPropertyType {
         self.y = y
     }
 
-    public func generate(context: SupportedPropertyTypeContext) -> String {
-        return "CGPoint(x: \(x.cgFloat), y: \(y.cgFloat))"
+    #if canImport(SwiftCodeGen)
+    public func generate(context: SupportedPropertyTypeContext) -> Expression {
+        return .constant("CGPoint(x: \(x.cgFloat), y: \(y.cgFloat))")
     }
+    #endif
     
     #if SanAndreas
     public func dematerialize(context: SupportedPropertyTypeContext) -> String {
