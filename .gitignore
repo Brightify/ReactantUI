@@ -36,3 +36,4 @@ GeneratedUI.swift
 .build
 ReactantUI.xcworkspace
 ReactantUIGenerator.xcodeproj
+.swiftpm
