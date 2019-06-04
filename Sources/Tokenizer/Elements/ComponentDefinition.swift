@@ -36,7 +36,7 @@ public struct ComponentDefinition: UIContainer, UIElementBase, StyleContainer, C
     public var edgesForExtendedLayout: [RectEdge]
     public var isAnonymous: Bool
     public var modifier: AccessModifier
-
+    public var handledActions: [HyperViewAction]
     public var properties: [Property]
     public var toolingProperties: [String: Property]
     
@@ -94,6 +94,9 @@ public struct ComponentDefinition: UIContainer, UIElementBase, StyleContainer, C
         } else {
             self.modifier = .internal
         }
+        handledActions = try node.allAttributes.compactMap { _, value in
+            try HyperViewAction(attribute: value)
+        }
 
         toolingProperties = try PropertyHelper.deserializeToolingProperties(properties: ToolingProperties.componentDefinition.allProperties, in: node)
         properties = try PropertyHelper.deserializeSupportedProperties(properties: View.availableProperties, in: node)
@@ -108,6 +111,14 @@ public struct ComponentDefinition: UIContainer, UIElementBase, StyleContainer, C
                 Logger.instance.warning("Duplicate constraint names for name \"\(field)\". The project will be compilable, but the behavior might be unexpected.")
             }
         }
+    }
+}
+
+extension ComponentDefinition {
+    public var supportedActions: [UIElementAction] {
+        return [
+            ViewTapAction(),
+        ]
     }
 }
 

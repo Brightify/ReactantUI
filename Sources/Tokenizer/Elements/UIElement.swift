@@ -18,10 +18,50 @@ import UIKit
 public struct ResolvedHyperViewAction {
     public var name: String
     public var parameters: [Parameter]
-//    public var sources: [Source]
+    public var sources: [Source]
+
+    #if canImport(SwiftCodeGen)
+    public func observeSources(context: ComponentContext, actionPublisher: Expression) throws -> Block {
+        var block = Block()
+
+        let actionCase = Expression.constant(".\(name)")
+
+        for source in sources {
+            let actionArguments = parameters.map { parameter -> MethodArgument in
+                switch parameter.kind {
+                case .constant(let value):
+                    let context = SupportedPropertyTypeContext(parentContext: context, value: .value(value))
+                    return MethodArgument(name: parameter.label, value: value.generate(context: context))
+                case .reference(let type):
+                    fatalError("Not supported")
+                }
+            }
+            let handler = Closure(
+                parameters: source.action.parameters.enumerated().map { index, parameter in
+                    (name: parameter.label ?? "param\(index + 1)", type: nil)
+                },
+                block: [
+                    .expression(.invoke(target: .member(target: actionPublisher, name: "publish"), arguments: [
+                        MethodArgument(name: "action", value: actionArguments.isEmpty ? actionCase : .invoke(target: actionCase, arguments: actionArguments))
+                    ])),
+                ])
+
+            if let element = source.element as? UIElement {
+                block += try source.action.observe(on: .constant(element.id.description), handler: .closure(handler))
+            } else {
+                #warning("FIXME: We shouldn't assume that nonconformity to UIElement means it's the parent component!")
+                block += try source.action.observe(on: .constant("self"), handler: .closure(handler))
+            }
+        }
+
+        return block
+    }
+    #endif
 
     public struct Source {
-        public var element: UIElement
+        public var actionName: String
+        public var element: UIElementBase
+        public var action: UIElementAction
         public var parameters: [Parameter]
     }
 
@@ -73,6 +113,43 @@ public struct HyperViewAction {
     }
 }
 
+public protocol UIElementAction {
+    var primaryName: String { get }
+
+    var aliases: Set<String> { get }
+
+    var parameters: [ResolvedHyperViewAction.Parameter] { get }
+
+    func matches(action: HyperViewAction) -> Bool
+
+    #if canImport(SwiftCodeGen)
+    func observe(on view: Expression, handler: Expression) throws -> Statement
+    #endif
+}
+
+public extension UIElementAction {
+    func matches(action: HyperViewAction) -> Bool {
+        return primaryName == action.eventName || aliases.contains(action.eventName)
+    }
+}
+
+public class ViewTapAction: UIElementAction {
+    public let primaryName = "tap"
+
+    public let aliases: Set<String> = []
+
+    public let parameters: [ResolvedHyperViewAction.Parameter] = []
+
+    #if canImport(SwiftCodeGen)
+    public func observe(on view: Expression, handler: Expression) throws -> Statement {
+        return .expression(.invoke(target: .constant("GestureRecognizerObserver.bindTap"), arguments: [
+            MethodArgument(name: "to", value: view),
+            MethodArgument(name: "handler", value: handler),
+        ]))
+    }
+    #endif
+}
+
 /**
  * The most basic UI element protocol that every UI element should conform to.
  * UI elements usually conform to this protocol through `UIElement` or `View`.
@@ -81,12 +158,15 @@ public struct HyperViewAction {
 public protocol UIElementBase {
     var properties: [Property] { get set }
     var toolingProperties: [String: Property] { get set }
+    var handledActions: [HyperViewAction] { get set }
+    var supportedActions: [UIElementAction] { get }
 
     // used for generating styles - does not care about children imports
     static var parentModuleImport: String { get }
 
     // used for generating views - resolves imports of subviews.
     var requiredImports: Set<String> { get }
+
 }
 
 public struct StateProperty {
@@ -139,7 +219,6 @@ public protocol UIElement: AnyObject, UIElementBase, XMLElementSerializable {
     var isExported: Bool { get }
     var layout: Layout { get set }
     var styles: [StyleName] { get set }
-    var handledActions: [HyperViewAction] { get set }
 
     static var defaultContentCompression: (horizontal: ConstraintPriority, vertical: ConstraintPriority) { get }
     static var defaultContentHugging: (horizontal: ConstraintPriority, vertical: ConstraintPriority) { get }

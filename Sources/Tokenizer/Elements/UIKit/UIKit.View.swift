@@ -92,6 +92,11 @@ public class View: UIElement, SwiftExtensionWorkaround {
     public var toolingProperties: [String: Property]
     public var handledActions: [HyperViewAction]
 
+    public var supportedActions: [UIElementAction] {
+        return [
+            ViewTapAction()
+        ]
+    }
 
     #if canImport(UIKit)
     public func initialize(context: ReactantLiveUIWorker.Context) throws -> UIView {

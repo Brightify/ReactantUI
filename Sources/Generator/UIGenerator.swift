@@ -76,6 +76,7 @@ public class UIGenerator: Generator {
                 "loadView()",
                 "setupConstraints()",
                 "initialState.owner = self",
+                "observeActions(actionPublisher: actionPublisher)",
             ].map { Statement.expression(.constant($0)) }))
 
         let stateProperties: [SwiftCodeGen.Property] = [
@@ -130,6 +131,8 @@ public class UIGenerator: Generator {
 
 //        UIControlEventObserver.observe(button, to: actionPublisher)
 
+        let resolvedActions = try componentContext.resolve(actions: root.providedActions)
+
         let stateClass = Structure.class(
             accessibility: viewAccessibility,
             isFinal: true,
@@ -141,7 +144,7 @@ public class UIGenerator: Generator {
         let actionEnum = Structure.enum(
             accessibility: viewAccessibility,
             name: "Action",
-            cases: try componentContext.resolve(actions: root.providedActions).map { action in
+            cases: resolvedActions.map { action in
                 Structure.EnumCase(name: action.name, arguments: action.parameters.map { parameter -> (name: String?, type: String) in
                     (name: parameter.label, type: parameter.type.runtimeType(for: .iOS).name)
                 })
@@ -162,7 +165,7 @@ public class UIGenerator: Generator {
             inheritances: ["HyperViewBase", "HyperView"],
             containers: [stateClass, actionEnum, constraintsClass],
             properties: viewProperties + viewDeclarations,
-            functions: [viewInit, loadView(), setupConstraints()])
+            functions: [viewInit, observeActions(resolvedActions: resolvedActions), loadView(), setupConstraints()])
 
         if false && root.type == "ATest" {
             viewClass.describe(into: DebugDescriptionPipe())
@@ -344,6 +347,16 @@ public class UIGenerator: Generator {
         return [viewClass, styleExtension]
     }
 
+    private func observeActions(resolvedActions: [ResolvedHyperViewAction]) throws -> Function {
+        return try Function(
+            accessibility: .private,
+            name: "observeActions",
+            parameters: [MethodParameter(name: "actionPublisher", type: "ActionPublisher<Action>")],
+            block: resolvedActions.reduce(Block()) { accumulator, action in
+                try accumulator + action.observeSources(context: componentContext, actionPublisher: .constant("actionPublisher"))
+            })
+    }
+
     private func loadView() throws -> Function {
         var block = Block()
         var themedProperties = [:] as [String: [Tokenizer.Property]]
@@ -451,7 +464,7 @@ public class UIGenerator: Generator {
             block: block)
     }
 
-    private func viewConstraints(element: UIElement, superName: String, forUpdate: Bool) -> Block {
+    private func viewConstraints(element: UIElement, superName: String, forUpdate: Bool) -> Block{
         var block = Block()
 
         let name = element.id.description
@@ -513,13 +526,6 @@ public class UIGenerator: Generator {
                 .init(value: .closure(createConstraintsClosure)),
             ])
         )
-
-        // we're calling `remakeConstraints` if we're called from update
-//        pipe.block(line: "\(name).snp.\(forUpdate ? "re" : "")makeConstraints", header: "make") {
-//            for constraint in element.layout.constraints {
-//                pipe.append()
-//            }
-//        }
 
         return block + children
     }

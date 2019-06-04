@@ -64,13 +64,13 @@ final class ExampleSelectionController: HyperViewController<ExampleSelectionRoot
             let cell = SelectionCell(actionPublisher: ActionPublisher<SelectionCell.Action> { _ in })
             cell.state.name = example.name
 
-            cell.rx
-                .tapGesture()
-                .when(.recognized)
-                .subscribe(onNext: { [reactions] _ in
-                    reactions.exampleSelected(example)
-                })
-                .disposed(by: lifetimeDisposeBag)
+//            cell.rx
+//                .tapGesture()
+//                .when(.recognized)
+//                .subscribe(onNext: { [reactions] _ in
+//                    reactions.exampleSelected(example)
+//                })
+//                .disposed(by: lifetimeDisposeBag)
 
             hyperView.stackView.addArrangedSubview(cell)
         }
@@ -78,7 +78,8 @@ final class ExampleSelectionController: HyperViewController<ExampleSelectionRoot
 
     override func handle(action: ExampleSelectionRootView.Action) {
         switch action {
-
+        case .cellAct:
+            print("what")
         }
     }
 

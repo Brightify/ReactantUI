@@ -79,33 +79,36 @@ public struct ComponentContext: DataContext {
         }
     }
 
-    public func resolve(actions: [(element: UIElement, actions: [HyperViewAction])]) throws -> [ResolvedHyperViewAction] {
-        let elementActions: [(element: UIElement, action: HyperViewAction)] = actions.flatMap { element, actions in
-            actions.map { (element: element, action: $0) }
+    public func resolve(actions: [(element: UIElementBase, actions: [HyperViewAction])]) throws -> [ResolvedHyperViewAction] {
+        let elementActions: [(element: UIElementBase, action: HyperViewAction, elementAction: UIElementAction)] = actions.flatMap { element, actions in
+            actions.compactMap { action in
+                guard let elementAction = element.supportedActions.first(where: { $0.matches(action: action) }) else { return nil }
+                return (element: element, action: action, elementAction: elementAction)
+            }
         }
 
         #warning("Compute state once in init, not here for improved performance")
         let state = try resolve(state: component)
 
-        let actionsToVerify: [String: [ResolvedHyperViewAction]] = Dictionary(grouping: elementActions.map { element, action in
-            let parameters = action.parameters.compactMap { label, parameter -> ResolvedHyperViewAction.Parameter? in
+        let sourcesToVerify: [String: [ResolvedHyperViewAction.Source]] = Dictionary(grouping: elementActions.map { element, action, elementAction in
+            let parameters = action.parameters.flatMap { label, parameter -> [ResolvedHyperViewAction.Parameter] in
                 switch parameter {
                 case .inheritedParameters:
-                    return nil
+                    return elementAction.parameters
                 case .constant(let type, let value):
-                    return nil
+                    return []
 //                    return ResolvedHyperViewAction.Parameter(label: label, kind: .constant(value: <#T##SupportedPropertyType#>))
                 case .stateVariable(let name):
-                    return ResolvedHyperViewAction.Parameter(label: label, kind: .reference(type: state[name]!.type))
+                    return [ResolvedHyperViewAction.Parameter(label: label, kind: .reference(type: state[name]!.type))]
                 case .reference(let targetId, let property):
-                    return nil
+                    return []
                 }
             }
 
-            return ResolvedHyperViewAction(name: action.name, parameters: parameters)
-        }, by: { $0.name })
+            return ResolvedHyperViewAction.Source(actionName: action.name, element: element, action: elementAction, parameters: parameters)
+        }, by: { $0.actionName })
 
-        for (name, actions) in actionsToVerify {
+        for (name, actions) in sourcesToVerify {
             guard let firstAction = actions.first else { continue }
             let verificationResult = actions.dropFirst().allSatisfy { action in
                 guard action.parameters.count == firstAction.parameters.count else { return false }
@@ -122,14 +125,18 @@ public struct ComponentContext: DataContext {
             }
         }
 
-        return actionsToVerify.values.flatMap { $0 }
+        return sourcesToVerify.map { name, sources in
+            ResolvedHyperViewAction(name: name, parameters: sources.first!.parameters, sources: sources)
+        }
 
-        return [
-            ResolvedHyperViewAction(name: "a", parameters: [
-                ResolvedHyperViewAction.Parameter(label: "abc", kind: .constant(value: 100)),
-                ResolvedHyperViewAction.Parameter(label: "efg", kind: .reference(type: TransformedText.self))
-            ])
-        ]
+//        return actionsToVerify.values.flatMap { $0 }
+
+//        return [
+//            ResolvedHyperViewAction(name: "a", parameters: [
+//                ResolvedHyperViewAction.Parameter(label: "abc", kind: .constant(value: 100)),
+//                ResolvedHyperViewAction.Parameter(label: "efg", kind: .reference(type: TransformedText.self))
+//            ])
+//        ]
 
 
 //        action.parameters.map { label, parameter -> ResolvedHyperViewAction.Parameter in

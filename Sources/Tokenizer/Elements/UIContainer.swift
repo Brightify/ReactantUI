@@ -16,7 +16,7 @@
 public protocol UIContainer {
     var children: [UIElement] { get set }
 
-    var providedActions: [(element: UIElement, actions: [HyperViewAction])] { get }
+    var providedActions: [(element: UIElementBase, actions: [HyperViewAction])] { get }
 
     var addSubviewMethod: String { get }
 
@@ -51,16 +51,16 @@ public extension UIContainer {
 
         return nil
     }
+}
 
+public extension UIContainer where Self: UIElementBase {
     #warning("TODO: Merge property names?")
-    var providedActions: [(element: UIElement, actions: [HyperViewAction])] {
-        return children.flatMap { child -> [(element: UIElement, actions: [HyperViewAction])] in
-            let childActions = [(element: child, actions: child.handledActions)]
-
+    var providedActions: [(element: UIElementBase, actions: [HyperViewAction])] {
+        return [(element: self, actions: handledActions)] + children.flatMap { child -> [(element: UIElementBase, actions: [HyperViewAction])] in
             if let childContainer = child as? UIContainer {
-                return childActions + childContainer.providedActions
+                return childContainer.providedActions
             } else {
-                return childActions
+                return [(element: child, actions: child.handledActions)]
             }
         }
     }

@@ -13,7 +13,12 @@
             export="true"
             layout:edges="super"
             layout:width="super"
-            axis="vertical"/>
+            axis="vertical">
+
+            <SelectionCell
+                action:ordel="cellAct"
+                state:name="This is a test" />
+        </StackView>
     </ScrollView>
 
 </ExampleSelectionRootView>
