@@ -50,7 +50,9 @@ public struct CGColorPropertyType: AttributeSupportedPropertyType {
         return CGColorPropertyType(color: materializedValue)
     }
 
-    public static let runtimeType = RuntimeType(name: "CGColor", module: "Foundation")
+    public static func runtimeType(for platform: RuntimePlatform) -> RuntimeType {
+        return RuntimeType(name: "CGColor", module: "Foundation")
+    }
 
     public static var xsdType: XSDType {
         return Color.xsdType

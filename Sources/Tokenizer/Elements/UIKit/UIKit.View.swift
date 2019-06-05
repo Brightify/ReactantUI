@@ -92,7 +92,7 @@ public class View: UIElement, SwiftExtensionWorkaround {
     public var toolingProperties: [String: Property]
     public var handledActions: [HyperViewAction]
 
-    public var supportedActions: [UIElementAction] {
+    public func supportedActions(context: DataContext) throws -> [UIElementAction] {
         return [
             ViewTapAction()
         ]

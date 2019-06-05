@@ -113,4 +113,12 @@ public struct GlobalContext: DataContext {
 
         styles = Dictionary(keyValueTuples: groups)
     }
+
+    public func definition(for componentType: String) throws -> ComponentDefinition {
+        guard let definition = componentDefinitions[componentType] else {
+            throw TokenizationError(message: "Component \(componentType) not registered!")
+        }
+
+        return definition
+    }
 }

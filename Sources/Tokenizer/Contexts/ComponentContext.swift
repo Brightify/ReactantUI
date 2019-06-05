@@ -90,14 +90,22 @@ public struct ComponentContext: DataContext {
         #warning("Compute state once in init, not here for improved performance")
         let state = try resolve(state: component)
 
-        let sourcesToVerify: [String: [ResolvedHyperViewAction.Source]] = Dictionary(grouping: elementActions.map { element, action, elementAction in
-            let parameters = action.parameters.flatMap { label, parameter -> [ResolvedHyperViewAction.Parameter] in
+        let sourcesToVerify: [String: [ResolvedHyperViewAction.Source]] = try Dictionary(grouping: elementActions.map { element, action, elementAction in
+            let parameters = try action.parameters.flatMap { label, parameter -> [ResolvedHyperViewAction.Parameter] in
                 switch parameter {
                 case .inheritedParameters:
                     return elementAction.parameters
                 case .constant(let type, let value):
-                    return []
-//                    return ResolvedHyperViewAction.Parameter(label: label, kind: .constant(value: <#T##SupportedPropertyType#>))
+                    guard let foundType = RuntimePlatform.iOS.supportedTypes.first(where: {
+                        $0.runtimeType(for: .iOS).name == type && $0 is AttributeSupportedPropertyType.Type
+                    }) as? AttributeSupportedPropertyType.Type else {
+                        throw TokenizationError(message: "Unknown type \(type) for value \(value)")
+                    }
+
+                    let typedValue = try foundType.materialize(from: value)
+
+                return [ResolvedHyperViewAction.Parameter(label: label, kind: .constant(value: typedValue))]
+//                    return ResolvedHyperViewAction.Parameter(label: label, kind: .constant(value:     ))
                 case .stateVariable(let name):
                     return [ResolvedHyperViewAction.Parameter(label: label, kind: .reference(type: state[name]!.type))]
                 case .reference(let targetId, let property):

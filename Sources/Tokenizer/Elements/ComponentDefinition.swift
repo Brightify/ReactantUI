@@ -114,9 +114,39 @@ public struct ComponentDefinition: UIContainer, UIElementBase, StyleContainer, C
     }
 }
 
+#if canImport(SwiftCodeGen)
+import SwiftCodeGen
+#endif
+
+public class ComponentDefinitionAction: UIElementAction {
+    public let primaryName: String
+
+    public let aliases: Set<String> = []
+
+    public let parameters: [HyperViewAction.Parameter]
+
+    init(handledAction: HyperViewAction) {
+        primaryName = handledAction.eventName
+        parameters = handledAction.parameters.map { label, parameter in
+            parameter
+        }
+    }
+
+    #if canImport(SwiftCodeGen)
+    public func observe(on view: Expression, handler: Expression) throws -> Statement {
+        return .emptyLine
+    }
+    #endif
+}
+
 extension ComponentDefinition {
-    public var supportedActions: [UIElementAction] {
-        return [
+    public func supportedActions(context: DataContext) throws -> [UIElementAction] {
+        let actions = providedActions.flatMap { element, actions in
+            actions.map { action in
+                ComponentDefinitionAction(handledAction: action)
+            }
+        }
+        return actions + [
             ViewTapAction(),
         ]
     }

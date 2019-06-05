@@ -118,7 +118,7 @@ public protocol UIElementAction {
 
     var aliases: Set<String> { get }
 
-    var parameters: [ResolvedHyperViewAction.Parameter] { get }
+    var parameters: [HyperViewAction.Parameter] { get }
 
     func matches(action: HyperViewAction) -> Bool
 
@@ -138,7 +138,7 @@ public class ViewTapAction: UIElementAction {
 
     public let aliases: Set<String> = []
 
-    public let parameters: [ResolvedHyperViewAction.Parameter] = []
+    public let parameters: [HyperViewAction.Parameter] = []
 
     #if canImport(SwiftCodeGen)
     public func observe(on view: Expression, handler: Expression) throws -> Statement {
@@ -159,7 +159,8 @@ public protocol UIElementBase {
     var properties: [Property] { get set }
     var toolingProperties: [String: Property] { get set }
     var handledActions: [HyperViewAction] { get set }
-    var supportedActions: [UIElementAction] { get }
+
+    func supportedActions(context: DataContext) throws -> [UIElementAction]
 
     // used for generating styles - does not care about children imports
     static var parentModuleImport: String { get }

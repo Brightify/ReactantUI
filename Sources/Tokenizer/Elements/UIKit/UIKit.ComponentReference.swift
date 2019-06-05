@@ -15,25 +15,6 @@ import SwiftCodeGen
 import UIKit
 #endif
 
-
-public class ComponentReferenceAction: UIElementAction {
-    public let primaryName: String
-
-    public let aliases: Set<String> = []
-
-    public let parameters: [ResolvedHyperViewAction.Parameter] = []
-
-    init(handledAction: HyperViewAction) {
-        primaryName = handledAction.eventName
-    }
-
-    #if canImport(SwiftCodeGen)
-    public func observe(on view: Expression, handler: Expression) throws -> Statement {
-        return .emptyLine
-    }
-    #endif
-}
-
 public class ComponentReference: View, ComponentDefinitionContainer {
     public var module: String?
     public var type: String
@@ -41,9 +22,10 @@ public class ComponentReference: View, ComponentDefinitionContainer {
     public var passthroughActions: String?
     public var possibleStateProperties: [String: String]
 
-    public override var supportedActions: [UIElementAction] {
-        return super.supportedActions +
-            handledActions.map(ComponentReferenceAction.init)
+    public override func supportedActions(context: DataContext) throws -> [UIElementAction] {
+        let definition = try self.definition ?? context.definition(for: type)
+
+        return try definition.supportedActions(context: context)
     }
 
     public var isAnonymous: Bool {

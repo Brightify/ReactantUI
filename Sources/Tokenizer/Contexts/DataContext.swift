@@ -31,6 +31,8 @@ public protocol DataContext {
     func themed(color name: String) -> UIColorPropertyType?
 
     func themed(font name: String) -> Font?
+
+    func definition(for componentType: String) throws -> ComponentDefinition
 }
 
 public protocol HasParentContext {
@@ -80,6 +82,10 @@ extension DataContext where Self: HasParentContext, Self.ParentContext: DataCont
     public func themed(font name: String) -> Font? {
         return parentContext.themed(font: name)
     }
+
+    public func definition(for componentType: String) throws -> ComponentDefinition {
+        return try parentContext.definition(for: componentType)
+    }
 }
 
 // WARNING:
@@ -112,5 +118,9 @@ extension DataContext where Self: HasParentContext, Self.ParentContext == DataCo
 
     public func themed(font name: String) -> Font? {
         return parentContext.themed(font: name)
+    }
+
+    public func definition(for componentType: String) throws -> ComponentDefinition {
+        return try parentContext.definition(for: componentType)
     }
 }

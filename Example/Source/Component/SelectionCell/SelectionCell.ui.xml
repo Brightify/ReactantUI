@@ -4,7 +4,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://schema.Hyperdrive.tech/ui http://schema.Hyperdrive.tech/ui.xsd
                         http://schema.Hyperdrive.tech/layout http://schema.Hyperdrive.tech/layout.xsd"
-    action:tap="ordel">
+    action:tap="ordel(String(Help))">
 
     <Label
         text="$name"

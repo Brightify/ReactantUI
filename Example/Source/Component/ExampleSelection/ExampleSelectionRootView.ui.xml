@@ -16,7 +16,7 @@
             axis="vertical">
 
             <SelectionCell
-                action:ordel="cellAct"
+                action:ordel="cellAct(...)"
                 state:name="This is a test" />
         </StackView>
     </ScrollView>

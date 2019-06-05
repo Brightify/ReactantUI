@@ -20,4 +20,26 @@ public enum RuntimePlatform: CustomStringConvertible, CaseIterable {
             return "Support for tvOS views."
         }
     }
+
+    public var supportedTypes: [SupportedPropertyType.Type] {
+        let commonTypes: [SupportedPropertyType.Type] = [
+            TransformedText.self,
+            Double.self,
+            Int.self,
+            Float.self,
+            Bool.self,
+
+        ]
+
+        let platformTypes: [SupportedPropertyType.Type]
+        switch self {
+        case .iOS, .tvOS:
+            platformTypes = [
+                UIColorPropertyType.self,
+                CGColorPropertyType.self
+            ]
+        }
+
+        return platformTypes + commonTypes
+    }
 }
