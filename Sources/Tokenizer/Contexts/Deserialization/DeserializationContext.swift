@@ -72,7 +72,7 @@ class ComponentReferenceFactory: UIElementFactory {
     let isContainer: Bool = false
 
     func create(context: UIElementDeserializationContext) throws -> UIElement {
-        return try ComponentReference(context: context)
+        return try ComponentReference(context: context, factory: self)
     }
 
     func runtimeType() throws -> RuntimeType {

@@ -21,7 +21,7 @@ public enum GenerateCommandError: Error, LocalizedError {
     case ouputFileInvalid
     case applicationDescriptionFileInvalid
     case XCodeProjectPathInvalid
-    case cannotReadXCodeProj
+    case cannotReadXCodeProj(Error)
     case invalidType(String)
     case tokenizationError(path: String, error: Error)
     case invalidSwiftVersion
@@ -38,8 +38,8 @@ public enum GenerateCommandError: Error, LocalizedError {
             return "Application description file path is invalid."
         case .XCodeProjectPathInvalid:
             return "xcodeproj path is invalid."
-        case .cannotReadXCodeProj:
-            return "Cannot read xcodeproj."
+        case .cannotReadXCodeProj(let error):
+            return "Cannot read xcodeproj." + error.localizedDescription
         case .invalidType(let path):
             return "Invalid Component type at path: \(path) - do not use keywords.";
         case .tokenizationError(let path, let error):
@@ -173,18 +173,8 @@ class GenerateCommand: Command {
         let globalContext = GlobalContext(applicationDescription: applicationDescription,
                                           currentTheme: applicationDescription.defaultTheme,
                                           styleSheets: globalContextFiles.map { $0.group })
-        for (offset: index, element: (path: path, group: group)) in globalContextFiles.enumerated() {
-            let configuration = GeneratorConfiguration(minimumMajorVersion: minimumDeploymentTarget,
-                                                       localXmlPath: path,
-                                                       isLiveEnabled: enableLive.value,
-                                                       swiftVersion: swiftVersion,
-                                                       defaultModifier: accessModifier)
-            let styleContext = StyleGroupContext(globalContext: globalContext, group: group)
-            output.append(try StyleGenerator(context: styleContext, configuration: configuration).generate(imports: index == 0))
-        }
 
         var componentTypes: [String] = []
-        var componentDefinitions: [String: ComponentDefinition] = [:]
         var imports: Set<String> = []
         for path in uiFiles {
             let data = try Data(contentsOf: URL(fileURLWithPath: path))
@@ -206,9 +196,19 @@ class GenerateCommand: Command {
                 throw GenerateCommandError.tokenizationError(path: path, error: error)
             }
             componentTypes.append(contentsOf: definition.componentTypes)
-            componentDefinitions[path] = definition
+            globalContext.register(definition: definition, path: path)
             imports.formUnion(definition.requiredImports)
             imports.formUnion(definition.styles.map { $0.parentModuleImport })
+        }
+
+        for (offset: index, element: (path: path, group: group)) in globalContextFiles.enumerated() {
+            let configuration = GeneratorConfiguration(minimumMajorVersion: minimumDeploymentTarget,
+                                                       localXmlPath: path,
+                                                       isLiveEnabled: enableLive.value,
+                                                       swiftVersion: swiftVersion,
+                                                       defaultModifier: accessModifier)
+            let styleContext = StyleGroupContext(globalContext: globalContext, group: group)
+            output.append(try StyleGenerator(context: styleContext, configuration: configuration).generate(imports: index == 0))
         }
 
         output.lines(
@@ -237,7 +237,7 @@ class GenerateCommand: Command {
 //        private let __resourceBundle = Bundle(for: __ReactantUIBundleToken.self)
 //        """)
 
-        for (path, rootDefinition) in componentDefinitions.sorted(by: { $0.key.compare($1.key) == .orderedAscending }) {
+        for (path, rootDefinition) in globalContext.componentDefinitions.definitionsByPath.sorted(by: { $0.key.compare($1.key) == .orderedAscending }) {
             output.append("// Generated from \(path)")
             let configuration = GeneratorConfiguration(minimumMajorVersion: minimumDeploymentTarget,
                                                        localXmlPath: path,
@@ -245,7 +245,7 @@ class GenerateCommand: Command {
                                                        swiftVersion: swiftVersion,
                                                        defaultModifier: accessModifier)
             for definition in rootDefinition.componentDefinitions {
-                let componentContext = ComponentContext(globalContext: globalContext, component: definition, allDefinitions: componentDefinitions)
+                let componentContext = ComponentContext(globalContext: globalContext, component: definition)
                 output.append(try UIGenerator(componentContext: componentContext, configuration: configuration).generate(imports: false))
             }
         }
@@ -452,8 +452,11 @@ class GenerateCommand: Command {
             throw GenerateCommandError.XCodeProjectPathInvalid
         }
 
-        guard let project = try? XcodeProj(pathString: xcprojpath.absoluteURL.path) else {
-            throw GenerateCommandError.cannotReadXCodeProj
+        let project: XcodeProj
+        do {
+            project = try XcodeProj(pathString: xcprojpath.absoluteURL.path)
+        } catch {
+            throw GenerateCommandError.cannotReadXCodeProj(error)
         }
 
         return project.pbxproj.buildConfigurations

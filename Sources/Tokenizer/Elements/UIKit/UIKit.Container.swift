@@ -26,10 +26,10 @@ public class Container: View, UIContainer {
     }
     #endif
 
-    public required init(context: UIElementDeserializationContext) throws {
+    public required init(context: UIElementDeserializationContext, factory: UIElementFactory) throws {
         children = try context.element.xmlChildren.compactMap(context.deserialize(element:))
 
-        try super.init(context: context)
+        try super.init(context: context, factory: factory)
     }
     
     public override init() {

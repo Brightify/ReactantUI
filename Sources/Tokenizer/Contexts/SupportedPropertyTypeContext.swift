@@ -13,7 +13,7 @@ import UIKit
 /**
  * Context connected to a property's type.
  */
-public struct SupportedPropertyTypeContext: DataContext, HasParentContext {
+public class SupportedPropertyTypeContext: DataContext, HasParentContext {
     public let parentContext: DataContext
     public let value: AnyPropertyValue
 

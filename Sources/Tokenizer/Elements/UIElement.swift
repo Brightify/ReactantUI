@@ -32,25 +32,40 @@ public struct ResolvedHyperViewAction {
                 case .constant(let value):
                     let context = SupportedPropertyTypeContext(parentContext: context, value: .value(value))
                     return MethodArgument(name: parameter.label, value: value.generate(context: context))
-                case .reference(let type):
-                    fatalError("Not supported")
+                case .local(let name, _):
+                    return MethodArgument(name: parameter.label, value: .constant(name))
+                case .reference(let view, let property?, _):
+                    return MethodArgument(name: parameter.label, value: .member(target: .constant(view), name: property))
+                case .reference(let view, nil, _):
+                    return MethodArgument(name: parameter.label, value: .constant(view))
+                case .state(let property, _):
+                    return MethodArgument(name: parameter.label, value: .member(target: .constant("state"), name: property))
                 }
             }
-            let handler = Closure(
-                parameters: source.action.parameters.enumerated().map { index, parameter in
-                    (name: parameter.label ?? "param\(index + 1)", type: nil)
+
+            let handler = UIElementActionObservationHandler(
+                publisher: .expression(.invoke(target: .member(target: actionPublisher, name: "publish"), arguments: [
+                    MethodArgument(name: "action", value: actionArguments.isEmpty ? actionCase : .invoke(target: actionCase, arguments: actionArguments))
+                ])),
+                captures: parameters.compactMap { parameter in
+                    switch parameter.kind {
+                    case .constant, .local:
+                        return nil
+                    case .reference(let view, _, _):
+                        return "unowned \(view)"
+                    case .state:
+                        return "state"
+                    }
                 },
-                block: [
-                    .expression(.invoke(target: .member(target: actionPublisher, name: "publish"), arguments: [
-                        MethodArgument(name: "action", value: actionArguments.isEmpty ? actionCase : .invoke(target: actionCase, arguments: actionArguments))
-                    ])),
-                ])
+                innerParameters: source.action.parameters.enumerated().map { index, parameter in
+                    parameter.label ?? "param\(index + 1)"
+                })
 
             if let element = source.element as? UIElement {
-                block += try source.action.observe(on: .constant(element.id.description), handler: .closure(handler))
+                block += try source.action.observe(on: .constant(element.id.description), handler: handler)
             } else {
                 #warning("FIXME: We shouldn't assume that nonconformity to UIElement means it's the parent component!")
-                block += try source.action.observe(on: .constant("self"), handler: .closure(handler))
+                block += try source.action.observe(on: .constant("self"), handler: handler)
             }
         }
 
@@ -68,19 +83,50 @@ public struct ResolvedHyperViewAction {
     public struct Parameter {
         public var label: String?
         public var kind: Kind
-        public var type: SupportedPropertyType.Type {
+        public var type: SupportedActionType {
             switch kind {
-            case .reference(let type):
+            case .local(_, let type), .reference(_, _, let type), .state(_, let type):
                 return type
             case .constant(let value):
-                return Swift.type(of: value)
+                return .propertyType(Swift.type(of: value))
             }
         }
 
         public enum Kind {
-//            case inheritedParameters()
-            case reference(type: SupportedPropertyType.Type)
+            case local(name: String, type: SupportedActionType)
+            case reference(view: String, property: String?, type: SupportedActionType)
+            case state(property: String, type: SupportedActionType)
             case constant(value: SupportedPropertyType)
+        }
+    }
+}
+
+public enum SupportedActionType: Equatable {
+    case propertyType(SupportedPropertyType.Type)
+    case componentAction(component: String)
+    case elementReference(RuntimeType)
+
+    public func runtimeType(for platform: RuntimePlatform) -> RuntimeType {
+        switch self {
+        case .propertyType(let type):
+            return type.runtimeType(for: platform)
+        case .componentAction(let component):
+            return RuntimeType(name: "\(component).Action")
+        case .elementReference(let type):
+            return type
+        }
+    }
+
+    public static func ==(lhs: SupportedActionType, rhs: SupportedActionType) -> Bool {
+        switch (lhs, rhs) {
+        case (.propertyType(let lhs), .propertyType(let rhs)):
+            return lhs == rhs
+        case (.componentAction(let lhs), .componentAction(let rhs)):
+            return lhs == rhs
+        case (.elementReference(let lhs), .elementReference(let rhs)):
+            return lhs == rhs
+        default:
+            return false
         }
     }
 }
@@ -113,17 +159,42 @@ public struct HyperViewAction {
     }
 }
 
+#if canImport(SwiftCodeGen)
+public struct UIElementActionObservationHandler {
+    let publisher: Statement
+    let innerParameters: [String]
+    let captures: [String]
+
+    var listener: Closure {
+        return Closure(
+            captures: captures,
+            parameters: innerParameters,
+            block: [
+                publisher,
+            ])
+    }
+
+    init(publisher: Statement, captures: [String], innerParameters: [String]) {
+        self.publisher = publisher
+        self.captures = captures
+        self.innerParameters = innerParameters
+    }
+}
+#endif
+
 public protocol UIElementAction {
+    typealias Parameter = (label: String?, type: SupportedActionType)
+
     var primaryName: String { get }
 
     var aliases: Set<String> { get }
 
-    var parameters: [HyperViewAction.Parameter] { get }
+    var parameters: [Parameter] { get }
 
     func matches(action: HyperViewAction) -> Bool
 
     #if canImport(SwiftCodeGen)
-    func observe(on view: Expression, handler: Expression) throws -> Statement
+    func observe(on view: Expression, handler: UIElementActionObservationHandler) throws -> Statement
     #endif
 }
 
@@ -138,13 +209,13 @@ public class ViewTapAction: UIElementAction {
 
     public let aliases: Set<String> = []
 
-    public let parameters: [HyperViewAction.Parameter] = []
+    public let parameters: [Parameter] = []
 
     #if canImport(SwiftCodeGen)
-    public func observe(on view: Expression, handler: Expression) throws -> Statement {
+    public func observe(on view: Expression, handler: UIElementActionObservationHandler) throws -> Statement {
         return .expression(.invoke(target: .constant("GestureRecognizerObserver.bindTap"), arguments: [
             MethodArgument(name: "to", value: view),
-            MethodArgument(name: "handler", value: handler),
+            MethodArgument(name: "handler", value: .closure(handler.listener)),
         ]))
     }
     #endif
@@ -160,13 +231,13 @@ public protocol UIElementBase {
     var toolingProperties: [String: Property] { get set }
     var handledActions: [HyperViewAction] { get set }
 
-    func supportedActions(context: DataContext) throws -> [UIElementAction]
-
     // used for generating styles - does not care about children imports
     static var parentModuleImport: String { get }
 
     // used for generating views - resolves imports of subviews.
     var requiredImports: Set<String> { get }
+
+    func supportedActions(context: ComponentContext) throws -> [UIElementAction]
 
 }
 
@@ -216,6 +287,8 @@ extension UIElementID: XMLAttributeDeserializable {
  * Conforming to this protocol is sufficient on its own when creating a UI element.
  */
 public protocol UIElement: AnyObject, UIElementBase, XMLElementSerializable {
+    var factory: UIElementFactory { get }
+
     var id: UIElementID { get }
     var isExported: Bool { get }
     var layout: Layout { get set }

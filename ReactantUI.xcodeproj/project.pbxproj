@@ -11,6 +11,8 @@
 		1814E6B6212232F000957367 /* ReactantLiveUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 18448FAC2092041B0080B743 /* ReactantLiveUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1814E6B9212232F000957367 /* ReactantUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689FA0CC209CD7B000B39225 /* ReactantUI.framework */; };
 		1814E6BA212232F000957367 /* ReactantUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 689FA0CC209CD7B000B39225 /* ReactantUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1819270F22A82436005AE8B2 /* UIControlEventObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C920C322A2B618004C2B0B /* UIControlEventObserver.swift */; };
+		1819271022A82436005AE8B2 /* UIControlEventObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C920C322A2B618004C2B0B /* UIControlEventObserver.swift */; };
 		182B688D1EAF7641007CC668 /* ATest.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 182B687D1EAF7641007CC668 /* ATest.ui.xml */; };
 		182B688E1EAF7641007CC668 /* CommonStyles.styles.xml in Resources */ = {isa = PBXBuildFile; fileRef = 182B687E1EAF7641007CC668 /* CommonStyles.styles.xml */; };
 		182B688F1EAF7641007CC668 /* ExampleCell.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 182B687F1EAF7641007CC668 /* ExampleCell.ui.xml */; };
@@ -247,7 +249,6 @@
 		18C920AC229FD4E8004C2B0B /* SmartQuotesType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225350962124435E0009B368 /* SmartQuotesType.swift */; };
 		18C920AD229FD4EB004C2B0B /* SmartDashesType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22535098212443760009B368 /* SmartDashesType.swift */; };
 		18C920AE229FD4EE004C2B0B /* SmartInsertDeleteType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2253509A212443CD0009B368 /* SmartInsertDeleteType.swift */; };
-		18C920C522A2B62E004C2B0B /* UIControlEventObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C920C322A2B618004C2B0B /* UIControlEventObserver.swift */; };
 		18C920C722A3D201004C2B0B /* ActionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C920C622A3D201004C2B0B /* ActionParser.swift */; };
 		18C920C822A3D201004C2B0B /* ActionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C920C622A3D201004C2B0B /* ActionParser.swift */; };
 		18C9211022A4062D004C2B0B /* GeneratedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FF981F216638BC00B617E4 /* GeneratedUI.swift */; };
@@ -2508,7 +2509,6 @@
 				1844923D209223A70080B743 /* ControlContentHorizontalAlignment.swift in Sources */,
 				18449267209223A70080B743 /* Lexer.swift in Sources */,
 				18449259209223A70080B743 /* ValueProperty.swift in Sources */,
-				18C920C522A2B62E004C2B0B /* UIControlEventObserver.swift in Sources */,
 				1844924D209223A70080B743 /* TextAlignment.swift in Sources */,
 				188E66D922A51B9D00D6A278 /* UIKit.SegmentedControl.swift in Sources */,
 				2253509D2124440D0009B368 /* SmartDashesType.swift in Sources */,
@@ -2701,6 +2701,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1819270F22A82436005AE8B2 /* UIControlEventObserver.swift in Sources */,
 				22D27539212ABAA300F30115 /* ReactantThemeSelector.swift in Sources */,
 				22D2753B212ABAAB00F30115 /* UIView+traits.swift in Sources */,
 				22D2753F212ABAB400F30115 /* UITraitHelper.swift in Sources */,
@@ -2940,6 +2941,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1819271022A82436005AE8B2 /* UIControlEventObserver.swift in Sources */,
 				68CA17D520C9805A005654B0 /* UITraitHelper.swift in Sources */,
 				68BF19DA20C6F553000AF052 /* NSShadow+convenienceInit.swift in Sources */,
 				6836D5F920B8404F00FD2DF8 /* UIView+traits.swift in Sources */,

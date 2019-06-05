@@ -306,7 +306,7 @@ public enum Statement: Describable {
                 }
                 pipe.append(condition)
             }
-            pipe.string(" {").indented {
+            pipe.lineEnd(" {").indented {
                 pipe.append(thenBlock)
             }.string("}")
             if let elseBlock = elseBlock {
@@ -402,6 +402,10 @@ public struct Closure: Describable {
         self.parameters = parameters
         self.returnType = returnType
         self.block = block
+    }
+
+    public init(captures: [String] = [], parameters: [String], returnType: String? = nil, block: Block) {
+        self.init(captures: captures, parameters: parameters.map { (name: $0, type: nil) }, returnType: returnType, block: block)
     }
 
     public func describe(into pipe: DescriptionPipe) {

@@ -212,7 +212,7 @@ extension AttributedText {
         }
         block += .return(expression: .constant("s"))
 
-        let closure = Closure(parameters: [], returnType: nil, block: block)
+        let closure = Closure(block: block)
 
         return .invoke(target: .closure(closure), arguments: [])
 

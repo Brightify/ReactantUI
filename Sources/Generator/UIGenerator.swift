@@ -40,7 +40,7 @@ public class UIGenerator: Generator {
             .constant(accessibility: viewAccessibility, modifiers: .static, name: "triggerReloadPaths", type: "Set<String>", value: triggerReloadPaths),
             .constant(accessibility: viewAccessibility, name: "layout", value: .constant("Constraints()")),
             .constant(accessibility: viewAccessibility, name: "state", type: "State"),
-            .constant(accessibility: .private, name: "actionPublisher", type: "ActionPublisher<Action>"),
+            .constant(accessibility: root.providedActions.isEmpty ? .private : viewAccessibility, name: "actionPublisher", type: "ActionPublisher<Action>"),
         ]
 
         let viewDeclarations = try root.allChildren.map { child in
@@ -80,7 +80,9 @@ public class UIGenerator: Generator {
             ].map { Statement.expression(.constant($0)) }))
 
         let stateProperties: [SwiftCodeGen.Property] = [
-            .variable(accessibility: .fileprivate, modifiers: .weak, name: "owner", type: "\(root.type)?"),
+            .variable(accessibility: .fileprivate, modifiers: .weak, name: "owner", type: "\(root.type)?", block: [
+                .expression(.constant("didSet { resynchronize() }"))
+            ]),
         ]
 
         let stateItems = try componentContext.resolve(state: root)
@@ -127,9 +129,6 @@ public class UIGenerator: Generator {
                     Statement.expression(.invoke(target: .constant($0.name), arguments: []))
                 })),
         ]
-
-
-//        UIControlEventObserver.observe(button, to: actionPublisher)
 
         let resolvedActions = try componentContext.resolve(actions: root.providedActions)
 
@@ -425,7 +424,7 @@ public class UIGenerator: Generator {
                 ]))
         }
 
-        for property in element.properties {
+        for property in try element.properties + componentContext.stateProperties(of: element) {
             guard !property.anyValue.requiresTheme else {
                 themedProperties[name, default: []].append(property)
                 continue

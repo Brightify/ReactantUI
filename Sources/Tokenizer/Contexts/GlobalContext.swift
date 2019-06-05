@@ -21,11 +21,35 @@ extension Dictionary {
 }
 #endif
 
+public struct ComponentDefinitionDictionary {
+    public typealias ComponentType = String
+    public typealias ComponentPath = String
+
+    public private(set) var definitionsByType: [ComponentType: ComponentDefinition] = [:]
+    public private(set) var definitionsByPath: [ComponentPath: ComponentDefinition] = [:]
+
+    public subscript(path path: String) -> ComponentDefinition? {
+        get {
+            return definitionsByPath[path]
+        }
+        set {
+            definitionsByPath[path] = newValue
+            if let type = newValue?.type {
+                definitionsByType[type] = newValue
+            }
+        }
+    }
+
+    public subscript(type type: String) -> ComponentDefinition? {
+        return definitionsByType[type]
+    }
+}
+
 /**
  * The topmost context (disregarding `ReactantLiveUIWorker.Context` which serves LiveUI purposes only).
  * Any data to be shared throughout the whole application (bundle) should be located in this context.
  */
-public struct GlobalContext: DataContext {
+public class GlobalContext: DataContext {
     private typealias StyleSheets = [String: [String: Style]]
     private typealias TemplateSheets = [String: [String: Template]]
     private typealias ComponentDefinitions = [String: ComponentDefinition]
@@ -33,9 +57,10 @@ public struct GlobalContext: DataContext {
     public var applicationDescription: ApplicationDescription
     public var currentTheme: ApplicationDescription.ThemeName
     public var resourceBundle: Bundle?
+    public private(set) var componentDefinitions = ComponentDefinitionDictionary()
+
     private var styles: StyleSheets = [:]
     private var templates: TemplateSheets = [:]
-    private var componentDefinitions: ComponentDefinitions = [:]
 
     public init() {
         self.applicationDescription = ApplicationDescription()
@@ -64,6 +89,10 @@ public struct GlobalContext: DataContext {
         self.currentTheme = currentTheme
 
         setStyles(from: styleSheets)
+    }
+
+    public func register(definition: ComponentDefinition, path: String) {
+        componentDefinitions[path: path] = definition
     }
 
     public func resolvedStyleName(named styleName: StyleName) -> String {
@@ -95,14 +124,13 @@ public struct GlobalContext: DataContext {
         return applicationDescription.fonts[theme: currentTheme, item: name].flatMap { $0 }
     }
 
-    public mutating func setStyles(from styleSheetDictionary: [String: StyleGroup]) {
-        styles = Dictionary(keyValueTuples: styleSheetDictionary.map { arg in
-            let (key, value) = arg
+    public func setStyles(from styleSheetDictionary: [String: StyleGroup]) {
+        styles = Dictionary(keyValueTuples: styleSheetDictionary.map { key, value in
             return (key, Dictionary(keyValueTuples: value.styles.map { ($0.name.name, $0) }))
         })
     }
 
-    public mutating func setStyles(from styleSheets: [StyleGroup]) {
+    public func setStyles(from styleSheets: [StyleGroup]) {
         let groups = Dictionary(grouping: styleSheets.flatMap { $0.styles }, by: { style -> String? in
             guard case .global(let groupName, _) = style.name else { return nil }
             return groupName
@@ -115,7 +143,7 @@ public struct GlobalContext: DataContext {
     }
 
     public func definition(for componentType: String) throws -> ComponentDefinition {
-        guard let definition = componentDefinitions[componentType] else {
+        guard let definition = componentDefinitions[type: componentType] else {
             throw TokenizationError(message: "Component \(componentType) not registered!")
         }
 

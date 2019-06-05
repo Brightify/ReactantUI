@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import Hyperdrive
 
 #if canImport(UIKit)
 import UIKit
@@ -27,7 +26,7 @@ public final class GestureRecognizerObserver: NSObject {
     }
 
     public func retained(in object: NSObject) {
-        associateObject(object, key: &associationKey, value: self, policy: .retain)
+        objc_setAssociatedObject(object, &associationKey, self, .OBJC_ASSOCIATION_RETAIN)
     }
 
     public static func bindTap(to view: UIView, handler: @escaping () -> Void) {
@@ -76,7 +75,7 @@ public final class ControlEventObserver: NSObject {
     }
 
     public func retained(in object: NSObject) {
-        associateObject(object, key: &associationKey, value: self, policy: .retain)
+        objc_setAssociatedObject(object, &associationKey, self, .OBJC_ASSOCIATION_RETAIN)
     }
 }
 #endif

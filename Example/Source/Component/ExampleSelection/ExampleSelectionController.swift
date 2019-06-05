@@ -8,6 +8,7 @@
 import Hyperdrive
 import RxSwift
 import RxGesture
+import ReactantUI
 
 enum ExampleType: CaseIterable {
     case plainTableView
@@ -61,16 +62,12 @@ final class ExampleSelectionController: HyperViewController<ExampleSelectionRoot
         super.viewDidLoad()
 
         for example in ExampleType.allCases {
-            let cell = SelectionCell(actionPublisher: ActionPublisher<SelectionCell.Action> { _ in })
+            let cell = SelectionCell(actionPublisher: ActionPublisher())
             cell.state.name = example.name
 
-//            cell.rx
-//                .tapGesture()
-//                .when(.recognized)
-//                .subscribe(onNext: { [reactions] _ in
-//                    reactions.exampleSelected(example)
-//                })
-//                .disposed(by: lifetimeDisposeBag)
+            GestureRecognizerObserver.bindTap(to: cell) { [reactions] in
+                reactions.exampleSelected(example)
+            }
 
             hyperView.stackView.addArrangedSubview(cell)
         }
@@ -78,8 +75,10 @@ final class ExampleSelectionController: HyperViewController<ExampleSelectionRoot
 
     override func handle(action: ExampleSelectionRootView.Action) {
         switch action {
-        case .cellAct:
-            print("what")
+        case .cellAct(let x):
+            print(x)
+        case .pstrh(let action):
+            print(action)
         }
     }
 

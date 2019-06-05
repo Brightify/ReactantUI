@@ -59,8 +59,10 @@ public extension UIContainer where Self: UIElementBase {
         return [(element: self, actions: handledActions)] + children.flatMap { child -> [(element: UIElementBase, actions: [HyperViewAction])] in
             if let childContainer = child as? UIContainer {
                 return childContainer.providedActions
-            } else {
+            } else if !child.handledActions.isEmpty {
                 return [(element: child, actions: child.handledActions)]
+            } else {
+                return []
             }
         }
     }

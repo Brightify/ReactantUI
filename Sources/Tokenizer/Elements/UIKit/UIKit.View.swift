@@ -84,6 +84,8 @@ public class View: UIElement, SwiftExtensionWorkaround {
         return ["UIKit"]
     }
 
+    public let factory: UIElementFactory
+
     public var id: UIElementID
     public var isExported: Bool
     public var styles: [StyleName]
@@ -92,7 +94,7 @@ public class View: UIElement, SwiftExtensionWorkaround {
     public var toolingProperties: [String: Property]
     public var handledActions: [HyperViewAction]
 
-    public func supportedActions(context: DataContext) throws -> [UIElementAction] {
+    public func supportedActions(context: ComponentContext) throws -> [UIElementAction] {
         return [
             ViewTapAction()
         ]
@@ -110,7 +112,8 @@ public class View: UIElement, SwiftExtensionWorkaround {
     }
     #endif
 
-    public required init(context: UIElementDeserializationContext) throws {
+    public required init(context: UIElementDeserializationContext, factory: UIElementFactory) throws {
+        self.factory = factory
         let node = context.element
         id = try node.value(ofAttribute: "id", defaultValue: context.elementIdProvider.next(for: node.name))
         isExported = try node.value(ofAttribute: "export", defaultValue: false)

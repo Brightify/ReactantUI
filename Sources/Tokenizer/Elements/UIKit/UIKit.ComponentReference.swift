@@ -15,6 +15,26 @@ import SwiftCodeGen
 import UIKit
 #endif
 
+//public struct ComponentActionType: TypedSupportedTypeFactory {
+//
+//}
+//
+public class ComponentReferencePassthroughAction: UIElementAction {
+    public let primaryName = "#passthrough#"
+    public let aliases: Set<String> = []
+    public let parameters: [Parameter]
+
+    public init(type: String) {
+        parameters = [Parameter(label: nil, type: .componentAction(component: type))]
+    }
+
+    #if canImport(SwiftCodeGen)
+    public func observe(on view: Expression, handler: UIElementActionObservationHandler) throws -> Statement {
+        return .emptyLine
+    }
+    #endif
+}
+
 public class ComponentReference: View, ComponentDefinitionContainer {
     public var module: String?
     public var type: String
@@ -22,10 +42,14 @@ public class ComponentReference: View, ComponentDefinitionContainer {
     public var passthroughActions: String?
     public var possibleStateProperties: [String: String]
 
-    public override func supportedActions(context: DataContext) throws -> [UIElementAction] {
+    public override func supportedActions(context: ComponentContext) throws -> [UIElementAction] {
         let definition = try self.definition ?? context.definition(for: type)
 
-        return try definition.supportedActions(context: context)
+        let actions = try context.child(for: definition).resolve(actions: definition.providedActions).map(ComponentDefinitionAction.init)
+
+        let passthrough: [UIElementAction] = passthroughActions.map { _ in [ComponentReferencePassthroughAction(type: type)] } ?? []
+
+        return try passthrough + actions + super.supportedActions(context: context)
     }
 
     public var isAnonymous: Bool {
@@ -73,18 +97,18 @@ public class ComponentReference: View, ComponentDefinitionContainer {
 //        }
 //        return pipe.result as [Describable]
 
-        let actionMappingBlock = [.switch(
-            expression: .constant("action"),
-            cases: handledActions.map {
-                (Expression.constant(".\($0.eventName)"), [.return(expression: .constant(".\($0.name)"))] as Block)
-            },
-            default: [.return(expression: .constant("nil"))])] as Block
+        let actionPublisher: MethodArgument
+        if let passthrough = passthroughActions {
+            actionPublisher = MethodArgument(name: "actionPublisher", value: .invoke(target: .constant("actionPublisher.map"), arguments: [
+                MethodArgument(value: .closure(Closure(parameters: [(name: "action", type: nil)], block: [.return(expression: .constant(".\(passthrough)(action)"))]))),
+            ]))
+        } else {
+            actionPublisher = MethodArgument(name: "actionPublisher", value: .constant("ActionPublisher()"))
+        }
 
         return .invoke(target: .constant(type), arguments: [
             MethodArgument(name: "initialState", value: .constant("\(type).State()")),
-            MethodArgument(name: "actionPublisher", value: .invoke(target: .constant("actionPublisher.map"), arguments: [
-                MethodArgument(value: .closure(Closure(parameters: [(name: "action", type: nil)], block: actionMappingBlock))),
-            ]))
+            actionPublisher,
         ])
 
 //
@@ -100,7 +124,7 @@ public class ComponentReference: View, ComponentDefinitionContainer {
     }
     #endif
 
-    public required init(context: UIElementDeserializationContext) throws {
+    public required init(context: UIElementDeserializationContext, factory: UIElementFactory) throws {
         let node = context.element
         type = try node.value(ofAttribute: "type", defaultValue: node.name)
         guard type != "Component" else { throw TokenizationError(message: "Name `Component` is not allowed for component reference!") }
@@ -113,11 +137,16 @@ public class ComponentReference: View, ComponentDefinitionContainer {
 
         passthroughActions = node.attribute(by: "action")?.text
         let viewProperties = Set(ComponentReference.availableProperties.map { $0.name })
-        possibleStateProperties = node.allAttributes.filter { name, attribute in
-            !viewProperties.contains(name)
-        }.mapValues { $0.text }
+        possibleStateProperties = Dictionary(uniqueKeysWithValues: node.allAttributes.compactMap { name, attribute -> (String, String)? in
+            guard name.starts(with: "state:") else { return nil }
+            return (String(name.dropFirst("state:".count)), attribute.text)
+        })
         
-        try super.init(context: context)
+        try super.init(context: context, factory: factory)
+
+        if let passthrough = passthroughActions {
+            handledActions.append(HyperViewAction(name: passthrough, eventName: "#passthrough#", parameters: [(label: nil, parameter: .inheritedParameters)]))
+        }
     }
     
     public init(type: String, definition: ComponentDefinition?) {

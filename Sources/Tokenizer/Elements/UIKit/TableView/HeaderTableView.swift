@@ -65,7 +65,7 @@ extension Module.UIKit {
         }
         #endif
 
-        public required init(context: UIElementDeserializationContext) throws {
+        public required init(context: UIElementDeserializationContext, factory: UIElementFactory) throws {
             let node = context.element
             if let field = node.value(ofAttribute: "field") as String?, !field.isEmpty {
                 cellType = nil
@@ -96,7 +96,7 @@ extension Module.UIKit {
                 }
             }
 
-            try super.init(context: context)
+            try super.init(context: context, factory: factory)
         }
 
         public override func serialize(context: DataContext) -> XMLSerializableElement {

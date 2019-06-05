@@ -123,30 +123,36 @@ public class ComponentDefinitionAction: UIElementAction {
 
     public let aliases: Set<String> = []
 
-    public let parameters: [HyperViewAction.Parameter]
+    public let parameters: [Parameter]
 
-    init(handledAction: HyperViewAction) {
-        primaryName = handledAction.eventName
-        parameters = handledAction.parameters.map { label, parameter in
-            parameter
+    init(action: ResolvedHyperViewAction) {
+        primaryName = action.name
+        parameters = action.parameters.map { parameter in
+            Parameter(label: parameter.label, type: parameter.type)
         }
     }
 
     #if canImport(SwiftCodeGen)
-    public func observe(on view: Expression, handler: Expression) throws -> Statement {
-        return .emptyLine
+    public func observe(on view: Expression, handler: UIElementActionObservationHandler) throws -> Statement {
+        let listener = Closure(captures: handler.captures, parameters: [(name: "action", type: nil)], block: [
+            .if(condition: [.enumUnwrap(case: primaryName, parameters: handler.innerParameters, expression: .constant("action"))], then: [handler.publisher], else: nil)
+            ])
+
+        return .expression(.invoke(target: .member(target: view, name: "actionPublisher.listen"), arguments: [
+            MethodArgument(name: "with", value: .closure(listener)),
+        ]))
     }
     #endif
 }
 
 extension ComponentDefinition {
-    public func supportedActions(context: DataContext) throws -> [UIElementAction] {
-        let actions = providedActions.flatMap { element, actions in
-            actions.map { action in
-                ComponentDefinitionAction(handledAction: action)
-            }
-        }
-        return actions + [
+    public func supportedActions(context: ComponentContext) throws -> [UIElementAction] {
+//        let resolvedActions = try context.resolve(actions: providedActions)
+//
+//        let actions = resolvedActions.map { action in
+//            ComponentDefinitionAction(action: action)
+//        }
+        return [
             ViewTapAction(),
         ]
     }

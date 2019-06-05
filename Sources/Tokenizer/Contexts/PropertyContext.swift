@@ -10,7 +10,7 @@ import Foundation
 /**
  * Context connected to a property (i.e. a field inside a UI element).
  */
-public struct PropertyContext: DataContext, HasParentContext {
+public class PropertyContext: DataContext, HasParentContext {
     public let parentContext: DataContext
     public let property: Property
 

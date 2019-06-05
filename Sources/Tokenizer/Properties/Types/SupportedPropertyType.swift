@@ -12,7 +12,7 @@ import Foundation
 import SwiftCodeGen
 #endif
 
-public struct RuntimeType: CustomStringConvertible {
+public struct RuntimeType: CustomStringConvertible, Equatable {
     public var name: String
     public var modules: Set<String>
 

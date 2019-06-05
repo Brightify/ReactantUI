@@ -11,7 +11,7 @@ public struct Module {
     
 }
 
-public protocol UIElementFactory {
+public protocol UIElementFactory: AnyObject {
     var elementName: String { get }
 
     #warning("REMOVEME Rewrite handling imports")
@@ -33,14 +33,14 @@ public protocol RuntimeModule {
 }
 
 extension RuntimeModule {
-    public func factory<T: View>(named name: String, for initializer: @escaping (UIElementDeserializationContext) throws -> T) -> UIElementFactory {
+    public func factory<T: View>(named name: String, for initializer: @escaping (UIElementDeserializationContext, UIElementFactory) throws -> T) -> UIElementFactory {
         return UIKitUIElementFactory(name: name, initializer: initializer)
     }
 }
 
 private class UIKitUIElementFactory<VIEW: View>: UIElementFactory {
     let elementName: String
-    let initializer: (UIElementDeserializationContext) throws -> VIEW
+    let initializer: (UIElementDeserializationContext, UIElementFactory) throws -> VIEW
 
     var availableProperties: [PropertyDescription] {
         return VIEW.availableProperties
@@ -54,13 +54,13 @@ private class UIKitUIElementFactory<VIEW: View>: UIElementFactory {
         return VIEW.self is UIContainer.Type
     }
 
-    init(name: String, initializer: @escaping (UIElementDeserializationContext) throws -> VIEW) {
+    init(name: String, initializer: @escaping (UIElementDeserializationContext, UIElementFactory) throws -> VIEW) {
         elementName = name
         self.initializer = initializer
     }
 
     func create(context: UIElementDeserializationContext) throws -> UIElement {
-        return try initializer(context)
+        return try initializer(context, self)
     }
 
     func runtimeType() throws -> RuntimeType {

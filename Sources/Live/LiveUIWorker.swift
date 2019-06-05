@@ -178,7 +178,7 @@ public class ReactantLiveUIWorker {
     }
 
     private func apply(definition: ComponentDefinition, view: UIView, setConstraint: @escaping (String, SnapKit.Constraint) -> Bool) throws {
-        let componentContext = ComponentContext(globalContext: context.globalContext, component: definition, allDefinitions: [:])
+        let componentContext = ComponentContext(globalContext: context.globalContext, component: definition)
         let uiApplier = appliers[view, default: ReactantLiveUIApplier(workerContext: context)]
         try uiApplier.apply(context: componentContext, commonStyles: commonStyles, view: view, setConstraint: setConstraint)
         if let invalidable = view as? Invalidable {
@@ -408,7 +408,7 @@ extension ReactantLiveUIWorker: Hashable {
 }
 
 extension ReactantLiveUIWorker {
-    public struct Context: DataContext {
+    public class Context: DataContext {
         public var configuration: ReactantLiveUIConfiguration
         public var globalContext: GlobalContext
         public weak var worker: ReactantLiveUIWorker?
@@ -457,6 +457,10 @@ extension ReactantLiveUIWorker {
 
         public func themed(font name: String) -> Font? {
             return globalContext.themed(font: name)
+        }
+
+        public func definition(for componentType: String) throws -> ComponentDefinition {
+            return try globalContext.definition(for: componentType)
         }
     }
 }
