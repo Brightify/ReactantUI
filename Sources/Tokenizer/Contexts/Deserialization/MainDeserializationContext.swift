@@ -9,9 +9,11 @@ import Foundation
 
 public class MainDeserializationContext: DeserializationContext {
     public let elementFactories: [String: UIElementFactory]
+    public let referenceFactory: ComponentReferenceFactory
 
-    public init(elementFactories: [UIElementFactory]) {
+    public init(elementFactories: [UIElementFactory], referenceFactory: ComponentReferenceFactory) {
         self.elementFactories = Dictionary(uniqueKeysWithValues: elementFactories.map { ($0.elementName, $0) })
+        self.referenceFactory = referenceFactory
     }
 }
 
@@ -22,7 +24,7 @@ extension MainDeserializationContext: HasUIElementFactoryRegistry {
         } else if let elementFactory = elementFactories[elementName] {
             return elementFactory
         } else {
-            return ComponentReferenceFactory()
+            return referenceFactory
         }
     }
 }

@@ -153,7 +153,7 @@ class GenerateCommand: Command {
         let mainContext = MainDeserializationContext(elementFactories:
             Module.mapKit.elements(for: .iOS) +
             Module.uiKit.elements(for: .iOS) +
-            Module.webKit.elements(for: .iOS))
+            Module.webKit.elements(for: .iOS), referenceFactory: Module.uiKit.referenceFactory)
 
         // path with the stylegroup associated with it
         var globalContextFiles = [] as [(path: String, group: StyleGroup)]

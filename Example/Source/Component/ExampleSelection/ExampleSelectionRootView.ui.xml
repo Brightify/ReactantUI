@@ -16,10 +16,12 @@
             axis="vertical">
 
             <SelectionCell
-                action:ordel="cellAct(labelek: String(10), ...)"
+                backgroundColor="blue"
+                action:ordel="cellAct(labelek: String(10), ..., @self.backgroundColor)"
                 state:name="This is a test" />
 
             <SelectionCell
+                id="second"
                 action="pstrh"
                 state:name="This is a passthrough test" />
         </StackView>

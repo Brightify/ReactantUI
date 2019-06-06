@@ -116,18 +116,28 @@ public class ComponentContext: DataContext {
 //                    return ResolvedHyperViewAction.Parameter(label: label, kind: .constant(value:     ))
                 case .stateVariable(let name):
                     return [ResolvedHyperViewAction.Parameter(label: label, kind: .state(property: name, type: .propertyType(state[name]!.type)))]
-                case .reference(let targetId, let propertyName):
-                    guard let element = component.allChildren.first(where: { $0.id.description == targetId }) else {
-                        throw TokenizationError(message: "Element with id \(targetId) doesn't exist in \(component.type)!")
+                case .reference(var targetId, let propertyName):
+                    let targetElement: UIElement
+                    if targetId == "self" {
+                        guard let foundTargetElement = element as? UIElement else {
+                            throw TokenizationError(message: "Using `self` as target on non-UIElement is not yet supported!")
+                        }
+                        targetElement = foundTargetElement
+                        targetId = targetElement.id.description
+                    } else {
+                        guard let foundTargetElement = component.allChildren.first(where: { $0.id.description == targetId }) else {
+                            throw TokenizationError(message: "Element with id \(targetId) doesn't exist in \(component.type)!")
+                        }
+                        targetElement = foundTargetElement
                     }
 
                     if let propertyName = propertyName {
-                        guard let property = element.factory.availableProperties.first(where: { $0.name == propertyName }) else {
+                        guard let property = targetElement.factory.availableProperties.first(where: { $0.name == propertyName }) else {
                             throw TokenizationError(message: "Element with id \(targetId) used in \(component.type) doesn't have property named \(propertyName).!")
                         }
                         return [ResolvedHyperViewAction.Parameter(label: label, kind: .reference(view: targetId, property: propertyName, type: .propertyType(property.type)))]
                     } else {
-                        return try [ResolvedHyperViewAction.Parameter(label: label, kind: .reference(view: targetId, property: nil, type: .elementReference(element.runtimeType(for: .iOS))))]
+                        return try [ResolvedHyperViewAction.Parameter(label: label, kind: .reference(view: targetId, property: nil, type: .elementReference(targetElement.runtimeType(for: .iOS))))]
                     }
                 }
             }

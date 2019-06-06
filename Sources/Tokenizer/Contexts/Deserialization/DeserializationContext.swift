@@ -65,17 +65,27 @@ public extension DeserializationContext where Self: HasUIElementFactoryRegistry 
     }
 }
 
-class ComponentReferenceFactory: UIElementFactory {
-    let elementName: String = ""
-    let availableProperties: [PropertyDescription] = []
-    let parentModuleImport: String = "Foundation"
-    let isContainer: Bool = false
+public class ComponentReferenceFactory: UIElementFactory {
+    private let baseFactory: UIElementFactory
 
-    func create(context: UIElementDeserializationContext) throws -> UIElement {
+    public let elementName: String = ""
+    public var availableProperties: [PropertyDescription] {
+        return baseFactory.availableProperties
+    }
+    public var parentModuleImport: String {
+        return baseFactory.parentModuleImport
+    }
+    public var isContainer: Bool = false
+
+    public init(baseFactory: UIElementFactory) {
+        self.baseFactory = baseFactory
+    }
+
+    public func create(context: UIElementDeserializationContext) throws -> UIElement {
         return try ComponentReference(context: context, factory: self)
     }
 
-    func runtimeType() throws -> RuntimeType {
+    public func runtimeType() throws -> RuntimeType {
         return RuntimeType(name: try ComponentReference.runtimeType())
     }
 }
