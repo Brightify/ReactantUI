@@ -11,21 +11,23 @@ import Hyperdrive
 final class LiveUIErrorMessageItem: HyperViewBase, HyperView {
 
     final class State: HyperViewState {
-        fileprivate weak var owner: LiveUIErrorMessageItem?
+        fileprivate weak var owner: LiveUIErrorMessageItem? { didSet { resynchronize() } }
 
-        var file: String?
-        var message: String?
+        var file: String? { didSet { notifyFileChanged() } }
+        var message: String? { didSet { notifyMessageChanged() } }
 
         init() {
 
         }
 
         func apply(from otherState: State) {
-
+            file = otherState.file
+            message = otherState.message
         }
 
         func resynchronize() {
-
+            notifyFileChanged()
+            notifyMessageChanged()
         }
 
         private func notifyFileChanged() {
@@ -52,11 +54,11 @@ final class LiveUIErrorMessageItem: HyperViewBase, HyperView {
 
         super.init()
 
-        state.owner = self
-
         loadView()
 
         setupConstraints()
+
+        state.owner = self
     }
 
     private func loadView() {

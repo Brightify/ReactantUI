@@ -83,7 +83,8 @@ class GenerateCommand: Command {
 
     let name = "generate"
     let shortDescription = "Generate Swift UI code from XMLs"
-    let enableLive = Flag("--enable-live")
+    let liveConfigurations = VariadicKey<String>("--live-configurations", description: "Configurations to generate live UI code for. Environment variable $CONFIGURATION is used to determine current build configuration.")
+    let livePlatforms = VariadicKey<String>("--live-platforms", description: "Platforms to generate live UI code for. Environment variable $PLATFORM_NAME is used to determine current build platform. Defaults to 'iphonesimulator'.")
 
     let xcodeProjectPath = Key<String>("--xcodeprojPath")
     let inputPath = Key<String>("--inputPath")
@@ -97,6 +98,15 @@ class GenerateCommand: Command {
 
     public func execute() throws {
         let output = DescriptionPipe()
+        let livePlatforms = !self.livePlatforms.values.isEmpty ? self.livePlatforms.values : ["iphonesimulator"]
+        let enableLive: Bool
+        if let buildConfiguration = ProcessInfo.processInfo.environment["CONFIGURATION"],
+            let buildPlatform = ProcessInfo.processInfo.environment["PLATFORM_NAME"] {
+
+            enableLive = liveConfigurations.values.contains(buildConfiguration) && livePlatforms.contains(buildPlatform)
+        } else {
+            enableLive = false
+        }
 
         guard let inputPath = inputPath.value else {
             throw GenerateCommandError.inputPathInvalid
@@ -204,7 +214,7 @@ class GenerateCommand: Command {
         for (offset: index, element: (path: path, group: group)) in globalContextFiles.enumerated() {
             let configuration = GeneratorConfiguration(minimumMajorVersion: minimumDeploymentTarget,
                                                        localXmlPath: path,
-                                                       isLiveEnabled: enableLive.value,
+                                                       isLiveEnabled: enableLive,
                                                        swiftVersion: swiftVersion,
                                                        defaultModifier: accessModifier)
             let styleContext = StyleGroupContext(globalContext: globalContext, group: group)
@@ -219,8 +229,8 @@ class GenerateCommand: Command {
 
         try output.append(theme(context: globalContext, swiftVersion: swiftVersion))
 
-        if enableLive.value {
-            output.append(ifSimulator(ifClause: "import ReactantLiveUI"))
+        if enableLive {
+            output.append("import ReactantLiveUI")
         }
         for imp in imports {
             output.append("import \(imp)")
@@ -241,7 +251,7 @@ class GenerateCommand: Command {
             output.append("// Generated from \(path)")
             let configuration = GeneratorConfiguration(minimumMajorVersion: minimumDeploymentTarget,
                                                        localXmlPath: path,
-                                                       isLiveEnabled: enableLive.value,
+                                                       isLiveEnabled: enableLive,
                                                        swiftVersion: swiftVersion,
                                                        defaultModifier: accessModifier)
             for definition in rootDefinition.componentDefinitions {
@@ -250,13 +260,8 @@ class GenerateCommand: Command {
             }
         }
 
-        if enableLive.value {
+        if enableLive {
             let generatedApplicationDescriptionPath = applicationDescriptionPath.map { "\"\($0)\"" } ?? "nil"
-            if swiftVersion < .swift4_1 {
-                output.append("#if (arch(i386) || arch(x86_64)) && (os(iOS) || os(tvOS))")
-            } else {
-                output.append("#if targetEnvironment(simulator)")
-            }
             output.append("""
                       struct GeneratedReactantLiveUIConfiguration: ReactantLiveUIConfiguration {
                       let applicationDescriptionPath: String? = \(generatedApplicationDescriptionPath)
@@ -281,16 +286,15 @@ class GenerateCommand: Command {
             }
             output.append("""
                   }
-                  #endif
                   """)
         }
 
-        if enableLive.value {
-            output.append(ifSimulator(ifClause: "let bundleWorker = ReactantLiveUIWorker(configuration: GeneratedReactantLiveUIConfiguration())"))
+        if enableLive {
+            output.append("let bundleWorker = ReactantLiveUIWorker(configuration: GeneratedReactantLiveUIConfiguration())")
         }
                           
         output.append("public func activateLiveReload(in window: UIWindow) {")
-        if enableLive.value {
+        if enableLive {
             let liveUIActivation = [
                 "ReactantLiveUIManager.shared.activate(in: window, worker: bundleWorker)",
                 "ApplicationTheme.selector.register(target: bundleWorker, listener: { theme in",
@@ -298,7 +302,7 @@ class GenerateCommand: Command {
                 "})",
             ] as [Describable]
 
-            output.append(ifSimulator(ifClause: liveUIActivation))
+            output.append(liveUIActivation)
         }
         output.append("}")
 

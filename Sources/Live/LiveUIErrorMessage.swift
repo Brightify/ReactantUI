@@ -8,28 +8,46 @@
 
 import Hyperdrive
 import RxSwift
+import ReactantUI
 
 final class LiveUIErrorMessage: HyperViewBase, HyperView {
 
     final class State: HyperViewState {
-        fileprivate weak var owner: LiveUIErrorMessage?
+        fileprivate weak var owner: LiveUIErrorMessage? { didSet { resynchronize() } }
 
-        var errors: [LiveUIErrorMessageItem.State] = []
+        var errors: [LiveUIErrorMessageItem.State] = [] { didSet { notifyErrorsChanged() } }
 
         init() {
 
         }
 
         func apply(from otherState: LiveUIErrorMessage.State) {
-
+            errors = otherState.errors
         }
 
         func resynchronize() {
-
+            notifyErrorsChanged()
         }
 
         private func notifyErrorsChanged() {
+            guard let owner = owner else { return }
 
+            owner.stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+            for (index, item) in errors.enumerated() {
+                if index > 0 {
+                    let divider = UIView()
+                    Styles.divider(view: divider)
+                    owner.stackView.addArrangedSubview(divider)
+                    divider.snp.makeConstraints { make in
+                        make.height.equalTo(1)
+                    }
+                }
+
+                let itemView = LiveUIErrorMessageItem(initialState: item, actionPublisher: ActionPublisher())
+                owner.stackView.addArrangedSubview(itemView)
+            }
+
+            owner.isHidden = errors.isEmpty
         }
     }
     enum Action {
@@ -39,10 +57,6 @@ final class LiveUIErrorMessage: HyperViewBase, HyperView {
     static let triggerReloadPaths: Set<String> = []
 
     let state: State
-
-//[String: String]
-
-    //LiveUIErrorMessageItemAction
 
     override var preferredFocusedView: UIView? {
         return button
@@ -64,14 +78,23 @@ final class LiveUIErrorMessage: HyperViewBase, HyperView {
     private let stackView = UIStackView()
     private let button = UIButton()
 
+    let actionPublisher: ActionPublisher<Action>
+
     init(initialState: State, actionPublisher: ActionPublisher<Action>) {
         state = initialState
+        self.actionPublisher = actionPublisher
 
         super.init()
 
         loadView()
 
         setupConstraints()
+
+        state.owner = self
+
+        GestureRecognizerObserver.bindTap(to: button, handler: {
+            actionPublisher.publish(action: .dismiss)
+        })
     }
 
 //    override func update() {

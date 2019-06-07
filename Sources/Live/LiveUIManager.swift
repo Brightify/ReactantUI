@@ -37,15 +37,13 @@ public class ReactantLiveUIManager {
         errorView = LiveUIErrorMessage(initialState: LiveUIErrorMessage.State(), actionPublisher: publisher)
 
         #warning("TODO: Add publisher action handling")
-//        errorView.action
-//            .filter { $0 == .dismiss }
-//            .subscribe(onNext: { [weak self] _ in
-//                guard let `self` = self else { return }
-//                for worker in self.workers {
-//                    worker.resetErrors()
-//                }
-//            })
-//            .disposed(by: disposeBag)
+        errorView.actionPublisher.listen { [weak self] in
+            guard $0 == .dismiss, let self = self else { return }
+
+            for worker in self.workers {
+                worker.resetErrors()
+            }
+        }
     }
 
     /// Activates a worker and makes him ready for use.

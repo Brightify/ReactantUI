@@ -149,4 +149,47 @@ public class GlobalContext: DataContext {
 
         return definition
     }
+
+    public func resolveStyle(for element: UIElement, from styles: [Style]) throws -> [Property] {
+        guard !element.styles.isEmpty else { return element.properties }
+        let viewStyles = try styles.compactMap { style -> Style? in
+            if case .view(let styledType) = style.type, try styledType.runtimeType() == element.factory.runtimeType() {
+                return style
+            } else {
+                return nil
+            }
+        }
+        
+        // FIXME This will be slow
+        var result = Dictionary<String, Property>(minimumCapacity: element.properties.count)
+        for name in element.styles {
+            for property in try viewStyles.resolveViewStyle(for: element.factory.elementName, named: name) {
+                result[property.attributeName] = property
+            }
+        }
+        for property in element.properties {
+            result[property.attributeName] = property
+        }
+        return Array(result.values)
+    }
+
+}
+
+private extension Sequence where Iterator.Element == Style {
+    func resolveViewStyle(for type: String, named name: StyleName) throws -> [Property] {
+        guard let style = first(where: { $0.name == name }) else {
+            // FIXME wrong type of error
+            throw TokenizationError(message: "Style \(name) for type \(type) doesn't exist!")
+        }
+
+        let baseProperties = try style.extend.flatMap { base in
+            try resolveViewStyle(for: type, named: base)
+        }
+        // FIXME This will be slow
+        var result = Dictionary<String, Property>(minimumCapacity: style.properties.count)
+        for property in baseProperties + style.properties {
+            result[property.attributeName] = property
+        }
+        return Array(result.values)
+    }
 }

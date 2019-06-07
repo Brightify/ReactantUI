@@ -105,7 +105,8 @@ public enum PropertyValue<T: SupportedPropertyType> {
         case .value(let value):
             return value.runtimeValue(context: context.child(for: value))
         case .state(let name):
-            fatalError("not implemented")
+            return nil
+//            fatalError("not implemented")
         }
     }
     #endif

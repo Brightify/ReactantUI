@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1000"
+   LastUpgradeVersion = "1020"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FAEC4C0DC787A78D4DE3E3777378EF8D"
-               BuildableName = "ReactantLiveUI.framework"
-               BlueprintName = "ReactantLiveUI"
-               ReferencedContainer = "container:Pods/Pods.xcodeproj">
+               BlueprintIdentifier = "182B68661EAF7589007CC668"
+               BuildableName = "Example.app"
+               BlueprintName = "Example"
+               ReferencedContainer = "container:ReactantUI.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -29,6 +29,17 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "182B68661EAF7589007CC668"
+            BuildableName = "Example.app"
+            BlueprintName = "Example"
+            ReferencedContainer = "container:ReactantUI.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
+      <AdditionalOptions>
+      </AdditionalOptions>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -40,15 +51,18 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "FAEC4C0DC787A78D4DE3E3777378EF8D"
-            BuildableName = "ReactantLiveUI.framework"
-            BlueprintName = "ReactantLiveUI"
-            ReferencedContainer = "container:Pods/Pods.xcodeproj">
+            BlueprintIdentifier = "182B68661EAF7589007CC668"
+            BuildableName = "Example.app"
+            BlueprintName = "Example"
+            ReferencedContainer = "container:ReactantUI.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
+      <AdditionalOptions>
+      </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -56,15 +70,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "FAEC4C0DC787A78D4DE3E3777378EF8D"
-            BuildableName = "ReactantLiveUI.framework"
-            BlueprintName = "ReactantLiveUI"
-            ReferencedContainer = "container:Pods/Pods.xcodeproj">
+            BlueprintIdentifier = "182B68661EAF7589007CC668"
+            BuildableName = "Example.app"
+            BlueprintName = "Example"
+            ReferencedContainer = "container:ReactantUI.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

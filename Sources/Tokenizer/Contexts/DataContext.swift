@@ -33,6 +33,8 @@ public protocol DataContext {
     func themed(font name: String) -> Font?
 
     func definition(for componentType: String) throws -> ComponentDefinition
+
+    func resolveStyle(for element: UIElement, from styles: [Style]) throws -> [Property]
 }
 
 public protocol HasParentContext {
@@ -86,6 +88,10 @@ extension DataContext where Self: HasParentContext, Self.ParentContext: DataCont
     public func definition(for componentType: String) throws -> ComponentDefinition {
         return try parentContext.definition(for: componentType)
     }
+
+    public func resolveStyle(for element: UIElement, from styles: [Style]) throws -> [Property] {
+        return try parentContext.resolveStyle(for: element, from: styles)
+    }
 }
 
 // WARNING:
@@ -122,5 +128,9 @@ extension DataContext where Self: HasParentContext, Self.ParentContext == DataCo
 
     public func definition(for componentType: String) throws -> ComponentDefinition {
         return try parentContext.definition(for: componentType)
+    }
+
+    public func resolveStyle(for element: UIElement, from styles: [Style]) throws -> [Property] {
+        return try parentContext.resolveStyle(for: element, from: styles)
     }
 }

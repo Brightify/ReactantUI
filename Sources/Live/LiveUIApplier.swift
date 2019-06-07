@@ -286,8 +286,7 @@ public class ReactantLiveUIApplier {
         }
 
         func resolveStyle(element: UIElement) throws -> [Property] {
-            fatalError()
-//            return try (commonStyles + context.component.styles).resolveStyle(for: element)
+            return try context.resolveStyle(for: element, from: commonStyles + context.component.styles)
         }
 
         let viewApplier = ReactantLiveUIViewApplier(
@@ -305,6 +304,9 @@ public class ReactantLiveUIApplier {
         appliedConstraints = []
 
         for property in definition.properties {
+            if case .state = property.anyValue {
+                continue
+            }
             let propertyContext = PropertyContext(parentContext: context, property: property)
             try property.apply(on: instance, context: propertyContext)
         }

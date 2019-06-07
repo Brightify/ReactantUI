@@ -60,24 +60,45 @@ public class UIGenerator: Generator {
             return .assignment(target: .constant(child.id.description), expression: try providesInitialization.initialization(for: .iOS))
         }
 
+        let viewInheritances = configuration.isLiveEnabled ? ["LiveHyperViewBase", "HyperView"] : ["HyperViewBase", "HyperView"]
+        let viewSuperCall: Block
+        if configuration.isLiveEnabled {
+            viewSuperCall = [
+                .expression(
+                    .invoke(target: .member(target: .constant("super"), name: "init"), arguments: [
+                        MethodArgument(name: "worker", value: .constant("bundleWorker")),
+                        MethodArgument(name: "typeName", value: .constant("\"\(root.type)\"")),
+                        MethodArgument(name: "xmlPath", value: .constant("\"\(configuration.localXmlPath)\""))
+                    ]))
+            ]
+        } else {
+            viewSuperCall = [
+                .expression(.constant("super.init()"))
+            ]
+        }
+
         let viewInit = Function.initializer(
             accessibility: viewAccessibility,
             parameters: [
                 .init(name: "initialState", type: "State", defaultValue: "State()"),
                 .init(name: "actionPublisher", type: "ActionPublisher<Action>"),
             ],
-            block: Block(statements: viewInitializations + [
-                "",
-                "state = initialState",
-                "self.actionPublisher = actionPublisher",
-                "",
-                "super.init()",
-                "",
-                "loadView()",
-                "setupConstraints()",
-                "initialState.owner = self",
-                "observeActions(actionPublisher: actionPublisher)",
-            ].map { Statement.expression(.constant($0)) }))
+            block:
+                Block(statements: viewInitializations) +
+                Block(statements: [
+                    .emptyLine,
+                    .expression(.constant("state = initialState")),
+                    .expression(.constant("self.actionPublisher = actionPublisher")),
+                    .emptyLine,
+                ]) +
+                viewSuperCall +
+                Block(statements: [
+                    .emptyLine,
+                    .expression(.constant("loadView()")),
+                    .expression(.constant("setupConstraints()")),
+                    .expression(.constant("initialState.owner = self")),
+                    .expression(.constant("observeActions(actionPublisher: actionPublisher)")),
+                ]))
 
         let stateProperties: [SwiftCodeGen.Property] = [
             .variable(accessibility: .fileprivate, modifiers: .weak, name: "owner", type: "\(root.type)?", block: [
@@ -161,7 +182,7 @@ public class UIGenerator: Generator {
             accessibility: viewAccessibility,
             isFinal: true,
             name: root.type,
-            inheritances: ["HyperViewBase", "HyperView"],
+            inheritances: viewInheritances,
             containers: [stateClass, actionEnum, constraintsClass],
             properties: viewProperties + viewDeclarations,
             functions: [viewInit, observeActions(resolvedActions: resolvedActions), loadView(), setupConstraints()])
@@ -398,7 +419,7 @@ public class UIGenerator: Generator {
         return Function(
             accessibility: .private,
             name: "loadView",
-            block: block)
+            block: configuration.isLiveEnabled ? [] : block)
     }
 
     private func propertyApplications(element: UIElement, superName: String, containedIn: UIContainer, themedProperties: inout [String: [Tokenizer.Property]]) throws -> Block {
@@ -460,7 +481,7 @@ public class UIGenerator: Generator {
         return Function(
             accessibility: .private,
             name: "setupConstraints",
-            block: block)
+            block: configuration.isLiveEnabled ? [] : block)
     }
 
     private func viewConstraints(element: UIElement, superName: String, forUpdate: Bool) -> Block{

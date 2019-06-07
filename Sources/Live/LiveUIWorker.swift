@@ -100,8 +100,8 @@ public class ReactantLiveUIWorker {
      * - parameter view: `ReactantUI` view to be registered
      * - parameter setConstraint: Closure to be called when constraining the view
      */
-    public func register<UI: UIView>(_ view: UI, setConstraint: @escaping (String, SnapKit.Constraint) -> Bool = { _, _ in false }) where UI: ReactantUI {
-        let xmlPath = view.__rui.xmlPath
+    public func register<UI: LiveHyperViewBase>(_ view: UI, setConstraint: @escaping (String, SnapKit.Constraint) -> Bool = { _, _ in false }) {
+        let xmlPath = view.xmlPath
         if !watchers.keys.contains(xmlPath) {
             let watcher: Watcher
             do {
@@ -130,7 +130,7 @@ public class ReactantLiveUIWorker {
         }
 
         let reapplyTrigger = forceReapplyTrigger.filter { $0 === view }
-        observeDefinition(for: view.__rui.typeName)
+        observeDefinition(for: view.typeName)
             .flatMapLatest { value in
                 Observable.concat(.just(value), reapplyTrigger.map { _ in value })
             }
@@ -147,7 +147,7 @@ public class ReactantLiveUIWorker {
             .disposed(by: disposeBag)
     }
 
-    public func reapply<UI: UIView>(_ view: UI) where UI: ReactantUI {
+    public func reapply<UI: LiveHyperViewBase>(_ view: UI) {
         forceReapplyTrigger.onNext(view)
     }
 
@@ -155,8 +155,8 @@ public class ReactantLiveUIWorker {
      * Method used to unregister a view from Watchlist.
      * - parameter ui: `ReactantUI` view to be unregistered
      */
-    public func unregister<UI: UIView>(_ ui: UI) where UI: ReactantUI {
-        let xmlPath = ui.__rui.xmlPath
+    public func unregister<UI: LiveHyperViewBase>(_ ui: UI) {
+        let xmlPath = ui.xmlPath
         guard let watcher = watchers[xmlPath] else {
             logError("ERROR: attempting to remove not registered UI", in: xmlPath)
             return
@@ -210,8 +210,12 @@ public class ReactantLiveUIWorker {
                         let xml = SWXMLHash.parse(data)
                         do {
                             var oldStyles = self.styles
-                            let group: StyleGroup // = try xml["styleGroup"].value()
-                            fatalError("Not implemented")
+                            let mainContext = MainDeserializationContext(
+                                elementFactories: Module.uiKit.elements(for: .iOS),
+                                referenceFactory: Module.uiKit.referenceFactory)
+                            let context = StyleGroupDeserializationContext(parentContext: mainContext, element: xml.children.first!.element!)
+                            let group = try StyleGroup(context: context)
+//                            let group: StyleGroup = try xml["styleGroup"].value()
                             oldStyles[group.name] = group
                             self.styles = oldStyles
                         } catch let error {
@@ -288,7 +292,7 @@ public class ReactantLiveUIWorker {
         }
         let xml = SWXMLHash.parse(data)
 
-        guard let node = xml["Component"].element else { throw LiveUIError(message: "ERROR: Node is not Component") }
+        guard let node = xml.children.first?.element else { throw LiveUIError(message: "ERROR: Node is not Component") }
         var rootDefinition: ComponentDefinition
 
 //        if let type: String = xml["Component"].value(ofAttribute: "type") {
@@ -297,7 +301,8 @@ public class ReactantLiveUIWorker {
 //            rootDefinition = try ComponentDefinition(node: node, type: componentType(from: file))
 //        }
 
-        fatalError()
+        let mainContext = MainDeserializationContext(elementFactories: Module.uiKit.elements(for: .iOS), referenceFactory: Module.uiKit.referenceFactory)
+        rootDefinition = try mainContext.deserialize(element: node, type: node.name)
 
         if rootDefinition.isRootView {
             extendedEdges[file] = rootDefinition.edgesForExtendedLayout.resolveUnion()
@@ -428,7 +433,7 @@ extension ReactantLiveUIWorker {
                 return precompiledType.init
             } else if let strongWorker = worker, let definition = strongWorker.definitions[name] {
                 return {
-                    AnonymousComponent(typeName: definition.definition.type, xmlPath: definition.xmlPath, worker: strongWorker)
+                    AnonymousComponent(worker: strongWorker, typeName: definition.definition.type, xmlPath: definition.xmlPath)
                 }
             } else {
                 throw LiveUIError(message: "ERROR: Unable to find instantiation mapping for component \(name) in bundle \(configuration.resourceBundle.name)")
@@ -461,6 +466,10 @@ extension ReactantLiveUIWorker {
 
         public func definition(for componentType: String) throws -> ComponentDefinition {
             return try globalContext.definition(for: componentType)
+        }
+
+        public func resolveStyle(for element: UIElement, from styles: [Style]) throws -> [Property] {
+            return try globalContext.resolveStyle(for: element, from: styles)
         }
     }
 }

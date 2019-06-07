@@ -13,21 +13,10 @@ internal typealias AnonymousComponent = AnonymousLiveComponent
 
 public protocol Anonymous {}
 
-public class AnonymousLiveComponent: HyperViewBase, Anonymous {
-    fileprivate let _typeName: String
-    fileprivate let _xmlPath: String
-    fileprivate let _worker: ReactantLiveUIWorker
+public class AnonymousLiveComponent: LiveHyperViewBase, Anonymous {
     fileprivate var _properties: [String: Any] = [:]
     fileprivate var _selectionStyle: UITableViewCell.SelectionStyle = .default
     fileprivate var _focusStyle: UITableViewCell.FocusStyle = .default
-
-    public init(typeName: String, xmlPath: String, worker: ReactantLiveUIWorker) {
-        _xmlPath = xmlPath
-        _typeName = typeName
-        _worker = worker
-
-        super.init()
-    }
 
     public override func conforms(to aProtocol: Protocol) -> Bool {
         return super.conforms(to: aProtocol)
@@ -68,30 +57,30 @@ extension AnonymousComponent: ReactantUI {
 
         fileprivate init(target: AnonymousComponent) {
             self.target = target
-            self.xmlPath = target._xmlPath
-            self.typeName = target._typeName
+            self.xmlPath = target.xmlPath
+            self.typeName = target.typeName
         }
 
         func setupReactantUI() {
             guard let target = self.target else { /* FIXME Should we fatalError here? */ return }
-            target._worker.register(target, setConstraint: { _, _ in true })
+            target.worker.register(target, setConstraint: { _, _ in true })
         }
 
         func updateReactantUI() {
             guard let target = self.target else { /* FIXME Should we fatalError here? */ return }
-            target._worker.reapply(target)
+            target.worker.reapply(target)
         }
 
         static func destroyReactantUI(target: UIView) {
             guard let knownTarget = target as? AnonymousComponent else { /* FIXME Should we fatalError here? */ return }
-            knownTarget._worker.unregister(knownTarget)
+            knownTarget.worker.unregister(knownTarget)
         }
     }
 }
 
 extension AnonymousComponent: RootView {
     public var edgesForExtendedLayout: UIRectEdge {
-        return _worker.extendedEdges(of: self)
+        return worker.extendedEdges(of: self)
     }
 }
 

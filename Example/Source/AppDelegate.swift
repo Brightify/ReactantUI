@@ -24,7 +24,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window.backgroundColor = .white
         window.rootViewController = MainWireframe().entrypoint()
         window.makeKeyAndVisible()
-//        activateLiveReload(in: window)
+
+        activateLiveReload(in: window)
+
         return true
     }
 }
