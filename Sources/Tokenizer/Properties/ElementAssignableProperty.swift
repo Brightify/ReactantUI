@@ -70,7 +70,7 @@ public struct ElementAssignableProperty<T: ElementSupportedPropertyType>: TypedP
         guard target.responds(to: selector) else {
             throw LiveUIError(message: "!! Object `\(target)` doesn't respond to selector `\(key)` to set value `\(value)`")
         }
-        guard let resolvedValue = value.runtimeValue(context: context.child(for: value)) else {
+        guard let resolvedValue = try value.runtimeValue(context: context.child(for: value)) else {
             throw LiveUIError(message: "!! Value `\(value)` couldn't be resolved in runtime for key `\(key)`")
         }
 

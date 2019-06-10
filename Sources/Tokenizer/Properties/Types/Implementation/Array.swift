@@ -23,8 +23,8 @@ extension Array: SupportedPropertyType where Iterator.Element: SupportedProperty
     #endif
 
     #if canImport(UIKit)
-    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
-        return map { $0.runtimeValue(context: context.child(for: $0)) }
+    public func runtimeValue(context: SupportedPropertyTypeContext) throws -> Any? {
+        return try map { try $0.runtimeValue(context: context.child(for: $0)) }
     }
     #endif
 

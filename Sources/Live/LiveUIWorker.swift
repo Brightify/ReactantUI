@@ -139,6 +139,7 @@ public class ReactantLiveUIWorker {
             .subscribe(onNext: { [weak view] definition in
                 guard let view = view else { return }
                 do {
+                    context.
                     try self.apply(definition: definition, view: view, setConstraint: setConstraint)
                 } catch let error {
                     self.logError(error, in: xmlPath)
@@ -175,9 +176,10 @@ public class ReactantLiveUIWorker {
             currentDefinitions[definition.type] = (definition, Date(), file)
         }
         self.definitions = currentDefinitions
+        
     }
 
-    private func apply(definition: ComponentDefinition, view: UIView, setConstraint: @escaping (String, SnapKit.Constraint) -> Bool) throws {
+    private func apply(definition: ComponentDefinition, view: LiveHyperViewBase, setConstraint: @escaping (String, SnapKit.Constraint) -> Bool) throws {
         let componentContext = ComponentContext(globalContext: context.globalContext, component: definition)
         let uiApplier = appliers[view, default: ReactantLiveUIApplier(workerContext: context)]
         try uiApplier.apply(context: componentContext, commonStyles: commonStyles, view: view, setConstraint: setConstraint)
@@ -468,8 +470,12 @@ extension ReactantLiveUIWorker {
             return try globalContext.definition(for: componentType)
         }
 
-        public func resolveStyle(for element: UIElement, from styles: [Style]) throws -> [Property] {
-            return try globalContext.resolveStyle(for: element, from: styles)
+        public func resolveStyle(for element: UIElement, stateProperties: [Property], from styles: [Style]) throws -> [Property] {
+            return try globalContext.resolveStyle(for: element, stateProperties: stateProperties, from: styles)
+        }
+
+        public func resolveStateProperty(named: String) throws -> Any? {
+            return try globalContext.resolveStateProperty(named: named)
         }
     }
 }

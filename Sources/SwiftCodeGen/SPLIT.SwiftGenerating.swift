@@ -203,7 +203,7 @@ public enum Expression: Describable {
                 break
             }
 
-            pipe.block {
+            pipe.block(encapsulateIn: .brackets) {
                 for (key, value) in items {
                     pipe.append(key).string(": ").append(value).lineEnd(",")
                 }

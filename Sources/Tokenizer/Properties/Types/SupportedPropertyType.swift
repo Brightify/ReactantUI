@@ -50,13 +50,15 @@ public protocol SupportedPropertyType {
     #endif
 
     #if canImport(UIKit)
-    func runtimeValue(context: SupportedPropertyTypeContext) -> Any?
+    func runtimeValue(context: SupportedPropertyTypeContext) throws -> Any?
     #endif
 
     static func runtimeType(for platform: RuntimePlatform) -> RuntimeType
 
     // FIXME Has to be put into `AttributeSupportedPropertyType`
     static var xsdType: XSDType { get }
+
+    static var isNullable: Bool { get }
 }
 
 public extension SupportedPropertyType {
@@ -64,6 +66,10 @@ public extension SupportedPropertyType {
         #warning("This should be removed to ensure all children implement this method. I put here to not require implementation in all children before testing it out.")
         assertionFailure("TODO Implement this in your class: \(self).")
         return .unsupported
+    }
+
+    static var isNullable: Bool {
+        return false
     }
 }
 
@@ -81,6 +87,10 @@ extension Optional: SupportedPropertyType & HasDefaultValue where Wrapped: Suppo
     public static var xsdType: XSDType {
         return Wrapped.xsdType
     }
+
+    public static var isNullable: Bool {
+        return true
+    }
     
     public static var defaultValue: Optional<Wrapped> {
         return nil
@@ -96,9 +106,9 @@ extension Optional: SupportedPropertyType & HasDefaultValue where Wrapped: Suppo
     }
 
     #if canImport(UIKit)
-    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
+    public func runtimeValue(context: SupportedPropertyTypeContext) throws -> Any? {
         if let wrapped = self {
-            return wrapped.runtimeValue(context: context.child(for: wrapped))
+            return try wrapped.runtimeValue(context: context.child(for: wrapped))
         } else {
             return nil
         }

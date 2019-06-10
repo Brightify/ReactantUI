@@ -150,8 +150,8 @@ public class GlobalContext: DataContext {
         return definition
     }
 
-    public func resolveStyle(for element: UIElement, from styles: [Style]) throws -> [Property] {
-        guard !element.styles.isEmpty else { return element.properties }
+    public func resolveStyle(for element: UIElement, stateProperties: [Property], from styles: [Style]) throws -> [Property] {
+        guard !element.styles.isEmpty else { return element.properties + stateProperties }
         let viewStyles = try styles.compactMap { style -> Style? in
             if case .view(let styledType) = style.type, try styledType.runtimeType() == element.factory.runtimeType() {
                 return style
@@ -161,17 +161,23 @@ public class GlobalContext: DataContext {
         }
         
         // FIXME This will be slow
-        var result = Dictionary<String, Property>(minimumCapacity: element.properties.count)
+        var result = Dictionary<String, Property>(minimumCapacity: element.properties.count + stateProperties.count)
         for name in element.styles {
             for property in try viewStyles.resolveViewStyle(for: element.factory.elementName, named: name) {
                 result[property.attributeName] = property
             }
         }
-        for property in element.properties {
+        for property in element.properties + stateProperties {
             result[property.attributeName] = property
         }
         return Array(result.values)
     }
+
+    #if canImport(UIKit)
+    public func resolveStateProperty(named: String) throws -> Any? {
+        throw LiveUIError(message: "Couldn't resolve state named \(named). This should be caught sooner than in GlobalContext.")
+    }
+    #endif
 
 }
 

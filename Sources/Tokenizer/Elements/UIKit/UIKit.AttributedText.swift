@@ -291,15 +291,15 @@ extension AttributedText {
     #endif
 
     #if canImport(UIKit)
-    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
-        func resolveAttributes(part: AttributedText.Part, inheritedAttributes: [Property]) -> [NSAttributedString] {
+    public func runtimeValue(context: SupportedPropertyTypeContext) throws -> Any? {
+        func resolveAttributes(part: AttributedText.Part, inheritedAttributes: [Property]) throws -> [NSAttributedString] {
             switch part {
             case .transform(let transformedText):
                 guard let transformedText = transformedText.runtimeValue(context: context.child(for: transformedText)) as? String
                     else { return [] }
 
-                let attributes = Dictionary(keyValueTuples: inheritedAttributes.compactMap { attribute -> (NSAttributedString.Key, Any)? in
-                    guard let attributeValue = attribute.anyValue.runtimeValue(context: context.child(for: attribute.anyValue)),
+                let attributes = try Dictionary(keyValueTuples: inheritedAttributes.compactMap { attribute -> (NSAttributedString.Key, Any)? in
+                    guard let attributeValue = try attribute.anyValue.runtimeValue(context: context.child(for: attribute.anyValue)),
                         let key = AttributedText.attributeKeys[attribute.name] else { return nil }
                     return (key, attributeValue)
                 })
@@ -319,15 +319,15 @@ extension AttributedText {
                     .arrayByAppending(inheritedAttributes)
                     .distinct(where: { $0.name == $1.name })
 
-                return attributedTexts.flatMap {
-                    resolveAttributes(part: $0, inheritedAttributes: lowerAttributes)
+                return try attributedTexts.flatMap {
+                    try resolveAttributes(part: $0, inheritedAttributes: lowerAttributes)
                 }
             }
         }
 
         let result = NSMutableAttributedString()
-        parts
-            .flatMap { resolveAttributes(part: $0, inheritedAttributes: localProperties) }
+        try parts
+            .flatMap { try resolveAttributes(part: $0, inheritedAttributes: localProperties) }
             .forEach { result.append($0) }
         return result
     }

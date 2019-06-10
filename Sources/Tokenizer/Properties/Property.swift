@@ -100,13 +100,12 @@ public enum PropertyValue<T: SupportedPropertyType> {
     }
 
     #if canImport(UIKit)
-    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
+    public func runtimeValue(context: SupportedPropertyTypeContext) throws -> Any? {
         switch self {
         case .value(let value):
-            return value.runtimeValue(context: context.child(for: value))
+            return try value.runtimeValue(context: context.child(for: value))
         case .state(let name):
-            return nil
-//            fatalError("not implemented")
+            return try context.resolveStateProperty(named: name)
         }
     }
     #endif
@@ -138,12 +137,12 @@ public enum AnyPropertyValue {
     #endif
 
     #if canImport(UIKit)
-    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
+    public func runtimeValue(context: SupportedPropertyTypeContext) throws -> Any? {
         switch self {
         case .value(let value):
-            return value.runtimeValue(context: context.child(for: value))
-        case .state:
-            fatalError("not implemented")
+            return try value.runtimeValue(context: context.child(for: value))
+        case .state(let name, _):
+            return try context.resolveStateProperty(named: name)
         }
     }
     #endif

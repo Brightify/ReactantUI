@@ -34,7 +34,11 @@ public protocol DataContext {
 
     func definition(for componentType: String) throws -> ComponentDefinition
 
-    func resolveStyle(for element: UIElement, from styles: [Style]) throws -> [Property]
+    func resolveStyle(for element: UIElement, stateProperties: [Property], from styles: [Style]) throws -> [Property]
+
+    #if canImport(UIKit)
+    func resolveStateProperty(named: String) throws -> Any?
+    #endif
 }
 
 public protocol HasParentContext {
@@ -89,9 +93,15 @@ extension DataContext where Self: HasParentContext, Self.ParentContext: DataCont
         return try parentContext.definition(for: componentType)
     }
 
-    public func resolveStyle(for element: UIElement, from styles: [Style]) throws -> [Property] {
-        return try parentContext.resolveStyle(for: element, from: styles)
+    public func resolveStyle(for element: UIElement, stateProperties: [Property], from styles: [Style]) throws -> [Property] {
+        return try parentContext.resolveStyle(for: element, stateProperties: stateProperties, from: styles)
     }
+
+    #if canImport(UIKit)
+    public func resolveStateProperty(named: String) throws -> Any? {
+        return try parentContext.resolveStateProperty(named: named)
+    }
+    #endif
 }
 
 // WARNING:
@@ -130,7 +140,13 @@ extension DataContext where Self: HasParentContext, Self.ParentContext == DataCo
         return try parentContext.definition(for: componentType)
     }
 
-    public func resolveStyle(for element: UIElement, from styles: [Style]) throws -> [Property] {
-        return try parentContext.resolveStyle(for: element, from: styles)
+    public func resolveStyle(for element: UIElement, stateProperties: [Property], from styles: [Style]) throws -> [Property] {
+        return try parentContext.resolveStyle(for: element, stateProperties: stateProperties, from: styles)
     }
+
+    #if canImport(UIKit)
+    public func resolveStateProperty(named: String) throws -> Any? {
+        return try parentContext.resolveStateProperty(named: named)
+    }
+    #endif
 }

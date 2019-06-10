@@ -34,8 +34,6 @@ public class UIGenerator: Generator {
             [configuration.localXmlPath].map { Expression.constant(#""\#($0)""#) }
         )
 
-
-
         let viewProperties: [SwiftCodeGen.Property] = [
             .constant(accessibility: viewAccessibility, modifiers: .static, name: "triggerReloadPaths", type: "Set<String>", value: triggerReloadPaths),
             .constant(accessibility: viewAccessibility, name: "layout", value: .constant("Constraints()")),
@@ -178,13 +176,28 @@ public class UIGenerator: Generator {
             name: "Constraints",
             properties: constraintFields)
 
+        var liveAccessors: [SwiftCodeGen.Property] = []
+        if configuration.isLiveEnabled && !stateItems.isEmpty {
+            liveAccessors.append(.variable(
+                accessibility: viewAccessibility,
+                modifiers: .override,
+                name: "stateProperties",
+                type: "[String: LiveKeyPath]",
+                block: [
+                    .return(expression: .dictionaryLiteral(items:
+                        stateItems.map { key, value in
+                            (Expression.constant("\"\(key)\""), Expression.constant("live(keyPath: \\.\(key))"))
+                        }))
+                ]))
+        }
+
         let viewClass = try Structure.class(
             accessibility: viewAccessibility,
             isFinal: true,
             name: root.type,
             inheritances: viewInheritances,
             containers: [stateClass, actionEnum, constraintsClass],
-            properties: viewProperties + viewDeclarations,
+            properties: viewProperties + viewDeclarations + liveAccessors,
             functions: [viewInit, observeActions(resolvedActions: resolvedActions), loadView(), setupConstraints()])
 
         if false && root.type == "ATest" {

@@ -55,10 +55,10 @@ public struct ParagraphStyle: MultipleAttributeSupportedPropertyType {
 import UIKit
 
 extension ParagraphStyle {
-    public func runtimeValue(context: SupportedPropertyTypeContext) -> Any? {
+    public func runtimeValue(context: SupportedPropertyTypeContext) throws -> Any? {
         let paragraphStyle = NSMutableParagraphStyle()
         for property in properties {
-            let value = property.anyValue.runtimeValue(context: context.child(for: property.anyValue))
+            let value = try property.anyValue.runtimeValue(context: context.child(for: property.anyValue))
             paragraphStyle.setValue(value, forKey: property.name)
         }
         return paragraphStyle

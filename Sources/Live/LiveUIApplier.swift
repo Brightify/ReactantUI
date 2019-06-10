@@ -264,7 +264,7 @@ public class ReactantLiveUIApplier {
         self.workerContext = workerContext
     }
 
-    public func apply(context: ComponentContext, commonStyles: [Style], view instance: UIView, setConstraint: @escaping (String, SnapKit.Constraint) -> Bool) throws {
+    public func apply(context: ComponentContext, commonStyles: [Style], view instance: LiveHyperViewBase, setConstraint: @escaping (String, SnapKit.Constraint) -> Bool) throws {
         let definition = context.component
         func findViewByFieldName(field: String, element: UIElement) throws -> UIView {
             let view: UIView
@@ -286,12 +286,28 @@ public class ReactantLiveUIApplier {
         }
 
         func resolveStyle(element: UIElement) throws -> [Property] {
-            return try context.resolveStyle(for: element, from: commonStyles + context.component.styles)
+            return try context.resolveStyle(for: element, stateProperties: context.stateProperties(of: element), from: commonStyles + context.component.styles)
         }
+
+        class ComponentInstanceContext: DataContext, HasParentContext {
+            let parentContext: ComponentContext
+            let instance: LiveHyperViewBase
+
+            init(parentContext: ComponentContext, instance: LiveHyperViewBase) {
+                self.parentContext = parentContext
+                self.instance = instance
+            }
+
+            func resolveStateProperty(named: String) throws -> Any? {
+                return instance.stateProperties[named]?.get()
+            }
+        }
+
+        let instanceContext = ComponentInstanceContext(parentContext: context, instance: instance)
 
         let viewApplier = ReactantLiveUIViewApplier(
             workerContext: workerContext,
-            parentContext: context,
+            parentContext: instanceContext,
             findViewByFieldName: findViewByFieldName,
             resolveStyle: resolveStyle,
             setConstraint: setConstraint
@@ -304,10 +320,7 @@ public class ReactantLiveUIApplier {
         appliedConstraints = []
 
         for property in definition.properties {
-            if case .state = property.anyValue {
-                continue
-            }
-            let propertyContext = PropertyContext(parentContext: context, property: property)
+            let propertyContext = PropertyContext(parentContext: instanceContext, property: property)
             try property.apply(on: instance, context: propertyContext)
         }
 

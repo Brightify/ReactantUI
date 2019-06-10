@@ -285,6 +285,12 @@ private struct _StateProperty: Property {
      * - parameter context: property context to use
      */
     public func apply(on object: AnyObject, context: PropertyContext) throws {
+        guard let target = object as? LiveHyperViewBase else {
+            throw LiveUIError(message: "_StateProperty application is available only on instances of `LiveHyperViewBase`. Used \(object)!")
+        }
+
+        try target.stateProperties[name]?.set(value: anyValue.runtimeValue(context: context.child(for: anyValue)))
+
 //        let name = anyDescription.name
 //        let selector = Selector("set\(name.capitalizingFirstLetter()):")
 //
