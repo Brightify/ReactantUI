@@ -289,7 +289,7 @@ private struct _StateProperty: Property {
             throw LiveUIError(message: "_StateProperty application is available only on instances of `LiveHyperViewBase`. Used \(object)!")
         }
 
-        try target.stateProperties[name]?.set(value: anyValue.runtimeValue(context: context.child(for: anyValue)))
+        try target.stateProperty(named: name)?.set(value: anyValue.runtimeValue(context: context.child(for: anyValue)))
 
 //        let name = anyDescription.name
 //        let selector = Selector("set\(name.capitalizingFirstLetter()):")

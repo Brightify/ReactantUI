@@ -31,11 +31,20 @@ public class LiveKeyPath {
             object[keyPath: keyPath] as Any?
         }
         setValue = { anyValue in
-            guard let value = anyValue as? T? else {
+            // This is required to check if the nil is a correct type T
+            if anyValue is T? && (anyValue as? T?) == nil {
+                object[keyPath: keyPath] = nil
+            } else if let value = anyValue as? T? {
+                object[keyPath: keyPath] = value
+            } else {
                 throw LiveUIError(message: "Value \(anyValue) is not \(Optional<T>.self) for object \(object)!")
             }
-            object[keyPath: keyPath] = value
         }
+    }
+
+    public init(getValue: @escaping () -> Any?, setValue: @escaping (Any?) throws -> Void) {
+        self.getValue = getValue
+        self.setValue = setValue
     }
 
     public func get() -> Any? {
@@ -53,10 +62,6 @@ open class LiveHyperViewBase: HyperViewBase {
     internal let typeName: String
     internal let worker: ReactantLiveUIWorker
 
-    open var stateProperties: [String: LiveKeyPath] {
-        return [:]
-    }
-
     public init(worker: ReactantLiveUIWorker, typeName: String, xmlPath: String) {
         self.typeName = typeName
         self.xmlPath = xmlPath
@@ -67,6 +72,10 @@ open class LiveHyperViewBase: HyperViewBase {
         worker.register(self, setConstraint: { name, constraint in
             return false
         })
+    }
+
+    open func stateProperty(named name: String) -> LiveKeyPath? {
+        return nil
     }
 
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

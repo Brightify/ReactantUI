@@ -139,7 +139,6 @@ public class ReactantLiveUIWorker {
             .subscribe(onNext: { [weak view] definition in
                 guard let view = view else { return }
                 do {
-                    context.
                     try self.apply(definition: definition, view: view, setConstraint: setConstraint)
                 } catch let error {
                     self.logError(error, in: xmlPath)
@@ -174,9 +173,10 @@ public class ReactantLiveUIWorker {
         var currentDefinitions = self.definitions
         for definition in newDefinitions {
             currentDefinitions[definition.type] = (definition, Date(), file)
+            context.globalContext.register(definition: definition, path: file)
         }
         self.definitions = currentDefinitions
-        
+
     }
 
     private func apply(definition: ComponentDefinition, view: LiveHyperViewBase, setConstraint: @escaping (String, SnapKit.Constraint) -> Bool) throws {
@@ -431,8 +431,8 @@ extension ReactantLiveUIWorker {
         }
 
         public func componentInstantiation(named name: String) throws -> () -> UIView {
-            if let precompiledType = configuration.componentTypes[name] {
-                return precompiledType.init
+            if let (_, precompiledFactory) = configuration.componentTypes[name] {
+                return precompiledFactory
             } else if let strongWorker = worker, let definition = strongWorker.definitions[name] {
                 return {
                     AnonymousComponent(worker: strongWorker, typeName: definition.definition.type, xmlPath: definition.xmlPath)

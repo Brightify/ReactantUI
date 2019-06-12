@@ -77,10 +77,10 @@ final class ExampleSelectionController: HyperViewController<ExampleSelectionRoot
         switch action {
         case .cellAct(let x):
             print(x)
-            view = nil
-            view.setNeedsDisplay()
-            view.setNeedsLayout()
-            view.layoutIfNeeded()
+//            view = nil
+//            view.setNeedsDisplay()
+//            view.setNeedsLayout()
+//            view.layoutIfNeeded()
             
 
         case .pstrh(let action):

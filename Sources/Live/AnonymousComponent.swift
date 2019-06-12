@@ -18,6 +18,16 @@ public class AnonymousLiveComponent: LiveHyperViewBase, Anonymous {
     fileprivate var _selectionStyle: UITableViewCell.SelectionStyle = .default
     fileprivate var _focusStyle: UITableViewCell.FocusStyle = .default
 
+    public override func stateProperty(named name: String) -> LiveKeyPath? {
+        return LiveKeyPath(
+            getValue: {
+                self._properties["$\(name)"]
+            },
+            setValue: { newValue in
+                self._properties["$\(name)"] = newValue
+            })
+    }
+
     public override func conforms(to aProtocol: Protocol) -> Bool {
         return super.conforms(to: aProtocol)
     }
@@ -31,7 +41,11 @@ public class AnonymousLiveComponent: LiveHyperViewBase, Anonymous {
     }
 
     public override var description: String {
-        return "AnonymousComponent: \(_typeName)"
+        return "AnonymousComponent: \(typeName)"
+    }
+
+    public override var debugDescription: String {
+        return description
     }
 }
 

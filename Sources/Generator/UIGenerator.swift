@@ -79,7 +79,7 @@ public class UIGenerator: Generator {
             accessibility: viewAccessibility,
             parameters: [
                 .init(name: "initialState", type: "State", defaultValue: "State()"),
-                .init(name: "actionPublisher", type: "ActionPublisher<Action>"),
+                .init(name: "actionPublisher", type: "ActionPublisher<Action>", defaultValue: "ActionPublisher()"),
             ],
             block:
                 Block(statements: viewInitializations) +
@@ -176,18 +176,22 @@ public class UIGenerator: Generator {
             name: "Constraints",
             properties: constraintFields)
 
-        var liveAccessors: [SwiftCodeGen.Property] = []
+        var liveAccessors: [Function] = []
         if configuration.isLiveEnabled && !stateItems.isEmpty {
-            liveAccessors.append(.variable(
+            liveAccessors.append(.init(
                 accessibility: viewAccessibility,
                 modifiers: .override,
-                name: "stateProperties",
-                type: "[String: LiveKeyPath]",
-                block: [
-                    .return(expression: .dictionaryLiteral(items:
-                        stateItems.map { key, value in
-                            (Expression.constant("\"\(key)\""), Expression.constant("live(keyPath: \\.\(key))"))
-                        }))
+                name: "stateProperty",
+                parameters: [
+                    MethodParameter(label: "named", name: "name", type: "String"),
+                ],
+                returnType: "LiveKeyPath?",
+                block: [.switch(
+                    expression: .constant("name"),
+                    cases: stateItems.map { key, value -> (Expression, Block) in
+                        (.constant("\"\(key)\""), [.return(expression: .constant("live(keyPath: \\.\(key))"))])
+                    },
+                    default: [.return(expression: .constant("nil"))])
                 ]))
         }
 
@@ -197,8 +201,8 @@ public class UIGenerator: Generator {
             name: root.type,
             inheritances: viewInheritances,
             containers: [stateClass, actionEnum, constraintsClass],
-            properties: viewProperties + viewDeclarations + liveAccessors,
-            functions: [viewInit, observeActions(resolvedActions: resolvedActions), loadView(), setupConstraints()])
+            properties: viewProperties + viewDeclarations,
+            functions: [viewInit, observeActions(resolvedActions: resolvedActions), loadView(), setupConstraints()] + liveAccessors)
 
         if false && root.type == "ATest" {
             viewClass.describe(into: DebugDescriptionPipe())

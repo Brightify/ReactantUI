@@ -11,6 +11,7 @@
 		1814E6B6212232F000957367 /* ReactantLiveUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 18448FAC2092041B0080B743 /* ReactantLiveUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1814E6B9212232F000957367 /* ReactantUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 689FA0CC209CD7B000B39225 /* ReactantUI.framework */; };
 		1814E6BA212232F000957367 /* ReactantUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 689FA0CC209CD7B000B39225 /* ReactantUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1817F76F22B01D40008886B6 /* OtherView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 1817F76E22B01D40008886B6 /* OtherView.ui.xml */; };
 		1819270F22A82436005AE8B2 /* UIControlEventObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C920C322A2B618004C2B0B /* UIControlEventObserver.swift */; };
 		1819271022A82436005AE8B2 /* UIControlEventObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C920C322A2B618004C2B0B /* UIControlEventObserver.swift */; };
 		182B688D1EAF7641007CC668 /* ATest.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 182B687D1EAF7641007CC668 /* ATest.ui.xml */; };
@@ -617,6 +618,7 @@
 		098D5E646099DC6FADFAC15E /* Pods-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Example/Pods-Example.release.xcconfig"; sourceTree = "<group>"; };
 		105120706C0623FA651A558C /* Pods_LiveUI_LiveUI_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LiveUI_LiveUI_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		13DD3CFC743F85A2895F7428 /* Pods_LiveUI_LiveUI_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LiveUI_LiveUI_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		1817F76E22B01D40008886B6 /* OtherView.ui.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = OtherView.ui.xml; sourceTree = "<group>"; };
 		182B68671EAF7589007CC668 /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		182B687B1EAF7641007CC668 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		182B687D1EAF7641007CC668 /* ATest.ui.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ATest.ui.xml; sourceTree = "<group>"; };
@@ -1570,6 +1572,7 @@
 			children = (
 				22141C8D2052B08700205F56 /* ExampleSelectionController.swift */,
 				22141C912052B0A400205F56 /* ExampleSelectionRootView.ui.xml */,
+				1817F76E22B01D40008886B6 /* OtherView.ui.xml */,
 			);
 			path = ExampleSelection;
 			sourceTree = "<group>";
@@ -2133,6 +2136,7 @@
 				22141C9F2052B49E00205F56 /* PlainTableViewRootView.ui.xml in Resources */,
 				22BF2767212ADB090024B1A4 /* FooterTableViewRootView.ui.xml in Resources */,
 				22141C972052B0FD00205F56 /* SelectionCell.ui.xml in Resources */,
+				1817F76F22B01D40008886B6 /* OtherView.ui.xml in Resources */,
 				224F04EF2085136400C48268 /* ProgressViewRootView.ui.xml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2198,7 +2202,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#env -i HOME=$HOME PATH=$PATH swift build\n#popd\n# --enable-live\n\nGENERATE_UI=0\n\npushd \"$PROJECT_DIR\"\necho \"$PATH\"\nif [ \"$GENERATE_UI\" -ne 0 ]; then\n    env -i HOME=\"$HOME\" PATH=\"$PATH\" swift run reactant-ui generate \\\n      --live-configurations=Debug \\\n      --inputPath=\"$PROJECT_DIR/Example/\" \\\n      --outputFile=\"$PROJECT_DIR/Example/Generated/GeneratedUI.swift\" \\\n      --description=\"$PROJECT_DIR/Example/Source/Example.hyperdrive.xml\" \\\n      --xcodeprojPath=\"$PROJECT_DIR/ReactantUI.xcodeproj\"\nfi\n\n#pushd $PROJECT_DIR/Example\n#$PROJECT_DIR/.build/debug/reactant-ui --enable-live > $PROJECT_DIR/Example/Generated/GeneratedUI.swift\n#popd\n";
+			shellScript = "#env -i HOME=$HOME PATH=$PATH swift build\n#popd\n# --enable-live\n\nGENERATE_UI=1\n\npushd \"$PROJECT_DIR\"\necho \"$PATH\"\nif [ \"$GENERATE_UI\" -ne 0 ]; then\n    env -i HOME=\"$HOME\" PATH=\"$PATH\" swift run reactant-ui generate \\\n      --live-configurations=Debug \\\n      --inputPath=\"$PROJECT_DIR/Example/\" \\\n      --outputFile=\"$PROJECT_DIR/Example/Generated/GeneratedUI.swift\" \\\n      --description=\"$PROJECT_DIR/Example/Source/Example.hyperdrive.xml\" \\\n      --xcodeprojPath=\"$PROJECT_DIR/ReactantUI.xcodeproj\"\nfi\n\n#pushd $PROJECT_DIR/Example\n#$PROJECT_DIR/.build/debug/reactant-ui --enable-live > $PROJECT_DIR/Example/Generated/GeneratedUI.swift\n#popd\n";
 		};
 		2284DAE81FAC95B900D231D3 /* Generate Reactant UI */ = {
 			isa = PBXShellScriptBuildPhase;

@@ -26,22 +26,32 @@ public struct ComponentDefinitionDictionary {
     public typealias ComponentPath = String
 
     public private(set) var definitionsByType: [ComponentType: ComponentDefinition] = [:]
-    public private(set) var definitionsByPath: [ComponentPath: ComponentDefinition] = [:]
+    public private(set) var definitionsByPath: [ComponentPath: [ComponentDefinition]] = [:]
 
-    public subscript(path path: String) -> ComponentDefinition? {
+    public subscript(path path: String) -> [ComponentDefinition] {
         get {
-            return definitionsByPath[path]
+            return definitionsByPath[path, default: []]
         }
         set {
-            definitionsByPath[path] = newValue
-            if let type = newValue?.type {
-                definitionsByType[type] = newValue
+            for definition in definitionsByPath[path, default: []] {
+                self[type: definition.type] = nil
             }
+
+            for definition in newValue {
+                self[type: definition.type] = definition
+            }
+
+            definitionsByPath[path] = newValue
         }
     }
 
-    public subscript(type type: String) -> ComponentDefinition? {
-        return definitionsByType[type]
+    public private(set) subscript(type type: String) -> ComponentDefinition? {
+        get {
+            return definitionsByType[type]
+        }
+        set {
+            definitionsByType[type] = newValue
+        }
     }
 }
 
@@ -92,7 +102,7 @@ public class GlobalContext: DataContext {
     }
 
     public func register(definition: ComponentDefinition, path: String) {
-        componentDefinitions[path: path] = definition
+        componentDefinitions[path: path].append(definition)
     }
 
     public func resolvedStyleName(named styleName: StyleName) -> String {

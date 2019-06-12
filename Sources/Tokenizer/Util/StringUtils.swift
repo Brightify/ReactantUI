@@ -7,6 +7,10 @@
 //
 
 public extension String {
+    var enquoted: String {
+        return "\"\(self)\""
+    }
+
     func capitalizingFirstLetter() -> String {
         let first = String(self[self.startIndex]).capitalized
         let other = String(self.dropFirst())

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<OtherCell
+    xmlns="http://schema.Hyperdrive.tech/ui"
+    xmlns:layout="http://schema.Hyperdrive.tech/layout"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://schema.Hyperdrive.tech/ui http://schema.Hyperdrive.tech/ui.xsd
+                        http://schema.Hyperdrive.tech/layout http://schema.Hyperdrive.tech/layout.xsd">
+    <Label
+        id="whatchagot"
+        text="$name"
+        textColor="black"
+        layout:fillHorizontally="super inset(20)"
+        layout:top="super inset(12)" />
+
+    <View
+        id="separator"
+        backgroundColor="$colla"
+        layout:below="whatchagot offset(12)"
+        layout:fillHorizontally="super"
+        layout:height="1" />
+
+    <SelectionCell
+        id="second"
+        backgroundColor="$innerColor"
+        layout:fillHorizontally="super"
+        layout:below="separator"
+        layout:bottom="super"
+        action:ordel="someInnerAction(labelek: String(10), ..., @self.backgroundColor)"
+        state:name="$innerState" />
+
+</OtherCell>

@@ -206,7 +206,9 @@ class GenerateCommand: Command {
                 throw GenerateCommandError.tokenizationError(path: path, error: error)
             }
             componentTypes.append(contentsOf: definition.componentTypes)
-            globalContext.register(definition: definition, path: path)
+            for definition in definition.componentDefinitions {
+                globalContext.register(definition: definition, path: path)
+            }
             imports.formUnion(definition.requiredImports)
             imports.formUnion(definition.styles.map { $0.parentModuleImport })
         }
@@ -254,7 +256,7 @@ class GenerateCommand: Command {
                                                        isLiveEnabled: enableLive,
                                                        swiftVersion: swiftVersion,
                                                        defaultModifier: accessModifier)
-            for definition in rootDefinition.componentDefinitions {
+            for definition in rootDefinition {
                 let componentContext = ComponentContext(globalContext: globalContext, component: definition)
                 output.append(try UIGenerator(componentContext: componentContext, configuration: configuration).generate(imports: false))
             }
@@ -262,49 +264,53 @@ class GenerateCommand: Command {
 
         if enableLive {
             let generatedApplicationDescriptionPath = applicationDescriptionPath.map { "\"\($0)\"" } ?? "nil"
-            output.append("""
-                      struct GeneratedReactantLiveUIConfiguration: ReactantLiveUIConfiguration {
-                      let applicationDescriptionPath: String? = \(generatedApplicationDescriptionPath)
-                      let rootDir = \"\(inputPath)\"
-                      let resourceBundle: Bundle = __resourceBundle
-                      let commonStylePaths: [String] = [
-                  """)
-            for path in stylePaths {
-                output.append("        \"\(path)\",")
-            }
-            output.append("    ]")
 
-            if componentTypes.isEmpty {
-                output.append("    let componentTypes: [String: UIView.Type] = [:]")
-            } else {
-                output.append("    let componentTypes: [String: UIView.Type] = [")
-                // filter out empty component types - these components are initialized in code, so they should already be included if they use RUI
-                for type in Set(componentTypes) {
-                    output.append("        \"\(type)\": \(type).self,")
-                }
-                output.append("    ]")
-            }
-            output.append("""
-                  }
-                  """)
+            let configuration = Structure.struct(
+                accessibility: .private,
+                name: "GeneratedHyperdriveLiveUIConfiguration",
+                inheritances: ["ReactantLiveUIConfiguration"],
+                properties: [
+                    .constant(name: "applicationDescriptionPath", type: "String?", value: .constant(generatedApplicationDescriptionPath)),
+                    .constant(name: "rootDir", value: .constant(inputPath.enquoted)),
+                    .constant(name: "resourceBundle", value: .constant("__resourceBundle")),
+                    .constant(name: "commonStylePaths", type: "[String]", value: .arrayLiteral(items: stylePaths.map {
+                        .constant($0.enquoted)
+                    })),
+                    .constant(
+                        name: "componentTypes",
+                        type: "[String: (HyperViewBase.Type, () -> HyperViewBase)]",
+                        value: .dictionaryLiteral(items: Set(componentTypes).map {
+                            (key: .constant($0.enquoted), value: .constant("(\($0).self, { \($0)() })"))
+                        }))
+                ])
+
+            output.append(configuration)
+
+            output.append("let bundleWorker = ReactantLiveUIWorker(configuration: GeneratedHyperdriveLiveUIConfiguration())")
         }
 
+        let activateLiveReloadBlock: Block
         if enableLive {
-            output.append("let bundleWorker = ReactantLiveUIWorker(configuration: GeneratedReactantLiveUIConfiguration())")
+            activateLiveReloadBlock = [
+                .expression(.constant("ReactantLiveUIManager.shared.activate(in: window, worker: bundleWorker)")),
+                .expression(.invoke(target: .constant("ApplicationTheme.selector.register"), arguments: [
+                    MethodArgument(name: "target", value: .constant("bundleWorker")),
+                    MethodArgument(name: "listener", value: .closure(Closure(parameters: ["theme"], block: [
+                        .expression(.constant("bundleWorker.setSelectedTheme(name: theme.name)"))
+                    ]))),
+                ])),
+            ]
+        } else {
+            activateLiveReloadBlock = []
         }
-                          
-        output.append("public func activateLiveReload(in window: UIWindow) {")
-        if enableLive {
-            let liveUIActivation = [
-                "ReactantLiveUIManager.shared.activate(in: window, worker: bundleWorker)",
-                "ApplicationTheme.selector.register(target: bundleWorker, listener: { theme in",
-                "    bundleWorker.setSelectedTheme(name: theme.name)",
-                "})",
-            ] as [Describable]
 
-            output.append(liveUIActivation)
-        }
-        output.append("}")
+        let activateLiveReload = Function(
+            accessibility: .public,
+            name: "activateLiveReload",
+            parameters: [MethodParameter(label: "in", name: "window", type: "UIWindow")],
+            block: activateLiveReloadBlock)
+
+        output.append(activateLiveReload)
 
         let result = output.result.joined(separator: "\n")
 

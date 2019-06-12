@@ -268,9 +268,11 @@ public class ReactantLiveUIApplier {
         let definition = context.component
         func findViewByFieldName(field: String, element: UIElement) throws -> UIView {
             let view: UIView
-            if instance is Anonymous {
-                fatalError()
-//                view = (try? (element as? CanInitializeUIKitView)?.initialize(context: workerContext)) ?? UIView() ?? UIView()
+            if let anonymousLiveInstance = instance as? AnonymousLiveComponent {
+//                anonymousLiveInstance.
+//                fatalError()
+//                try (element as? CanInitializeUIKitView)?.initialize(context: workerContext)
+                view = (try? (element as? CanInitializeUIKitView)?.initialize(context: workerContext) ?? UIView()) ?? UIView()
                 instance.setValue(view, forUndefinedKey: field)
             } else if instance.responds(to: Selector("\(field)")) {
                 guard let targetView = instance.value(forKey: field) as? UIView else {
@@ -298,8 +300,8 @@ public class ReactantLiveUIApplier {
                 self.instance = instance
             }
 
-            func resolveStateProperty(named: String) throws -> Any? {
-                return instance.stateProperties[named]?.get()
+            func resolveStateProperty(named name: String) throws -> Any? {
+                return instance.stateProperty(named: name)?.get()
             }
         }
 
