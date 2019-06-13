@@ -2202,7 +2202,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#env -i HOME=$HOME PATH=$PATH swift build\n#popd\n# --enable-live\n\nGENERATE_UI=1\n\npushd \"$PROJECT_DIR\"\necho \"$PATH\"\nif [ \"$GENERATE_UI\" -ne 0 ]; then\n    env -i HOME=\"$HOME\" PATH=\"$PATH\" swift run reactant-ui generate \\\n      --live-configurations=Debug \\\n      --inputPath=\"$PROJECT_DIR/Example/\" \\\n      --outputFile=\"$PROJECT_DIR/Example/Generated/GeneratedUI.swift\" \\\n      --description=\"$PROJECT_DIR/Example/Source/Example.hyperdrive.xml\" \\\n      --xcodeprojPath=\"$PROJECT_DIR/ReactantUI.xcodeproj\"\nfi\n\n#pushd $PROJECT_DIR/Example\n#$PROJECT_DIR/.build/debug/reactant-ui --enable-live > $PROJECT_DIR/Example/Generated/GeneratedUI.swift\n#popd\n";
+			shellScript = "#env -i HOME=$HOME PATH=$PATH swift build\n#popd\n# --enable-live\n\nGENERATE_UI=1\n\npushd \"$PROJECT_DIR\"\necho \"$PATH\"\nif [ \"$GENERATE_UI\" -ne 0 ]; then\n    swift run reactant-ui generate \\\n      --live-configurations=Debug \\\n      --inputPath=\"$PROJECT_DIR/Example/\" \\\n      --outputFile=\"$PROJECT_DIR/Example/Generated/GeneratedUI.swift\" \\\n      --description=\"$PROJECT_DIR/Example/Source/Example.hyperdrive.xml\" \\\n      --xcodeprojPath=\"$PROJECT_DIR/ReactantUI.xcodeproj\"\nfi\n\n#pushd $PROJECT_DIR/Example\n#$PROJECT_DIR/.build/debug/reactant-ui --enable-live > $PROJECT_DIR/Example/Generated/GeneratedUI.swift\n#popd\n";
 		};
 		2284DAE81FAC95B900D231D3 /* Generate Reactant UI */ = {
 			isa = PBXShellScriptBuildPhase;

@@ -13,7 +13,7 @@ import Hyperdrive
 
 final class PreviewListRootView: HyperViewBase, HyperView /*Hyperdrive.PlainTableView<PreviewListCell>, RootView*/ {
     final class State: HyperViewState {
-        fileprivate weak var owner: PreviewListRootView?
+        fileprivate weak var owner: PreviewListRootView? { didSet { resynchronize() } }
 
         var items: [PreviewListCell.State] = [] { didSet { notifyItemsChanged() } }
 
@@ -26,7 +26,7 @@ final class PreviewListRootView: HyperViewBase, HyperView /*Hyperdrive.PlainTabl
         }
 
         private func notifyItemsChanged() {
-
+            owner?.tableView1.componentState = .items(items)
         }
     }
     enum Action {
@@ -39,14 +39,29 @@ final class PreviewListRootView: HyperViewBase, HyperView /*Hyperdrive.PlainTabl
 
     let state: State
 
-    private let tableView1 = UITableView()
+    private let tableView1 = Hyperdrive.PlainTableView<PreviewListCell>(cellFactory: PreviewListCell())
 
-    init(initialState: State, actionPublisher: ActionPublisher<Action>) {
+    init(initialState: State = State(), actionPublisher: ActionPublisher<Action> = ActionPublisher()) {
         state = initialState
 
         super.init()
+
+        loadView()
+        setupConstraints()
     
         state.owner = self
+    }
+
+    private func loadView() {
+        addSubview(tableView1)
+
+        backgroundColor = .white
+    }
+
+    private func setupConstraints() {
+        tableView1.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
     }
 
     

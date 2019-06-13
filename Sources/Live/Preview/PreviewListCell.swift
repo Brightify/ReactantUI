@@ -10,7 +10,7 @@ import Hyperdrive
 
 final class PreviewListCell: HyperViewBase, HyperView {
     final class State: HyperViewState {
-        fileprivate weak var owner: PreviewListCell?
+        fileprivate weak var owner: PreviewListCell? { didSet { resynchronize() } }
 
         var title: String? { didSet { notifyTitleChanged() } }
 
@@ -36,7 +36,7 @@ final class PreviewListCell: HyperViewBase, HyperView {
 
     private let name = UILabel()
 
-    init(initialState: State, actionPublisher: ActionPublisher<Action>) {
+    init(initialState: State = State(), actionPublisher: ActionPublisher<Action> = ActionPublisher()) {
         state = initialState
 
         super.init()
@@ -44,6 +44,8 @@ final class PreviewListCell: HyperViewBase, HyperView {
         loadView()
 
         setupConstraints()
+
+        state.owner = self
     }
 
     private func loadView() {
