@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
     spec.name             = 'ReactantUI'
-    spec.version          = '0.3.0'
+    spec.version          = '0.4.0'
     spec.summary          = 'Reactant extension for UI declaration in XML'
     spec.description      = <<-DESC
                             Reactant UI is an extension for Reactant allowing you to declare views and layout using XML. Don't worry, there's no runtime overhead, as all those declarations are precompiled into Swift. Reactant then uses the generated code to create your UI.
@@ -19,8 +19,10 @@ Pod::Spec.new do |spec|
     spec.social_media_url = 'https://twitter.com/BrightifyOrg'
     spec.requires_arc = true
 
-    spec.ios.deployment_target = '9.0'
-    spec.tvos.deployment_target = '9.2'
+    spec.ios.deployment_target = '10.0'
+    spec.tvos.deployment_target = '10.0'
+
+    spec.swift_version = '5.1'
 
     spec.source_files = ['Sources/Common/**/*.swift', 'Sources/Runtime/**/*.swift']
     generator_name = 'reactant-ui'

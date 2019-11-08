@@ -27,7 +27,7 @@ internal func strike(_ array: [Int], from: [Int]) -> [Int] {
     var result: Array<Int> = []
 
     for element in from {
-        if array.index(of: element) == nil {
+        if array.firstIndex(of: element) == nil {
             result.append(element)
         }
     }

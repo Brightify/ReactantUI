@@ -12,7 +12,7 @@ import RxSwift
 import RxCocoa
 
 internal extension BehaviorRelay {
-    internal func mutate(using mutator: (inout Element) -> Void) {
+    func mutate(using mutator: (inout Element) -> Void) {
         var mutableValue = value
         mutator(&mutableValue)
         accept(mutableValue)
@@ -330,7 +330,7 @@ public class ReactantLiveUIWorker {
      */
     public func resetError(for path: String) {
         errorSubject.mutate {
-            guard let index = $0.index(where: { $0.path == path }) else { return }
+            guard let index = $0.firstIndex(where: { $0.path == path }) else { return }
             $0.remove(at: index)
         }
     }
@@ -394,8 +394,8 @@ public class ReactantLiveUIWorker {
 }
 
 extension ReactantLiveUIWorker: Hashable {
-    public var hashValue: Int {
-        return configuration.resourceBundle.hashValue
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(configuration.resourceBundle)
     }
 
     public static func ==(lhs: ReactantLiveUIWorker, rhs: ReactantLiveUIWorker) -> Bool {
@@ -427,7 +427,7 @@ extension ReactantLiveUIWorker {
                     AnonymousComponent(typeName: definition.definition.type, xmlPath: definition.xmlPath, worker: strongWorker)
                 }
             } else {
-                throw LiveUIError(message: "ERROR: Unable to find instantiation mapping for component \(name) in bundle \(configuration.resourceBundle.name)")
+                throw LiveUIError(message: "ERROR: Unable to find instantiation mapping for component \(name) in bundle \(String(describing: configuration.resourceBundle.name))")
             }
         }
 

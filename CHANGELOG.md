@@ -1,3 +1,9 @@
+# 0.4.0
+
+* Swift 5.1 suport
+* Reactant 1.3+
+* RxSwift 5.0+
+
 # 0.3.0
 * Spring cleaning
 * Better generator error messages

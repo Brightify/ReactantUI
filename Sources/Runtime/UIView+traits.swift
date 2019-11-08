@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 public extension UIView {
-    public var traits: UITraitHelper {
+    var traits: UITraitHelper {
         return UITraitHelper(for: self)
     }
 }

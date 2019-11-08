@@ -9,6 +9,6 @@
 
 @interface RUIExceptionCatcher: NSObject
 
-+(nullable id)catchExceptionIn:(__attribute__((noescape)) id (^)(void))block error:(NSError* _Nullable*_Nullable)errorPtr;
++(nullable id)catchExceptionIn:(nonnull __attribute__((noescape)) id _Nonnull (^)(void))block error:(NSError* _Nullable*_Nullable)errorPtr;
 
 @end

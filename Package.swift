@@ -1,4 +1,4 @@
-// swift-tools-version:4.2
+// swift-tools-version:5.1
 
 import PackageDescription
 
@@ -19,9 +19,9 @@ let package = Package(
             targets: ["Generator"])
     ],
     dependencies: [
-        .package(url: "https://github.com/tadija/AEXML.git", .exact("4.3.3")),
-        .package(url: "https://github.com/tuist/xcodeproj.git", .upToNextMajor(from: "6.0.0")),
-        .package(url: "https://github.com/jakeheis/SwiftCLI", from: "5.2.2")
+        .package(url: "https://github.com/tadija/AEXML.git", .upToNextMajor(from: "4.0.0")),
+        .package(url: "https://github.com/tuist/XcodeProj.git", .upToNextMajor(from: "7.0.0")),
+        .package(url: "https://github.com/jakeheis/SwiftCLI", from: "5.3.3")
     ],
     targets: [
         .target(
@@ -32,7 +32,7 @@ let package = Package(
             dependencies: ["Common"]),
         .target(
             name: "Generator",
-            dependencies: ["Tokenizer", "xcodeproj", "SwiftCLI", "AEXML"]),
+            dependencies: ["Tokenizer", "XcodeProj", "SwiftCLI", "AEXML"]),
         .target(
             name: "reactant-ui",
             dependencies: ["Tokenizer", "Generator"])

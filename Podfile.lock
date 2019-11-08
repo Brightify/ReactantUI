@@ -1,84 +1,90 @@
 PODS:
-  - Differentiator (3.0.2)
-  - iOSSnapshotTestCase (3.0.0):
-    - iOSSnapshotTestCase/SwiftSupport (= 3.0.0)
-  - iOSSnapshotTestCase/Core (3.0.0)
-  - iOSSnapshotTestCase/SwiftSupport (3.0.0):
+  - Differentiator (4.0.1)
+  - iOSSnapshotTestCase (6.2.0):
+    - iOSSnapshotTestCase/SwiftSupport (= 6.2.0)
+  - iOSSnapshotTestCase/Core (6.2.0)
+  - iOSSnapshotTestCase/SwiftSupport (6.2.0):
     - iOSSnapshotTestCase/Core
-  - Kingfisher (4.8.0)
-  - Nimble (7.1.3)
-  - Quick (1.3.1)
-  - Reactant (1.2.0):
-    - Reactant/Core (= 1.2.0)
-    - Reactant/Result (= 1.2.0)
-  - Reactant/Configuration (1.2.0)
-  - Reactant/Core (1.2.0):
+  - Kingfisher (5.9.0):
+    - Kingfisher/Core (= 5.9.0)
+  - Kingfisher/Core (5.9.0)
+  - Nimble (7.3.4)
+  - Quick (2.2.0)
+  - Reactant (1.3.0):
+    - Reactant/Core (= 1.3.0)
+    - Reactant/Result (= 1.3.0)
+  - Reactant/Configuration (1.3.0)
+  - Reactant/Core (1.3.0):
     - Reactant/Configuration
-    - RxCocoa (~> 4.0)
-    - RxOptional (~> 3.0)
-    - RxSwift (~> 4.0)
-    - SnapKit (~> 4.0)
-  - Reactant/FallbackSafeAreaInsets (1.2.0):
+    - RxCocoa (~> 5.0)
+    - RxOptional (~> 4.0)
+    - RxSwift (~> 5.0)
+    - SnapKit (~> 5.0)
+  - Reactant/FallbackSafeAreaInsets (1.3.0):
     - Reactant/Core
-  - Reactant/Result (1.2.0):
-    - Result (~> 3.0)
-    - RxOptional (~> 3.0)
-    - RxSwift (~> 4.0)
-  - Reactant/TableView (1.2.0):
+  - Reactant/Result (1.3.0):
+    - RxOptional (~> 4.0)
+    - RxSwift (~> 5.0)
+  - Reactant/TableView (1.3.0):
     - Reactant/Core
-    - RxCocoa (~> 4.0)
-    - RxDataSources (~> 3.0)
-  - Result (3.2.4)
-  - RxBlocking (4.1.2):
-    - RxSwift (~> 4.0)
-  - RxCocoa (4.1.2):
-    - RxSwift (~> 4.0)
-  - RxDataSources (3.0.2):
-    - Differentiator (~> 3.0)
-    - RxCocoa (~> 4.0)
-    - RxSwift (~> 4.0)
-  - RxNimble (4.1.0):
+    - RxCocoa (~> 5.0)
+    - RxDataSources (~> 4.0)
+  - RxBlocking (5.0.1):
+    - RxSwift (~> 5)
+  - RxCocoa (5.0.1):
+    - RxRelay (~> 5)
+    - RxSwift (~> 5)
+  - RxDataSources (4.0.1):
+    - Differentiator (~> 4.0)
+    - RxCocoa (~> 5.0)
+    - RxSwift (~> 5.0)
+  - RxNimble (4.5.0):
+    - RxNimble/RxBlocking (= 4.5.0)
+  - RxNimble/Core (4.5.0):
     - Nimble (~> 7.0)
-    - RxBlocking (~> 4.0)
-    - RxSwift (~> 4.0)
-  - RxOptional (3.4.0):
-    - RxCocoa (~> 4.0)
-    - RxSwift (~> 4.0)
-  - RxSwift (4.1.2)
-  - RxTest (4.1.2):
-    - RxSwift (~> 4.0)
-  - SnapKit (4.0.0)
+    - RxSwift (~> 5.0)
+  - RxNimble/RxBlocking (4.5.0):
+    - RxBlocking
+    - RxNimble/Core
+  - RxOptional (4.1.0):
+    - RxCocoa (~> 5)
+    - RxSwift (~> 5)
+  - RxRelay (5.0.1):
+    - RxSwift (~> 5)
+  - RxSwift (5.0.1)
+  - RxTest (5.0.1):
+    - RxSwift (~> 5)
+  - SnapKit (5.0.1)
 
 DEPENDENCIES:
   - iOSSnapshotTestCase
-  - Kingfisher (~> 4.0)
+  - Kingfisher (~> 5.0)
   - Nimble (~> 7.0)
-  - Quick (~> 1.1)
+  - Quick (~> 2.0)
   - Reactant (from `Dependencies/Reactant`)
   - Reactant/FallbackSafeAreaInsets (from `Dependencies/Reactant`)
   - Reactant/TableView (from `Dependencies/Reactant`)
-  - Result (~> 3.0)
-  - RxCocoa (~> 4.0)
-  - RxDataSources (~> 3.0)
+  - RxCocoa (~> 5.0)
+  - RxDataSources (~> 4.0)
   - RxNimble
-  - RxOptional (~> 3.0)
-  - RxSwift (~> 4.0)
+  - RxOptional (~> 4.0)
+  - RxSwift (~> 5.0)
   - RxTest
-  - SnapKit (~> 4.0)
+  - SnapKit (~> 5.0)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://cdn.cocoapods.org/:
     - Differentiator
     - iOSSnapshotTestCase
     - Kingfisher
     - Nimble
     - Quick
-    - Result
     - RxBlocking
     - RxCocoa
     - RxDataSources
     - RxNimble
     - RxOptional
+    - RxRelay
     - RxSwift
     - RxTest
     - SnapKit
@@ -88,22 +94,22 @@ EXTERNAL SOURCES:
     :path: Dependencies/Reactant
 
 SPEC CHECKSUMS:
-  Differentiator: a87be69eba49ec4ab460c7671143ee3a9eececfd
-  iOSSnapshotTestCase: 23984ffe05289728d646cbb6a7a10b4fb1c93440
-  Kingfisher: 976d828df2b24834c6a3f2fc4d82cdbd26552be1
-  Nimble: 2839b01d1b31f6a6a7777a221f0d91cf52e8e27b
-  Quick: d17304d58d0d169dd0bd1c6e5c28e3318de32a1a
-  Reactant: 5e4f19b798a42b46a61db6d86b42b85d70f774d4
-  Result: d2d07204ce72856f1fd9130bbe42c35a7b0fea10
-  RxBlocking: f6054985901412fc8c02daa84e92d4ba68c61389
-  RxCocoa: d88ba0f1f6abf040011a9eb4b539324fc426843a
-  RxDataSources: cb7c31e652a87ebb919da45f716bbb87b3765f6b
-  RxNimble: e5a34bf3b18d85406fc2a6e2cbc73aa2b4a858f0
-  RxOptional: fabc37fc8e3cf4c336ebaeb5c92b576c64b2e6c5
-  RxSwift: e49536837d9901277638493ea537394d4b55f570
-  RxTest: e634f15fd2c2cd0e0120132ef7a4f7be69ad0393
-  SnapKit: a42d492c16e80209130a3379f73596c3454b7694
+  Differentiator: 886080237d9f87f322641dedbc5be257061b0602
+  iOSSnapshotTestCase: 9ab44cb5aa62b84d31847f40680112e15ec579a6
+  Kingfisher: ff98240aebb7302bdc4f1ecd701761030ce18b16
+  Nimble: 051e3d8912d40138fa5591c78594f95fb172af37
+  Quick: 7fb19e13be07b5dfb3b90d4f9824c855a11af40e
+  Reactant: e9c32a2c580502b1441257d04249584b4f1d9e50
+  RxBlocking: c5e090f42d046df8b0e7752742510f349963710f
+  RxCocoa: e741b9749968e8a143e2b787f1dfbff2b63d0a5c
+  RxDataSources: efee07fa4de48477eca0a4611e6d11e2da9c1114
+  RxNimble: 7de04a30b74ac4c9298ae819edbfbddc34abe7fc
+  RxOptional: b1fcd60856807a564c0215c2184b8d33e7826dc2
+  RxRelay: 89d54507f4fd4d969e6ec1d4bd7f3673640b4640
+  RxSwift: e2dc62b366a3adf6a0be44ba9f405efd4c94e0c4
+  RxTest: 0132f952a61da82d5233abedaa559df91e5330e5
+  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
 
-PODFILE CHECKSUM: 9eee51819f1d343770fe60327a8dad98bc795021
+PODFILE CHECKSUM: ac04823d40b739fcc6b8a7b6e8aaf4986e0acf29
 
-COCOAPODS: 1.7.0
+COCOAPODS: 1.8.3

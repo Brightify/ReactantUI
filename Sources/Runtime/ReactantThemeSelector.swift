@@ -12,7 +12,7 @@ public protocol ReactantThemeDefinition {
 }
 
 public extension ReactantThemeDefinition where Self: RawRepresentable, Self.RawValue == String {
-    public var name: String {
+    var name: String {
         return rawValue
     }
 }
@@ -36,8 +36,8 @@ public class ReactantThemeSelector<THEME: ReactantThemeDefinition> where THEME: 
             cancelation()
         }
 
-        public var hashValue: Int {
-            return key.hashValue
+        public func hash(into hasher: inout Hasher) {
+            hasher.combine(key)
         }
 
         public static func ==(lhs: ListenerToken, rhs: ListenerToken) -> Bool {

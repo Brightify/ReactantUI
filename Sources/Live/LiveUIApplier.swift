@@ -359,6 +359,8 @@ extension InterfaceIdiom {
             self = .tv
         case .unspecified:
             self = .unspecified
+        @unknown default:
+            self = .unspecified
         }
     }
 }
@@ -371,6 +373,8 @@ extension InterfaceSizeClass {
         case .regular:
             self = .regular
         case .unspecified:
+            self = .unspecified
+        @unknown default:
             self = .unspecified
         }
     }

@@ -90,9 +90,12 @@ public class SimulatedSeparatorTableView: View, ComponentDefinitionContainer {
         }
         let createCell = try context.componentInstantiation(named: cellType)
         let exampleCount = ToolingProperties.simulatedSeparatorTableView.exampleCount.get(from: self.toolingProperties) ?? 5
-        let tableView =  Reactant.SimulatedSeparatorTableView<CellWrapper>(cellFactory: {
-            CellWrapper(wrapped: createCell())
-        }).with(state: .items(Array(repeating: (), count: exampleCount)))
+        let tableView =  Reactant.SimulatedSeparatorTableView<CellWrapper>(
+            cellFactory: {
+                CellWrapper(wrapped: createCell())
+            },
+            options: [.reloadable, .deselectsAutomatically])
+            .with(state: .items(Array(repeating: (), count: exampleCount)))
 
         tableView.tableView.rowHeight = UITableView.automaticDimension
 

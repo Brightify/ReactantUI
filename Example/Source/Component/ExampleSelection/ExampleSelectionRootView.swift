@@ -13,7 +13,7 @@ final class ExampleSelectionRootView: ViewBase<Void, ExampleType> {
     let stackView = UIStackView()
 
     override func update() {
-        stackView.arrangedSubviews.forEach { stackView.removeArrangedSubview($0) }
+        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
         let selectionCells = ExampleType.allCases.map { SelectionCell().with(state: $0) }
 

@@ -159,6 +159,8 @@
 		18C920AC229FD4E8004C2B0B /* SmartQuotesType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 225350962124435E0009B368 /* SmartQuotesType.swift */; };
 		18C920AD229FD4EB004C2B0B /* SmartDashesType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22535098212443760009B368 /* SmartDashesType.swift */; };
 		18C920AE229FD4EE004C2B0B /* SmartInsertDeleteType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2253509A212443CD0009B368 /* SmartInsertDeleteType.swift */; };
+		18E0E5C6237474E0006F3104 /* GeneratedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FF981F216638BC00B617E4 /* GeneratedUI.swift */; };
+		18E0E5C7237474E7006F3104 /* GeneratedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FF981F216638BC00B617E4 /* GeneratedUI.swift */; };
 		18F7988820D7D76600522E1E /* ApplicationDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F7988620D7D74400522E1E /* ApplicationDescription.swift */; };
 		22141C922052B0A400205F56 /* ExampleSelectionRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22141C912052B0A400205F56 /* ExampleSelectionRootView.ui.xml */; };
 		22141C972052B0FD00205F56 /* SelectionCell.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22141C962052B0FD00205F56 /* SelectionCell.ui.xml */; };
@@ -178,22 +180,6 @@
 		2284DAED1FAC96BE00D231D3 /* GeneratedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2284DAEC1FAC96BE00D231D3 /* GeneratedUI.swift */; };
 		2284DAEF1FAC971900D231D3 /* TestView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 2284DAEE1FAC971900D231D3 /* TestView.ui.xml */; };
 		22957E3C207235E20088C09E /* StackViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22957E3B207235E20088C09E /* StackViewRootView.ui.xml */; };
-		22BF2755212AD8C70024B1A4 /* HeaderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF2754212AD8C70024B1A4 /* HeaderTableViewController.swift */; };
-		22BF2757212AD8D30024B1A4 /* HeaderTableViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF2756212AD8D30024B1A4 /* HeaderTableViewRootView.swift */; };
-		22BF2759212AD8EF0024B1A4 /* HeaderTableViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22BF2758212AD8EF0024B1A4 /* HeaderTableViewRootView.ui.xml */; };
-		22BF275C212AD9A00024B1A4 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF275B212AD9A00024B1A4 /* HeaderView.swift */; };
-		22BF275F212ADA000024B1A4 /* FooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF275E212ADA000024B1A4 /* FooterView.swift */; };
-		22BF2761212ADA1A0024B1A4 /* HeaderView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22BF2760212ADA1A0024B1A4 /* HeaderView.ui.xml */; };
-		22BF2763212ADAAF0024B1A4 /* FooterView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22BF2762212ADAAF0024B1A4 /* FooterView.ui.xml */; };
-		22BF2765212ADAF80024B1A4 /* FooterTableViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF2764212ADAF80024B1A4 /* FooterTableViewRootView.swift */; };
-		22BF2767212ADB090024B1A4 /* FooterTableViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22BF2766212ADB090024B1A4 /* FooterTableViewRootView.ui.xml */; };
-		22BF2769212ADB860024B1A4 /* FooterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF2768212ADB860024B1A4 /* FooterTableViewController.swift */; };
-		22BF276B212ADC350024B1A4 /* SimpleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF276A212ADC350024B1A4 /* SimpleTableViewController.swift */; };
-		22BF276D212ADC400024B1A4 /* SimpleTableViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF276C212ADC400024B1A4 /* SimpleTableViewRootView.swift */; };
-		22BF276F212ADC4F0024B1A4 /* SimpleTableViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22BF276E212ADC4F0024B1A4 /* SimpleTableViewRootView.ui.xml */; };
-		22BF2771212ADCAE0024B1A4 /* SimulatedSeparatorTableViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF2770212ADCAE0024B1A4 /* SimulatedSeparatorTableViewRootView.swift */; };
-		22BF2773212ADCBF0024B1A4 /* SimulatedSeparatorTableViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22BF2772212ADCBF0024B1A4 /* SimulatedSeparatorTableViewRootView.ui.xml */; };
-		22BF2775212ADCCC0024B1A4 /* SimulatedSeparatorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF2774212ADCCC0024B1A4 /* SimulatedSeparatorTableViewController.swift */; };
 		22BF2671212ABCFD0024B1A4 /* InterfaceIdiom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D71F6921147410005CC92A /* InterfaceIdiom.swift */; };
 		22BF2672212ABD080024B1A4 /* InterfaceSizeClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D71F6B21147433005CC92A /* InterfaceSizeClass.swift */; };
 		22BF2673212ABD210024B1A4 /* InterfaceState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68D71F642114733B005CC92A /* InterfaceState.swift */; };
@@ -416,6 +402,22 @@
 		22BF274C212ABDC80024B1A4 /* XMLSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184491E8209223A70080B743 /* XMLSerializer.swift */; };
 		22BF274D212ABDC80024B1A4 /* XMLElement+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 184491E9209223A70080B743 /* XMLElement+Utils.swift */; };
 		22BF274E212ABEF50024B1A4 /* RUIExceptionCatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 1844912F20921F150080B743 /* RUIExceptionCatcher.m */; };
+		22BF2755212AD8C70024B1A4 /* HeaderTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF2754212AD8C70024B1A4 /* HeaderTableViewController.swift */; };
+		22BF2757212AD8D30024B1A4 /* HeaderTableViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF2756212AD8D30024B1A4 /* HeaderTableViewRootView.swift */; };
+		22BF2759212AD8EF0024B1A4 /* HeaderTableViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22BF2758212AD8EF0024B1A4 /* HeaderTableViewRootView.ui.xml */; };
+		22BF275C212AD9A00024B1A4 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF275B212AD9A00024B1A4 /* HeaderView.swift */; };
+		22BF275F212ADA000024B1A4 /* FooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF275E212ADA000024B1A4 /* FooterView.swift */; };
+		22BF2761212ADA1A0024B1A4 /* HeaderView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22BF2760212ADA1A0024B1A4 /* HeaderView.ui.xml */; };
+		22BF2763212ADAAF0024B1A4 /* FooterView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22BF2762212ADAAF0024B1A4 /* FooterView.ui.xml */; };
+		22BF2765212ADAF80024B1A4 /* FooterTableViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF2764212ADAF80024B1A4 /* FooterTableViewRootView.swift */; };
+		22BF2767212ADB090024B1A4 /* FooterTableViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22BF2766212ADB090024B1A4 /* FooterTableViewRootView.ui.xml */; };
+		22BF2769212ADB860024B1A4 /* FooterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF2768212ADB860024B1A4 /* FooterTableViewController.swift */; };
+		22BF276B212ADC350024B1A4 /* SimpleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF276A212ADC350024B1A4 /* SimpleTableViewController.swift */; };
+		22BF276D212ADC400024B1A4 /* SimpleTableViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF276C212ADC400024B1A4 /* SimpleTableViewRootView.swift */; };
+		22BF276F212ADC4F0024B1A4 /* SimpleTableViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22BF276E212ADC4F0024B1A4 /* SimpleTableViewRootView.ui.xml */; };
+		22BF2771212ADCAE0024B1A4 /* SimulatedSeparatorTableViewRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF2770212ADCAE0024B1A4 /* SimulatedSeparatorTableViewRootView.swift */; };
+		22BF2773212ADCBF0024B1A4 /* SimulatedSeparatorTableViewRootView.ui.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22BF2772212ADCBF0024B1A4 /* SimulatedSeparatorTableViewRootView.ui.xml */; };
+		22BF2775212ADCCC0024B1A4 /* SimulatedSeparatorTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BF2774212ADCCC0024B1A4 /* SimulatedSeparatorTableViewController.swift */; };
 		22D274F9212AB1FF00F30115 /* Example-tvOS.hyperdrive.xml in Resources */ = {isa = PBXBuildFile; fileRef = 22D274F8212AB1FF00F30115 /* Example-tvOS.hyperdrive.xml */; };
 		22D2750F212AB4C200F30115 /* ReactantUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22D27508212AB4C200F30115 /* ReactantUI.framework */; };
 		22D27515212AB66C00F30115 /* ReactantUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 689FA0CE209CD7B000B39225 /* ReactantUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -520,7 +522,6 @@
 		7139F67920934BC2009EA7F4 /* Condition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7139F67720934BBB009EA7F4 /* Condition.swift */; };
 		71BAEAB720972E1600D56639 /* ConditionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BAEAB520972DFD00D56639 /* ConditionParser.swift */; };
 		71D94EC420935F8E007D83A1 /* ConstraintConditionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71D94EC320935F8E007D83A1 /* ConstraintConditionTests.swift */; };
-		71FF9820216638BC00B617E4 /* GeneratedUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FF981F216638BC00B617E4 /* GeneratedUI.swift */; };
 		71FF9823216760A500B617E4 /* Template.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FF9821216760A100B617E4 /* Template.swift */; };
 		7ECD13670B984D98A5FCD87D /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 887500E4E5E1BF9478D7EFFD /* Pods_LiveUI_LiveUI_iOS_LiveUI_iOSTests.framework */; };
 		8843F0C7B69C4B4D90D21F24 /* Pods_LiveUI_LiveUI_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 105120706C0623FA651A558C /* Pods_LiveUI_LiveUI_iOS.framework */; };
@@ -789,6 +790,8 @@
 		1844928020922AE10080B743 /* Tokenizer_iOSTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tokenizer_iOSTests.swift; sourceTree = "<group>"; };
 		18758FE320D980FF004C6690 /* Example.hyperdrive.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Example.hyperdrive.xml; sourceTree = "<group>"; };
 		18758FE520D9BBB0004C6690 /* ReactantThemeSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReactantThemeSelector.swift; sourceTree = "<group>"; };
+		18E0E5C423746CF5006F3104 /* ReactantUI.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; path = ReactantUI.podspec; sourceTree = "<group>"; };
+		18E0E5C523746CF6006F3104 /* ReactantLiveUI.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; path = ReactantLiveUI.podspec; sourceTree = "<group>"; };
 		18F7988620D7D74400522E1E /* ApplicationDescription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationDescription.swift; sourceTree = "<group>"; };
 		22141C8A2052B02F00205F56 /* MainWireframe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWireframe.swift; sourceTree = "<group>"; };
 		22141C8D2052B08700205F56 /* ExampleSelectionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleSelectionController.swift; sourceTree = "<group>"; };
@@ -984,6 +987,8 @@
 		182B685C1EAF7530007CC668 = {
 			isa = PBXGroup;
 			children = (
+				18E0E5C523746CF6006F3104 /* ReactantLiveUI.podspec */,
+				18E0E5C423746CF5006F3104 /* ReactantUI.podspec */,
 				18448FCA2092053F0080B743 /* Sources */,
 				1844927A20922AE10080B743 /* Tests */,
 				182B68691EAF7589007CC668 /* Example */,
@@ -2202,10 +2207,10 @@
 				"${BUILT_PRODUCTS_DIR}/Differentiator-iOS/Differentiator.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher-iOS/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/Reactant-iOS/Reactant.framework",
-				"${BUILT_PRODUCTS_DIR}/Result-iOS/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa-iOS/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxDataSources-iOS/RxDataSources.framework",
 				"${BUILT_PRODUCTS_DIR}/RxOptional-iOS/RxOptional.framework",
+				"${BUILT_PRODUCTS_DIR}/RxRelay-iOS/RxRelay.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift-iOS/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit-iOS/SnapKit.framework",
 			);
@@ -2214,10 +2219,10 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differentiator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reactant.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxDataSources.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxOptional.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 			);
@@ -2290,10 +2295,10 @@
 				"${BUILT_PRODUCTS_DIR}/Differentiator-tvOS/Differentiator.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher-tvOS/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/Reactant-tvOS/Reactant.framework",
-				"${BUILT_PRODUCTS_DIR}/Result-tvOS/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa-tvOS/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxDataSources-tvOS/RxDataSources.framework",
 				"${BUILT_PRODUCTS_DIR}/RxOptional-tvOS/RxOptional.framework",
+				"${BUILT_PRODUCTS_DIR}/RxRelay-tvOS/RxRelay.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift-tvOS/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit-tvOS/SnapKit.framework",
 			);
@@ -2302,10 +2307,10 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differentiator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reactant.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxDataSources.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxOptional.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 			);
@@ -2342,10 +2347,10 @@
 				"${BUILT_PRODUCTS_DIR}/Differentiator-iOS/Differentiator.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher-iOS/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/Reactant-iOS/Reactant.framework",
-				"${BUILT_PRODUCTS_DIR}/Result-iOS/Result.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa-iOS/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxDataSources-iOS/RxDataSources.framework",
 				"${BUILT_PRODUCTS_DIR}/RxOptional-iOS/RxOptional.framework",
+				"${BUILT_PRODUCTS_DIR}/RxRelay-iOS/RxRelay.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift-iOS/RxSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit-iOS/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Nimble/Nimble.framework",
@@ -2360,10 +2365,10 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Differentiator.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reactant.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Result.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxDataSources.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxOptional.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxRelay.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Nimble.framework",
@@ -2402,11 +2407,11 @@
 				22BF2755212AD8C70024B1A4 /* HeaderTableViewController.swift in Sources */,
 				680DD2F02111E59B00069A82 /* PlainCell.swift in Sources */,
 				680DD2F72111E59B00069A82 /* ExampleView2.swift in Sources */,
-				680DD2FB2111E5C300069A82 /* GeneratedUI.swift in Sources */,
 				22BF275F212ADA000024B1A4 /* FooterView.swift in Sources */,
 				22BF2771212ADCAE0024B1A4 /* SimulatedSeparatorTableViewRootView.swift in Sources */,
 				680DD2F32111E59B00069A82 /* SelectionCell.swift in Sources */,
 				680DD2F82111E59B00069A82 /* ViewController.swift in Sources */,
+				18E0E5C6237474E0006F3104 /* GeneratedUI.swift in Sources */,
 				680DD2F42111E59B00069A82 /* ExampleSelectionController.swift in Sources */,
 				680DD2F22111E59B00069A82 /* PlainTableViewRootView.swift in Sources */,
 				680DD2EF2111E59B00069A82 /* StackViewRootView.swift in Sources */,
@@ -2657,6 +2662,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2284DAED1FAC96BE00D231D3 /* GeneratedUI.swift in Sources */,
+				18E0E5C7237474E7006F3104 /* GeneratedUI.swift in Sources */,
 				2284DADE1FAC855E00D231D3 /* ViewController.swift in Sources */,
 				2284DADC1FAC855E00D231D3 /* AppDelegate.swift in Sources */,
 			);
@@ -2986,10 +2992,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Debug;
 		};
@@ -3021,8 +3029,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
+				TVOS_DEPLOYMENT_TARGET = 10.0;
 			};
 			name = Release;
 		};
@@ -3074,7 +3084,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Example/Resource/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -3129,7 +3138,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = "$(SRCROOT)/Example/Resource/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = org.brightify.reactant.Example;
@@ -3178,7 +3186,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/Live/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.brightify.LiveUI-iOS";
@@ -3229,7 +3236,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = "$(SRCROOT)/Sources/Live/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.brightify.LiveUI-iOS";
@@ -3279,7 +3285,6 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.brightify.LiveUI-iOSTests";
@@ -3317,7 +3322,6 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = Tests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.brightify.LiveUI-iOSTests";
@@ -3394,7 +3398,6 @@
 				SDKROOT = appletvos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 11.0;
 			};
 			name = Debug;
 		};
@@ -3454,7 +3457,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 11.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -3506,7 +3508,6 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 9.2;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -3553,7 +3554,6 @@
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 9.2;
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -3609,7 +3609,6 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Sources/ReactantLiveUI-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 9.2;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -3659,7 +3658,6 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "Sources/ReactantLiveUI-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = 3;
-				TVOS_DEPLOYMENT_TARGET = 9.2;
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -3703,7 +3701,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = ReactantUI/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = org.brightify.ReactantUI;
@@ -3749,7 +3746,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = ReactantUI/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = org.brightify.ReactantUI;

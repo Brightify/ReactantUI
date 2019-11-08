@@ -44,7 +44,7 @@ public class ComponentReference: View, ComponentDefinitionContainer {
     }
 
     public required init(node: SWXMLHash.XMLElement) throws {
-        type = try? node.value(ofAttribute: "type")
+        type = node.value(ofAttribute: "type")
         
         if !node.xmlChildren.isEmpty {
             definition = try node.value() as ComponentDefinition

@@ -12,13 +12,13 @@ import RxSwift
 import UIKit
 
 final class ExampleRootView: ViewBase<(test: String, Int, test2: (a: Int, b: String)), Void> {
-    let django = Label()
+    let django = UILabel()
     let email = UITextField()
     let send = UIButton()
-    let label = Label()
+    let label = UILabel()
 
     override func update() {
-        django.attributedText = ReactantTemplates.superTemplate(name: "super name", foo: "super foo")
+        django.attributedText = ReactantTemplates.superTemplate(_name9: "super name", foo: "super foo")
 //        send.setAttributedTitle(ReactantTemplates.superTemplate(name: "super name", foo: "super foo"), for: .normal)
 //        let b = ReactantTemplates.superTemplate(name: "foo", foo: "lol")
         // Test that constraints work

@@ -43,7 +43,7 @@ public struct Layout: XMLElementDeserializable {
         self.contentCompressionPriorityVertical = contentCompressionPriorityVertical
         self.contentHuggingPriorityHorizontal = contentHuggingPriorityHorizontal
         self.contentHuggingPriorityVertical = contentHuggingPriorityVertical
-        self.hasConditions = constraints.index(where: { $0.condition != nil }) != nil
+        self.hasConditions = constraints.firstIndex(where: { $0.condition != nil }) != nil
     }
 
     /**

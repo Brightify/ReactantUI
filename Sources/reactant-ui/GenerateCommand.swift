@@ -11,7 +11,7 @@ import Common
 import Generator
 import Tokenizer
 import Foundation
-import xcodeproj
+import XcodeProj
 import SwiftCLI
 
 public enum GenerateCommandError: Error, LocalizedError {

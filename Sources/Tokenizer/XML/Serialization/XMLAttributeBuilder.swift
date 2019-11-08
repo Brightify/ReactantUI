@@ -21,7 +21,7 @@ public struct XMLAttributeBuilder {
             newAttribute.name = "\(namespace):\(newAttribute.name)"
         }
 
-        if let index = attributes.index(where: { $0.name == attribute.name }) {
+        if let index = attributes.firstIndex(where: { $0.name == attribute.name }) {
             swap(&attributes[index], &newAttribute)
         } else {
             attributes.append(newAttribute)

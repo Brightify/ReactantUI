@@ -128,7 +128,7 @@ private enum ConstraintShortcutOrConstraint {
 
                 result.append(.shortcut(shortcut: shortcut, firstConstraint))
                 constraintsForShortcut.forEach { constraint in
-                    guard let index = mutableConstraints.index(of: constraint) else { return }
+                    guard let index = mutableConstraints.firstIndex(of: constraint) else { return }
                     mutableConstraints.remove(at: index)
                 }
             }
