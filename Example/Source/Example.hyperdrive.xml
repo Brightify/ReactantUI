@@ -12,7 +12,7 @@
             overlayBackground="white"
             textOnOverlay="black" />
         <night
-            overlayBackground="black"
+            overlayBackground="aNamedColor"
             textOnOverlay="white" />
     </Colors>
 

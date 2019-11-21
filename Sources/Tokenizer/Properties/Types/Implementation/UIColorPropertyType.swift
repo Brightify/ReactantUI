@@ -27,8 +27,10 @@ public enum UIColorPropertyType: AttributeSupportedPropertyType {
         switch self {
         case .color(.absolute(let red, let green, let blue, let alpha)):
             return "UIColor(red: \(red), green: \(green), blue: \(blue), alpha: \(alpha))"
-        case .color(.named(let name)):
+        case .color(.named(let name)) where Color.systemColorNames.contains(name):
             return "UIColor.\(name)"
+        case .color(.named(let name)):
+            return "UIColor(named: \"\(name)\", in: __resourceBundle, compatibleWith: nil)"
         case .themed(let name):
             return "theme.colors.\(name)"
         }
@@ -56,8 +58,14 @@ public enum UIColorPropertyType: AttributeSupportedPropertyType {
         switch self {
         case .color(.absolute(let red, let green, let blue, let alpha)):
             return UIColor(red: red, green: green, blue: blue, alpha: alpha)
-        case .color(.named(let name)):
+        case .color(.named(let name)) where Color.systemColorNames.contains(name):
             return UIColor.value(forKeyPath: "\(name)Color") as? UIColor
+        case .color(.named(let name)):
+            if #available(iOS 11.0, OSX 10.13, *) {
+                return UIColor(named: name, in: context.resourceBundle, compatibleWith: nil)
+            } else {
+                return nil
+            }
         case .themed(let name):
             guard let themedColor = context.themed(color: name) else { return nil }
             return themedColor.runtimeValue(context: context.child(for: themedColor))
@@ -73,12 +81,12 @@ public enum UIColorPropertyType: AttributeSupportedPropertyType {
         func getColor(from value: String) throws -> UIColorPropertyType {
             if let themedName = ApplicationDescription.themedValueName(value: value) {
                 return .themed(themedName)
-            } else if Color.supportedNames.contains(value) {
+            } else if Color.systemColorNames.contains(value) {
                 return .color(.named(value))
             } else if let materializedValue = Color(hex: value) {
                 return .color(materializedValue)
             } else {
-                throw PropertyMaterializationError.unknownValue(value)
+                return .color(.named(value))
             }
         }
 

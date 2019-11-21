@@ -284,7 +284,7 @@ class GenerateCommand: Command {
         }.joined(separator: "\n")
 
         let allColorsSorted = try description.colors.allItemNames.sorted().map { """
-            public var \($0): UIColor {
+            public var \($0): UIColor? {
                 switch theme {
                 \(try allCases(item: $0, from: description.colors))
                 }

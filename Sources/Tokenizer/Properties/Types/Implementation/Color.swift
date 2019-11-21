@@ -104,7 +104,12 @@ public enum Color {
             case "brown":
                 return SystemColor.brown
             default:
-                return SystemColor.red
+                #warning("FIXME The fallback to `.red` is not safe at all.")
+                if #available(iOS 11.0, OSX 10.13, *) {
+                    return SystemColor(named: name) ?? SystemColor.red
+                } else {
+                    return SystemColor.red
+                }
             }
         }
     }
